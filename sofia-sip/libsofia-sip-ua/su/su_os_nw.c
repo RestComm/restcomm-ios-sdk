@@ -46,16 +46,16 @@
 #include "sofia-sip/su_os_nw.h"
 #include "sofia-sip/su_debug.h"
 
-#if defined(__APPLE_CC__)
+#if defined(__APPLE_CC__) && !defined (TARGET_OS_IPHONE)
 # define SU_NW_CHANGE_PTHREAD 1
 #endif
 
-#if defined (SU_NW_CHANGE_PTHREAD)
+#if defined (SU_NW_CHANGE_PTHREAD) && !defined (TARGET_OS_IPHONE)
 # define SU_HAVE_NW_CHANGE 1
 # include <pthread.h>
 #endif
 
-#if defined(__APPLE_CC__)
+#if defined(__APPLE_CC__) && !defined (TARGET_OS_IPHONE)
 #include <AvailabilityMacros.h>
 #include <sys/cdefs.h>
 #include <CoreFoundation/CoreFoundation.h>
@@ -68,11 +68,11 @@ struct su_network_changed_s {
   su_root_t                  *su_root;
   su_home_t                  *su_home;
 
-#if defined (__APPLE_CC__)
+#if defined (__APPLE_CC__) && !defined (TARGET_OS_IPHONE)
   SCDynamicStoreRef           su_storeRef[1];
   CFRunLoopSourceRef          su_sourceRef[1];
 #endif
-#if defined (SU_NW_CHANGE_PTHREAD)
+#if defined (SU_NW_CHANGE_PTHREAD) && !defined (TARGET_OS_IPHONE)
   pthread_t                   su_os_thread;
 #endif
 
@@ -80,7 +80,7 @@ struct su_network_changed_s {
   su_network_changed_magic_t *su_network_changed_magic;
 };
 
-#if defined(__APPLE_CC__)
+#if defined(__APPLE_CC__) && !defined (TARGET_OS_IPHONE)
 static void su_nw_changed_msg_recv(su_root_magic_t *rm,
 				   su_msg_r msg,
 				   su_network_changed_t *snc)
@@ -266,7 +266,7 @@ su_network_changed_t
   snc->su_network_changed_cb = network_changed_cb;
   snc->su_network_changed_magic = magic;
 
-# if defined (SU_NW_CHANGE_PTHREAD)
+# if defined (SU_NW_CHANGE_PTHREAD) && !defined (TARGET_OS_IPHONE)
   if ((pthread_create(&(snc->su_os_thread), NULL,
 		      su_start_nw_os_thread,
 		      (void *) snc)) != 0) {
