@@ -1,0 +1,3 @@
+test-ios-sip-sofia is a sample xcode project that uses sip sofia to send an instant message to a server UA
+
+Keep in mind that the configuration (such as ip addresses and port) is hard-coded to my environment, so it might need some changes to work in another setup. Also to avoid the toverhead to make this binary 'universal' (i.e. be able to work both on the simulator and the actual device), this sample only builds for armv7 architecture and hence only works on an iOS device -not in the simulator.

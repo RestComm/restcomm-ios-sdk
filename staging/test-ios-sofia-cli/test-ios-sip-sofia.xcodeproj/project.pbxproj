@@ -1,0 +1,849 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE1A239D19C59BF800D65391 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A238319C59BF800D65391 /* sdp_utils.cpp */; };
+		AE1A239E19C59BF800D65391 /* sofsip_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A238519C59BF800D65391 /* sofsip_cli.cpp */; };
+		AE1A239F19C59BF800D65391 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A238619C59BF800D65391 /* ssc_input.cpp */; };
+		AE1A23A419C59BF800D65391 /* ssc_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A239019C59BF800D65391 /* ssc_oper.cpp */; };
+		AE1A23A519C59BF800D65391 /* ssc_sip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A239219C59BF800D65391 /* ssc_sip.cpp */; };
+		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
+		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
+		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
+		AE79D32419BC8DAD0023306C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32219BC8DAD0023306C /* InfoPlist.strings */; };
+		AE79D32619BC8DAD0023306C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D32519BC8DAD0023306C /* main.m */; };
+		AE79D32A19BC8DAD0023306C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D32919BC8DAD0023306C /* AppDelegate.m */; };
+		AE79D32D19BC8DAD0023306C /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */; };
+		AE79D33019BC8DAD0023306C /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */; };
+		AE79D33319BC8DAD0023306C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE79D33219BC8DAD0023306C /* ViewController.mm */; };
+		AE79D33519BC8DAD0023306C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE79D33419BC8DAD0023306C /* Images.xcassets */; };
+		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
+		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
+		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
+		AE79D34619BC8DAE0023306C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE79D34419BC8DAE0023306C /* InfoPlist.strings */; };
+		AE79D34819BC8DAE0023306C /* test_ios_sip_sofiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */; };
+		AE79D3CA19BC8E040023306C /* sip_extra.h.in in Resources */ = {isa = PBXBuildFile; fileRef = AE79D38B19BC8E040023306C /* sip_extra.h.in */; };
+		AE79D3CB19BC8E040023306C /* sip_hclasses.h.in in Resources */ = {isa = PBXBuildFile; fileRef = AE79D38D19BC8E040023306C /* sip_hclasses.h.in */; };
+		AE79D3CC19BC8E040023306C /* sip_protos.h.in in Resources */ = {isa = PBXBuildFile; fileRef = AE79D39119BC8E040023306C /* sip_protos.h.in */; };
+		AE79D3CD19BC8E040023306C /* sip_tag.h.in in Resources */ = {isa = PBXBuildFile; fileRef = AE79D39419BC8E040023306C /* sip_tag.h.in */; };
+		AE79D3CE19BC8E040023306C /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D3C719BC8E040023306C /* libsofia-sip-ua.a */; };
+		AE79D3D019BC8E040023306C /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE79D3C919BC8E040023306C /* notes.txt */; };
+		AE79D3D319BC8F570023306C /* sofia-ua-wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */; };
+		AED215C319C758E9000983F4 /* ssc_media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AED215C219C758E9000983F4 /* ssc_media.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE79D33F19BC8DAE0023306C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE79D30E19BC8DAD0023306C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE79D31519BC8DAD0023306C;
+			remoteInfo = "test-ios-sip-sofia";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE1A238319C59BF800D65391 /* sdp_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdp_utils.cpp; sourceTree = "<group>"; };
+		AE1A238419C59BF800D65391 /* sdp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdp_utils.h; sourceTree = "<group>"; };
+		AE1A238519C59BF800D65391 /* sofsip_cli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sofsip_cli.cpp; sourceTree = "<group>"; };
+		AE1A238619C59BF800D65391 /* ssc_input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_input.cpp; sourceTree = "<group>"; };
+		AE1A238719C59BF800D65391 /* ssc_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_input.h; sourceTree = "<group>"; };
+		AE1A239019C59BF800D65391 /* ssc_oper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_oper.cpp; sourceTree = "<group>"; };
+		AE1A239119C59BF800D65391 /* ssc_oper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_oper.h; sourceTree = "<group>"; };
+		AE1A239219C59BF800D65391 /* ssc_sip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_sip.cpp; sourceTree = "<group>"; };
+		AE1A239319C59BF800D65391 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
+		AE1A23A719C5A80F00D65391 /* sofsip_cli.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sofsip_cli.h; sourceTree = "<group>"; };
+		AE4C443B19C89ED900F99FC7 /* ssc_media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media.h; sourceTree = "<group>"; };
+		AE79D31619BC8DAD0023306C /* test-ios-sip-sofia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-ios-sip-sofia.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		AE79D31D19BC8DAD0023306C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AE79D32119BC8DAD0023306C /* test-ios-sip-sofia-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "test-ios-sip-sofia-Info.plist"; sourceTree = "<group>"; };
+		AE79D32319BC8DAD0023306C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AE79D32519BC8DAD0023306C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AE79D32719BC8DAD0023306C /* test-ios-sip-sofia-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "test-ios-sip-sofia-Prefix.pch"; sourceTree = "<group>"; };
+		AE79D32819BC8DAD0023306C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		AE79D32919BC8DAD0023306C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AE79D32C19BC8DAD0023306C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		AE79D32F19BC8DAD0023306C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		AE79D33119BC8DAD0023306C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AE79D33219BC8DAD0023306C /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		AE79D33419BC8DAD0023306C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AE79D33A19BC8DAE0023306C /* test-ios-sip-sofiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "test-ios-sip-sofiaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE79D33B19BC8DAE0023306C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AE79D34319BC8DAE0023306C /* test-ios-sip-sofiaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "test-ios-sip-sofiaTests-Info.plist"; sourceTree = "<group>"; };
+		AE79D34519BC8DAE0023306C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test_ios_sip_sofiaTests.m; sourceTree = "<group>"; };
+		AE79D35519BC8E040023306C /* sres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres.h; sourceTree = "<group>"; };
+		AE79D35619BC8E040023306C /* sres_async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_async.h; sourceTree = "<group>"; };
+		AE79D35719BC8E040023306C /* sres_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_cache.h; sourceTree = "<group>"; };
+		AE79D35819BC8E040023306C /* sres_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_config.h; sourceTree = "<group>"; };
+		AE79D35919BC8E040023306C /* sres_record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_record.h; sourceTree = "<group>"; };
+		AE79D35B19BC8E040023306C /* auth_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_client.h; sourceTree = "<group>"; };
+		AE79D35C19BC8E040023306C /* auth_client_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_client_plugin.h; sourceTree = "<group>"; };
+		AE79D35D19BC8E040023306C /* auth_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_common.h; sourceTree = "<group>"; };
+		AE79D35E19BC8E040023306C /* auth_digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_digest.h; sourceTree = "<group>"; };
+		AE79D35F19BC8E040023306C /* auth_module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_module.h; sourceTree = "<group>"; };
+		AE79D36019BC8E040023306C /* auth_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auth_plugin.h; sourceTree = "<group>"; };
+		AE79D36119BC8E040023306C /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		AE79D36219BC8E040023306C /* bnf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bnf.h; sourceTree = "<group>"; };
+		AE79D36319BC8E040023306C /* heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heap.h; sourceTree = "<group>"; };
+		AE79D36419BC8E040023306C /* hostdomain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hostdomain.h; sourceTree = "<group>"; };
+		AE79D36519BC8E040023306C /* htable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = htable.h; sourceTree = "<group>"; };
+		AE79D36619BC8E040023306C /* htable2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = htable2.h; sourceTree = "<group>"; };
+		AE79D36719BC8E040023306C /* http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http.h; sourceTree = "<group>"; };
+		AE79D36819BC8E040023306C /* http_hclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_hclasses.h; sourceTree = "<group>"; };
+		AE79D36919BC8E040023306C /* http_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_header.h; sourceTree = "<group>"; };
+		AE79D36A19BC8E040023306C /* http_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_parser.h; sourceTree = "<group>"; };
+		AE79D36B19BC8E040023306C /* http_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_protos.h; sourceTree = "<group>"; };
+		AE79D36C19BC8E040023306C /* http_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_status.h; sourceTree = "<group>"; };
+		AE79D36D19BC8E040023306C /* http_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_tag.h; sourceTree = "<group>"; };
+		AE79D36E19BC8E040023306C /* http_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_tag_class.h; sourceTree = "<group>"; };
+		AE79D36F19BC8E040023306C /* msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg.h; sourceTree = "<group>"; };
+		AE79D37019BC8E040023306C /* msg_addr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_addr.h; sourceTree = "<group>"; };
+		AE79D37119BC8E040023306C /* msg_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_buffer.h; sourceTree = "<group>"; };
+		AE79D37219BC8E040023306C /* msg_date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_date.h; sourceTree = "<group>"; };
+		AE79D37319BC8E040023306C /* msg_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_header.h; sourceTree = "<group>"; };
+		AE79D37419BC8E040023306C /* msg_mclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_mclass.h; sourceTree = "<group>"; };
+		AE79D37519BC8E040023306C /* msg_mclass_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_mclass_hash.h; sourceTree = "<group>"; };
+		AE79D37619BC8E040023306C /* msg_mime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_mime.h; sourceTree = "<group>"; };
+		AE79D37719BC8E040023306C /* msg_mime_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_mime_protos.h; sourceTree = "<group>"; };
+		AE79D37819BC8E040023306C /* msg_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_parser.h; sourceTree = "<group>"; };
+		AE79D37919BC8E040023306C /* msg_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_protos.h; sourceTree = "<group>"; };
+		AE79D37A19BC8E040023306C /* msg_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_tag_class.h; sourceTree = "<group>"; };
+		AE79D37B19BC8E040023306C /* msg_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = msg_types.h; sourceTree = "<group>"; };
+		AE79D37C19BC8E040023306C /* nea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nea.h; sourceTree = "<group>"; };
+		AE79D37D19BC8E040023306C /* nea_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nea_tag.h; sourceTree = "<group>"; };
+		AE79D37E19BC8E040023306C /* nta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nta.h; sourceTree = "<group>"; };
+		AE79D37F19BC8E040023306C /* nta_stateless.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nta_stateless.h; sourceTree = "<group>"; };
+		AE79D38019BC8E040023306C /* nta_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nta_tag.h; sourceTree = "<group>"; };
+		AE79D38119BC8E040023306C /* nta_tport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nta_tport.h; sourceTree = "<group>"; };
+		AE79D38219BC8E040023306C /* nth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nth.h; sourceTree = "<group>"; };
+		AE79D38319BC8E040023306C /* nth_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nth_tag.h; sourceTree = "<group>"; };
+		AE79D38419BC8E040023306C /* nua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nua.h; sourceTree = "<group>"; };
+		AE79D38519BC8E040023306C /* nua_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nua_tag.h; sourceTree = "<group>"; };
+		AE79D38619BC8E040023306C /* rbtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbtree.h; sourceTree = "<group>"; };
+		AE79D38719BC8E040023306C /* sdp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdp.h; sourceTree = "<group>"; };
+		AE79D38819BC8E040023306C /* sdp_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdp_tag.h; sourceTree = "<group>"; };
+		AE79D38919BC8E040023306C /* sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip.h; sourceTree = "<group>"; };
+		AE79D38A19BC8E040023306C /* sip_extra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_extra.h; sourceTree = "<group>"; };
+		AE79D38B19BC8E040023306C /* sip_extra.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sip_extra.h.in; sourceTree = "<group>"; };
+		AE79D38C19BC8E040023306C /* sip_hclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_hclasses.h; sourceTree = "<group>"; };
+		AE79D38D19BC8E040023306C /* sip_hclasses.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sip_hclasses.h.in; sourceTree = "<group>"; };
+		AE79D38E19BC8E040023306C /* sip_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_header.h; sourceTree = "<group>"; };
+		AE79D38F19BC8E040023306C /* sip_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_parser.h; sourceTree = "<group>"; };
+		AE79D39019BC8E040023306C /* sip_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_protos.h; sourceTree = "<group>"; };
+		AE79D39119BC8E040023306C /* sip_protos.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sip_protos.h.in; sourceTree = "<group>"; };
+		AE79D39219BC8E040023306C /* sip_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_status.h; sourceTree = "<group>"; };
+		AE79D39319BC8E040023306C /* sip_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_tag.h; sourceTree = "<group>"; };
+		AE79D39419BC8E040023306C /* sip_tag.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sip_tag.h.in; sourceTree = "<group>"; };
+		AE79D39519BC8E040023306C /* sip_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_tag_class.h; sourceTree = "<group>"; };
+		AE79D39619BC8E040023306C /* sip_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sip_util.h; sourceTree = "<group>"; };
+		AE79D39719BC8E040023306C /* sl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sl_utils.h; sourceTree = "<group>"; };
+		AE79D39819BC8E040023306C /* soa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soa.h; sourceTree = "<group>"; };
+		AE79D39919BC8E040023306C /* soa_add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soa_add.h; sourceTree = "<group>"; };
+		AE79D39A19BC8E040023306C /* soa_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soa_session.h; sourceTree = "<group>"; };
+		AE79D39B19BC8E040023306C /* soa_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soa_tag.h; sourceTree = "<group>"; };
+		AE79D39C19BC8E040023306C /* sofia_features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sofia_features.h; sourceTree = "<group>"; };
+		AE79D39D19BC8E040023306C /* sres_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_sip.h; sourceTree = "<group>"; };
+		AE79D39E19BC8E040023306C /* sresolv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sresolv.h; sourceTree = "<group>"; };
+		AE79D39F19BC8E040023306C /* string0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string0.h; sourceTree = "<group>"; };
+		AE79D3A019BC8E040023306C /* stun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stun.h; sourceTree = "<group>"; };
+		AE79D3A119BC8E040023306C /* stun_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stun_common.h; sourceTree = "<group>"; };
+		AE79D3A219BC8E040023306C /* stun_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stun_tag.h; sourceTree = "<group>"; };
+		AE79D3A319BC8E040023306C /* su.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su.h; sourceTree = "<group>"; };
+		AE79D3A419BC8E040023306C /* su_addrinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_addrinfo.h; sourceTree = "<group>"; };
+		AE79D3A519BC8E040023306C /* su_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_alloc.h; sourceTree = "<group>"; };
+		AE79D3A619BC8E040023306C /* su_alloc_stat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_alloc_stat.h; sourceTree = "<group>"; };
+		AE79D3A719BC8E040023306C /* su_bm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_bm.h; sourceTree = "<group>"; };
+		AE79D3A819BC8E040023306C /* su_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_config.h; sourceTree = "<group>"; };
+		AE79D3A919BC8E040023306C /* su_configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_configure.h; sourceTree = "<group>"; };
+		AE79D3AA19BC8E040023306C /* su_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_debug.h; sourceTree = "<group>"; };
+		AE79D3AB19BC8E040023306C /* su_errno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_errno.h; sourceTree = "<group>"; };
+		AE79D3AC19BC8E040023306C /* su_localinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_localinfo.h; sourceTree = "<group>"; };
+		AE79D3AD19BC8E040023306C /* su_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_log.h; sourceTree = "<group>"; };
+		AE79D3AE19BC8E040023306C /* su_md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_md5.h; sourceTree = "<group>"; };
+		AE79D3AF19BC8E040023306C /* su_os_nw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_os_nw.h; sourceTree = "<group>"; };
+		AE79D3B019BC8E040023306C /* su_random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_random.h; sourceTree = "<group>"; };
+		AE79D3B119BC8E040023306C /* su_string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_string.h; sourceTree = "<group>"; };
+		AE79D3B219BC8E040023306C /* su_strlst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_strlst.h; sourceTree = "<group>"; };
+		AE79D3B319BC8E040023306C /* su_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_tag.h; sourceTree = "<group>"; };
+		AE79D3B419BC8E040023306C /* su_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_tag_class.h; sourceTree = "<group>"; };
+		AE79D3B519BC8E040023306C /* su_tag_inline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_tag_inline.h; sourceTree = "<group>"; };
+		AE79D3B619BC8E040023306C /* su_tag_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_tag_io.h; sourceTree = "<group>"; };
+		AE79D3B719BC8E040023306C /* su_tagarg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_tagarg.h; sourceTree = "<group>"; };
+		AE79D3B819BC8E040023306C /* su_time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_time.h; sourceTree = "<group>"; };
+		AE79D3B919BC8E040023306C /* su_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_types.h; sourceTree = "<group>"; };
+		AE79D3BA19BC8E040023306C /* su_uniqueid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_uniqueid.h; sourceTree = "<group>"; };
+		AE79D3BB19BC8E040023306C /* su_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_vector.h; sourceTree = "<group>"; };
+		AE79D3BC19BC8E040023306C /* su_wait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_wait.h; sourceTree = "<group>"; };
+		AE79D3BD19BC8E040023306C /* token64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = token64.h; sourceTree = "<group>"; };
+		AE79D3BE19BC8E040023306C /* tport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tport.h; sourceTree = "<group>"; };
+		AE79D3BF19BC8E040023306C /* tport_plugins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tport_plugins.h; sourceTree = "<group>"; };
+		AE79D3C019BC8E040023306C /* tport_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tport_tag.h; sourceTree = "<group>"; };
+		AE79D3C119BC8E040023306C /* tstdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tstdef.h; sourceTree = "<group>"; };
+		AE79D3C219BC8E040023306C /* uniqueid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uniqueid.h; sourceTree = "<group>"; };
+		AE79D3C319BC8E040023306C /* url.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url.h; sourceTree = "<group>"; };
+		AE79D3C419BC8E040023306C /* url_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag.h; sourceTree = "<group>"; };
+		AE79D3C519BC8E040023306C /* url_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag_class.h; sourceTree = "<group>"; };
+		AE79D3C719BC8E040023306C /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE79D3C919BC8E040023306C /* notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
+		AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "sofia-ua-wrapper.c"; sourceTree = "<group>"; };
+		AE79D3D219BC8F570023306C /* sofia-ua-wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sofia-ua-wrapper.h"; sourceTree = "<group>"; };
+		AED215C219C758E9000983F4 /* ssc_media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_media.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE79D31319BC8DAD0023306C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
+				AE79D3CE19BC8E040023306C /* libsofia-sip-ua.a in Frameworks */,
+				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
+				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE79D33719BC8DAE0023306C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */,
+				AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */,
+				AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE1A237419C59BF800D65391 /* cli */ = {
+			isa = PBXGroup;
+			children = (
+				AE1A238319C59BF800D65391 /* sdp_utils.cpp */,
+				AE1A238419C59BF800D65391 /* sdp_utils.h */,
+				AE1A238519C59BF800D65391 /* sofsip_cli.cpp */,
+				AE1A23A719C5A80F00D65391 /* sofsip_cli.h */,
+				AE1A238619C59BF800D65391 /* ssc_input.cpp */,
+				AE1A238719C59BF800D65391 /* ssc_input.h */,
+				AED215C219C758E9000983F4 /* ssc_media.cpp */,
+				AE4C443B19C89ED900F99FC7 /* ssc_media.h */,
+				AE1A239019C59BF800D65391 /* ssc_oper.cpp */,
+				AE1A239119C59BF800D65391 /* ssc_oper.h */,
+				AE1A239219C59BF800D65391 /* ssc_sip.cpp */,
+				AE1A239319C59BF800D65391 /* ssc_sip.h */,
+			);
+			path = cli;
+			sourceTree = "<group>";
+		};
+		AE79D30D19BC8DAD0023306C = {
+			isa = PBXGroup;
+			children = (
+				AE79D35119BC8E040023306C /* sofia-sip-1.12.11-latest */,
+				AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */,
+				AE79D34119BC8DAE0023306C /* test-ios-sip-sofiaTests */,
+				AE79D31819BC8DAD0023306C /* Frameworks */,
+				AE79D31719BC8DAD0023306C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE79D31719BC8DAD0023306C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D31619BC8DAD0023306C /* test-ios-sip-sofia.app */,
+				AE79D33A19BC8DAE0023306C /* test-ios-sip-sofiaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE79D31819BC8DAD0023306C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D31919BC8DAD0023306C /* Foundation.framework */,
+				AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */,
+				AE79D31D19BC8DAD0023306C /* UIKit.framework */,
+				AE79D33B19BC8DAE0023306C /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */ = {
+			isa = PBXGroup;
+			children = (
+				AE1A237419C59BF800D65391 /* cli */,
+				AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */,
+				AE79D3D219BC8F570023306C /* sofia-ua-wrapper.h */,
+				AE79D32819BC8DAD0023306C /* AppDelegate.h */,
+				AE79D32919BC8DAD0023306C /* AppDelegate.m */,
+				AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */,
+				AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */,
+				AE79D33119BC8DAD0023306C /* ViewController.h */,
+				AE79D33219BC8DAD0023306C /* ViewController.mm */,
+				AE79D33419BC8DAD0023306C /* Images.xcassets */,
+				AE79D32019BC8DAD0023306C /* Supporting Files */,
+			);
+			path = "test-ios-sip-sofia";
+			sourceTree = "<group>";
+		};
+		AE79D32019BC8DAD0023306C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D32119BC8DAD0023306C /* test-ios-sip-sofia-Info.plist */,
+				AE79D32219BC8DAD0023306C /* InfoPlist.strings */,
+				AE79D32519BC8DAD0023306C /* main.m */,
+				AE79D32719BC8DAD0023306C /* test-ios-sip-sofia-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AE79D34119BC8DAE0023306C /* test-ios-sip-sofiaTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */,
+				AE79D34219BC8DAE0023306C /* Supporting Files */,
+			);
+			path = "test-ios-sip-sofiaTests";
+			sourceTree = "<group>";
+		};
+		AE79D34219BC8DAE0023306C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D34319BC8DAE0023306C /* test-ios-sip-sofiaTests-Info.plist */,
+				AE79D34419BC8DAE0023306C /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AE79D35119BC8E040023306C /* sofia-sip-1.12.11-latest */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D35219BC8E040023306C /* include */,
+				AE79D3C619BC8E040023306C /* lib */,
+			);
+			path = "sofia-sip-1.12.11-latest";
+			sourceTree = "<group>";
+		};
+		AE79D35219BC8E040023306C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D35319BC8E040023306C /* sofia-sip-1.12 */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		AE79D35319BC8E040023306C /* sofia-sip-1.12 */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D35419BC8E040023306C /* sofia-resolv */,
+				AE79D35A19BC8E040023306C /* sofia-sip */,
+			);
+			path = "sofia-sip-1.12";
+			sourceTree = "<group>";
+		};
+		AE79D35419BC8E040023306C /* sofia-resolv */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D35519BC8E040023306C /* sres.h */,
+				AE79D35619BC8E040023306C /* sres_async.h */,
+				AE79D35719BC8E040023306C /* sres_cache.h */,
+				AE79D35819BC8E040023306C /* sres_config.h */,
+				AE79D35919BC8E040023306C /* sres_record.h */,
+			);
+			path = "sofia-resolv";
+			sourceTree = "<group>";
+		};
+		AE79D35A19BC8E040023306C /* sofia-sip */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D35B19BC8E040023306C /* auth_client.h */,
+				AE79D35C19BC8E040023306C /* auth_client_plugin.h */,
+				AE79D35D19BC8E040023306C /* auth_common.h */,
+				AE79D35E19BC8E040023306C /* auth_digest.h */,
+				AE79D35F19BC8E040023306C /* auth_module.h */,
+				AE79D36019BC8E040023306C /* auth_plugin.h */,
+				AE79D36119BC8E040023306C /* base64.h */,
+				AE79D36219BC8E040023306C /* bnf.h */,
+				AE79D36319BC8E040023306C /* heap.h */,
+				AE79D36419BC8E040023306C /* hostdomain.h */,
+				AE79D36519BC8E040023306C /* htable.h */,
+				AE79D36619BC8E040023306C /* htable2.h */,
+				AE79D36719BC8E040023306C /* http.h */,
+				AE79D36819BC8E040023306C /* http_hclasses.h */,
+				AE79D36919BC8E040023306C /* http_header.h */,
+				AE79D36A19BC8E040023306C /* http_parser.h */,
+				AE79D36B19BC8E040023306C /* http_protos.h */,
+				AE79D36C19BC8E040023306C /* http_status.h */,
+				AE79D36D19BC8E040023306C /* http_tag.h */,
+				AE79D36E19BC8E040023306C /* http_tag_class.h */,
+				AE79D36F19BC8E040023306C /* msg.h */,
+				AE79D37019BC8E040023306C /* msg_addr.h */,
+				AE79D37119BC8E040023306C /* msg_buffer.h */,
+				AE79D37219BC8E040023306C /* msg_date.h */,
+				AE79D37319BC8E040023306C /* msg_header.h */,
+				AE79D37419BC8E040023306C /* msg_mclass.h */,
+				AE79D37519BC8E040023306C /* msg_mclass_hash.h */,
+				AE79D37619BC8E040023306C /* msg_mime.h */,
+				AE79D37719BC8E040023306C /* msg_mime_protos.h */,
+				AE79D37819BC8E040023306C /* msg_parser.h */,
+				AE79D37919BC8E040023306C /* msg_protos.h */,
+				AE79D37A19BC8E040023306C /* msg_tag_class.h */,
+				AE79D37B19BC8E040023306C /* msg_types.h */,
+				AE79D37C19BC8E040023306C /* nea.h */,
+				AE79D37D19BC8E040023306C /* nea_tag.h */,
+				AE79D37E19BC8E040023306C /* nta.h */,
+				AE79D37F19BC8E040023306C /* nta_stateless.h */,
+				AE79D38019BC8E040023306C /* nta_tag.h */,
+				AE79D38119BC8E040023306C /* nta_tport.h */,
+				AE79D38219BC8E040023306C /* nth.h */,
+				AE79D38319BC8E040023306C /* nth_tag.h */,
+				AE79D38419BC8E040023306C /* nua.h */,
+				AE79D38519BC8E040023306C /* nua_tag.h */,
+				AE79D38619BC8E040023306C /* rbtree.h */,
+				AE79D38719BC8E040023306C /* sdp.h */,
+				AE79D38819BC8E040023306C /* sdp_tag.h */,
+				AE79D38919BC8E040023306C /* sip.h */,
+				AE79D38A19BC8E040023306C /* sip_extra.h */,
+				AE79D38B19BC8E040023306C /* sip_extra.h.in */,
+				AE79D38C19BC8E040023306C /* sip_hclasses.h */,
+				AE79D38D19BC8E040023306C /* sip_hclasses.h.in */,
+				AE79D38E19BC8E040023306C /* sip_header.h */,
+				AE79D38F19BC8E040023306C /* sip_parser.h */,
+				AE79D39019BC8E040023306C /* sip_protos.h */,
+				AE79D39119BC8E040023306C /* sip_protos.h.in */,
+				AE79D39219BC8E040023306C /* sip_status.h */,
+				AE79D39319BC8E040023306C /* sip_tag.h */,
+				AE79D39419BC8E040023306C /* sip_tag.h.in */,
+				AE79D39519BC8E040023306C /* sip_tag_class.h */,
+				AE79D39619BC8E040023306C /* sip_util.h */,
+				AE79D39719BC8E040023306C /* sl_utils.h */,
+				AE79D39819BC8E040023306C /* soa.h */,
+				AE79D39919BC8E040023306C /* soa_add.h */,
+				AE79D39A19BC8E040023306C /* soa_session.h */,
+				AE79D39B19BC8E040023306C /* soa_tag.h */,
+				AE79D39C19BC8E040023306C /* sofia_features.h */,
+				AE79D39D19BC8E040023306C /* sres_sip.h */,
+				AE79D39E19BC8E040023306C /* sresolv.h */,
+				AE79D39F19BC8E040023306C /* string0.h */,
+				AE79D3A019BC8E040023306C /* stun.h */,
+				AE79D3A119BC8E040023306C /* stun_common.h */,
+				AE79D3A219BC8E040023306C /* stun_tag.h */,
+				AE79D3A319BC8E040023306C /* su.h */,
+				AE79D3A419BC8E040023306C /* su_addrinfo.h */,
+				AE79D3A519BC8E040023306C /* su_alloc.h */,
+				AE79D3A619BC8E040023306C /* su_alloc_stat.h */,
+				AE79D3A719BC8E040023306C /* su_bm.h */,
+				AE79D3A819BC8E040023306C /* su_config.h */,
+				AE79D3A919BC8E040023306C /* su_configure.h */,
+				AE79D3AA19BC8E040023306C /* su_debug.h */,
+				AE79D3AB19BC8E040023306C /* su_errno.h */,
+				AE79D3AC19BC8E040023306C /* su_localinfo.h */,
+				AE79D3AD19BC8E040023306C /* su_log.h */,
+				AE79D3AE19BC8E040023306C /* su_md5.h */,
+				AE79D3AF19BC8E040023306C /* su_os_nw.h */,
+				AE79D3B019BC8E040023306C /* su_random.h */,
+				AE79D3B119BC8E040023306C /* su_string.h */,
+				AE79D3B219BC8E040023306C /* su_strlst.h */,
+				AE79D3B319BC8E040023306C /* su_tag.h */,
+				AE79D3B419BC8E040023306C /* su_tag_class.h */,
+				AE79D3B519BC8E040023306C /* su_tag_inline.h */,
+				AE79D3B619BC8E040023306C /* su_tag_io.h */,
+				AE79D3B719BC8E040023306C /* su_tagarg.h */,
+				AE79D3B819BC8E040023306C /* su_time.h */,
+				AE79D3B919BC8E040023306C /* su_types.h */,
+				AE79D3BA19BC8E040023306C /* su_uniqueid.h */,
+				AE79D3BB19BC8E040023306C /* su_vector.h */,
+				AE79D3BC19BC8E040023306C /* su_wait.h */,
+				AE79D3BD19BC8E040023306C /* token64.h */,
+				AE79D3BE19BC8E040023306C /* tport.h */,
+				AE79D3BF19BC8E040023306C /* tport_plugins.h */,
+				AE79D3C019BC8E040023306C /* tport_tag.h */,
+				AE79D3C119BC8E040023306C /* tstdef.h */,
+				AE79D3C219BC8E040023306C /* uniqueid.h */,
+				AE79D3C319BC8E040023306C /* url.h */,
+				AE79D3C419BC8E040023306C /* url_tag.h */,
+				AE79D3C519BC8E040023306C /* url_tag_class.h */,
+			);
+			path = "sofia-sip";
+			sourceTree = "<group>";
+		};
+		AE79D3C619BC8E040023306C /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				AE79D3C719BC8E040023306C /* libsofia-sip-ua.a */,
+				AE79D3C919BC8E040023306C /* notes.txt */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE79D31519BC8DAD0023306C /* test-ios-sip-sofia */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "test-ios-sip-sofia" */;
+			buildPhases = (
+				AE79D31219BC8DAD0023306C /* Sources */,
+				AE79D31319BC8DAD0023306C /* Frameworks */,
+				AE79D31419BC8DAD0023306C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "test-ios-sip-sofia";
+			productName = "test-ios-sip-sofia";
+			productReference = AE79D31619BC8DAD0023306C /* test-ios-sip-sofia.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE79D33919BC8DAE0023306C /* test-ios-sip-sofiaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "test-ios-sip-sofiaTests" */;
+			buildPhases = (
+				AE79D33619BC8DAE0023306C /* Sources */,
+				AE79D33719BC8DAE0023306C /* Frameworks */,
+				AE79D33819BC8DAE0023306C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE79D34019BC8DAE0023306C /* PBXTargetDependency */,
+			);
+			name = "test-ios-sip-sofiaTests";
+			productName = "test-ios-sip-sofiaTests";
+			productReference = AE79D33A19BC8DAE0023306C /* test-ios-sip-sofiaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE79D30E19BC8DAD0023306C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = TeleStax;
+				TargetAttributes = {
+					AE79D33919BC8DAE0023306C = {
+						TestTargetID = AE79D31519BC8DAD0023306C;
+					};
+				};
+			};
+			buildConfigurationList = AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "test-ios-sip-sofia" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE79D30D19BC8DAD0023306C;
+			productRefGroup = AE79D31719BC8DAD0023306C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE79D31519BC8DAD0023306C /* test-ios-sip-sofia */,
+				AE79D33919BC8DAE0023306C /* test-ios-sip-sofiaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE79D31419BC8DAD0023306C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE79D3D019BC8E040023306C /* notes.txt in Resources */,
+				AE79D33019BC8DAD0023306C /* Main_iPad.storyboard in Resources */,
+				AE79D3CC19BC8E040023306C /* sip_protos.h.in in Resources */,
+				AE79D3CA19BC8E040023306C /* sip_extra.h.in in Resources */,
+				AE79D33519BC8DAD0023306C /* Images.xcassets in Resources */,
+				AE79D32D19BC8DAD0023306C /* Main_iPhone.storyboard in Resources */,
+				AE79D32419BC8DAD0023306C /* InfoPlist.strings in Resources */,
+				AE79D3CD19BC8E040023306C /* sip_tag.h.in in Resources */,
+				AE79D3CB19BC8E040023306C /* sip_hclasses.h.in in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE79D33819BC8DAE0023306C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE79D34619BC8DAE0023306C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE79D31219BC8DAD0023306C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE1A239E19C59BF800D65391 /* sofsip_cli.cpp in Sources */,
+				AE79D33319BC8DAD0023306C /* ViewController.mm in Sources */,
+				AE79D32A19BC8DAD0023306C /* AppDelegate.m in Sources */,
+				AE79D3D319BC8F570023306C /* sofia-ua-wrapper.c in Sources */,
+				AE1A23A419C59BF800D65391 /* ssc_oper.cpp in Sources */,
+				AE1A23A519C59BF800D65391 /* ssc_sip.cpp in Sources */,
+				AED215C319C758E9000983F4 /* ssc_media.cpp in Sources */,
+				AE79D32619BC8DAD0023306C /* main.m in Sources */,
+				AE1A239D19C59BF800D65391 /* sdp_utils.cpp in Sources */,
+				AE1A239F19C59BF800D65391 /* ssc_input.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE79D33619BC8DAE0023306C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE79D34819BC8DAE0023306C /* test_ios_sip_sofiaTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE79D34019BC8DAE0023306C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE79D31519BC8DAD0023306C /* test-ios-sip-sofia */;
+			targetProxy = AE79D33F19BC8DAE0023306C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE79D32219BC8DAD0023306C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE79D32319BC8DAD0023306C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE79D32C19BC8DAD0023306C /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE79D32F19BC8DAD0023306C /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		AE79D34419BC8DAE0023306C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE79D34519BC8DAE0023306C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE79D34919BC8DAE0023306C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$SOURCE_ROOT/sofia-sip-1.12.11-latest/include/sofia-sip-1.12",
+					"$SOURCE_ROOT/test-ios-sip-sofia/cli",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE79D34A19BC8DAE0023306C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$SOURCE_ROOT/sofia-sip-1.12.11-latest/include/sofia-sip-1.12",
+					"$SOURCE_ROOT/test-ios-sip-sofia/cli",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE79D34C19BC8DAE0023306C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-ios-sip-sofia/test-ios-sip-sofia-Prefix.pch";
+				INFOPLIST_FILE = "test-ios-sip-sofia/test-ios-sip-sofia-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/sofia-sip-1.12.11-latest/lib",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AE79D34D19BC8DAE0023306C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-ios-sip-sofia/test-ios-sip-sofia-Prefix.pch";
+				INFOPLIST_FILE = "test-ios-sip-sofia/test-ios-sip-sofia-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/sofia-sip-1.12.11-latest/lib",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		AE79D34F19BC8DAE0023306C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-sip-sofia.app/test-ios-sip-sofia";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-ios-sip-sofia/test-ios-sip-sofia-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "test-ios-sip-sofiaTests/test-ios-sip-sofiaTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		AE79D35019BC8DAE0023306C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-sip-sofia.app/test-ios-sip-sofia";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-ios-sip-sofia/test-ios-sip-sofia-Prefix.pch";
+				INFOPLIST_FILE = "test-ios-sip-sofiaTests/test-ios-sip-sofiaTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "test-ios-sip-sofia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE79D34919BC8DAE0023306C /* Debug */,
+				AE79D34A19BC8DAE0023306C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "test-ios-sip-sofia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE79D34C19BC8DAE0023306C /* Debug */,
+				AE79D34D19BC8DAE0023306C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "test-ios-sip-sofiaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE79D34F19BC8DAE0023306C /* Debug */,
+				AE79D35019BC8DAE0023306C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE79D30E19BC8DAD0023306C /* Project object */;
+}
