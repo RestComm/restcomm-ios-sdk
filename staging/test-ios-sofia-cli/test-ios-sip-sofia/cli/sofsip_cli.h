@@ -9,7 +9,7 @@
 #ifndef HAVE_SOFSIP_CLI_J
 #define HAVE_SOFSIP_CLI_J
 
-int sofsip_loop(int ac, char *av[]);
+int sofsip_loop(int ac, char *av[], int input_fd);
 //int mysum();
 
 #endif

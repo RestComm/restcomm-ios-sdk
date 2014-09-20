@@ -180,6 +180,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
   if (!ssc)
     return ssc;
 
+    
+  ssc->ssc_auth_pend = new std::list<ssc_auth_item_t*>;
+    
   ssc->ssc_name = "UA";
   ssc->ssc_home = home;
   ssc->ssc_root = root;
@@ -330,7 +333,11 @@ static SscMedia *priv_create_ssc_media(ssc_t *self, const ssc_conf_t *conf)
 void ssc_destroy(ssc_t *self)
 {
   su_home_t *home = self->ssc_home;
-  
+ 
+    // remember that ssc_auth_pend is now an stl list allocated with new; need to delete
+    if (self->ssc_auth_pend) {
+        delete self->ssc_auth_pend;
+    }
     if (self->ssc_media) {
         //g_object_unref(self->ssc_media), self->ssc_media = NULL;
         self->ssc_media->Deallocate();
@@ -364,8 +371,8 @@ inline void priv_attach_op_and_username(ssc_t *self, ssc_auth_item_t *authitem, 
 
   /* XXX: should check for already existing entries for the realm */
   nua_handle_ref(op->op_handle);
-
-  self->ssc_auth_pend.push_back(authitem);
+    
+  self->ssc_auth_pend->push_back(authitem);
   //self->ssc_auth_pend = g_list_append(self->ssc_auth_pend, authitem);
 }
 
@@ -608,12 +615,12 @@ void ssc_auth(ssc_t *ssc, const char *data)
   su_home_t *home = ssc->ssc_home;
   const char *authstring = data;
   char *tmpstr = NULL;
-  std::list<ssc_auth_item_t*>::const_iterator it = ssc->ssc_auth_pend.begin();
+  std::list<ssc_auth_item_t*>::const_iterator it = ssc->ssc_auth_pend->begin();
   //GList *list = ssc->ssc_auth_pend, *next;
   ssc_auth_item_t *authitem;
   int auth_done = 0, colons = priv_str_chr_count(data, ':');
 
-  while (it != ssc->ssc_auth_pend.end() && auth_done == 0) {
+  while (it != ssc->ssc_auth_pend->end() && auth_done == 0) {
   //while (list && auth_done == 0) {
 
     authitem = (ssc_auth_item_t*)*it;  //list->data;
@@ -669,7 +676,7 @@ void ssc_auth(ssc_t *ssc, const char *data)
 
     //next = g_list_next(list);
     // remember, erase returns next element for lists
-    it = ssc->ssc_auth_pend.erase(it);  //g_list_remove_link(ssc->ssc_auth_pend, list);
+    it = ssc->ssc_auth_pend->erase(it);  //g_list_remove_link(ssc->ssc_auth_pend, list);
     //list = next;
     //it = ++
   }
@@ -728,7 +735,7 @@ void ssc_invite(ssc_t *ssc, const char *destination)
     //  op->op_callstate |= opc_pending;
     op->op_callstate = (op_callstate_t)(op->op_callstate | opc_pending);
 
-    // TODO: need to call priv_media_state_cb when 'state-changed' is signalled in
+    // need to call priv_media_state_cb when 'state-changed' is signalled in
     // SscMedia::ssc_media_signal_state_change()
     //g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", G_CALLBACK (priv_media_state_cb), op);
     
@@ -738,6 +745,11 @@ void ssc_invite(ssc_t *ssc, const char *destination)
       /* active media before INVITE */
       //res = ssc_media_activate(ssc->ssc_media);
       res = ssc->ssc_media->ssc_media_activate(ssc->ssc_media);
+        
+      // TODO: with glib removed we have no signals, for now I just invoke the callback myself
+      // hopefully the point it time it got called previously with signals
+      priv_media_state_cb(NULL, sm_active, op);
+
       if (res < 0) {
 	printf("%s: ERROR: unable to active media subsystem, aborting session.\n", ssc->ssc_name);
 	priv_destroy_oper_with_disconnect (ssc, op);
@@ -985,13 +997,17 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
     if (status >= 200 && status < 300) {
       int res;
 
-      // TODO: need to call priv_media_state_cb when 'state-changed' is signalled in
+      // need to call priv_media_state_cb when 'state-changed' is signalled in
       // SscMedia::ssc_media_signal_state_change()
       //g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", G_CALLBACK (priv_media_state_cb), op);
 
       /* active media before answering */
       res = ssc->ssc_media->ssc_media_activate(ssc->ssc_media);
       //res = ssc_media_activate(ssc->ssc_media);
+        
+      // with glib removed we have no signals, for now I just invoke the callback myself
+      // hopefully the point it time it got called previously with signals
+      priv_media_state_cb(NULL, sm_active, op);
       if (res < 0) {
 	printf("%s: ERROR: unable to active media subsystem, unable to answer session.\n", ssc->ssc_name);
 	priv_destroy_oper_with_disconnect (ssc, op);
@@ -1967,21 +1983,21 @@ void ssc_param(ssc_t *ssc, char *param, char *s)
   if (!ns || strcmp(ns, "nua") == 0)
       for (list = nua_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = "found";
+	  ns = const_cast<char*>("found");
 	  break;
 	}
       }
   if (!ns || strcmp(ns, "nta") == 0) 
       for (list = nta_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = "found";
+	  ns = const_cast<char*>("found");
 	  break;
 	}
       }
   if (!ns || strcmp(ns, "sip") == 0) 
       for (list = sip_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = "found";
+	  ns = const_cast<char*>("found");
 	  break;
 	}
       }

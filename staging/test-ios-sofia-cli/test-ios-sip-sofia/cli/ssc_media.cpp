@@ -186,7 +186,8 @@ void SscMedia::ssc_media_signal_state_change(SscMedia *sscm, enum SscMediaState 
     if (this->sm_state != state) {
         printf ("Signaling media subsystem change from %u to %u.\n", sscm->sm_state, state);
         sscm->sm_state = state;
-        // TODO: this is going to be a bit tricky as we need to somehow emulate glib signals. Let's see which closures/callbacks are registered to this event
+        // this is going to be a bit tricky as we need to somehow emulate glib signals. Let's see which
+        // closures/callbacks are registered to this event
         //g_signal_emit_by_name(G_OBJECT(sscm), "state-changed", state, NULL);
     }
 }

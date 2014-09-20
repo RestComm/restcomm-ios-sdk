@@ -90,7 +90,10 @@ struct ssc_s {
 
   int           ssc_autoanswer;
 
-  std::list<ssc_auth_item_t*> ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */
+  // IMPORTANT: The stl list needs to be a pointer. If not, I think there's a problem with su_zalloc,
+  // which allocates space for the whole ssc struct. The problem manifests itself when trying
+  // to push to the list. I guess su_zalloc only works with malloc, not new
+  std::list<ssc_auth_item_t*> * ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */
 
   int           ssc_ans_status; /**< Answer status */
   char const   *ssc_ans_phrase; /**< Answer status */

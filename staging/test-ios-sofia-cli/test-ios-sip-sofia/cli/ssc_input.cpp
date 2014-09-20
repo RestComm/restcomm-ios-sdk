@@ -101,7 +101,7 @@ void ssc_input_set_prompt(const char* prompt)
 #endif
 }
 
-void ssc_input_read_char(void)
+void ssc_input_read_char(int input_fd)
 {
 #if USE_READLINE
   if (ssc_input_handler_f)
@@ -110,14 +110,16 @@ void ssc_input_read_char(void)
   static char buf[1024];
   int n;
 
-  n = read(0, buf, sizeof(buf) - 1);
+  n = read(input_fd, buf, sizeof(buf) - 1);
 
   if (n < 0) {
     perror("input: read");
   }
   else if (n > 0) {
     char *tmpbuf;
-    buf[n - 1] = 0;
+    // not sure why n - 1 was used instead on n. Stange thing is that n - 1 worked in Linux but not in iOS
+    ///buf[n - 1] = 0;
+    buf[n] = 0;
     tmpbuf = strdup((const char*)buf);
     if (ssc_input_handler_f) {
       ssc_input_handler_f(tmpbuf);

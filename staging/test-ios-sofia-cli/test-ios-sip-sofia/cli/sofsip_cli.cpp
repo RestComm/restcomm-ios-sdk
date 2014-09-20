@@ -93,6 +93,7 @@ struct cli_s {
   void         *cli_main;      /**< Pointer to mainloop */
   su_root_t    *cli_root;       /**< Pointer to application root */
 
+  int           cli_input_fd;  // pipe input file descriptor for commands
   cli_input_t   cli_input;	/**< Input structure */
   unsigned      cli_init : 1;	/**< True if input is initialized */
   unsigned      cli_prompt : 1;	/**< True if showing prompt */
@@ -125,7 +126,7 @@ int mysum()
 }
 */
 
-int sofsip_loop(int ac, char *av[])
+int sofsip_loop(int ac, char *av[], int input_fd)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -141,6 +142,7 @@ int sofsip_loop(int ac, char *av[])
   sigaction(SIGTERM, &sigact, NULL);
 #endif
 
+  cli->cli_input_fd = input_fd;
   /* step: initialize sofia su OS abstraction layer */
   su_init();
   su_home_init(cli->cli_home);
@@ -321,11 +323,15 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   */
     
   /* step: process environment variables */
+  /*
   conf->ssc_aor = getenv("SOFSIP_ADDRESS");
   conf->ssc_proxy = getenv("SOFSIP_PROXY");
   conf->ssc_registrar = getenv("SOFSIP_REGISTRAR");
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
+   */
+  conf->ssc_aor = "sip:john@192.168.2.30:5080";
+  conf->ssc_registrar = "sip:192.168.2.30:5080";
 
   /* step: process command line arguments */
   /*
@@ -346,8 +352,16 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
       break;
     }
   }
-
-  su_wait_create(&cli->cli_input, 0, SU_WAIT_IN); 
+  /*
+  int rc2 = write(0, "test", 4);
+    if (rc2 == -1) {
+        perror("Error_ ");
+    }
+    
+  int rc = fcntl(0, F_GETFD, 0);
+  */
+  // in iOS there is no STDIN (i.e. fd 0) open
+  su_wait_create(&cli->cli_input, cli->cli_input_fd, SU_WAIT_IN);
   if (su_root_register(cli->cli_root, 
 		       &cli->cli_input, 
 		       sofsip_handle_input, 
@@ -386,7 +400,7 @@ static int sofsip_handle_input(cli_t *cli, su_wait_t *w, void *p)
 {
   /* note: sofsip_handle_input_cb is called if a full
    *       line has been read */
-  ssc_input_read_char();
+  ssc_input_read_char(cli->cli_input_fd);
 
   return 0;
 }
