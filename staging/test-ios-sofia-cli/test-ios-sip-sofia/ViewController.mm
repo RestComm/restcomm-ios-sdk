@@ -35,11 +35,9 @@
     self.sofia_input_fd = pipefd[0];
     self.sofia_output_fd = pipefd[1];
 
-    // sofia has its own event loop, so we need to call it asynchronously. The big question thought,
-    // is how do we communicate with it? We need a way to send messages to it to convey the actions
-    // we want it to take depending on the user's input in the iphone
+    // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        //sofia_loop([self.sipMessageText.text UTF8String]);
+        // communicate with sip sofia via the pipe
         sofsip_loop(0, NULL, self.sofia_input_fd);
     });
 }
@@ -52,15 +50,8 @@
 
 - (IBAction)sendPressed:(id)sender
 {
-    int rc = write(self.sofia_output_fd, [self.sipMessageText.text UTF8String], self.sipMessageText.text.length);
-    /*
-    if (rc == -1) {
-        perror("Error_ ");
-    }
-    else {
-        printf("Successful write");
-    }
-     */
+    write(self.sofia_output_fd, [self.sipMessageText.text UTF8String], self.sipMessageText.text.length);
+    self.sipMessageText.text = @"";
 }
 
 @end

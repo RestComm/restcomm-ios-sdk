@@ -49,7 +49,17 @@ using namespace std;
 
 SscMedia::SscMedia()
 {
-    this->sm_home = (su_home_t *)su_home_new(sizeof (*this->sm_home));
+    sm_home = (su_home_t *)su_home_new(sizeof (*this->sm_home));
+    sm_state = sm_init;
+    sm_sdp_local = NULL;
+    sm_sdp_remote = NULL;
+    sm_sdp_local_str = NULL;
+    sm_sdp_remote_str = NULL;
+    sm_ad_input_type = NULL;
+    sm_ad_input_device = NULL;
+    sm_ad_output_type = NULL;
+    sm_ad_output_device = NULL;
+    
     allocated = true;
 }
 

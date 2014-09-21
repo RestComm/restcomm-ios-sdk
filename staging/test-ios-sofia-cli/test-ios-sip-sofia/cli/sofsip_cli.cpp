@@ -330,7 +330,9 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
    */
-  conf->ssc_aor = "sip:john@192.168.2.30:5080";
+  // hardcode some values for testing
+  //conf->ssc_aor = "sip:john@192.168.2.30:5080";
+  conf->ssc_aor = "sip:bob@telestax.com";
   conf->ssc_registrar = "sip:192.168.2.30:5080";
 
   /* step: process command line arguments */
@@ -352,17 +354,10 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
       break;
     }
   }
-  /*
-  int rc2 = write(0, "test", 4);
-    if (rc2 == -1) {
-        perror("Error_ ");
-    }
-    
-  int rc = fcntl(0, F_GETFD, 0);
-  */
-  // in iOS there is no STDIN (i.e. fd 0) open
+  // notice that in iOS we can't register STDIN; we get an error 'Invalid argument'
+  // in su_root_register() below. Let's use a pipe instead for iOS core app <-> sofia sip communication
   su_wait_create(&cli->cli_input, cli->cli_input_fd, SU_WAIT_IN);
-  if (su_root_register(cli->cli_root, 
+  if (su_root_register(cli->cli_root,
 		       &cli->cli_input, 
 		       sofsip_handle_input, 
 		       NULL, 
@@ -410,7 +405,7 @@ static void sofsip_handle_input_cb(char *input)
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
   int n = command ? strlen(command) : 0;
-  char msgbuf[160];
+  char msgbuf[160] = "";
 
   /* see readline(2) */
   if (input == NULL) {
@@ -486,9 +481,24 @@ static void sofsip_handle_input_cb(char *input)
     ssc_list(cli->cli_ssc);
   }
   else if (match("m") || match("message")) {
-    ssc_input_set_prompt("Enter message> ");
-    ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_message(cli->cli_ssc, rest, msgbuf);
+    // 'rest' contains the destination and the message, delimited by a whitespace
+    char * token, * dest = NULL;
+    int pos = 0;
+    while ((token = strsep(&rest, " ")) != NULL) {
+        if (pos == 0) {
+            dest = token;
+        }
+        if (pos == 1) {
+            strncpy(msgbuf, token, sizeof(msgbuf) - 1);
+            msgbuf[sizeof(msgbuf) - 1] = 0;
+        }
+        printf("%s\n", token);
+       pos++;
+    }
+
+    //ssc_input_set_prompt("Enter message> ");
+    //ssc_input_read_string(msgbuf, sizeof(msgbuf));
+    ssc_message(cli->cli_ssc, dest, msgbuf);
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

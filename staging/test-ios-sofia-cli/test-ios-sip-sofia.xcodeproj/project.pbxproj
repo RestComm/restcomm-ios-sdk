@@ -33,7 +33,6 @@
 		AE79D3CD19BC8E040023306C /* sip_tag.h.in in Resources */ = {isa = PBXBuildFile; fileRef = AE79D39419BC8E040023306C /* sip_tag.h.in */; };
 		AE79D3CE19BC8E040023306C /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D3C719BC8E040023306C /* libsofia-sip-ua.a */; };
 		AE79D3D019BC8E040023306C /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE79D3C919BC8E040023306C /* notes.txt */; };
-		AE79D3D319BC8F570023306C /* sofia-ua-wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */; };
 		AED215C319C758E9000983F4 /* ssc_media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AED215C219C758E9000983F4 /* ssc_media.cpp */; };
 /* End PBXBuildFile section */
 
@@ -193,8 +192,6 @@
 		AE79D3C519BC8E040023306C /* url_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag_class.h; sourceTree = "<group>"; };
 		AE79D3C719BC8E040023306C /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE79D3C919BC8E040023306C /* notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
-		AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "sofia-ua-wrapper.c"; sourceTree = "<group>"; };
-		AE79D3D219BC8F570023306C /* sofia-ua-wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sofia-ua-wrapper.h"; sourceTree = "<group>"; };
 		AED215C219C758E9000983F4 /* ssc_media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_media.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -277,8 +274,6 @@
 			isa = PBXGroup;
 			children = (
 				AE1A237419C59BF800D65391 /* cli */,
-				AE79D3D119BC8F570023306C /* sofia-ua-wrapper.c */,
-				AE79D3D219BC8F570023306C /* sofia-ua-wrapper.h */,
 				AE79D32819BC8DAD0023306C /* AppDelegate.h */,
 				AE79D32919BC8DAD0023306C /* AppDelegate.m */,
 				AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */,
@@ -587,7 +582,6 @@
 				AE1A239E19C59BF800D65391 /* sofsip_cli.cpp in Sources */,
 				AE79D33319BC8DAD0023306C /* ViewController.mm in Sources */,
 				AE79D32A19BC8DAD0023306C /* AppDelegate.m in Sources */,
-				AE79D3D319BC8F570023306C /* sofia-ua-wrapper.c in Sources */,
 				AE1A23A419C59BF800D65391 /* ssc_oper.cpp in Sources */,
 				AE1A23A519C59BF800D65391 /* ssc_sip.cpp in Sources */,
 				AED215C319C758E9000983F4 /* ssc_media.cpp in Sources */,

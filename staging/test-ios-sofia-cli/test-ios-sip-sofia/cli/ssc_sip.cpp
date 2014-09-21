@@ -341,6 +341,7 @@ void ssc_destroy(ssc_t *self)
     if (self->ssc_media) {
         //g_object_unref(self->ssc_media), self->ssc_media = NULL;
         self->ssc_media->Deallocate();
+        delete self->ssc_media;
     }
   if (self->ssc_address)
     su_free(home, self->ssc_address);
