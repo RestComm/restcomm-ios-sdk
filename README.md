@@ -6,7 +6,7 @@ iOS Mobile SDK to easily integrate communication features (messaging, presence, 
 Issue Tracking and Roadmap
 ========
 [Issue Tracker](https://github.com/Mobicents/restcomm-ios-sdk/issues)
-
+[Roadmap](https://github.com/Mobicents/restcomm-ios-sdk/wiki#roadmap)
 Questions ?
 ========
 Please ask your question on our [public forum](http://groups.google.com/group/restcomm)
