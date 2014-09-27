@@ -94,6 +94,8 @@ struct cli_s {
   su_root_t    *cli_root;       /**< Pointer to application root */
 
   int           cli_input_fd;  // pipe input file descriptor for commands
+  int           cli_output_fd;  // pipe input file descriptor for commands
+
   cli_input_t   cli_input;	/**< Input structure */
   unsigned      cli_init : 1;	/**< True if input is initialized */
   unsigned      cli_prompt : 1;	/**< True if showing prompt */
@@ -119,14 +121,7 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 
 static cli_t *global_cli_p = NULL;
 
-/*
-int mysum()
-{
-    return 0;
-}
-*/
-
-int sofsip_loop(int ac, char *av[], int input_fd)
+int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -143,6 +138,8 @@ int sofsip_loop(int ac, char *av[], int input_fd)
 #endif
 
   cli->cli_input_fd = input_fd;
+  cli->cli_output_fd = output_fd;
+    
   /* step: initialize sofia su OS abstraction layer */
   su_init();
   su_home_init(cli->cli_home);
@@ -172,7 +169,7 @@ int sofsip_loop(int ac, char *av[], int input_fd)
   assert(res == 0);
 
   /* step: create ssc signaling and media subsystem instance */
-  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf);
+  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
 
   if (res != -1 && cli->cli_ssc) {
 

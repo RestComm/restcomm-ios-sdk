@@ -12,6 +12,7 @@
 		AE1A239F19C59BF800D65391 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A238619C59BF800D65391 /* ssc_input.cpp */; };
 		AE1A23A419C59BF800D65391 /* ssc_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A239019C59BF800D65391 /* ssc_oper.cpp */; };
 		AE1A23A519C59BF800D65391 /* ssc_sip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE1A239219C59BF800D65391 /* ssc_sip.cpp */; };
+		AE59291B19D6A8C200B5FAFF /* SofiaSIP.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE59291A19D6A8C200B5FAFF /* SofiaSIP.mm */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -58,6 +59,8 @@
 		AE1A239319C59BF800D65391 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
 		AE1A23A719C5A80F00D65391 /* sofsip_cli.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sofsip_cli.h; sourceTree = "<group>"; };
 		AE4C443B19C89ED900F99FC7 /* ssc_media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media.h; sourceTree = "<group>"; };
+		AE59291919D6A8C200B5FAFF /* SofiaSIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SofiaSIP.h; sourceTree = "<group>"; };
+		AE59291A19D6A8C200B5FAFF /* SofiaSIP.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SofiaSIP.mm; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* test-ios-sip-sofia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-ios-sip-sofia.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -239,11 +242,19 @@
 			path = cli;
 			sourceTree = "<group>";
 		};
+		AE59291819D6A8C200B5FAFF /* wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				AE59291919D6A8C200B5FAFF /* SofiaSIP.h */,
+				AE59291A19D6A8C200B5FAFF /* SofiaSIP.mm */,
+			);
+			path = wrapper;
+			sourceTree = "<group>";
+		};
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
 				AE79D35119BC8E040023306C /* sofia-sip-1.12.11-latest */,
-				AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */,
 				AE79D34119BC8DAE0023306C /* test-ios-sip-sofiaTests */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
@@ -273,6 +284,7 @@
 		AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */ = {
 			isa = PBXGroup;
 			children = (
+				AE59291819D6A8C200B5FAFF /* wrapper */,
 				AE1A237419C59BF800D65391 /* cli */,
 				AE79D32819BC8DAD0023306C /* AppDelegate.h */,
 				AE79D32919BC8DAD0023306C /* AppDelegate.m */,
@@ -283,7 +295,8 @@
 				AE79D33419BC8DAD0023306C /* Images.xcassets */,
 				AE79D32019BC8DAD0023306C /* Supporting Files */,
 			);
-			path = "test-ios-sip-sofia";
+			name = "test-ios-sip-sofia";
+			path = "../test-ios-sip-sofia";
 			sourceTree = "<group>";
 		};
 		AE79D32019BC8DAD0023306C /* Supporting Files */ = {
@@ -318,6 +331,7 @@
 		AE79D35119BC8E040023306C /* sofia-sip-1.12.11-latest */ = {
 			isa = PBXGroup;
 			children = (
+				AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */,
 				AE79D35219BC8E040023306C /* include */,
 				AE79D3C619BC8E040023306C /* lib */,
 			);
@@ -588,6 +602,7 @@
 				AE79D32619BC8DAD0023306C /* main.m in Sources */,
 				AE1A239D19C59BF800D65391 /* sdp_utils.cpp in Sources */,
 				AE1A239F19C59BF800D65391 /* ssc_input.cpp in Sources */,
+				AE59291B19D6A8C200B5FAFF /* SofiaSIP.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

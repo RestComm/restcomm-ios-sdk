@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SofiaSIP.h"
+
 @interface ViewController : UIViewController
-@property int sofia_input_fd;
-@property int sofia_output_fd;
+@property SofiaSIP * sofiaSIP;
 @end

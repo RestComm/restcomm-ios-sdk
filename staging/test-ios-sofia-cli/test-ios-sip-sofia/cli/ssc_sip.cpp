@@ -169,7 +169,7 @@ static void priv_destroy_oper_with_disconnect (ssc_t *self, ssc_oper_t *oper);
 /* Function definitions
  * -------------------- */
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd)
 {
   ssc_t *ssc;
   char *caps_str;
@@ -182,8 +182,10 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
 
     
   ssc->ssc_auth_pend = new std::list<ssc_auth_item_t*>;
-    
-  ssc->ssc_name = "UA";
+  ssc->ssc_input_fd = input_fd;
+  ssc->ssc_output_fd = output_fd;
+  
+    ssc->ssc_name = "UA";
   ssc->ssc_home = home;
   ssc->ssc_root = root;
 
@@ -412,6 +414,10 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
     if (self->ssc_auth_req_cb)
       self->ssc_auth_req_cb (self, authitem, self->ssc_cb_context);
   }
+    
+  // notify the client application that they should provide credentials
+  char buf[100] = "auth";
+  write(self->ssc_output_fd, buf, strlen(buf) + 1);
 }
 
 
@@ -1331,8 +1337,10 @@ void ssc_r_message(int status, char const *phrase,
   if (status < 200)
     return;
 
-  if (status == 401 || status == 407)
+  if (status == 401 || status == 407) {
     ssc_store_pending_auth(ssc, op, sip, tags);
+    
+  }
 }
 
 void ssc_i_message(nua_t *nua, ssc_t *ssc,

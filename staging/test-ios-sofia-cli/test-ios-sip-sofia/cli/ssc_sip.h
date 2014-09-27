@@ -94,7 +94,9 @@ struct ssc_s {
   // which allocates space for the whole ssc struct. The problem manifests itself when trying
   // to push to the list. I guess su_zalloc only works with malloc, not new
   std::list<ssc_auth_item_t*> * ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */
-
+  int          ssc_input_fd;
+  int          ssc_output_fd;
+    
   int           ssc_ans_status; /**< Answer status */
   char const   *ssc_ans_phrase; /**< Answer status */
 
@@ -131,7 +133,7 @@ struct ssc_conf_s {
 #define enter (void)0
 #endif
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf);
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd);
 void ssc_destroy(ssc_t *self);
 
 void ssc_store_pending_auth(ssc_t *ssc, ssc_oper_t *op, sip_t const *sip, tagi_t *tags);
