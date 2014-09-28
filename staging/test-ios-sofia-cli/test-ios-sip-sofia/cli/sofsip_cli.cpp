@@ -484,18 +484,22 @@ static void sofsip_handle_input_cb(char *input)
     while ((token = strsep(&rest, " ")) != NULL) {
         if (pos == 0) {
             dest = token;
+            break;
         }
+        /*
         if (pos == 1) {
             strncpy(msgbuf, token, sizeof(msgbuf) - 1);
             msgbuf[sizeof(msgbuf) - 1] = 0;
+            break;
         }
+         */
         printf("%s\n", token);
        pos++;
     }
 
     //ssc_input_set_prompt("Enter message> ");
     //ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_message(cli->cli_ssc, dest, msgbuf);
+    ssc_message(cli->cli_ssc, dest, rest);
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

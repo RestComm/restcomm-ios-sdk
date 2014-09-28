@@ -7,24 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ViewController.h"
+
+//#include "ssc_oper.h"
 
 @interface SofiaSIP : NSObject
 
-- (id)init;
+- (id)initWithController:(ViewController*)viewController;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)initialize;
 - (bool)register:(NSString*)registrar;
 - (bool)sendMessage:(NSString*)msg to:(NSString*)recepient;
 - (bool)invite:(NSString*)recepient;
+- (bool)answer;
+- (bool)decline;
 - (bool)authenticate:(NSString*)string;
 - (bool)bye;
 
 - (bool)generic:(NSString*)string;
 
-// pipe filedescriptors to pass data back and forth from Sofia to the App
-//@property int sofia_input_fd;
-//@property int sofia_output_fd;
-//@property NSArray * writePipe;
-//@property NSArray * readPipe;
+@property ViewController* viewController;
+//@property enum op_callstate_t callState;
 @end
 

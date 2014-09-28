@@ -166,4 +166,22 @@ void ssc_zap(ssc_t *ssc, char *d);
 void ssc_print_payload(ssc_t *ssc, sip_payload_t const *pl);
 void ssc_print_settings(ssc_t *ssc);
 
+// reply sent back to the iOS App via pipe
+enum SipMsgEnum {
+    REPLY_AUTH = 1,
+    INCOMING_CALL,
+    INCOMING_MSG,
+};
+
+class SofiaReply {
+public:
+    SofiaReply();
+    SofiaReply(const int rc, const char * text);
+    static int send(const int fd, const SofiaReply * sofiaReply);
+    int rc;
+    char text[256];
+};
+
+
+
 #endif /* HAVE_SSC_SIP_H */

@@ -416,8 +416,8 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
   }
     
   // notify the client application that they should provide credentials
-  char buf[100] = "auth";
-  write(self->ssc_output_fd, buf, strlen(buf) + 1);
+  SofiaReply reply(REPLY_AUTH, "auth");
+  SofiaReply::send(self->ssc_output_fd, &reply);
 }
 
 
@@ -859,7 +859,11 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
 	ssc_answer(ssc, SIP_200_OK);
       }
       else {
-	printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+	    printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+          
+        // notify the client application that they should answer
+        SofiaReply reply(INCOMING_CALL, "incoming call");
+        SofiaReply::send(ssc->ssc_output_fd, &reply);
       }
     }
     else {
@@ -1367,6 +1371,13 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
   if (subject) 
     printf("\tSubject: %s\n", subject->g_value);
   ssc_print_payload(ssc, sip->sip_payload);
+
+  // notify the client application of the message
+  // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
+  SofiaReply reply(INCOMING_MSG, "");
+  strncpy(reply.text, sip->sip_payload->pl_data, sip->sip_payload->pl_len);
+  reply.text[sip->sip_payload->pl_len] = 0;
+  SofiaReply::send(ssc->ssc_output_fd, &reply);
 
   if (op == NULL)
     op = ssc_oper_create_with_handle(ssc, SIP_METHOD_MESSAGE, nh, from);
@@ -2038,5 +2049,25 @@ void ssc_shutdown(ssc_t *ssc)
   printf("%s: quitting (this can take some time)\n", ssc->ssc_name);
 
   nua_shutdown(ssc->ssc_nua);
+}
+
+// reply sent back to the iOS App via pipe
+SofiaReply::SofiaReply()
+{
+    rc = 0;
+    text[0] = 0;
+}
+
+SofiaReply::SofiaReply(const int rc, const char * text)
+{
+    this->rc = rc;
+    strncpy(this->text, text, sizeof(this->text) - 1);
+    this->text[sizeof(this->text) - 1] = 0;
+}
+
+int SofiaReply::send(const int fd, const SofiaReply * sofiaReply)
+{
+    //char buf[100] = "auth";
+    return write(fd, sofiaReply, sizeof(*sofiaReply));
 }
 
