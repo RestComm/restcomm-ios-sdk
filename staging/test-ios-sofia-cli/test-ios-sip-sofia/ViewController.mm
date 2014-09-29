@@ -27,6 +27,18 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.sofiaSIP = [[SofiaSIP alloc] initWithController:self];
     [self.sofiaSIP initialize];
+    
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
+                                           initWithTarget:self
+                                           action:@selector(hideKeyBoard)];
+    
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+-(void)hideKeyBoard
+{
+    [self.sipMessageText resignFirstResponder];
+    [self.sipUriText resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
