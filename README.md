@@ -10,7 +10,7 @@ Want to Contribute ?
 Issue Tracking and Roadmap
 ========
 [Issue Tracker](https://github.com/Mobicents/restcomm-ios-sdk/issues)
-[Roadmap](https://github.com/Mobicents/restcomm-ios-sdk/wiki#roadmap)
+
 
 Questions ?
 ========
