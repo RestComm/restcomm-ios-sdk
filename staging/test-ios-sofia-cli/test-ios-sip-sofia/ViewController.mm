@@ -25,6 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.sipManager = [[SipManager alloc] init];
+    self.sipManager.delegate = self;
     [self.sipManager initialize];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
