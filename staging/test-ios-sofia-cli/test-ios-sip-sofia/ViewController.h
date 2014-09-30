@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-//#import "SofiaSIP.h"
-@class SofiaSIP;
-@interface ViewController : UIViewController
-- (void)incomingCall;
-- (void)incomingMsg:(NSString*)msg;
+#import "SipManager.h"
 
-@property SofiaSIP * sofiaSIP;
+@class SipManager;
+@interface ViewController : UIViewController<SipManagerDelegate>
+@property SipManager * sipManager;
 @end

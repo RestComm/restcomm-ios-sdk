@@ -1,5 +1,5 @@
 //
-//  SofiaSIP.m
+//  SipManager.m
 //  test-ios-sip-sofia
 //
 //  Created by Antonis Tsakiridis on 9/27/14.
@@ -12,7 +12,7 @@
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
 
-#import "SofiaSIP.h"
+#import "SipManager.h"
 
 /* TODOs:
  * - There's no way you can stop a call before it is established (i.e. while it is ringing)
@@ -21,14 +21,13 @@
  *
  */
 
-// those are used both in the context of SofiaSIP class and outside (i.e. C callbacks); lets make them global
+// those are used both in the context of SipManager class and outside (i.e. C callbacks); lets make them global
 int write_pipe[2];
 int read_pipe[2];
 
-@implementation SofiaSIP
+@implementation SipManager
 
 // notice that we can make this an Objective-C method as well, if we want
-//static int handleSofiaInput(SofiaReply * reply, int fd)
 - (int)handleSofiaInput:(SofiaReply *) reply fd:(int) fd
 {
     if (reply->rc == REPLY_AUTH) {
@@ -37,29 +36,33 @@ int read_pipe[2];
     }
     else if (reply->rc == INCOMING_CALL) {
         // we have an incoming call, we need to ring
-        [self.viewController incomingCall];
+        [self.delegate callArrived:self];
     }
     else if (reply->rc == INCOMING_MSG) {
         // we have an incoming call, we need to ring
         NSString* msg = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
-        [self.viewController incomingMsg:msg];
+        [self.delegate messageArrived:self withData:msg];
     }
     return 0;
 }
 
-// receive incoming events from sofiaSIP via pipe
+// receive incoming events from sofia SIP via pipe
 static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes, void *info) {
     // which fd corresponds to the given fdref
     int fd = CFFileDescriptorGetNativeDescriptor(fdref);
-    SofiaSIP * sofiaSIP = (__bridge id) info;
+
+    // remember, 'info' is actually the Objective-C object 'SipManager', so here we are casting
+    // it properly so that we can then use it to access Objective-C resources from C (access to App UI elements, etc)
+    SipManager * sipManager = (__bridge id) info;
     SofiaReply reply;
+    
+    // TODO: what is message is truncated?
     if (read(fd, &reply, sizeof(reply)) == -1) {
         perror("read from pipe in App");
         exit(EXIT_FAILURE);
     }
     else {
-        //handleSofiaInput(&reply, fd);
-        [sofiaSIP handleSofiaInput:&reply fd:fd];
+        [sipManager handleSofiaInput:&reply fd:fd];
     }
     
     CFFileDescriptorInvalidate(fdref);
@@ -67,18 +70,14 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // important: apparently the source only stays in the run loop for one cycle,
     // so we need to add it after each cycle
-    
-    // remember, 'info' is actually the Objective-c object 'SofiaSIP', so here we are calling
-    // an objective-C method from a C function. That will give us better access to App UI elements
-    [sofiaSIP addFdSourceToRunLoop:fd];
-    //addFdSourceToRunLoop(fd);
+    [sipManager addFdSourceToRunLoop:fd];
 }
 
-- (id)initWithController:(ViewController*)viewController
+- (id)init
 {
     self = [super init];
     if (self) {
-        self.viewController = viewController;
+        self.delegate = nil;
     }
     return self;
 }
@@ -126,7 +125,7 @@ int pipeToSofia(const char * msg, int fd)
 - (int)pipeToSofia:(NSString*)cmd
 {
     // TODO: write might not send all the string, make sure that the operation is repeated until all the string is sent
-    return pipeToSofia([cmd UTF8String], write_pipe[1]/*[[self.writePipe objectAtIndex:1] intValue]*/);
+    return pipeToSofia([cmd UTF8String], write_pipe[1]);
 }
 
 - (bool)register:(NSString*)registrar
@@ -138,17 +137,17 @@ int pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)sendMessage:(NSString*)msg to:(NSString*)recepient;
+- (bool)message:(NSString*)msg to:(NSString*)recipient;
 {
-    NSString* cmd = [NSString stringWithFormat:@"m %@ %@", recepient, msg];
+    NSString* cmd = [NSString stringWithFormat:@"m %@ %@", recipient, msg];
     [self pipeToSofia:cmd];
     
     return true;
 }
 
-- (bool)invite:(NSString*)recepient
+- (bool)invite:(NSString*)recipient
 {
-    NSString* cmd = [NSString stringWithFormat:@"i %@", recepient];
+    NSString* cmd = [NSString stringWithFormat:@"i %@", recipient];
     [self pipeToSofia:cmd];
 
     return true;
@@ -179,6 +178,14 @@ int pipeToSofia(const char * msg, int fd)
     return true;
 }
 
+- (bool)cancel
+{
+    NSString* cmd = [NSString stringWithFormat:@"c"];
+    [self pipeToSofia:cmd];
+
+    return true;
+}
+
 - (bool)bye
 {
     NSString* cmd = [NSString stringWithFormat:@"b"];
@@ -187,9 +194,10 @@ int pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)generic:(NSString*)string
+// mostly for troubleshooting. Sends the give cli command with no interpretation
+- (bool)cli:(NSString*)cmd
 {
-    [self pipeToSofia:string];
+    [self pipeToSofia:cmd];
     
     return true;
 }

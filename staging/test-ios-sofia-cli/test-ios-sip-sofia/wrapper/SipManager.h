@@ -1,5 +1,5 @@
 //
-//  SofiaSIP.h
+//  SipManager.h
 //  test-ios-sip-sofia
 //
 //  Created by Antonis Tsakiridis on 9/27/14.
@@ -7,26 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ViewController.h"
 
-//#include "ssc_oper.h"
+@protocol SipManagerDelegate;
 
-@interface SofiaSIP : NSObject
-
-- (id)initWithController:(ViewController*)viewController;
+@interface SipManager : NSObject
+- (id)init;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)initialize;
 - (bool)register:(NSString*)registrar;
-- (bool)sendMessage:(NSString*)msg to:(NSString*)recepient;
-- (bool)invite:(NSString*)recepient;
+- (bool)message:(NSString*)msg to:(NSString*)recipient;
+- (bool)invite:(NSString*)recipient;
 - (bool)answer;
 - (bool)decline;
 - (bool)authenticate:(NSString*)string;
+- (bool)cancel;
 - (bool)bye;
+- (bool)cli:(NSString*)cmd;
 
-- (bool)generic:(NSString*)string;
-
-@property ViewController* viewController;
-//@property enum op_callstate_t callState;
+@property (weak) id<SipManagerDelegate> delegate;
 @end
 
+@protocol SipManagerDelegate <NSObject>
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)msg;
+- (void)callArrived:(SipManager *)sipManager;
+@end

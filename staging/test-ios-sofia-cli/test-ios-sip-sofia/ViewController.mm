@@ -9,14 +9,13 @@
 #include <unistd.h>
 
 #import "ViewController.h"
-#import "SofiaSIP.h"
+#import "SipManager.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 @property (weak, nonatomic) IBOutlet UITextField *sipUriText;
 @property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
 @property (weak, nonatomic) IBOutlet UIButton *answerButton;
-
 @end
 
 @implementation ViewController
@@ -24,9 +23,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    self.sofiaSIP = [[SofiaSIP alloc] initWithController:self];
-    [self.sofiaSIP initialize];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.sipManager = [[SipManager alloc] init];
+    [self.sipManager initialize];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -35,8 +34,9 @@
     [self.view addGestureRecognizer:tapGesture];
 }
 
--(void)hideKeyBoard
+- (void)hideKeyBoard
 {
+    // resign both to be sure
     [self.sipMessageText resignFirstResponder];
     [self.sipUriText resignFirstResponder];
 }
@@ -47,13 +47,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+// ---------- UI events
 - (IBAction)sendPressed:(id)sender
 {
     // TODO: hard-code for now
-    [self.sofiaSIP sendMessage:self.sipMessageText.text to:@"sip:alice@192.168.2.30:5080"];
+    [self.sipManager message:self.sipMessageText.text to:@"sip:alice@192.168.2.30:5080"];
     [self prependToDialog:self.sipMessageText.text sender:@"Me"];
-    //NSString* updatedDialog = [NSString stringWithFormat:@"Me: %@\n%@", self.sipMessageText.text, self.sipDialogText.text];
-    //self.sipDialogText.text = [NSString stringWithString:updatedDialog];
     self.sipMessageText.text = @"";
 
     // hide keyboard
@@ -64,8 +63,7 @@
 {
     // TODO: hard-code for now
     NSString* uri = [NSString stringWithFormat:@"sip:%@@192.168.2.30:5080", self.sipUriText.text];
-    [self.sofiaSIP invite:uri];
-    //[self.sofiaSIP generic:self.sipMessageText.text];
+    [self.sipManager invite:uri];
     self.sipUriText.text = @"";
 
     // hide keyboard
@@ -74,23 +72,29 @@
 
 - (IBAction)answerPressed:(id)sender
 {
-    [self.sofiaSIP answer];
+    [self.sipManager answer];
     [self.answerButton.layer removeAllAnimations];
-    //[self.answerButton setTitle:@"Hang up" forState:UIControlStateNormal];
 }
 
 - (IBAction)declinePressed:(id)sender
 {
-    [self.sofiaSIP decline];
+    [self.sipManager decline];
     [self.answerButton.layer removeAllAnimations];
 }
 
 - (IBAction)hangUpPressed:(id)sender
 {
-    [self.sofiaSIP bye];
+    [self.sipManager bye];
 }
 
-- (void)incomingCall
+- (IBAction)cancelPressed:(id)sender
+{
+    [self.sipManager cancel];
+}
+
+// ---------- delegate methods for SIP Manager events
+// call just arrived; let's animate the 'Answer' button to give a hint to the user
+- (void)callArrived:(SipManager *)sipManager
 {
     // animate alpha
     CAKeyframeAnimation * alphaAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
@@ -107,7 +111,7 @@
     [self.answerButton.layer addAnimation:group forKey:@"flash-animation"];
 }
 
-- (void)incomingMsg:(NSString*)msg
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)msg
 {
     [self prependToDialog:msg sender:@"Alice"];
 }
