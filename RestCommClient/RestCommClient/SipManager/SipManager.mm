@@ -73,11 +73,11 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     [sipManager addFdSourceToRunLoop:fd];
 }
 
-- (id)init
+- (id)initWithDelegate:(id<SipManagerDelegate>)delegate
 {
     self = [super init];
     if (self) {
-        self.delegate = nil;
+        self.delegate = delegate;
     }
     return self;
 }

@@ -69,9 +69,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self populateCapabilitiesFromToken:capabilityToken];
         
         // initialize, register and set delegate
-        self.sipManager = [[SipManager alloc] init];
+        self.sipManager = [[SipManager alloc] initWithDelegate:self];
         [self.sipManager initialize];
-        self.sipManager.delegate = self;
+        //self.sipManager.delegate = self;
     }
     
     return self;
@@ -98,6 +98,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     NSLog(@"[RCDevice connect]");
     RCConnection* connection = [[RCConnection alloc] initWithDelegate:delegate];
+    connection.sipManager = self.sipManager;
     
     // make a call to whoever parameters designate
     NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uri-call-template"], [parameters objectForKey:@"username"]];
@@ -111,6 +112,21 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     NSLog(@"[RCDevice disconnectAll]");
     
+}
+
+#pragma mark SipManager Delegate methods
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)msg
+{
+    
+}
+
+- (void)callArrived:(SipManager *)sipManager
+{
+    RCConnection * connection = [[RCConnection alloc] initWithDelegate:self.delegate];
+    connection.sipManager = self.sipManager;
+    
+    // TODO: passing nil on the connection for now
+    [self.delegate device:self didReceiveIncomingConnection:connection];
 }
 
 /*

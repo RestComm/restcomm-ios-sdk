@@ -25,13 +25,16 @@ extern NSString* const RCConnectionIncomingParameterAccountSIDKey;
 extern NSString* const RCConnectionIncomingParameterAPIVersionKey;
 extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 
+@class SipManager;
 @interface RCConnection : NSObject
-
 @property (nonatomic, readonly) RCConnectionState state;
 @property (nonatomic, readonly, getter=isIncoming) BOOL incoming;
 @property (nonatomic, readonly) NSDictionary* parameters;
 @property (nonatomic, assign) id<RCConnectionDelegate> delegate;
 @property (nonatomic, getter = isMuted) BOOL muted;
+// which device owns this connection
+@property SipManager * sipManager;
+
 
 // #new
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate;

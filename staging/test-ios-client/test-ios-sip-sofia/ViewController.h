@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SipManager.h"
+#import "RestCommClient.h"
 
-@class SipManager;
-@interface ViewController : UIViewController<SipManagerDelegate>
-@property SipManager * sipManager;
+//@class SipManager;
+@interface ViewController : UIViewController<RCDeviceDelegate,RCConnectionDelegate>
+//@property SipManager * sipManager;
+
+@property (nonatomic,retain) RCDevice* device;
+@property (nonatomic,retain) RCConnection* connection;
+@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
+@property NSMutableDictionary * parameters;
 @end

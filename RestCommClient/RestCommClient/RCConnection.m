@@ -7,6 +7,7 @@
 //
 
 #import "RCConnection.h"
+#import "SipManager.h"
 
 @interface RCConnection ()
 // private methods
@@ -36,6 +37,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        self.sipManager = nil;
     }
     return self;
 }
@@ -44,6 +46,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (void)accept
 {
     NSLog(@"[RCConnection accept]");
+    [self.sipManager answer];
     
 }
 
@@ -62,7 +65,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (void)disconnect
 {
     NSLog(@"[RCConnection disconnect]");
-    
+    [self.sipManager bye];
 }
 
 - (void)sendDigits:(NSString*)digits

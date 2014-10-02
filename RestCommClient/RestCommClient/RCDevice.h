@@ -10,7 +10,6 @@
 
 #import "RCDeviceDelegate.h"
 #import "RCConnectionDelegate.h"
-
 #import "SipManager.h"
 
 typedef enum
@@ -30,6 +29,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 
 
 @class RCConnection;
+//@protocol SipManagerDelegate;
 
 @interface RCDevice : NSObject <SipManagerDelegate,NSURLConnectionDelegate>
 

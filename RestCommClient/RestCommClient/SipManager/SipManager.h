@@ -11,7 +11,7 @@
 @protocol SipManagerDelegate;
 
 @interface SipManager : NSObject
-- (id)init;
+- (id)initWithDelegate:(id<SipManagerDelegate>)delegate;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)initialize;
 - (bool)register:(NSString*)registrar;
