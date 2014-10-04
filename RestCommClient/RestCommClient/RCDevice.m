@@ -46,13 +46,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void) populateCapabilitiesFromToken:(NSString*)capabilityToken
 {
     // TODO: do proper population from the actual token (currently we are using hard-coded values to test
+    /*
     NSNumber * expiration = [NSNumber numberWithLongLong:((long long)[[NSDate date] timeIntervalSince1970] + 3600)];
     self.capabilities = [NSDictionary dictionaryWithObjectsAndKeys:
                          expiration, RCDeviceCapabilityExpirationKey,
                          @1, RCDeviceCapabilityOutgoingKey,
                          @1, RCDeviceCapabilityIncomingKey,
                          nil];
-
+     */
     //[self.capabilities setValue:expiration forKey:@"expiration"];
 }
 
@@ -104,10 +105,16 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     connection.incoming = false;
     
     // make a call to whoever parameters designate
-    NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uri-call-template"], [parameters objectForKey:@"username"]];
+    NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
     [self.sipManager invite:uri];
 
     return connection;
+}
+
+- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
+{
+    NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
+    [self.sipManager message:message to:uri];
 }
 
 - (void)disconnectAll
@@ -117,9 +124,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 }
 
 #pragma mark SipManager Delegate methods
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)msg
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message
 {
-    
+    [self.delegate device:self didReceiveIncomingMessage:message];
 }
 
 - (void)callArrived:(SipManager *)sipManager

@@ -44,6 +44,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)unlisten;
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
+- (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
 - (void)disconnectAll;
 
 @end

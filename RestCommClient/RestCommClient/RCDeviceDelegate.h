@@ -21,4 +21,5 @@
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device;
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection;
 - (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent;
+- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message;
 @end
