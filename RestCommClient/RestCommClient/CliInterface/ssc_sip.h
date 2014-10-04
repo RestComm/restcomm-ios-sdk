@@ -171,6 +171,8 @@ enum SipMsgEnum {
     REPLY_AUTH = 1,
     INCOMING_CALL,
     INCOMING_MSG,
+    OUTGOING_RINGING,
+    OUTGOING_ESTABLISHED,
 };
 
 class SofiaReply {

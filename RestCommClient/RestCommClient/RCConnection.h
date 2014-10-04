@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "RCConnectionDelegate.h"
+#import "SipManager.h"
 
 typedef enum
 {
@@ -26,14 +27,13 @@ extern NSString* const RCConnectionIncomingParameterAPIVersionKey;
 extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 
 @class SipManager;
-@interface RCConnection : NSObject
-@property (nonatomic, readonly) RCConnectionState state;
-@property (nonatomic, readonly, getter=isIncoming) BOOL incoming;
+
+@interface RCConnection : NSObject<SipManagerConnectionDelegate>
+@property RCConnectionState state;
+@property (nonatomic, getter=isIncoming) BOOL incoming;
 @property (nonatomic, readonly) NSDictionary* parameters;
 @property (nonatomic, assign) id<RCConnectionDelegate> delegate;
 @property (nonatomic, getter = isMuted) BOOL muted;
-// which device owns this connection
-@property SipManager * sipManager;
 
 
 // #new
@@ -43,5 +43,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 - (void)reject;
 - (void)disconnect;
 - (void)sendDigits:(NSString*)digits;
+// avoid reference cycle
+@property (weak) SipManager * sipManager;
 
 @end

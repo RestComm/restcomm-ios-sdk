@@ -11,10 +11,11 @@
 
 @interface RCConnection ()
 // private methods
+// which device owns this connection
 @end
 
 @implementation RCConnection
-
+@synthesize state;
 /* RCConnection needs to notify its delegate for the following events:
  *
  * @required
@@ -38,6 +39,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     if (self) {
         self.delegate = delegate;
         self.sipManager = nil;
+        self.state = RCConnectionStateDisconnected;
+        self.muted = NO;
     }
     return self;
 }
@@ -59,19 +62,49 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (void)reject
 {
     NSLog(@"[RCConnection reject]");
+    [self.sipManager decline];
     
 }
 
 - (void)disconnect
 {
     NSLog(@"[RCConnection disconnect]");
-    [self.sipManager bye];
+    if (self.state == RCConnectionStateConnecting) {
+        [self.sipManager cancel];
+    }
+    else if (self.state == RCConnectionStateConnected) {
+        [self.sipManager bye];
+    }
 }
 
 - (void)sendDigits:(NSString*)digits
 {
     NSLog(@"[RCConnection sendDigits]");
     
+}
+
+- (void)outgoingRinging:(SipManager *)sipManager
+{
+    [self.delegate connectionDidStartConnecting:self];
+    [self setState:RCConnectionStateConnecting];
+}
+
+- (void)outgoingEstablished:(SipManager *)sipManager
+{
+    [self.delegate connectionDidConnect:self];
+    [self setState:RCConnectionStateConnected];
+}
+
+- (void)incomingRinging:(SipManager *)sipManager
+{
+    [self.delegate connectionDidStartConnecting:self];
+    [self setState:RCConnectionStateConnecting];
+}
+
+- (void)incomingEstablished:(SipManager *)sipManager
+{
+    [self.delegate connectionDidConnect:self];
+    [self setState:RCConnectionStateConnected];
 }
 
 @end

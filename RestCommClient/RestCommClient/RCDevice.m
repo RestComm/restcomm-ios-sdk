@@ -8,7 +8,7 @@
 
 #import "RCDevice.h"
 #import "RCConnection.h"
-
+#import "RCConnectionDelegate.h"
 
 @interface RCDevice ()
 // private stuff
@@ -52,7 +52,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                          @1, RCDeviceCapabilityOutgoingKey,
                          @1, RCDeviceCapabilityIncomingKey,
                          nil];
-    
 
     //[self.capabilities setValue:expiration forKey:@"expiration"];
 }
@@ -65,13 +64,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     if (self) {
         self.delegate = delegate;
         self.capabilities = nil;
+        self.incomingSoundEnabled = YES;
+        self.outgoingSoundEnabled = YES;
+        self.disconnectSoundEnabled = NO;
         
         [self populateCapabilitiesFromToken:capabilityToken];
         
         // initialize, register and set delegate
         self.sipManager = [[SipManager alloc] initWithDelegate:self];
         [self.sipManager initialize];
-        //self.sipManager.delegate = self;
     }
     
     return self;
@@ -98,11 +99,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     NSLog(@"[RCDevice connect]");
     RCConnection* connection = [[RCConnection alloc] initWithDelegate:delegate];
+    self.sipManager.connectionDelegate = connection;
     connection.sipManager = self.sipManager;
+    connection.incoming = false;
     
     // make a call to whoever parameters designate
     NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uri-call-template"], [parameters objectForKey:@"username"]];
-    //NSString* uri = [NSString stringWithFormat:@"sip:%@@192.168.2.30:5080", self.sipUriText.text];
     [self.sipManager invite:uri];
 
     return connection;
@@ -122,12 +124,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)callArrived:(SipManager *)sipManager
 {
-    RCConnection * connection = [[RCConnection alloc] initWithDelegate:self.delegate];
+    RCConnection * connection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate];
+    self.sipManager.connectionDelegate = connection;
     connection.sipManager = self.sipManager;
+    connection.incoming = true;
     
     // TODO: passing nil on the connection for now
     [self.delegate device:self didReceiveIncomingConnection:connection];
 }
+
 
 /*
 #pragma mark HTTP related methods (internal)

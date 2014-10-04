@@ -788,6 +788,17 @@ void ssc_r_invite(int status, char const *phrase,
     if (status == 401 || status == 407)
       ssc_store_pending_auth(ssc, op, sip, tags);
   }
+  if (status == 180) {
+      // notify the client application that we are ringing
+      SofiaReply reply(OUTGOING_RINGING, "");
+      SofiaReply::send(ssc->ssc_output_fd, &reply);
+  }
+  if (status == 200) {
+      // notify the client application that we are ringing
+      SofiaReply reply(OUTGOING_ESTABLISHED, "");
+      SofiaReply::send(ssc->ssc_output_fd, &reply);
+  }
+
 }
 
 /**

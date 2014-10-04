@@ -29,9 +29,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 
 
 @class RCConnection;
-//@protocol SipManagerDelegate;
 
-@interface RCDevice : NSObject <SipManagerDelegate,NSURLConnectionDelegate>
+@interface RCDevice : NSObject <SipManagerDeviceDelegate,NSURLConnectionDelegate>
 
 @property (nonatomic, readonly) RCDeviceState state;
 @property (nonatomic, readonly) NSDictionary* capabilities;

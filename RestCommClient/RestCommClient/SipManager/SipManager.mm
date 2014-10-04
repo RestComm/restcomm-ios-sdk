@@ -36,12 +36,20 @@ int read_pipe[2];
     }
     else if (reply->rc == INCOMING_CALL) {
         // we have an incoming call, we need to ring
-        [self.delegate callArrived:self];
+        [self.deviceDelegate callArrived:self];
+    }
+    else if (reply->rc == OUTGOING_RINGING) {
+        // we have an incoming call, we need to ring
+        [self.connectionDelegate outgoingRinging:self];
+    }
+    else if (reply->rc == OUTGOING_ESTABLISHED) {
+        // we have an incoming call, we need to ring
+        [self.connectionDelegate outgoingEstablished:self];
     }
     else if (reply->rc == INCOMING_MSG) {
         // we have an incoming call, we need to ring
         NSString* msg = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
-        [self.delegate messageArrived:self withData:msg];
+        [self.deviceDelegate messageArrived:self withData:msg];
     }
     return 0;
 }
@@ -73,11 +81,11 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     [sipManager addFdSourceToRunLoop:fd];
 }
 
-- (id)initWithDelegate:(id<SipManagerDelegate>)delegate
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate
 {
     self = [super init];
     if (self) {
-        self.delegate = delegate;
+        self.deviceDelegate = deviceDelegate;
     }
     return self;
 }
