@@ -50,7 +50,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 {
     NSLog(@"[RCConnection accept]");
     [self.sipManager answer];
-    
+    self.state = RCConnectionStateConnected;
 }
 
 - (void)ignore
@@ -95,6 +95,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self setState:RCConnectionStateConnected];
 }
 
+/*
 - (void)incomingRinging:(SipManager *)sipManager
 {
     [self.delegate connectionDidStartConnecting:self];
@@ -106,5 +107,5 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self.delegate connectionDidConnect:self];
     [self setState:RCConnectionStateConnected];
 }
-
+*/
 @end

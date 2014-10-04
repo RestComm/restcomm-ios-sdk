@@ -128,6 +128,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     self.sipManager.connectionDelegate = connection;
     connection.sipManager = self.sipManager;
     connection.incoming = true;
+    connection.state = RCConnectionStateConnecting;
     
     // TODO: passing nil on the connection for now
     [self.delegate device:self didReceiveIncomingConnection:connection];

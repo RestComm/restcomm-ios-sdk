@@ -36,7 +36,8 @@
 @end
 
 @protocol SipManagerConnectionDelegate <NSObject>
-// 'ringing' for outgoing connection
 - (void)outgoingRinging:(SipManager *)sipManager;
 - (void)outgoingEstablished:(SipManager *)sipManager;
+//- (void)incomingRinging:(SipManager *)sipManager;
+//- (void)incomingEstablished:(SipManager *)sipManager;
 @end
