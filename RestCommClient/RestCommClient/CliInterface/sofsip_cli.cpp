@@ -298,7 +298,7 @@ static void sofsip_help(cli_t *cli)
 /** Add command line (standard input) to be waited. */
 static int sofsip_init(cli_t *cli, int ac, char *av[])
 {
-  ssc_conf_t *conf = cli->cli_conf;
+  //ssc_conf_t *conf = cli->cli_conf;
   int i;
     
   /*
@@ -329,8 +329,9 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
    */
   // hardcode some values for testing
   //conf->ssc_aor = "sip:john@192.168.2.30:5080";
-  conf->ssc_aor = "sip:bob@telestax.com";
-  conf->ssc_registrar = "sip:192.168.2.30:5080";
+    
+  //conf->ssc_aor = "sip:alice@telestax.com";
+  //conf->ssc_registrar = "sip:192.168.2.30:5080";
 
   /* step: process command line arguments */
   /*
@@ -401,7 +402,7 @@ static void sofsip_handle_input_cb(char *input)
 {
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
-  int n = command ? strlen(command) : 0;
+  int n = command ? (int)strlen(command) : 0;
   char msgbuf[160] = "";
 
   /* see readline(2) */

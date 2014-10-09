@@ -13,8 +13,9 @@
 
 @interface SipManager : NSObject
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate;
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
-- (bool)initialize;
+- (bool)eventLoop;
 - (bool)register:(NSString*)registrar;
 - (bool)message:(NSString*)msg to:(NSString*)recipient;
 - (bool)invite:(NSString*)recipient;
@@ -24,9 +25,11 @@
 - (bool)cancel;
 - (bool)bye;
 - (bool)cli:(NSString*)cmd;
+- (bool)updateParams:(NSDictionary*)params;
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;
+@property NSMutableDictionary* params;
 @end
 
 @protocol SipManagerDeviceDelegate <NSObject>

@@ -23,9 +23,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    // TODO: capabilityTokens aren't handled yet
     NSString* capabilityToken = @"";
-    self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.30:5080" forKey:@"uri-call-template"];
+    
+    // let's hardcode a template for RestComm, so that only the username is needed in our methods below
+    self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.30:5080" forKey:@"uas-uri-template"];
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
@@ -51,16 +54,14 @@
 // ---------- UI events
 - (IBAction)sendPressed:(id)sender
 {
-    // For starters RestCommClient doesn't support messages
-    /*
-    // TODO: hard-code for now
-    [self.sipManager message:self.sipMessageText.text to:@"sip:alice@192.168.2.30:5080"];
+    // hardcode Alice for now
+    [self.parameters setObject:@"alice" forKey:@"username"];
+    [self.device sendMessage:self.sipMessageText.text to:self.parameters];
     [self prependToDialog:self.sipMessageText.text sender:@"Me"];
     self.sipMessageText.text = @"";
-
+    
     // hide keyboard
     [self.sipMessageText endEditing:false];
-     */
 }
 
 - (IBAction)dialPressed:(id)sender
@@ -75,8 +76,6 @@
 
 - (IBAction)answerPressed:(id)sender
 {
-    //[self.sipManager answer];
-    //[self.connection accept];
     [self.pendingIncomingConnection accept];
     self.connection = self.pendingIncomingConnection;
     [self.answerButton.layer removeAllAnimations];
@@ -84,25 +83,30 @@
 
 - (IBAction)declinePressed:(id)sender
 {
-    //[self.sipManager decline];
-    [self.connection reject];
+    [self.pendingIncomingConnection reject];
+    self.pendingIncomingConnection = nil;
     
     [self.answerButton.layer removeAllAnimations];
 }
 
 - (IBAction)hangUpPressed:(id)sender
 {
-    //[self.sipManager bye];
     [self.connection disconnect];
+    self.connection = nil;
 }
 
 - (IBAction)cancelPressed:(id)sender
 {
     // not sure such functionality exists in RestCommClient
-    //[self.sipManager cancel];
+    [self.connection disconnect];
+    self.connection = nil;
 }
 
-// ---------- delegate methods for RC Device
+- (IBAction)updateParamsPressed:(id)sender {
+    [self.device updateParams];
+}
+
+// ---------- Delegate methods for RC Device
 // call just arrived; let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
@@ -115,10 +119,17 @@
     
 }
 
+- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
+{
+    [self prependToDialog:message sender:@"Alice"];
+}
+
+// 'ringing' for incoming connections
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
     self.pendingIncomingConnection = connection;
-    // animate alpha
+    
+    // let's add some animation to get users attention (alpha)
     CAKeyframeAnimation * alphaAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     
     alphaAnimation.values = [NSArray arrayWithObjects:@1.0F, @1.0F, @0.0F, @0.0F, @1.0F, @1.0F, nil];
@@ -138,21 +149,22 @@
     
 }
 
-// ---------- delegate methods for RC Connection
+// ---------- Delegate methods for RC Connection
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error
 {
     
 }
 
 // optional
+// 'ringing' for outgoing connections
 - (void)connectionDidStartConnecting:(RCConnection*)connection
 {
-    
+    NSLog(@"connectionDidStartConnecting");
 }
 
 - (void)connectionDidConnect:(RCConnection*)connection
 {
-    
+    NSLog(@"connectionDidConnect");
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection
@@ -160,30 +172,6 @@
     
 }
 
-/*
-- (void)callArrived:(SipManager *)sipManager
-{
-    // animate alpha
-    CAKeyframeAnimation * alphaAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
-    
-    alphaAnimation.values = [NSArray arrayWithObjects:@1.0F, @1.0F, @0.0F, @0.0F, @1.0F, @1.0F, nil];
-    alphaAnimation.keyTimes = [NSArray arrayWithObjects:@0.0F, @0.3F, @0.4F, @0.7F, @0.8F, @1.0F, nil];
-
-    CAAnimationGroup* group = [CAAnimationGroup animation];
-    // repeat forever
-    group.repeatCount = HUGE_VALF;
-    group.duration = 1.0;
-    group.animations = [NSArray arrayWithObjects:alphaAnimation, nil];
-    
-    [self.answerButton.layer addAnimation:group forKey:@"flash-animation"];
-}
-
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)msg
-{
-    [self prependToDialog:msg sender:@"Alice"];
-}
-*/
- 
 // helpers
 - (void)prependToDialog:(NSString*)msg sender:(NSString*)sender
 {
@@ -191,5 +179,14 @@
     self.sipDialogText.text = [NSString stringWithString:updatedDialog];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
 
 @end

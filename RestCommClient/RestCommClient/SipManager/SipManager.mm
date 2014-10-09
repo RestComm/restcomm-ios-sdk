@@ -86,7 +86,17 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     self = [super init];
     if (self) {
         self.deviceDelegate = deviceDelegate;
+        self.params = [[NSMutableDictionary alloc] init];
     }
+    return self;
+}
+
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params
+{
+    self = [self initWithDelegate:deviceDelegate];
+    [self.params setDictionary:params];
+    //[self setParams:params];
+    
     return self;
 }
 
@@ -103,34 +113,51 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 }
 
 // initialize sofia
-- (bool)initialize
+- (bool)eventLoop
 {
     if (pipe(write_pipe) == -1 || pipe(read_pipe) == -1) {
         perror("pipe");
         exit(EXIT_FAILURE);
     }
     
+    /*
+    char ** argv = (char **) malloc(4 * sizeof(char*));
+    argv[0] = "cli";
+    argv[1] = "sip:alice@telestax.com";
+    argv[2] = "-r";
+    argv[3] = "sip:192.168.2.30:5080";
+     */
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // communicate with sip sofia via the pipe
-        sofsip_loop(0, NULL, write_pipe[0], read_pipe[1]);
+        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1]);
     });
 
     [self addFdSourceToRunLoop:read_pipe[0]];
-    
+    //[self updateParams:self.params];
     // the registrar is builting to the cli for now
-    [self register:@""];
+    //[self register:@""];
+    //free(argv);
 
     return true;
 }
 
 // use a plain C function for the actual transmission, as we will be using it from our C callback as well
-int pipeToSofia(const char * msg, int fd)
+ssize_t pipeToSofia(const char * msg, int fd)
 {
-    return write(fd, msg, strlen(msg));
+    char delimitedMsg[strlen(msg) + 2];
+    // important: I'm adding a '$' at the end to mark end of command, because in the
+    // receiving side more than one commands might be received in one go
+    strcpy(delimitedMsg, msg);
+    strcat(delimitedMsg, "$");
+    ssize_t rc = write(fd, delimitedMsg, strlen(delimitedMsg));
+    if (rc == -1) {
+        NSLog(@"Error writing to pipe");
+    }
+    return rc;
 }
 
-- (int)pipeToSofia:(NSString*)cmd
+- (ssize_t)pipeToSofia:(NSString*)cmd
 {
     // TODO: write might not send all the string, make sure that the operation is repeated until all the string is sent
     return pipeToSofia([cmd UTF8String], write_pipe[1]);
@@ -207,6 +234,26 @@ int pipeToSofia(const char * msg, int fd)
 {
     [self pipeToSofia:cmd];
     
+    return true;
+}
+
+// update given params in the SIP stack
+- (bool)updateParams:(NSDictionary*)params
+{
+    NSString* cmd;
+    for (id key in params) {
+        if ([key isEqualToString:@"aor"]) {
+            cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:key]];
+            [self pipeToSofia:cmd];
+            //break;
+            
+        }
+        else if ([key isEqualToString:@"registrar"]) {
+            cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
+            [self pipeToSofia:cmd];
+        }
+    }
+    //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
     return true;
 }
 
