@@ -179,7 +179,7 @@ class SofiaReply {
 public:
     SofiaReply();
     SofiaReply(const int rc, const char * text);
-    static int send(const int fd, const SofiaReply * sofiaReply);
+    static ssize_t send(const int fd, const SofiaReply * sofiaReply);
     int rc;
     char text[256];
 };

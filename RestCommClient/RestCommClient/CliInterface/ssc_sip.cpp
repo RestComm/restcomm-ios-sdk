@@ -2076,7 +2076,7 @@ SofiaReply::SofiaReply(const int rc, const char * text)
     this->text[sizeof(this->text) - 1] = 0;
 }
 
-int SofiaReply::send(const int fd, const SofiaReply * sofiaReply)
+ssize_t SofiaReply::send(const int fd, const SofiaReply * sofiaReply)
 {
     //char buf[100] = "auth";
     return write(fd, sofiaReply, sizeof(*sofiaReply));

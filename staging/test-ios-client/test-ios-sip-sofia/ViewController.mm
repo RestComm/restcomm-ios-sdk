@@ -10,6 +10,7 @@
 
 #import "ViewController.h"
 #import "RestCommClient.h"
+#import "TabBarController.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
@@ -24,12 +25,18 @@
 {
     [super viewDidLoad];
 
+    // auto correct off for SIP uri
+    self.sipUriText.autocorrectionType = UITextAutocorrectionTypeNo;
+
     // TODO: capabilityTokens aren't handled yet
     NSString* capabilityToken = @"";
     
     // let's hardcode a template for RestComm, so that only the username is needed in our methods below
     self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.30:5080" forKey:@"uas-uri-template"];
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
+    TabBarController * tabBarController = (TabBarController *)self.tabBarController;
+    // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
+    tabBarController.device = self.device;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -100,10 +107,6 @@
     // not sure such functionality exists in RestCommClient
     [self.connection disconnect];
     self.connection = nil;
-}
-
-- (IBAction)updateParamsPressed:(id)sender {
-    [self.device updateParams];
 }
 
 // ---------- Delegate methods for RC Device

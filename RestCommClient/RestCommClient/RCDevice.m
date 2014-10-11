@@ -143,13 +143,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.delegate device:self didReceiveIncomingConnection:connection];
 }
 
-- (void) updateParams
+- (void) updateParams:(NSDictionary*)params
 {
-    NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:alice@telestax.com", @"aor",
-                             @"sip:192.168.2.30:5080", @"registrar", nil];
-    
     [self.sipManager updateParams:params];
 }
+
 /*
 #pragma mark HTTP related methods (internal)
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

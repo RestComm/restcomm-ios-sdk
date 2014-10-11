@@ -47,6 +47,6 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
 - (void)disconnectAll;
 
-- (void)updateParams;
+- (void) updateParams:(NSDictionary*)params;
 
 @end
