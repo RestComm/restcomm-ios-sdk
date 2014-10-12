@@ -6,25 +6,42 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		AED9718319E98B48000F7A8E /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = AED9718719E98B49000F7A8E /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				AED9718819E98B77000F7A8E /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		AE6CDEB819E944B3006C83DA /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE6CDEB719E944B3006C83DA /* SettingsViewController.mm */; };
-		AE6CDEBC19E946DF006C83DA /* TabBarController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE6CDEBB19E946DF006C83DA /* TabBarController.mm */; };
+		AE106EB419EAD86C00AD0AEF /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE106EB219EAD86C00AD0AEF /* libcrypto.a */; };
+		AE106EB519EAD86C00AD0AEF /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE106EB319EAD86C00AD0AEF /* libssl.a */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
-		AE79D32419BC8DAD0023306C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32219BC8DAD0023306C /* InfoPlist.strings */; };
-		AE79D32619BC8DAD0023306C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D32519BC8DAD0023306C /* main.m */; };
-		AE79D32A19BC8DAD0023306C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D32919BC8DAD0023306C /* AppDelegate.m */; };
-		AE79D32D19BC8DAD0023306C /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */; };
-		AE79D33019BC8DAD0023306C /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */; };
-		AE79D33319BC8DAD0023306C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE79D33219BC8DAD0023306C /* ViewController.mm */; };
-		AE79D33519BC8DAD0023306C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE79D33419BC8DAD0023306C /* Images.xcassets */; };
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
 		AE79D34619BC8DAE0023306C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE79D34419BC8DAE0023306C /* InfoPlist.strings */; };
 		AE79D34819BC8DAE0023306C /* test_ios_sip_sofiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */; };
 		AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECB0D9019DB3E8000E7472F /* libRestCommClient.a */; };
+		AED971BA19E9901D000F7A8E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED971A919E9901D000F7A8E /* AppDelegate.m */; };
+		AED971BB19E9901D000F7A8E /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED971AA19E9901D000F7A8E /* Main_iPad.storyboard */; };
+		AED971BC19E9901D000F7A8E /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED971AC19E9901D000F7A8E /* Main_iPhone.storyboard */; };
+		AED971BD19E9901D000F7A8E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED971AE19E9901D000F7A8E /* InfoPlist.strings */; };
+		AED971BE19E9901D000F7A8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED971B019E9901D000F7A8E /* Images.xcassets */; };
+		AED971BF19E9901D000F7A8E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED971B119E9901D000F7A8E /* main.m */; };
+		AED971C019E9901D000F7A8E /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED971B319E9901D000F7A8E /* SettingsViewController.mm */; };
+		AED971C119E9901D000F7A8E /* TabBarController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED971B519E9901D000F7A8E /* TabBarController.mm */; };
+		AED971C219E9901D000F7A8E /* test-ios-client-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AED971B619E9901D000F7A8E /* test-ios-client-Info.plist */; };
+		AED971C319E9901D000F7A8E /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED971B919E9901D000F7A8E /* ViewController.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,31 +76,34 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE6CDEB619E944B3006C83DA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		AE6CDEB719E944B3006C83DA /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
-		AE6CDEBA19E946DF006C83DA /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
-		AE6CDEBB19E946DF006C83DA /* TabBarController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TabBarController.mm; sourceTree = "<group>"; };
+		AE106EB219EAD86C00AD0AEF /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = lib/libcrypto.a; sourceTree = "<group>"; };
+		AE106EB319EAD86C00AD0AEF /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = lib/libssl.a; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* test-ios-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-ios-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		AE79D31D19BC8DAD0023306C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		AE79D32119BC8DAD0023306C /* test-ios-client-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "test-ios-client-Info.plist"; sourceTree = "<group>"; };
-		AE79D32319BC8DAD0023306C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		AE79D32519BC8DAD0023306C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		AE79D32719BC8DAD0023306C /* test-ios-sip-sofia-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "test-ios-sip-sofia-Prefix.pch"; sourceTree = "<group>"; };
-		AE79D32819BC8DAD0023306C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		AE79D32919BC8DAD0023306C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		AE79D32C19BC8DAD0023306C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		AE79D32F19BC8DAD0023306C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		AE79D33119BC8DAD0023306C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		AE79D33219BC8DAD0023306C /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
-		AE79D33419BC8DAD0023306C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AE79D33A19BC8DAE0023306C /* test-ios-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "test-ios-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33B19BC8DAE0023306C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		AE79D34319BC8DAE0023306C /* test-ios-sip-sofiaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "test-ios-sip-sofiaTests-Info.plist"; sourceTree = "<group>"; };
 		AE79D34519BC8DAE0023306C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test_ios_sip_sofiaTests.m; sourceTree = "<group>"; };
 		AECB0D8A19DB3E8000E7472F /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
+		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
+		AED971A819E9901D000F7A8E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		AED971A919E9901D000F7A8E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AED971AB19E9901D000F7A8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		AED971AD19E9901D000F7A8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		AED971AF19E9901D000F7A8E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AED971B019E9901D000F7A8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AED971B119E9901D000F7A8E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AED971B219E9901D000F7A8E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		AED971B319E9901D000F7A8E /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
+		AED971B419E9901D000F7A8E /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
+		AED971B519E9901D000F7A8E /* TabBarController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TabBarController.mm; sourceTree = "<group>"; };
+		AED971B619E9901D000F7A8E /* test-ios-client-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "test-ios-client-Info.plist"; sourceTree = "<group>"; };
+		AED971B719E9901D000F7A8E /* test-ios-client-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "test-ios-client-Prefix.pch"; sourceTree = "<group>"; };
+		AED971B819E9901D000F7A8E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AED971B919E9901D000F7A8E /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +111,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE106EB419EAD86C00AD0AEF /* libcrypto.a in Frameworks */,
+				AE106EB519EAD86C00AD0AEF /* libssl.a in Frameworks */,
 				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
 				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
@@ -115,10 +137,11 @@
 			isa = PBXGroup;
 			children = (
 				AECB0D8A19DB3E8000E7472F /* RestCommClient.xcodeproj */,
-				AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */,
 				AE79D34119BC8DAE0023306C /* test-ios-sip-sofiaTests */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
+				AED9718919E98DB9000F7A8E /* readme.markdown */,
+				AED971A719E9901D000F7A8E /* test-ios-sip-sofia */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,42 +157,14 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE106EB219EAD86C00AD0AEF /* libcrypto.a */,
+				AE106EB319EAD86C00AD0AEF /* libssl.a */,
 				AE79D31919BC8DAD0023306C /* Foundation.framework */,
 				AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */,
 				AE79D31D19BC8DAD0023306C /* UIKit.framework */,
 				AE79D33B19BC8DAE0023306C /* XCTest.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE79D31F19BC8DAD0023306C /* test-ios-sip-sofia */ = {
-			isa = PBXGroup;
-			children = (
-				AE79D32819BC8DAD0023306C /* AppDelegate.h */,
-				AE79D32919BC8DAD0023306C /* AppDelegate.m */,
-				AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */,
-				AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */,
-				AE79D33119BC8DAD0023306C /* ViewController.h */,
-				AE79D33219BC8DAD0023306C /* ViewController.mm */,
-				AE6CDEB619E944B3006C83DA /* SettingsViewController.h */,
-				AE6CDEB719E944B3006C83DA /* SettingsViewController.mm */,
-				AE6CDEBA19E946DF006C83DA /* TabBarController.h */,
-				AE6CDEBB19E946DF006C83DA /* TabBarController.mm */,
-				AE79D33419BC8DAD0023306C /* Images.xcassets */,
-				AE79D32019BC8DAD0023306C /* Supporting Files */,
-			);
-			path = "test-ios-sip-sofia";
-			sourceTree = "<group>";
-		};
-		AE79D32019BC8DAD0023306C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				AE79D32119BC8DAD0023306C /* test-ios-client-Info.plist */,
-				AE79D32219BC8DAD0023306C /* InfoPlist.strings */,
-				AE79D32519BC8DAD0023306C /* main.m */,
-				AE79D32719BC8DAD0023306C /* test-ios-sip-sofia-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		AE79D34119BC8DAE0023306C /* test-ios-sip-sofiaTests */ = {
@@ -197,6 +192,28 @@
 				AECB0D9219DB3E8000E7472F /* RestCommClientTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AED971A719E9901D000F7A8E /* test-ios-sip-sofia */ = {
+			isa = PBXGroup;
+			children = (
+				AED971A819E9901D000F7A8E /* AppDelegate.h */,
+				AED971A919E9901D000F7A8E /* AppDelegate.m */,
+				AED971AA19E9901D000F7A8E /* Main_iPad.storyboard */,
+				AED971AC19E9901D000F7A8E /* Main_iPhone.storyboard */,
+				AED971AE19E9901D000F7A8E /* InfoPlist.strings */,
+				AED971B019E9901D000F7A8E /* Images.xcassets */,
+				AED971B119E9901D000F7A8E /* main.m */,
+				AED971B219E9901D000F7A8E /* SettingsViewController.h */,
+				AED971B319E9901D000F7A8E /* SettingsViewController.mm */,
+				AED971B419E9901D000F7A8E /* TabBarController.h */,
+				AED971B519E9901D000F7A8E /* TabBarController.mm */,
+				AED971B619E9901D000F7A8E /* test-ios-client-Info.plist */,
+				AED971B719E9901D000F7A8E /* test-ios-client-Prefix.pch */,
+				AED971B819E9901D000F7A8E /* ViewController.h */,
+				AED971B919E9901D000F7A8E /* ViewController.mm */,
+			);
+			path = "test-ios-sip-sofia";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +290,7 @@
 			targets = (
 				AE79D31519BC8DAD0023306C /* test-ios-client */,
 				AE79D33919BC8DAE0023306C /* test-ios-clientTests */,
+				AED9718319E98B48000F7A8E /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -299,10 +317,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE79D33019BC8DAD0023306C /* Main_iPad.storyboard in Resources */,
-				AE79D33519BC8DAD0023306C /* Images.xcassets in Resources */,
-				AE79D32D19BC8DAD0023306C /* Main_iPhone.storyboard in Resources */,
-				AE79D32419BC8DAD0023306C /* InfoPlist.strings in Resources */,
+				AED971C219E9901D000F7A8E /* test-ios-client-Info.plist in Resources */,
+				AED971BC19E9901D000F7A8E /* Main_iPhone.storyboard in Resources */,
+				AED971BE19E9901D000F7A8E /* Images.xcassets in Resources */,
+				AED971BD19E9901D000F7A8E /* InfoPlist.strings in Resources */,
+				AED971BB19E9901D000F7A8E /* Main_iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,16 +335,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AED9718819E98B77000F7A8E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"${PROJECT_NAME}\" \\\n--project-company \"Telestax\" \\\n--company-id \"com.telestax\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"*.m\" \\\n--include \"${PROJECT_DIR}/${PROJECT_NAME}/Documentation/Images\" \\\n--ignore \"LoadableCategory.h\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}/test-ios-sip-sofia\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AE79D31219BC8DAD0023306C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE79D33319BC8DAD0023306C /* ViewController.mm in Sources */,
-				AE79D32A19BC8DAD0023306C /* AppDelegate.m in Sources */,
-				AE6CDEBC19E946DF006C83DA /* TabBarController.mm in Sources */,
-				AE79D32619BC8DAD0023306C /* main.m in Sources */,
-				AE6CDEB819E944B3006C83DA /* SettingsViewController.mm in Sources */,
+				AED971BF19E9901D000F7A8E /* main.m in Sources */,
+				AED971BA19E9901D000F7A8E /* AppDelegate.m in Sources */,
+				AED971C319E9901D000F7A8E /* ViewController.mm in Sources */,
+				AED971C019E9901D000F7A8E /* SettingsViewController.mm in Sources */,
+				AED971C119E9901D000F7A8E /* TabBarController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,34 +388,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		AE79D32219BC8DAD0023306C /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AE79D32319BC8DAD0023306C /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		AE79D32B19BC8DAD0023306C /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AE79D32C19BC8DAD0023306C /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		AE79D32E19BC8DAD0023306C /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AE79D32F19BC8DAD0023306C /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
 		AE79D34419BC8DAE0023306C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				AE79D34519BC8DAE0023306C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AED971AA19E9901D000F7A8E /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED971AB19E9901D000F7A8E /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		AED971AC19E9901D000F7A8E /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED971AD19E9901D000F7A8E /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		AED971AE19E9901D000F7A8E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED971AF19E9901D000F7A8E /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -483,10 +518,12 @@
 				INFOPLIST_FILE = "test-ios-sip-sofia/test-ios-client-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
+					"$(PROJECT_DIR)/lib",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "test-ios-client";
+				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -502,10 +539,11 @@
 				INFOPLIST_FILE = "test-ios-sip-sofia/test-ios-client-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
+					"$(PROJECT_DIR)/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "test-ios-client";
+				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -513,7 +551,7 @@
 		AE79D34F19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-sip-sofia.app/test-ios-sip-sofia";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-client.app/test-ios-client";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -535,7 +573,7 @@
 		AE79D35019BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-sip-sofia.app/test-ios-sip-sofia";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-client.app/test-ios-client";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -547,6 +585,20 @@
 				PRODUCT_NAME = "test-ios-clientTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		AED9718419E98B49000F7A8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AED9718519E98B49000F7A8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -576,6 +628,15 @@
 			buildConfigurations = (
 				AE79D34F19BC8DAE0023306C /* Debug */,
 				AE79D35019BC8DAE0023306C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AED9718719E98B49000F7A8E /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AED9718419E98B49000F7A8E /* Debug */,
+				AED9718519E98B49000F7A8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
