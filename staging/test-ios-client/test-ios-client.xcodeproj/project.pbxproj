@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE106EB419EAD86C00AD0AEF /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE106EB219EAD86C00AD0AEF /* libcrypto.a */; };
-		AE106EB519EAD86C00AD0AEF /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE106EB319EAD86C00AD0AEF /* libssl.a */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -76,8 +74,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE106EB219EAD86C00AD0AEF /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = lib/libcrypto.a; sourceTree = "<group>"; };
-		AE106EB319EAD86C00AD0AEF /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = lib/libssl.a; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* test-ios-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-ios-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,8 +107,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE106EB419EAD86C00AD0AEF /* libcrypto.a in Frameworks */,
-				AE106EB519EAD86C00AD0AEF /* libssl.a in Frameworks */,
 				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
 				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
@@ -157,8 +151,6 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE106EB219EAD86C00AD0AEF /* libcrypto.a */,
-				AE106EB319EAD86C00AD0AEF /* libssl.a */,
 				AE79D31919BC8DAD0023306C /* Foundation.framework */,
 				AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */,
 				AE79D31D19BC8DAD0023306C /* UIKit.framework */,

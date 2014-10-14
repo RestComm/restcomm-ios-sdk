@@ -10,10 +10,7 @@
 
 #import "RestCommClient.h"
 
-//@class SipManager;
 @interface ViewController : UIViewController<RCDeviceDelegate,RCConnectionDelegate>
-//@property SipManager * sipManager;
-
 @property (nonatomic,retain) RCDevice* device;
 @property (nonatomic,retain) RCConnection* connection;
 @property (nonatomic,retain) RCConnection* pendingIncomingConnection;

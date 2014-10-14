@@ -35,22 +35,27 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  *  Represents call either incoming or outgoing
  */
 @interface RCConnection : NSObject<SipManagerConnectionDelegate>
+
 /**
  *  State of the connection
  */
 @property RCConnectionState state;
+
 /**
  *  True if connection is incoming; false otherwise
  */
 @property (nonatomic, getter=isIncoming) BOOL incoming;
+
 /**
  *  Connection parameters
  */
 @property (nonatomic, readonly) NSDictionary* parameters;
+
 /**
  *  Delegate that will be receiving RCConnection events
  */
 @property (nonatomic, assign) id<RCConnectionDelegate> delegate;
+
 /**
  *  Is connection currently muted?
  */
@@ -65,22 +70,27 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  *  @return Newly initialized object
  */
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate;
+
 /**
  *  Accept an incoming connection that is ringing. The connection state changes to 'RCConnectionStateConnected'
  */
 - (void)accept;
+
 /**
  *  Ignore connection
  */
 - (void)ignore;
+
 /**
  *  Reject an incoming connection
  */
 - (void)reject;
+
 /**
  *  Disconnect a connection that is in state 'RCConnectionStateConnecting' or 'RCConnectionStateConnected'
  */
 - (void)disconnect;
+
 /**
  *  Send DTMF tones over a connection that is in state 'RCConnectionStateConnected'
  *

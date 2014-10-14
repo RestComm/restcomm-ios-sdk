@@ -16,16 +16,6 @@
 
 @implementation RCConnection
 @synthesize state;
-/* RCConnection needs to notify its delegate for the following events:
- *
- * @required
- * - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error;
- *
- * @optional
- * - (void)connectionDidStartConnecting:(RCConnection*)connection;
- * - (void)connectionDidConnect:(RCConnection*)connection;
- * - (void)connectionDidDisconnect:(RCConnection*)connection;
- */
 
 NSString* const RCConnectionIncomingParameterFromKey = @"RCConnectionIncomingParameterFromKey";
 NSString* const RCConnectionIncomingParameterToKey = @"RCConnectionIncomingParameterToKey";
@@ -95,17 +85,4 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self setState:RCConnectionStateConnected];
 }
 
-/*
-- (void)incomingRinging:(SipManager *)sipManager
-{
-    [self.delegate connectionDidStartConnecting:self];
-    [self setState:RCConnectionStateConnecting];
-}
-
-- (void)incomingEstablished:(SipManager *)sipManager
-{
-    [self.delegate connectionDidConnect:self];
-    [self setState:RCConnectionStateConnected];
-}
-*/
 @end

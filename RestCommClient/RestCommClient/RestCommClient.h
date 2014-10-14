@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TeleStax. All rights reserved.
 //
 
-//#import <Foundation/Foundation.h>
 #import "RCConnection.h"
 #import "RCConnectionDelegate.h"
 #import "RCDevice.h"

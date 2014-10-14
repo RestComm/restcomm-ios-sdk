@@ -23,17 +23,6 @@
 
 
 @implementation RCDevice
-//@synthesize capabilities;
-
-/* RCDevice needs to notify its delegate for the following events:
- * @required
- * - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error;
- *
- * @optional
- * - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device;
- * - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection;
- * - (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent;
- */
 
 NSString* const RCDeviceCapabilityIncomingKey = @"RCDeviceCapabilityIncomingKey";
 NSString* const RCDeviceCapabilityOutgoingKey = @"RCDeviceCapabilityOutgoingKey";
@@ -148,6 +137,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.sipManager updateParams:params];
 }
 
+// TODO: leave this around because at some point we might add REST functionality on the client
 /*
 #pragma mark HTTP related methods (internal)
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -222,34 +212,5 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 */
-    /*
-    NSError ** error;
-	//Creates a new capability token from the auth.php file on server
-	NSString *capabilityToken = nil;
-	//Make the URL Connection to your server
-    //#warning Change this URL to point to the auth.php on your public server
-	NSURL *url = [NSURL URLWithString:@"http://192.168.2.5:8080/restcomm/2012-04-24/Accounts/ACae6e420f425248d6a26948c17a9e2acf/Calls.json"];
-	NSURLResponse *response = nil;
-	NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url]
-										 returningResponse:&response error:error];
-	if (data)
-	{
-		NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-		
-		if (httpResponse.statusCode==200)
-		{
-			capabilityToken = [[[NSString alloc] initWithData:data
-                                                     encoding:NSUTF8StringEncoding] autorelease];
-		}
-		else
-		{
-			*error = [BasicPhone errorFromHTTPResponse:httpResponse domain:@"CapabilityTokenDomain"];
-		}
-	}
-	// else there is likely an error which got assigned to the incoming error pointer.
-	
-	return capabilityToken;
-}
-    */
 
 @end

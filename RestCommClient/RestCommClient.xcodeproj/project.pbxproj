@@ -29,6 +29,8 @@
 		AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223C197295EA0035B864 /* RCConnectionDelegate.m */; };
 		AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223F197295F90035B864 /* RCDeviceDelegate.m */; };
 		AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC12242197296110035B864 /* RCPresenceEvent.m */; };
+		AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2319ED91A100C60E2B /* libcrypto.a */; };
+		AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2419ED91A100C60E2B /* libssl.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +206,8 @@
 		AEC1223F197295F90035B864 /* RCDeviceDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDeviceDelegate.m; sourceTree = "<group>"; };
 		AEC12241197296110035B864 /* RCPresenceEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPresenceEvent.h; sourceTree = "<group>"; };
 		AEC12242197296110035B864 /* RCPresenceEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPresenceEvent.m; sourceTree = "<group>"; };
+		AEC14C2319ED91A100C60E2B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
+		AEC14C2419ED91A100C60E2B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +215,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */,
+				AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */,
 				AEC1221019728C850035B864 /* Foundation.framework in Frameworks */,
 				AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */,
 			);
@@ -442,6 +448,8 @@
 		AEC1220E19728C850035B864 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEC14C2319ED91A100C60E2B /* libcrypto.a */,
+				AEC14C2419ED91A100C60E2B /* libssl.a */,
 				AEC1220F19728C850035B864 /* Foundation.framework */,
 				AEC1221D19728C850035B864 /* XCTest.framework */,
 				AEC1222019728C850035B864 /* UIKit.framework */,
@@ -714,6 +722,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
+					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -732,6 +741,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
+					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

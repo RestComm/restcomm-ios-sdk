@@ -6,10 +6,3 @@
 //  Copyright (c) 2014 TeleStax. All rights reserved.
 //
 
-/*
-#import "RCConnectionDelegate.h"
-
-@implementation RCConnectionDelegate
-
-@end
- */

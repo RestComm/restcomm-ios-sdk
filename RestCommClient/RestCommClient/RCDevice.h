@@ -43,23 +43,29 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  Device capabilities
  */
+
 @property (nonatomic, readonly) NSDictionary* capabilities;
 /**
  *  Delegate that will be receiving RCDevice events
  */
+
 @property (nonatomic, assign) id<RCDeviceDelegate> delegate;
 /**
  *  Sound for incoming connections enabled
  */
+
 @property (nonatomic) BOOL incomingSoundEnabled;
 /**
  *  Sound for outgoing connections enabled
  */
+
 @property (nonatomic) BOOL outgoingSoundEnabled;
+
 /**
  *  Sound for disconnect enabled
  */
 @property (nonatomic) BOOL disconnectSoundEnabled;
+
 /**
  *  Initialize a new RCDevice object
  *
@@ -69,20 +75,24 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @return Newly initialized object
  */
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate;
+
 /**
  *  Start listening for incoming connections
  */
 - (void)listen;
+
 /**
  *  Stop listening for incoming connections
  */
 - (void)unlisten;
+
 /**
  *  Update Capability Token
  *
  *  @param capabilityToken New Capability Token
  */
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
+
 /**
  *  Create an outgoing connection to an endpoint
  *
@@ -92,6 +102,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @return An RCConnection object representing the new connection
  */
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
+
 /**
  *  Send an instant message
  *
@@ -99,6 +110,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param receiver Message receiver
  */
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
+
 /**
  *  Disconnect all connections
  */

@@ -7,9 +7,3 @@
 //
 
 #import "RestCommClient.h"
-
-/*
-@implementation RestCommClient
-
-@end
-*/
