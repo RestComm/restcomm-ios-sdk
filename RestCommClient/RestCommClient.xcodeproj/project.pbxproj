@@ -58,6 +58,17 @@
 
 /* Begin PBXFileReference section */
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE74178119EDB6B5008A78FE /* libc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libc.dylib; path = usr/lib/libc.dylib; sourceTree = SDKROOT; };
+		AE74178319EDB718008A78FE /* libpoll.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpoll.dylib; path = usr/lib/libpoll.dylib; sourceTree = SDKROOT; };
+		AE74178419EDB718008A78FE /* libproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libproc.dylib; path = usr/lib/libproc.dylib; sourceTree = SDKROOT; };
+		AE74178819EDB762008A78FE /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
+		AE74178919EDB762008A78FE /* libsystem_c.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_c.dylib; path = usr/lib/system/libsystem_c.dylib; sourceTree = SDKROOT; };
+		AE74178A19EDB762008A78FE /* libsystem_kernel.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_kernel.dylib; path = usr/lib/system/libsystem_kernel.dylib; sourceTree = SDKROOT; };
+		AE74178B19EDB762008A78FE /* libsystem_malloc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_malloc.dylib; path = usr/lib/system/libsystem_malloc.dylib; sourceTree = SDKROOT; };
+		AE74178C19EDB762008A78FE /* libsystem_notify.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_notify.dylib; path = usr/lib/system/libsystem_notify.dylib; sourceTree = SDKROOT; };
+		AE74178D19EDB762008A78FE /* libsystem_platform.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_platform.dylib; path = usr/lib/system/libsystem_platform.dylib; sourceTree = SDKROOT; };
+		AE74178E19EDB762008A78FE /* libsystem_pthread.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_pthread.dylib; path = usr/lib/system/libsystem_pthread.dylib; sourceTree = SDKROOT; };
+		AE74178F19EDB762008A78FE /* libutil.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libutil.dylib; path = usr/lib/libutil.dylib; sourceTree = SDKROOT; };
 		AEA6C42A19DB411100BD2455 /* sres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres.h; sourceTree = "<group>"; };
 		AEA6C42B19DB411100BD2455 /* sres_async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_async.h; sourceTree = "<group>"; };
 		AEA6C42C19DB411100BD2455 /* sres_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_cache.h; sourceTree = "<group>"; };
@@ -208,6 +219,7 @@
 		AEC12242197296110035B864 /* RCPresenceEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPresenceEvent.m; sourceTree = "<group>"; };
 		AEC14C2319ED91A100C60E2B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC14C2419ED91A100C60E2B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
+		AEC14C2719EDA85A00C60E2B /* libsystem_network.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_network.dylib; path = usr/lib/system/libsystem_network.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,6 +460,18 @@
 		AEC1220E19728C850035B864 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE74178819EDB762008A78FE /* libSystem.dylib */,
+				AE74178919EDB762008A78FE /* libsystem_c.dylib */,
+				AE74178A19EDB762008A78FE /* libsystem_kernel.dylib */,
+				AE74178B19EDB762008A78FE /* libsystem_malloc.dylib */,
+				AE74178C19EDB762008A78FE /* libsystem_notify.dylib */,
+				AE74178D19EDB762008A78FE /* libsystem_platform.dylib */,
+				AE74178E19EDB762008A78FE /* libsystem_pthread.dylib */,
+				AE74178F19EDB762008A78FE /* libutil.dylib */,
+				AE74178319EDB718008A78FE /* libpoll.dylib */,
+				AE74178419EDB718008A78FE /* libproc.dylib */,
+				AE74178119EDB6B5008A78FE /* libc.dylib */,
+				AEC14C2719EDA85A00C60E2B /* libsystem_network.dylib */,
 				AEC14C2319ED91A100C60E2B /* libcrypto.a */,
 				AEC14C2419ED91A100C60E2B /* libssl.a */,
 				AEC1220F19728C850035B864 /* Foundation.framework */,
@@ -723,6 +747,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
 					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -742,6 +767,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
 					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
