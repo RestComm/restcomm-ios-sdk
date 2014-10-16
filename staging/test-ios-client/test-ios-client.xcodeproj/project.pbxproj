@@ -29,6 +29,7 @@
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
 		AE79D34619BC8DAE0023306C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE79D34419BC8DAE0023306C /* InfoPlist.strings */; };
 		AE79D34819BC8DAE0023306C /* test_ios_sip_sofiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */; };
+		AE9B695719F036540073FC27 /* File.c in Sources */ = {isa = PBXBuildFile; fileRef = AE9B695619F036540073FC27 /* File.c */; };
 		AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECB0D9019DB3E8000E7472F /* libRestCommClient.a */; };
 		AED971BA19E9901D000F7A8E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED971A919E9901D000F7A8E /* AppDelegate.m */; };
 		AED971BB19E9901D000F7A8E /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED971AA19E9901D000F7A8E /* Main_iPad.storyboard */; };
@@ -83,6 +84,7 @@
 		AE79D34319BC8DAE0023306C /* test-ios-sip-sofiaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "test-ios-sip-sofiaTests-Info.plist"; sourceTree = "<group>"; };
 		AE79D34519BC8DAE0023306C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE79D34719BC8DAE0023306C /* test_ios_sip_sofiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test_ios_sip_sofiaTests.m; sourceTree = "<group>"; };
+		AE9B695619F036540073FC27 /* File.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = File.c; sourceTree = "<group>"; };
 		AECB0D8A19DB3E8000E7472F /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
 		AED971A819E9901D000F7A8E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				AED971B719E9901D000F7A8E /* test-ios-client-Prefix.pch */,
 				AED971B819E9901D000F7A8E /* ViewController.h */,
 				AED971B919E9901D000F7A8E /* ViewController.mm */,
+				AE9B695619F036540073FC27 /* File.c */,
 			);
 			path = "test-ios-sip-sofia";
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				AED971BF19E9901D000F7A8E /* main.m in Sources */,
 				AED971BA19E9901D000F7A8E /* AppDelegate.m in Sources */,
 				AED971C319E9901D000F7A8E /* ViewController.mm in Sources */,
+				AE9B695719F036540073FC27 /* File.c in Sources */,
 				AED971C019E9901D000F7A8E /* SettingsViewController.mm in Sources */,
 				AED971C119E9901D000F7A8E /* TabBarController.mm in Sources */,
 			);
@@ -419,6 +423,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -465,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -503,7 +509,7 @@
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -525,7 +531,7 @@
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
