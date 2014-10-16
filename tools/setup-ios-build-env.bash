@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This script creates a shell environment depending on the arguments we
+# provide, in which we are then able to build for simulator (either i386 or
+# x86_64) or for device (currently armv7 or armv7s) without issues.
+
+
 SDK="iphoneos"
 ARCH="armv7"
 
