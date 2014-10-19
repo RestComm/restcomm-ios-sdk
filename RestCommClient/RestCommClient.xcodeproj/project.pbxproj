@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		AE72641A19F4302E000AE2ED /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = AE72641D19F4302E000AE2ED /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				AE72641E19F43037000AE2ED /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */; };
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */; };
@@ -590,6 +604,7 @@
 			targets = (
 				AEC1220B19728C850035B864 /* RestCommClient */,
 				AEC1221B19728C850035B864 /* RestCommClientTests */,
+				AE72641A19F4302E000AE2ED /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -604,6 +619,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AE72641E19F43037000AE2ED /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${PROJECT_DIR}/doc\"\n/opt/local/bin/doxygen Doxyfile";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AEC1220819728C850035B864 /* Sources */ = {
@@ -656,6 +687,20 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		AE72641B19F4302E000AE2ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AE72641C19F4302E000AE2ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		AEC1222D19728C850035B864 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -815,6 +860,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AE72641D19F4302E000AE2ED /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE72641B19F4302E000AE2ED /* Debug */,
+				AE72641C19F4302E000AE2ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		AEC1220719728C850035B864 /* Build configuration list for PBXProject "RestCommClient" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

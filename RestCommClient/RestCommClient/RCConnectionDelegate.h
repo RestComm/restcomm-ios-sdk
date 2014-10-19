@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+/** @file RCConnectionDelegate.h */
+
 @class RCConnection;
 
 /**

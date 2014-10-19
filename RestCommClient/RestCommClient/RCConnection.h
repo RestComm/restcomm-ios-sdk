@@ -11,15 +11,17 @@
 #import "RCConnectionDelegate.h"
 #import "SipManager.h"
 
+/** @file RCConnection.h */
+
 /**
- Connection State
+ * Connection State
  */
 typedef enum
 {
-	RCConnectionStatePending = 0,  /** Connection is in state pending */
-	RCConnectionStateConnecting,  /** Connection is in state connecting */
-	RCConnectionStateConnected,  /** Connection is in state connected */
-	RCConnectionStateDisconnected  /** Connection is in state disconnected */
+	RCConnectionStatePending = 0,  /**< Connection is in state pending */
+	RCConnectionStateConnecting,  /**< Connection is in state connecting */
+	RCConnectionStateConnected,  /**< Connection is in state connected */
+	RCConnectionStateDisconnected  /**< Connection is in state disconnected */
 } RCConnectionState;
 
 
@@ -77,7 +79,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 - (void)accept;
 
 /**
- *  Ignore connection
+ *  Ignore connection (not implemented)
  */
 - (void)ignore;
 
@@ -92,7 +94,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 - (void)disconnect;
 
 /**
- *  Send DTMF tones over a connection that is in state 'RCConnectionStateConnected'
+ *  Send DTMF tones over a connection that is in state 'RCConnectionStateConnected' (not implemented)
  *
  *  @param digits A string of digits that will be sent
  */

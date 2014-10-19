@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TeleStax. All rights reserved.
 //
 
+/** @file RCDeviceDelegate.h */
+
 @class RCDevice;
 @class RCConnection;
 @class RCPresenceEvent;
@@ -14,6 +16,7 @@
  *  RCDevice notifies its delegate for events defined in this delegate protocol
  */
 @protocol RCDeviceDelegate<NSObject>
+
 @required
 /**
  *  Device stoped listening for incoming connections
@@ -55,3 +58,4 @@
  */
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message;
 @end
+

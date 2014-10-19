@@ -111,7 +111,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)disconnectAll
 {
     NSLog(@"[RCDevice disconnectAll]");
-    
 }
 
 #pragma mark SipManager Delegate methods

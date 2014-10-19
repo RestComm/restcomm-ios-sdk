@@ -3,6 +3,20 @@
 # This script creates a shell environment depending on the arguments we
 # provide, in which we are then able to build for simulator (either i386 or
 # x86_64) or for device (currently armv7 or armv7s) without issues.
+#
+# Examples:
+# a. simulator - 32 bit
+#   $ . ./ios.script.bash simulator i386
+#   $ ./configure --host=i386-apple-darwin --prefix=...
+# b. simulator - 64 bit
+#   $ . ./ios.script.bash simulator x86_64
+#   $ ./configure --host=x86_64-apple-darwin --prefix=...
+# c. device - armv7
+#   $ . ./ios.script.bash iphoneos armv7
+#   $ ./configure --host=armv7-apple-darwin --prefix=...
+# d. device - armv7s
+#   $ . ./ios.script.bash iphoneos armv7s
+#   $ ./configure --host=armv7s-apple-darwin --prefix=...
 
 
 SDK="iphoneos"

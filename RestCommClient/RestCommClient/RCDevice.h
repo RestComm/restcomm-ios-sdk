@@ -12,13 +12,15 @@
 #import "RCConnectionDelegate.h"
 #import "SipManager.h"
 
+/** @file RCDevice.h */
+
 /**
- Device State
+ * Device State
  */
 typedef enum {
-    RCDeviceStateOffline = 0,  /** Device is offline */
-	RCDeviceStateReady,  /** Device is ready to make and receive connections */
-	RCDeviceStateBusy  /** Device is busy */
+    RCDeviceStateOffline = 0,  /**< Device is offline */
+	RCDeviceStateReady,  /**< Device is ready to make and receive connections */
+	RCDeviceStateBusy  /**< Device is busy */
 } RCDeviceState;
 
 extern NSString* const RCDeviceCapabilityIncomingKey;
@@ -29,36 +31,35 @@ extern NSString* const RCDeviceCapabilityApplicationSIDKey;
 extern NSString* const RCDeviceCapabilityApplicationParametersKey;
 extern NSString* const RCDeviceCapabilityClientNameKey;
 
-
 @class RCConnection;
 
 /**
  *  Represents an abstraction of a communication device able to make and receive calls, send and receive messages etc
  */
-@interface RCDevice : NSObject <SipManagerDeviceDelegate,NSURLConnectionDelegate>
+@interface RCDevice : NSObject<SipManagerDeviceDelegate, NSURLConnectionDelegate>
 /**
  *  Device state
  */
 @property (nonatomic, readonly) RCDeviceState state;
+
 /**
  *  Device capabilities
  */
-
 @property (nonatomic, readonly) NSDictionary* capabilities;
+
 /**
  *  Delegate that will be receiving RCDevice events
  */
-
 @property (nonatomic, assign) id<RCDeviceDelegate> delegate;
+
 /**
  *  Sound for incoming connections enabled
  */
-
 @property (nonatomic) BOOL incomingSoundEnabled;
+
 /**
  *  Sound for outgoing connections enabled
  */
-
 @property (nonatomic) BOOL outgoingSoundEnabled;
 
 /**
@@ -82,14 +83,14 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)listen;
 
 /**
- *  Stop listening for incoming connections
+ *  Stop listening for incoming connections (not implemented)
  */
 - (void)unlisten;
 
 /**
  *  Update Capability Token
  *
- *  @param capabilityToken New Capability Token
+ *  @param capabilityToken New Capability Token (not implemented)
  */
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
 
@@ -112,7 +113,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
 
 /**
- *  Disconnect all connections
+ *  Disconnect all connections (not implemented)
  */
 - (void)disconnectAll;
 
@@ -122,5 +123,5 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param params Dictionary of key/value pairs of the parameters that will be updated
  */
 - (void) updateParams:(NSDictionary*)params;
-
 @end
+
