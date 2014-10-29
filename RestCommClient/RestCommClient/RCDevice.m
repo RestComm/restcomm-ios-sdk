@@ -61,8 +61,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self populateCapabilitiesFromToken:capabilityToken];
         
         // initialize, register and set delegate
-        NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:alice@telestax.com", @"aor",
-                                 @"sip:192.168.2.30:5080", @"registrar", nil];
+        NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
+                                 @"sip:192.168.2.32:5080", @"registrar", nil];
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:params];
         [self.sipManager eventLoop];
     }
