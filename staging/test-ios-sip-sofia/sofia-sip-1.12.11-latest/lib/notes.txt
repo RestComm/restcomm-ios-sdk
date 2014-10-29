@@ -1,3 +1,0 @@
-libsofia-sip-ua.a is the currently used lib in the project, it is taken from
-the latest version of gitorious repo for sip-sofia. libsofia-sip-ua.a.1-12-11
-on the other hand is the last official sources from sourceforge
