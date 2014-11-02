@@ -32,8 +32,9 @@
     NSString* capabilityToken = @"";
     
     // let's hardcode a template for RestComm, so that only the username is needed in our methods below
-    self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.32:5080" forKey:@"uas-uri-template"];
-
+    //self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.32:5080" forKey:@"uas-uri-template"];
+    self.parameters = [[NSMutableDictionary alloc] init];
+    
     // #INIT-CLIENT: initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
 
@@ -46,6 +47,12 @@
                                            action:@selector(hideKeyBoard)];
     
     [self.view addGestureRecognizer:tapGesture];
+    [self prepareSounds];
+#ifdef DEBUG
+    // set some defaults when in debug to avoid typing
+    self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
+#endif
+    
 }
 
 - (void)hideKeyBoard
@@ -64,8 +71,7 @@
 // ---------- UI events
 - (IBAction)sendPressed:(id)sender
 {
-    // hardcode Alice for now
-    [self.parameters setObject:@"alice" forKey:@"username"];
+    [self.parameters setObject:self.sipUriText.text forKey:@"username"];
     
     // #SEND-MSG: send an instant message using RCDevice
     [self.device sendMessage:self.sipMessageText.text to:self.parameters];
@@ -83,7 +89,7 @@
     
     // #START-CONNECTION: call the other party
     self.connection = [self.device connect:self.parameters delegate:self];
-    self.sipUriText.text = @"";
+    //self.sipUriText.text = @"";
 
     // hide keyboard
     [self.sipUriText endEditing:false];
@@ -91,6 +97,9 @@
 
 - (IBAction)answerPressed:(id)sender
 {
+    [self.ringingPlayer stop];
+    self.ringingPlayer.currentTime = 0.0;    
+
     [self.pendingIncomingConnection accept];
     self.connection = self.pendingIncomingConnection;
     [self.answerButton.layer removeAllAnimations];
@@ -98,6 +107,9 @@
 
 - (IBAction)declinePressed:(id)sender
 {
+    [self.ringingPlayer stop];
+    self.ringingPlayer.currentTime = 0.0;
+    
     // #REJECT: reject the pending RCConnection
     [self.pendingIncomingConnection reject];
     
@@ -135,12 +147,14 @@
 // #RECV-MSG: received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
 {
-    [self prependToDialog:message sender:@"Alice"];
+    [self.messagePlayer play];
+    [self prependToDialog:message sender:@"alice"];
 }
 
 // #RECV-CONNECTION: 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
+    [self.ringingPlayer play];
     self.pendingIncomingConnection = connection;
     
     // let's add some animation to get users attention (alpha)
@@ -193,6 +207,35 @@
 {
     NSString* updatedDialog = [NSString stringWithFormat:@"%@: %@\n%@", sender, msg, self.sipDialogText.text];
     self.sipDialogText.text = [NSString stringWithString:updatedDialog];
+}
+
+- (void)prepareSounds
+{
+    // message
+    NSString * filename = @"message.mp3";
+    // we are assuming the extension will always be the last 3 letters of the filename
+    NSString * file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
+    
+    NSError *error;
+    self.messagePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
+    if (!self.messagePlayer) {
+        NSLog(@"Error: %@", [error description]);
+        return;
+    }
+    
+    // ringing
+    filename = @"ringing.mp3";
+    // we are assuming the extension will always be the last 3 letters of the filename
+    file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
+    
+    self.ringingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
+    if (!self.ringingPlayer) {
+        NSLog(@"Error: %@", [error description]);
+        return;
+    }
+    self.ringingPlayer.numberOfLoops = -1; // repeat forever
 }
 
 - (BOOL)shouldAutorotate

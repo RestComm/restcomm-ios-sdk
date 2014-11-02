@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>   // sounds
+
 
 #import "RestCommClient.h"
 
@@ -15,4 +17,6 @@
 @property (nonatomic,retain) RCConnection* connection;
 @property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property NSMutableDictionary * parameters;
+@property AVAudioPlayer * messagePlayer;
+@property AVAudioPlayer * ringingPlayer;
 @end

@@ -22,6 +22,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE56121B1A064F5B009C9A4F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
+		AE5612201A0651B2009C9A4F /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE56121D1A0651B2009C9A4F /* calling.mp3 */; };
+		AE5612211A0651B2009C9A4F /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE56121E1A0651B2009C9A4F /* message.mp3 */; };
+		AE5612221A0651B2009C9A4F /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE56121F1A0651B2009C9A4F /* ringing.mp3 */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -75,6 +79,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AE56121D1A0651B2009C9A4F /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
+		AE56121E1A0651B2009C9A4F /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
+		AE56121F1A0651B2009C9A4F /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* test-ios-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-ios-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -108,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE56121B1A064F5B009C9A4F /* AVFoundation.framework in Frameworks */,
 				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
 				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
@@ -128,6 +137,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE56121C1A0651B2009C9A4F /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				AE56121D1A0651B2009C9A4F /* calling.mp3 */,
+				AE56121E1A0651B2009C9A4F /* message.mp3 */,
+				AE56121F1A0651B2009C9A4F /* ringing.mp3 */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +171,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE56121A1A064F5B009C9A4F /* AVFoundation.framework */,
 				AE79D31919BC8DAD0023306C /* Foundation.framework */,
 				AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */,
 				AE79D31D19BC8DAD0023306C /* UIKit.framework */,
@@ -190,6 +210,7 @@
 		AED971A719E9901D000F7A8E /* test-ios-sip-sofia */ = {
 			isa = PBXGroup;
 			children = (
+				AE56121C1A0651B2009C9A4F /* sounds */,
 				AED971A819E9901D000F7A8E /* AppDelegate.h */,
 				AED971A919E9901D000F7A8E /* AppDelegate.m */,
 				AED971AA19E9901D000F7A8E /* Main_iPad.storyboard */,
@@ -311,10 +332,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED971C219E9901D000F7A8E /* test-ios-client-Info.plist in Resources */,
+				AE5612201A0651B2009C9A4F /* calling.mp3 in Resources */,
 				AED971BC19E9901D000F7A8E /* Main_iPhone.storyboard in Resources */,
 				AED971BE19E9901D000F7A8E /* Images.xcassets in Resources */,
+				AE5612211A0651B2009C9A4F /* message.mp3 in Resources */,
 				AED971BD19E9901D000F7A8E /* InfoPlist.strings in Resources */,
 				AED971BB19E9901D000F7A8E /* Main_iPad.storyboard in Resources */,
+				AE5612221A0651B2009C9A4F /* ringing.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

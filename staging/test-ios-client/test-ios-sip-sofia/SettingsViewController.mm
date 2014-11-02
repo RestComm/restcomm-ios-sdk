@@ -42,7 +42,7 @@
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     self.aorText.text = @"sip:bob@telestax.com";
-    self.registrarText.text = @"sip:192.168.2.32:5080";
+    self.registrarText.text = @"23.23.228.238";
 #endif
 }
 
@@ -70,7 +70,9 @@
         update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        [params setObject:self.registrarText.text forKey:@"registrar"];
+        [params setObject:[NSString stringWithFormat:@"sip:%@:5080", self.registrarText.text] forKey:@"registrar"];
+        //[params setObject:self.registrarText.text forKey:@"registrar"];
+        //[params setObject:[NSString stringWithFormat:@"sip:%@@%@:5080", @"%@", self.registrarText.text] forKey:@"uas-uri-template"];
         update = true;
     }
 

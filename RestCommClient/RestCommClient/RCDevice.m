@@ -61,6 +61,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self populateCapabilitiesFromToken:capabilityToken];
         
         // initialize, register and set delegate
+        // TODO: fix this
         NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
                                  @"sip:192.168.2.32:5080", @"registrar", nil];
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:params];
@@ -96,16 +97,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     connection.incoming = false;
     
     // make a call to whoever parameters designate
-    NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
-    [self.sipManager invite:uri];
+    //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
+    //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
+    [self.sipManager invite:[parameters objectForKey:@"username"]];
 
     return connection;
 }
 
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
 {
-    NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
-    [self.sipManager message:message to:uri];
+    //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
+    [self.sipManager message:message to:[parameters objectForKey:@"username"]];
 }
 
 - (void)disconnectAll

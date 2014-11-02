@@ -1720,7 +1720,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     printf("%s: REGISTER %s - registering address to network\n", ssc->ssc_name, op->op_ident);
     nua_register(op->op_handle, 
 		 TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
-		 NUTAG_M_FEATURES("expires=180"),
+		 NUTAG_M_FEATURES("expires=3600"),
 		 TAG_NULL());
   }
 
