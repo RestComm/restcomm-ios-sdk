@@ -95,6 +95,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     self.sipManager.connectionDelegate = connection;
     connection.sipManager = self.sipManager;
     connection.incoming = false;
+    connection.state = RCConnectionStatePending;
     
     // make a call to whoever parameters designate
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];

@@ -34,43 +34,51 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 @class RCConnection;
 
 /**
- *  Represents an abstraction of a communication device able to make and receive calls, send and receive messages etc
+ *  RCDevice Represents an abstraction of a communications device able to make and receive calls, send and receive messages etc. Remember that
+ *  in order to be notified of RestComm Client events you need to set a delegate to RCDevice and implement the applicable methods.
+ *  If you want to initiate a media connection towards another party you use [RCDevice connect:delegate:] which returns an RCConnection object representing
+ *  the new outgoing connection. From then on you can act on the new connection by applying RCConnection methods on the handle you got from [RCDevice connect:delegate:].
+ *  If there’s an incoming connection you will be notified by [RCDeviceDelegate device:didReceiveIncomingConnection:] delegate method. At that point you can use RCConnection methods to
+ *  accept or reject the connection.
+ *
+ *  As far as instant messages are concerned you can send a message using [RCDevice sendMessage:to:] and you will be notified of an incoming message 
+ *  via [RCDeviceDelegate device:didReceiveIncomingMessage:] delegate method.
  */
 @interface RCDevice : NSObject<SipManagerDeviceDelegate, NSURLConnectionDelegate>
 /**
- *  Device state
+ *  @abstract Device state (**Not Implemented yet**)
  */
 @property (nonatomic, readonly) RCDeviceState state;
 
 /**
- *  Device capabilities
+ *  @abstract Device capabilities (**Not Implemented yet**)
  */
 @property (nonatomic, readonly) NSDictionary* capabilities;
 
 /**
- *  Delegate that will be receiving RCDevice events
+ *  @abstract Delegate that will be receiving RCDevice events described at RCDeviceDelegate
  */
 @property (nonatomic, assign) id<RCDeviceDelegate> delegate;
 
 /**
- *  Sound for incoming connections enabled
+ *  @abstract Is sound for incoming connections enabled (**Not Implemented yet**)
  */
 @property (nonatomic) BOOL incomingSoundEnabled;
 
 /**
- *  Sound for outgoing connections enabled
+ *  @abstract Is sound for outgoing connections enabled (**Not Implemented yet**)
  */
 @property (nonatomic) BOOL outgoingSoundEnabled;
 
 /**
- *  Sound for disconnect enabled
+ *  @abstract Is sound for disconnect enabled (**Not Implemented yet**)
  */
 @property (nonatomic) BOOL disconnectSoundEnabled;
 
 /**
  *  Initialize a new RCDevice object
  *
- *  @param capabilityToken Capability Token
+ *  @param capabilityToken Capability Token (**Not Implemented yet**)
  *  @param delegate        Delegate of RCDevice
  *
  *  @return Newly initialized object
@@ -78,24 +86,24 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate;
 
 /**
- *  Start listening for incoming connections
+ *  @abstract Start listening for incoming connections (**Not Implemented yet** -RCDevice is configured to listen once it is instantiated)
  */
 - (void)listen;
 
 /**
- *  Stop listening for incoming connections (not implemented)
+ *  @abstract Stop listening for incoming connections (**Not Implemented yet**)
  */
 - (void)unlisten;
 
 /**
- *  Update Capability Token
+ *  @abstract Update Capability Token
  *
- *  @param capabilityToken New Capability Token (not implemented)
+ *  @param capabilityToken New Capability Token (**Not Implemented**)
  */
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
 
 /**
- *  Create an outgoing connection to an endpoint
+ *  @abstract Create an outgoing connection to an endpoint
  *
  *  @param parameters Connections such as the endpoint we want to connect to
  *  @param delegate   The delegate object that will receive events when the connection state changes
@@ -105,7 +113,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 
 /**
- *  Send an instant message
+ *  @abstract Send an instant message to a an endpoint
  *
  *  @param message  Message text
  *  @param receiver Message receiver
@@ -113,12 +121,12 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
 
 /**
- *  Disconnect all connections (not implemented)
+ *  @abstract Disconnect all connections (**Not implemented yet**)
  */
 - (void)disconnectAll;
 
 /**
- *  Update RCDevice parameters
+ *  @abstract Update RCDevice parameters
  *
  *  @param params Dictionary of key/value pairs of the parameters that will be updated
  */

@@ -13,13 +13,13 @@
 @class RCConnection;
 
 /**
- *  RCConnection notifies its delegate for events defined in this delegate protocol
+ *  RCConnection notifies its delegate for connection related events defined in this delegate protocol
  */
 @protocol RCConnectionDelegate<NSObject>
 
 @required
 /**
- *  When a connection failed and got disconnected
+ *  @abstract Emitted when a connection failed and got disconnected
  *
  *  @param connection Connection that failed
  *  @param error      Description of the error of the Connection
@@ -28,21 +28,21 @@
 
 @optional
 /**
- *  Connection is trying to connect
+ *  @abstract Emitted when an RCConnection start to connect
  *
  *  @param connection Connection of interest
  */
 - (void)connectionDidStartConnecting:(RCConnection*)connection;
 
 /**
- *  Connection is established
+ *  @abstract Connection is established
  *
  *  @param connection Connection of interest
  */
 - (void)connectionDidConnect:(RCConnection*)connection;
 
 /**
- *  Connection was disconnected
+ *  @abstract Connection was disconnected (**Not Implemented yet**)
  *
  *  @param connection Connection of interest
  */

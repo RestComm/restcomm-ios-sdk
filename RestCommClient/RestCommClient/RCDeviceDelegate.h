@@ -13,29 +13,29 @@
 @class RCPresenceEvent;
 
 /**
- *  RCDevice notifies its delegate for events defined in this delegate protocol
+ *  RCDevice notifies its delegate for RCDevice related events defined in this delegate protocol
  */
 @protocol RCDeviceDelegate<NSObject>
 
 @required
 /**
- *  Device stoped listening for incoming connections
+ *  @abstract RCDevice stopped listening for incoming connections (**Not Implemented yet**)
  *
  *  @param device Device of interest
- *  @param error  The reason it stoped
+ *  @param error  The reason it stopped
  */
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error;
 
 @optional
 /**
- *  Device started listening for incoming connections
+ *  @abstract RCDevice started listening for incoming connections (**Not Implemented yet**)
  *
  *  @param device Device of interest
  */
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device;
 
 /**
- *  Device received incoming connection
+ *  @abstract RCDevice received incoming connection
  *
  *  @param device     Device of interest
  *  @param connection Newly established connection
@@ -43,7 +43,7 @@
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection;
 
 /**
- *  Device received presence update (TODO)
+ *  @abstract RCDevice received presence update (**Not implemented yet**)
  *
  *  @param device        Device of interest
  *  @param presenceEvent Presence event
@@ -51,10 +51,10 @@
 - (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent;
 
 /**
- *  Device received incoming instant message
+ *  @abstract RCDevice received incoming instant message
  *
  *  @param device  Device of interest
- *  @param message Instant message
+ *  @param message Instant message text
  */
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message;
 @end
