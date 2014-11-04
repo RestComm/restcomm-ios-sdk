@@ -1,6 +1,6 @@
 //
 //  test_ios_sip_sofiaTests.m
-//  test-ios-sip-sofiaTests
+//  restcomm-messengerTests
 //
 //  Created by Antonis Tsakiridis on 9/7/14.
 //  Copyright (c) 2014 TeleStax. All rights reserved.

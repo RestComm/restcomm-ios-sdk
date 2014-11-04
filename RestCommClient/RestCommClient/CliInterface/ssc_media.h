@@ -1,11 +1,3 @@
-//
-//  ssc_media-cpp.h
-//  test-ios-sip-sofia
-//
-//  Created by Antonis Tsakiridis on 9/15/14.
-//  Copyright (c) 2014 TeleStax. All rights reserved.
-//
-
 #ifndef HAVE_SSC_MEDIA_H
 #define HAVE_SSC_MEDIA_H
 
