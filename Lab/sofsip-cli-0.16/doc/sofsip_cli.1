@@ -1,0 +1,101 @@
+.\" In .TH, FOO should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.\"
+.\" This template provided by Tom Christiansen <tchrist@jhereg.perl.com>.
+.\"
+.\" From Debian package 'man-db':
+.\" /usr/share/doc/man-db/examples/manpage.example 
+.\" .TH FOO SECTION
+.TH SOFSIP_CLI 1
+.SH NAME
+sofsip_cli \- console-mode SIP VoIP/IM client
+.SH SYNOPSIS
+.PP
+.B sofsip_cli
+[ options ] 
+.I sip-contact-addr
+.SH DESCRIPTION
+.\" Putting a newline after each sentence can generate better output.
+Sofsip_cli is a small SIP VoIP/IM client based on
+the Sofia-SIP libraries, and the gstreamer media 
+subsystem.
+.SH OPTIONS
+The following command-line options can be used to modify sofsip_cli
+behaviour: 
+.TP
+.BR --autoanswer
+If given, answer incoming call automatically without prompting the user.
+Defaults to 'FALSE'.
+.TP
+.BR --contact\ SIP URI
+The SIP contact address. E.g., "sip:*:50600" to bind to all local IP
+addresses with port 50600. You can also specify additional transport
+parameters, e.g. "sip:*:5060;transport=tcp,udp". Defaults to
+"sip:local-interface-ip:5060".
+.TP
+.BR --media-addr \ ip-address
+Local interface that should be used by the RTP/RTCP stack.
+.TP
+.BR --media-impl \ {dummy,gstreamer,farsight}
+Select which media implementation to use.
+.TP
+.BR --proxy\ SIP URI
+Use a SIP proxy for outgoing message. Defaults to an emptry string (no
+outgoing proxy used).
+.TP
+.BR --stun-server\ hostname
+The STUN server address to use for NAT traversal. If no server
+is specified, sofsip_cli tries to find the STUN server address
+from the DNS-SRV records of the SIP address domain. Defaults to 
+an emptry string.
+.TP
+.I sip-public-addr
+The public SIP address (AOR) to use. E.g. "sip:first.surname@foobar.com".
+Defaults to "sip:local-interface-ip".
+.TP
+See also the ENVIRONMENT section.
+.SH EXAMPLES
+To be defined.
+.SH ENVIRONMENT
+Sofsip_cli understands the following environment variables.
+.TP
+.BR SOFSIP_ADDRESS
+AoR (URI), e.g. "sip:first.surname@domain.com".
+Defaults to "sip:local-interface-ip".
+.TP
+.BR SOFSIP_PROXY
+SIP outbound proxy (URI), e.g. "sip:sip-proxy.domain.com".
+Defaults to an emptry string (no proxy used).
+.TP
+.BR SOFSIP_REGISTRAR
+SIP registrar/server (URI), e.g. "sip:sip-server.domain.com".
+Defaults to an emptry string (no registrar specified).
+.TP
+.BR SOFSIP_CERTDIR
+Directory where to look for TLS certificates (filesystem path).
+Defaults to "$HOME/.sip/auth".
+.TP
+.BR SOFSIP_STUN_SERVER
+Specify the STUN server address to use. If empty, the stack may
+perform a DNS SRV look-up for a STUN server advertized by the
+home domain of the user. Defaults to "".
+.TP
+.BR SOFSIP_AUDIO
+Specify a configuration hint for audio device subsystem selection.
+The text should match a GStreamer plugin description for certain
+audio device subsystem. Whether the hint is taken into consideration
+or not, depends on the media implementation selected.
+Defaults to "ALSA" (other alternatives "OSS", "OSX", and so on).
+.TP
+
+.BR TPORT_LOG
+An internal Sofia-SIP variable. If set to "1", received and sent
+signaling messages are printed out to stdout. This is a very useful
+mechanism for debugging.
+.SH AUTHOR
+See AUTHORS file in the sofsip-cli distribution package.
+.SH HISTORY
+Based on 'nua_cli' from the sofia-sip package.
+.SH "SEE ALSO"
+.\" Always quote multiple words for .SH
+To be defined...

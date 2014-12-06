@@ -1,0 +1,14 @@
+Kai Vehmanen <first.surname@nokia.com>
+Johannes Eickhold <jeickhold -at gmx -dot de>
+Stefano Sabatini <s.sabatini -at- reilabs -dot- com>
+
+Plus lots of code from Sofia-SIP, see sofia-sip/AUTHORS,
+as well as some glib 2.6 code (see src/replace*.[hc]).
+
+File specific notes
+-------------------
+
+The file src/replace_goption.c is a replacement for goption 
+objects for glib 2.4. It has been taken from goption.c $1.47$ 
+in cvs.gnome.org. See the file header for full list of
+authors.
