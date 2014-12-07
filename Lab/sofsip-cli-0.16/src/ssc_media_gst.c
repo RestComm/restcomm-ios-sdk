@@ -46,6 +46,7 @@
 #include <errno.h>
 
 #include <gst/gst.h>
+#include <gio/gio.h>
 
 #include "sdp_utils.h"
 #include "ssc_media_gst.h"
@@ -513,7 +514,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
   SscMediaGst *self = SSC_MEDIA_GST(data);
   SscMedia *parent = SSC_MEDIA (self);
   GstElementFactory *factory;
-  GstElement *decoder, *depayloader, *audiosink;
+  GstElement *decoder, *depayloader, *audiosink, *conv;
   GstElement *src1, *codec, *payload, *udpsrc, *udpsink;
   gsdp_codec_factories_t *factories = gsdp_codec_factories_create("PCMU");
 
@@ -523,7 +524,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 
   if (netsocket != NULL) {
     if (self->sm_rtp_sockfd == -1) 
-      g_object_get(G_OBJECT(netsocket), "sockfd", &self->sm_rtp_sockfd);
+      g_object_get(G_OBJECT(netsocket), "sockfd", &self->sm_rtp_sockfd, NULL);
   }
   
   assert(self->sm_rtp_sockfd > -1);
@@ -540,14 +541,29 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
   if (!self->sm_rx_elements && factories) {
     self->sm_rx_elements = TRUE;
 
+    GError *err;
+    GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
+    assert (gsocket != NULL);
+
+    // TODO: this should probably be set dynamically based on SDP negotiation
+    GstCaps *pt_caps = gst_caps_new_simple ("application/x-rtp",
+		    "clock-rate", G_TYPE_INT, 8000,
+		    "encoding-name", G_TYPE_STRING, "PCMU",
+		    NULL);
+
     /* step: create UDP source */
     udpsrc = gst_element_factory_make ("udpsrc", "src");
     assert (udpsrc != NULL);
     self->sm_udpsrc = udpsrc;
     g_object_set(G_OBJECT(self->sm_udpsrc), 
-		 "sockfd", self->sm_rtp_sockfd,
+		 "socket", gsocket,
 		 "port", self->sm_rtp_lport,
+		 "caps", pt_caps,
 		 NULL);
+
+    // create a converter just in case
+    //conv = gst_element_factory_make ("audioconvert",  "converter");
+    //assert(conv != NULL);
 
     /* step: create depayloader->decoder->sink chain */
     depayloader = gst_element_factory_create (factories->depayloader, "depayloader");
@@ -559,14 +575,15 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     assert(decoder != NULL);
     self->sm_decoder = decoder;
 
-    audiosink = ssc_media_create_audio_sink(self->sm_ad_output_type);
+    //audiosink = ssc_media_create_audio_sink(self->sm_ad_output_type);
+    audiosink = gst_element_factory_make ("alsasink", "ALSA");
     assert(audiosink != NULL);
     g_message("Created audio sink of type '%s' for playback.", self->sm_ad_output_type);
     if (!strcmp(self->sm_ad_output_type, "ALSA") && self->sm_ad_output_device)
       g_object_set (G_OBJECT (audiosink), "device", self->sm_ad_output_device, NULL);
     g_object_set (G_OBJECT (audiosink), "latency-time", G_GINT64_CONSTANT (20000), NULL);
     g_object_set (G_OBJECT (audiosink), "buffer-time", G_GINT64_CONSTANT (160000), NULL);
-    /* workaround for changed behaviour in gstreamer-0.10.9: */
+    // workaround for changed behaviour in gstreamer-0.10.9:
     g_object_set (G_OBJECT (audiosink), "sync", FALSE, NULL);
 
     /* step: add elements to the bin and establish links */
@@ -650,6 +667,24 @@ static gboolean priv_cb_pipeline_bus (GstBus *bus, GstMessage *message, gpointer
 
     case GST_MESSAGE_STATE_CHANGED:
       /* state changed */
+      g_print ("%s: State changed\n", G_STRFUNC);
+      break;
+
+    case GST_MESSAGE_STREAM_STATUS: {
+      // stream status changed
+      g_print ("%s: Stream status changed\n", G_STRFUNC);
+      /*
+      GstStreamStatusType *type = NULL;
+      GstElement **owner;
+      gst_message_parse_stream_status (message, type, owner);
+      g_print ("%s: Stream status changed for element %s (%d).\n", 
+	       G_STRFUNC, gst_element_get_name(*owner),
+	       *type);
+      */
+      break;
+    }
+    case GST_MESSAGE_TAG:
+      g_print ("%s: Tag found\n", G_STRFUNC);
       break;
 
     default:
@@ -733,7 +768,7 @@ static int priv_update_tx_elements(SscMediaGst *self)
 
   if (r_c && r_sdp) {
     g_return_val_if_fail(self->sm_udpsink != NULL, -1);
-    g_message("RTP destination is: %s:%u.", r_c->c_address, r_sdp->sdp_media->m_port);
+    g_message("RTP destination is: %s:%lu.", r_c->c_address, r_sdp->sdp_media->m_port);
     g_object_set(G_OBJECT(self->sm_udpsink), 
 		 "host", r_c->c_address, 
 		 "port", r_sdp->sdp_media->m_port,

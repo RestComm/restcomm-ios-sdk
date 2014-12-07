@@ -171,7 +171,7 @@ GstElement* ssc_media_create_audio_src(const char* type)
   GstElement *res = NULL;
   GList *i; 
 
-  i = gst_registry_get_feature_list (gst_registry_get_default(), GST_TYPE_ELEMENT_FACTORY);
+  i = gst_registry_get_feature_list (gst_registry_get(), GST_TYPE_ELEMENT_FACTORY);
 
   while(i) {
     factory = GST_ELEMENT_FACTORY(i->data);
@@ -197,7 +197,7 @@ GstElement* ssc_media_create_audio_sink(const char* type)
   GstElement *res = NULL;
   GList *i; 
 
-  i = gst_registry_get_feature_list (gst_registry_get_default(), GST_TYPE_ELEMENT_FACTORY);
+  i = gst_registry_get_feature_list (gst_registry_get(), GST_TYPE_ELEMENT_FACTORY);
 
   while(i) {
     factory = GST_ELEMENT_FACTORY(i->data);
@@ -205,7 +205,7 @@ GstElement* ssc_media_create_audio_sink(const char* type)
       const char* klass_tags = gst_element_factory_get_klass(factory);
       if (strstr(klass_tags, "Sink") && strstr(klass_tags, "Audio") &&
 	  strstr(gst_element_factory_get_longname(factory), type))  {
-	/* g_debug("%s: match of %s and %s (tags:%s).\n", __func__, gst_element_factory_get_longname(factory), type, klass_tags); */
+	g_print("%s: match of %s and %s (tags:%s).\n", __func__, gst_element_factory_get_longname(factory), type, klass_tags);
 	res = gst_element_factory_create(factory, "audiosink");
 	break;
       }

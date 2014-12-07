@@ -20041,8 +20041,8 @@ MEDIA_IMPLS=" dummy"
 X_MEDIA_IMPLS=""
 
 
-GST_REQUIRED=0.10
-GST_MAJORMINOR=0.10
+GST_REQUIRED=1.0
+GST_MAJORMINOR=1.0
 
 pkg_failed=no
 echo "$as_me:$LINENO: checking for GST" >&5
