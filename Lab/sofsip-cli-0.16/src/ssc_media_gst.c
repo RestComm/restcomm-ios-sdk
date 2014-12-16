@@ -456,19 +456,22 @@ static int priv_setup_rtpelements(SscMediaGst *self)
   /* precond: */
   g_assert(self->sm_depay == NULL);
 
+  /*
   pri_sockfd = 
       farsight_netsocket_bind_udp_port(AF_INET, 
-				       NULL, /* local-if */
-				       &l_port, /* use a random port */
-				       TRUE, /* scan if l_port was reserved */
-				       NULL /* do not request for aux sock */
+				       NULL, // local-if
+				       &l_port, // use a random port
+				       TRUE, // scan if l_port was reserved 
+				       NULL // do not request for aux sock 
 				       );
+  */
 
-  if (pri_sockfd >= 0) {
-    self->sm_rtp_sockfd = pri_sockfd;
-    self->sm_rtcp_sockfd = aux_sockfd;
+  //if (pri_sockfd >= 0) {
+    //self->sm_rtp_sockfd = pri_sockfd;
+    //self->sm_rtcp_sockfd = aux_sockfd;
     self->sm_rtp_lport = l_port;
 
+    /*
     if (self->sm_stun_server || self->sm_stun_domain) {
       self->sm_netsocket = NULL;
       netsocket_type = FARSIGHT_NETSOCKET_STUN_TYPE;
@@ -483,7 +486,7 @@ static int priv_setup_rtpelements(SscMediaGst *self)
 			  G_CALLBACK (priv_cb_ready), self);
       	self->sm_netsocket = netsocket;
 
-	/* note: the bind will result in a call of sscpriv_cb_ready */
+	// note: the bind will result in a call of sscpriv_cb_ready 
 	cb_sched = farsight_netsocket_map(netsocket);
       
 	if (cb_sched != TRUE) {
@@ -492,17 +495,21 @@ static int priv_setup_rtpelements(SscMediaGst *self)
 	}
       }
     }
+    */
 
     if (cb_sched != TRUE) {
       /* STUN not used, emit ready immediately */
       priv_cb_ready(NULL, self);
     }
+  /*
   }
   else {
     g_error("%s: unable to bind to local sockets.\n", G_STRFUNC);
   }
+  */
 
-  return (pri_sockfd >= 0 ? 0 : -1);
+  //return (pri_sockfd >= 0 ? 0 : -1);
+  return 0;
 }
 
 /**
@@ -522,12 +529,14 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 
   g_debug(G_STRFUNC);
 
+  /*
   if (netsocket != NULL) {
     if (self->sm_rtp_sockfd == -1) 
       g_object_get(G_OBJECT(netsocket), "sockfd", &self->sm_rtp_sockfd, NULL);
   }
   
   assert(self->sm_rtp_sockfd > -1);
+  */
   
   /* step: create the pipeline */
   if (!self->sm_pipeline) {
@@ -541,9 +550,11 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
   if (!self->sm_rx_elements && factories) {
     self->sm_rx_elements = TRUE;
 
+    /*
     GError *err;
     GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
     assert (gsocket != NULL);
+    */
 
     // TODO: this should probably be set dynamically based on SDP negotiation
     GstCaps *pt_caps = gst_caps_new_simple ("application/x-rtp",
@@ -556,7 +567,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     assert (udpsrc != NULL);
     self->sm_udpsrc = udpsrc;
     g_object_set(G_OBJECT(self->sm_udpsrc), 
-		 "socket", gsocket,
+		 //"socket", gsocket,
 		 "port", self->sm_rtp_lport,
 		 "caps", pt_caps,
 		 NULL);
@@ -615,10 +626,29 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     g_object_set (G_OBJECT (payload), "max-ptime", 20 * GST_MSECOND, NULL); /* 20msec */
 
     /* step: create UDP sink */
+    /* didn't work
+    GError *err;
+    GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
+    assert (gsocket != NULL);
+
+    // TODO: this should probably be set dynamically based on SDP negotiation
+    GstCaps *pt_caps = gst_caps_new_simple ("application/x-rtp",
+		    "clock-rate", G_TYPE_INT, 8000,
+		    "encoding-name", G_TYPE_STRING, "PCMU",
+		    NULL);
+    */
+
+    /* step: create UDP source */
     udpsink = gst_element_factory_make ("udpsink", "sink");
     assert (udpsink != NULL);
     self->sm_udpsink = udpsink;
 
+    /* didn't work
+    g_object_set(G_OBJECT(self->sm_udpsink), 
+		 "socket", gsocket,
+		 "port", self->sm_rtp_lport,
+		 NULL);
+    */
     /* step: add elements to the bin and establish links */
     gst_bin_add_many (GST_BIN (self->sm_pipeline), src1, codec, payload, udpsink, NULL);
     gst_element_link_many (src1, codec, payload, udpsink, NULL);
@@ -755,7 +785,7 @@ static int priv_update_rx_elements(SscMediaGst *self)
 }
 
 /**
- * Updates configuration of XX elements of
+ * Updates configuration of TX elements of
  * an already activaded session.
  */
 static int priv_update_tx_elements(SscMediaGst *self)
