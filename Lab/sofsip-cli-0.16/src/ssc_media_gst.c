@@ -642,6 +642,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     udpsink = gst_element_factory_make ("udpsink", "sink");
     assert (udpsink != NULL);
     self->sm_udpsink = udpsink;
+    g_object_set (G_OBJECT (udpsink), "sync", FALSE, "async", FALSE, NULL);
 
     /* didn't work
     g_object_set(G_OBJECT(self->sm_udpsink), 
