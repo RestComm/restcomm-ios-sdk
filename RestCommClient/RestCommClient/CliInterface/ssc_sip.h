@@ -54,9 +54,6 @@ typedef struct ssc_conf_s ssc_conf_t;
 #include <sofia-sip/sl_utils.h>
 #include <sofia-sip/su_debug.h>
 
-#include <iostream>
-#include <list>
-
 typedef void (*ssc_exit_cb)(void);
 typedef void (*ssc_event_cb)(ssc_t *ssc, nua_event_t event, void *context);
 typedef void (*ssc_registration_cb)(ssc_t *ssc, int registered, void *context);
@@ -90,13 +87,8 @@ struct ssc_s {
 
   int           ssc_autoanswer;
 
-  // IMPORTANT: The stl list needs to be a pointer. If not, I think there's a problem with su_zalloc,
-  // which allocates space for the whole ssc struct. The problem manifests itself when trying
-  // to push to the list. I guess su_zalloc only works with malloc, not new
-  std::list<ssc_auth_item_t*> * ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */
-  int          ssc_input_fd;
-  int          ssc_output_fd;
-    
+  GList        *ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */ 
+
   int           ssc_ans_status; /**< Answer status */
   char const   *ssc_ans_phrase; /**< Answer status */
 
@@ -121,8 +113,8 @@ struct ssc_conf_s {
   const char   *ssc_proxy;	/**< SIP outbound proxy (SIP URI) */
   const char   *ssc_registrar;	/**< SIP registrar (SIP URI) */
   const char   *ssc_stun_server;/**< STUN server address (hostname, IP address) */
-  bool      ssc_autoanswer; /**< Whether to autoanswer to calls */
-  bool      ssc_register;	/**< Whether to register at startup */
+  gboolean      ssc_autoanswer; /**< Whether to autoanswer to calls */
+  gboolean      ssc_register;	/**< Whether to register at startup */
 };
 
 #if HAVE_FUNC
@@ -133,7 +125,7 @@ struct ssc_conf_s {
 #define enter (void)0
 #endif
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd);
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf);
 void ssc_destroy(ssc_t *self);
 
 void ssc_store_pending_auth(ssc_t *ssc, ssc_oper_t *op, sip_t const *sip, tagi_t *tags);
@@ -165,25 +157,5 @@ void ssc_zap(ssc_t *ssc, char *d);
 
 void ssc_print_payload(ssc_t *ssc, sip_payload_t const *pl);
 void ssc_print_settings(ssc_t *ssc);
-
-// reply sent back to the iOS App via pipe
-enum SipMsgEnum {
-    REPLY_AUTH = 1,
-    INCOMING_CALL,
-    INCOMING_MSG,
-    OUTGOING_RINGING,
-    OUTGOING_ESTABLISHED,
-};
-
-class SofiaReply {
-public:
-    SofiaReply();
-    SofiaReply(const int rc, const char * text);
-    static ssize_t send(const int fd, const SofiaReply * sofiaReply);
-    int rc;
-    char text[256];
-};
-
-
 
 #endif /* HAVE_SSC_SIP_H */

@@ -35,11 +35,9 @@
  * $Date$
  */
 
-/*
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-*/
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -48,11 +46,9 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <signal.h>
-#include "sofsip_cli.h"
 
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
-/*
 #if HAVE_GLIB
 #include <glib.h>
 #include <glib-object.h>
@@ -65,8 +61,8 @@
 #  if HAVE_GST
 #  include <gst/gst.h>
 #  endif
-#endif // HAVE_GLIB
-*/
+#endif /* HAVE_GLIB */
+
 typedef struct cli_s cli_t;
 
 #define SU_ROOT_MAGIC_T cli_t
@@ -74,7 +70,7 @@ typedef struct cli_s cli_t;
 #include "ssc_sip.h"
 #include "ssc_input.h"
 
-//#include <sofia-sip/su_glib.h>
+#include <sofia-sip/su_glib.h>
 
 typedef su_wait_t cli_input_t;
 
@@ -92,9 +88,6 @@ struct cli_s {
   su_home_t     cli_home[1];	/**< Our memory home */
   void         *cli_main;      /**< Pointer to mainloop */
   su_root_t    *cli_root;       /**< Pointer to application root */
-
-  int           cli_input_fd;  // pipe input file descriptor for commands
-  int           cli_output_fd;  // pipe input file descriptor for commands
 
   cli_input_t   cli_input;	/**< Input structure */
   unsigned      cli_init : 1;	/**< True if input is initialized */
@@ -121,7 +114,7 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 
 static cli_t *global_cli_p = NULL;
 
-int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
+int main(int ac, char *av[])
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -137,9 +130,6 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
   sigaction(SIGTERM, &sigact, NULL);
 #endif
 
-  cli->cli_input_fd = input_fd;
-  cli->cli_output_fd = output_fd;
-    
   /* step: initialize sofia su OS abstraction layer */
   su_init();
   su_home_init(cli->cli_home);
@@ -152,7 +142,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
     guint major, minor, micro, nano;
     gst_init (NULL, NULL);
     gst_version (&major, &minor, &micro, &nano);
-    printf ("This program is linked against GStreamer %d.%d.%d\n", major, minor, micro);
+    g_message ("This program is linked against GStreamer %d.%d.%d\n", major, minor, micro);
   }
 #endif
 #endif
@@ -169,7 +159,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
   assert(res == 0);
 
   /* step: create ssc signaling and media subsystem instance */
-  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
+  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf);
 
   if (res != -1 && cli->cli_ssc) {
 
@@ -197,7 +187,6 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
 
 static void sofsip_mainloop_create(cli_t *cli)
 {
-/*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GSource *gsource = NULL;
   GMainLoop *ptr = NULL;
@@ -208,56 +197,48 @@ static void sofsip_mainloop_create(cli_t *cli)
   g_source_attach(gsource, g_main_loop_get_context(ptr));
   cli->cli_main = (GMainLoop*)ptr;
 #else
-*/
   cli->cli_root = su_root_create(cli);
-//#endif
+#endif
 }
 
 static void sofsip_mainloop_run(cli_t *cli)
 {
-/*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
     GMainLoop *ptr = (GMainLoop*)cli->cli_main;
     g_main_loop_run(ptr);
 #else
- */
     su_root_run(cli->cli_root);
-//#endif
+#endif
 }
 
 static void sofsip_mainloop_destroy(cli_t *cli)
 {
-/*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GSource *source = su_glib_root_gsource(cli->cli_root);
   g_source_unref(source);
 #endif
-*/
+
   /* then the common part */
   su_root_destroy(cli->cli_root), cli->cli_root = NULL;
 
-    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   {
     GMainLoop *ptr = (GMainLoop*)cli->cli_main;
     g_main_loop_unref(ptr);
   }
 #else
-    */
   /* no-op */
-//#endif
+#endif
 }
 
 static void sofsip_shutdown_cb(void)
 {
-/*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GMainLoop *ptr = (GMainLoop*)global_cli_p->cli_main;
   g_main_loop_quit(ptr);
 #else
- */
   su_root_break(global_cli_p->cli_root);
-//#endif
+#endif
 }
 
 static void sofsip_signal_handler(int signo)
@@ -298,12 +279,10 @@ static void sofsip_help(cli_t *cli)
 /** Add command line (standard input) to be waited. */
 static int sofsip_init(cli_t *cli, int ac, char *av[])
 {
-  //ssc_conf_t *conf = cli->cli_conf;
+  ssc_conf_t *conf = cli->cli_conf;
   int i;
-    
-  /*
-  // gboolean b = FALSE;
-  // long, short, flags, arg, arg_data, desc, arg_desc
+  /* gboolean b = FALSE; */
+  /* long, short, flags, arg, arg_data, desc, arg_desc */
   GOptionEntry options[] = {
     { "autoanswer", 'a', 0, G_OPTION_ARG_NONE, &conf->ssc_autoanswer, "Auto-answer to calls", NULL },
     { "register", 'R', 0, G_OPTION_ARG_NONE, &conf->ssc_register, "Register at startup", NULL },
@@ -317,24 +296,15 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   };
   GOptionContext *context;
   GError *error = NULL;
-  */
-    
+
   /* step: process environment variables */
-  /*
   conf->ssc_aor = getenv("SOFSIP_ADDRESS");
   conf->ssc_proxy = getenv("SOFSIP_PROXY");
   conf->ssc_registrar = getenv("SOFSIP_REGISTRAR");
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
-   */
-  // hardcode some values for testing
-  //conf->ssc_aor = "sip:john@192.168.2.30:5080";
-    
-  //conf->ssc_aor = "sip:alice@telestax.com";
-  //conf->ssc_registrar = "sip:192.168.2.30:5080";
 
   /* step: process command line arguments */
-  /*
   context = g_option_context_new("- sofsip_cli usage");
   g_option_context_add_main_entries(context, options, "sofsip_cli");
 #if HAVE_GST
@@ -345,17 +315,16 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
       exit (1);
   }
   g_option_context_free(context);
-  */
+
   for (i = 1; i < ac; i++) {
     if (av[i] && av[i][0] != '-') {
       cli->cli_conf->ssc_aor = av[i];
       break;
     }
   }
-  // notice that in iOS we can't register STDIN; we get an error 'Invalid argument'
-  // in su_root_register() below. Let's use a pipe instead for iOS core app <-> sofia sip communication
-  su_wait_create(&cli->cli_input, cli->cli_input_fd, SU_WAIT_IN);
-  if (su_root_register(cli->cli_root,
+
+  su_wait_create(&cli->cli_input, 0, SU_WAIT_IN); 
+  if (su_root_register(cli->cli_root, 
 		       &cli->cli_input, 
 		       sofsip_handle_input, 
 		       NULL, 
@@ -393,7 +362,7 @@ static int sofsip_handle_input(cli_t *cli, su_wait_t *w, void *p)
 {
   /* note: sofsip_handle_input_cb is called if a full
    *       line has been read */
-  ssc_input_read_char(cli->cli_input_fd);
+  ssc_input_read_char();
 
   return 0;
 }
@@ -402,8 +371,8 @@ static void sofsip_handle_input_cb(char *input)
 {
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
-  int n = command ? (int)strlen(command) : 0;
-  char msgbuf[160] = "";
+  int n = command ? strlen(command) : 0;
+  char msgbuf[160];
 
   /* see readline(2) */
   if (input == NULL) {
@@ -479,28 +448,9 @@ static void sofsip_handle_input_cb(char *input)
     ssc_list(cli->cli_ssc);
   }
   else if (match("m") || match("message")) {
-    // 'rest' contains the destination and the message, delimited by a whitespace
-    char * token, * dest = NULL;
-    int pos = 0;
-    while ((token = strsep(&rest, " ")) != NULL) {
-        if (pos == 0) {
-            dest = token;
-            break;
-        }
-        /*
-        if (pos == 1) {
-            strncpy(msgbuf, token, sizeof(msgbuf) - 1);
-            msgbuf[sizeof(msgbuf) - 1] = 0;
-            break;
-        }
-         */
-        printf("%s\n", token);
-       pos++;
-    }
-
-    //ssc_input_set_prompt("Enter message> ");
-    //ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_message(cli->cli_ssc, dest, rest);
+    ssc_input_set_prompt("Enter message> ");
+    ssc_input_read_string(msgbuf, sizeof(msgbuf));
+    ssc_message(cli->cli_ssc, rest, msgbuf);
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

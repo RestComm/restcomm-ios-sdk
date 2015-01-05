@@ -59,7 +59,7 @@ int sdp_print_to_text(su_home_t *home, sdp_parser_t *parser, char **sdp_str)
     sdp_session_t *sdp = sdp_session(parser);
     sdp_printer_t *printer = sdp_print(home, sdp, NULL, 0, sdp_f_config | sdp_f_insane);
     if (!sdp_printing_error(printer)) {
-      *sdp_str = strdup(sdp_message(printer));
+      *sdp_str = g_strdup(sdp_message(printer));
       res = 0;
     }
     else {
@@ -98,7 +98,7 @@ int sdp_set_contact(sdp_parser_t *parser, sdp_media_t *media, sdp_nettype_e ntyp
   }
 
   if (!sdp_connection) {
-    sdp_connection = (sdp_connection_t*)su_salloc(home, sizeof(*sdp_connection));
+    sdp_connection = su_salloc(home, sizeof(*sdp_connection));
     media->m_connections = sdp_connection;
   }
 

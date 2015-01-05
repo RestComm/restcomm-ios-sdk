@@ -48,21 +48,16 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
-#include "ssc_media.h"
-
-#define HAVE_MEDIA_IMPL 1
 
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
-/***
 #if HAVE_GLIB
 #include "ssc_media.h"
 #define HAVE_MEDIA_IMPL 1
 #else
 #define HAVE_MEDIA_IMPL 0
 #endif
- */
-/***
+
 #if HAVE_GST
 #include <gst/gst.h>
 #include "ssc_media_gst.h"
@@ -70,10 +65,9 @@
 #if HAVE_LIBNICE
 #include "ssc_media_nice.h"
 #endif
-*/
-#include <sofia-sip/nua.h>
+
 #include <sofia-sip/stun_tag.h>
-//#include <sofia-sip/su_source.h>
+#include <sofia-sip/su_source.h>
 
 #include "ssc_sip.h"
 #include "ssc_oper.h"
@@ -158,34 +152,29 @@ void ssc_r_media_describe(int status, char const *phrase, nua_t *nua, ssc_t *ssc
 			  tagi_t tags[]);
 
 static void priv_callback(nua_event_t event, int status, char const *phrase,
-			  nua_t *nua, nua_magic_t *ssc, nua_handle_t *nh,
-			  nua_hmagic_t *op, sip_t const *sip, tagi_t tags[]);
+			  nua_t *nua, ssc_t *ssc, nua_handle_t *nh, 
+			  ssc_oper_t *op, sip_t const *sip, tagi_t tags[]);
 
 static char *priv_parse_domain(su_home_t *home, const char *sip_aor);
-static void priv_media_state_cb(void* context, int state, void * data);
+static void priv_media_state_cb(void* context, guint state, gpointer data);
 static SscMedia *priv_create_ssc_media(ssc_t *self, const ssc_conf_t *conf);
 static void priv_destroy_oper_with_disconnect (ssc_t *self, ssc_oper_t *oper);
 
 /* Function definitions
  * -------------------- */
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd)
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
 {
   ssc_t *ssc;
   char *caps_str;
   char *userdomain = NULL;
   const char *contact;
 
-  ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
+  ssc = su_zalloc(home, sizeof(*ssc));
   if (!ssc)
     return ssc;
 
-    
-  ssc->ssc_auth_pend = new std::list<ssc_auth_item_t*>;
-  ssc->ssc_input_fd = input_fd;
-  ssc->ssc_output_fd = output_fd;
-  
-    ssc->ssc_name = "UA";
+  ssc->ssc_name = "UA";
   ssc->ssc_home = home;
   ssc->ssc_root = root;
 
@@ -193,9 +182,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
   ssc->ssc_media = priv_create_ssc_media(ssc, conf);
 
 #if HAVE_MEDIA_IMPL
-  assert(ssc->ssc_media);
+  g_assert(ssc->ssc_media);
   /* step: query capabilities of the media subsystem */
-  ssc->ssc_media->ssc_media_static_capabilities(ssc->ssc_media, &caps_str);
+  ssc_media_static_capabilities(ssc->ssc_media, &caps_str);
 #else
     printf("%s: WARNING, no media subsystem available, disabling media features\n", ssc->ssc_name);
 #endif /* HAVE_MEDIA_IMPL */
@@ -215,8 +204,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
   
   /* step: launch the SIP stack */
   ssc->ssc_nua = nua_create(root, 
-			    priv_callback,
-                ssc,
+			    priv_callback, ssc,
 			    TAG_IF(conf->ssc_aor,
 				   SIPTAG_FROM_STR(conf->ssc_aor)),
 			    TAG_IF(conf->ssc_proxy,
@@ -272,12 +260,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
  */
 static void priv_destroy_oper_with_disconnect (ssc_t *self, ssc_oper_t *op)
 {
-  // TODO: disconnect signal handlers... without supporting signal handlers
-  /***
   g_signal_handlers_disconnect_matched (G_OBJECT (self->ssc_media),
 					(GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA),
 					0, 0, NULL, G_CALLBACK (priv_media_state_cb), op);
-   */
   ssc_oper_destroy(self, op);
 }
 
@@ -295,11 +280,11 @@ static SscMedia *priv_create_ssc_media(ssc_t *self, const ssc_conf_t *conf)
     /* set the default impl to select if available */
     impl = "gstreamer";
   }
-/***
+
 #if HAVE_MEDIA_IMPL == 0
   res_impl = NULL;
   impl = "none";
-#else // HAVE_MEDIA_IMPL
+#else /* HAVE_MEDIA_IMPL */
 # if HAVE_LIBNICE
   if (!res_impl && strstr(impl, "nice")) {
     res_impl = g_object_new (SSC_MEDIA_NICE_TYPE, NULL);
@@ -316,18 +301,17 @@ static SscMedia *priv_create_ssc_media(ssc_t *self, const ssc_conf_t *conf)
       g_object_set(G_OBJECT(res_impl), "stun-domain", userdomain, NULL);
     }
   }
-# endif // HAVE_GST
-*/
+# endif /* HAVE_GST */
   if (!res_impl) {
     /* select dummy if others not available */
-      res_impl = new SscMedia; //g_object_new (SSC_MEDIA_TYPE, NULL);
+    res_impl = g_object_new (SSC_MEDIA_TYPE, NULL);
     impl = "dummy";
   }
-///#endif /* HAVE_MEDIA_IMPL */
+#endif /* HAVE_MEDIA_IMPL */
 
   su_free(self->ssc_home, userdomain);
 
-  printf("Selecting media implementation: %s", impl);
+  g_message("Selecting media implementation: %s", impl);
 
   return res_impl;
 }
@@ -335,16 +319,9 @@ static SscMedia *priv_create_ssc_media(ssc_t *self, const ssc_conf_t *conf)
 void ssc_destroy(ssc_t *self)
 {
   su_home_t *home = self->ssc_home;
- 
-    // remember that ssc_auth_pend is now an stl list allocated with new; need to delete
-    if (self->ssc_auth_pend) {
-        delete self->ssc_auth_pend;
-    }
-    if (self->ssc_media) {
-        //g_object_unref(self->ssc_media), self->ssc_media = NULL;
-        self->ssc_media->Deallocate();
-        delete self->ssc_media;
-    }
+  
+  if (self->ssc_media)
+    g_object_unref(self->ssc_media), self->ssc_media = NULL;
   if (self->ssc_address)
     su_free(home, self->ssc_address);
 
@@ -354,7 +331,7 @@ void ssc_destroy(ssc_t *self)
 static ssc_auth_item_t *priv_store_pending_auth(su_home_t *home, const char *scheme, msg_param_t const *au_params)
 {
   const char *realm = msg_params_find(au_params, "realm=");
-  ssc_auth_item_t *authitem = (ssc_auth_item_t *)su_zalloc(home, sizeof(*authitem));
+  ssc_auth_item_t *authitem = su_zalloc(home, sizeof(*authitem));
 
   if (authitem) {
     authitem->ssc_scheme = su_strdup(home, scheme);
@@ -374,9 +351,8 @@ inline void priv_attach_op_and_username(ssc_t *self, ssc_auth_item_t *authitem, 
 
   /* XXX: should check for already existing entries for the realm */
   nua_handle_ref(op->op_handle);
-    
-  self->ssc_auth_pend->push_back(authitem);
-  //self->ssc_auth_pend = g_list_append(self->ssc_auth_pend, authitem);
+
+  self->ssc_auth_pend = g_list_append(self->ssc_auth_pend, authitem);
 }
 
 /**
@@ -414,10 +390,6 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
     if (self->ssc_auth_req_cb)
       self->ssc_auth_req_cb (self, authitem, self->ssc_cb_context);
   }
-    
-  // notify the client application that they should provide credentials
-  SofiaReply reply(REPLY_AUTH, "auth");
-  SofiaReply::send(self->ssc_output_fd, &reply);
 }
 
 
@@ -457,116 +429,116 @@ static char *priv_parse_domain(su_home_t *home, const char *sip_aor)
  * See libsofia-sip-ua/nua/nua.h documentation.
  */
 static void priv_callback(nua_event_t event,
-                          int status, char const *phrase,
-                          nua_t *nua, nua_magic_t *ssc,
-                          nua_handle_t *nh, nua_hmagic_t *op, sip_t const *sip,
-                          tagi_t tags[])
-
+			  int status, char const *phrase,
+			  nua_t *nua, ssc_t *ssc,
+			  nua_handle_t *nh, ssc_oper_t *op, sip_t const *sip,
+			  tagi_t tags[])
 {
-  ///g_return_if_fail(ssc);
+  g_return_if_fail(ssc);
+
   switch (event) {
   case nua_r_shutdown:    
-    ssc_r_shutdown(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_shutdown(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_get_params:    
-    ssc_r_get_params(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_get_params(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_register:
-    ssc_r_register(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_register(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
     
   case nua_r_unregister:
-    ssc_r_unregister(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_unregister(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
     
   case nua_i_options:
-    ssc_i_options(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_options(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_options:
-    ssc_r_options(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_options(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_invite:
-    ssc_r_invite(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_invite(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_fork:
-    ssc_i_fork(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_fork(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
     
   case nua_i_invite:
-    ssc_i_invite(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_invite(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_prack:
-    ssc_i_prack(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_prack(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_state:
-    ssc_i_state(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_state(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
     
   case nua_r_bye:
-    ssc_r_bye(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_bye(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_bye:
-    ssc_i_bye(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_bye(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_message:
-    ssc_r_message(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_message(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_message:
-    ssc_i_message(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_message(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_info:
-    ssc_r_info(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_info(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_info:
-    ssc_i_info(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_info(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_refer:
-    ssc_r_refer(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_refer(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_refer:
-    ssc_i_refer(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_refer(nua, ssc, nh, op, sip, tags);
     break;
      
   case nua_r_subscribe:
-    ssc_r_subscribe(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_subscribe(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_unsubscribe:
-    ssc_r_unsubscribe(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_unsubscribe(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_r_publish:
-    ssc_r_publish(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_publish(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
     
   case nua_r_notify:
-    ssc_r_notify(status, phrase, nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_r_notify(status, phrase, nua, ssc, nh, op, sip, tags);
     break;
      
   case nua_i_notify:
-    ssc_i_notify(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_notify(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_cancel:
-    ssc_i_cancel(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, sip, tags);
+    ssc_i_cancel(nua, ssc, nh, op, sip, tags);
     break;
 
   case nua_i_error:
-    ssc_i_error(nua, (ssc_t *)ssc, nh, (ssc_oper_t *)op, status, phrase, tags);
+    ssc_i_error(nua, ssc, nh, op, status, phrase, tags);
     break;
 
   case nua_i_active:
@@ -577,13 +549,13 @@ static void priv_callback(nua_event_t event,
   default:
     if (status > 100)
       printf("%s: unknown event '%s' (%d): %03d %s\n", 
-	     ((ssc_t *)ssc)->ssc_name, nua_event_name(event), event, status, phrase);
+	     ssc->ssc_name, nua_event_name(event), event, status, phrase);
     else
-      printf("%s: unknown event %d\n", ((ssc_t *)ssc)->ssc_name, event);
+      printf("%s: unknown event %d\n", ssc->ssc_name, event);
 
     tl_print(stdout, "", tags);
 
-    if (ssc_oper_find_by_handle((ssc_t *)ssc, nh) == NULL) {
+    if (ssc_oper_find_by_handle(ssc, nh) == NULL) {
       /* note: unknown handle, not associated to any existing 
        *       call, message, registration, etc, so it can
        *       be safely destroyed */
@@ -595,8 +567,8 @@ static void priv_callback(nua_event_t event,
 
   }
 
-  if (((ssc_t *)ssc)->ssc_event_cb)
-    ((ssc_t *)ssc)->ssc_event_cb ((ssc_t *)ssc, event, ((ssc_t *)ssc)->ssc_cb_context);
+  if (ssc->ssc_event_cb)
+    ssc->ssc_event_cb (ssc, (int)event, ssc->ssc_cb_context);
 }
 
 /* ====================================================================== */
@@ -622,15 +594,13 @@ void ssc_auth(ssc_t *ssc, const char *data)
   su_home_t *home = ssc->ssc_home;
   const char *authstring = data;
   char *tmpstr = NULL;
-  std::list<ssc_auth_item_t*>::const_iterator it = ssc->ssc_auth_pend->begin();
-  //GList *list = ssc->ssc_auth_pend, *next;
+  GList *list = ssc->ssc_auth_pend, *next;
   ssc_auth_item_t *authitem;
   int auth_done = 0, colons = priv_str_chr_count(data, ':');
 
-  while (it != ssc->ssc_auth_pend->end() && auth_done == 0) {
-  //while (list && auth_done == 0) {
+  while (list && auth_done == 0) {
 
-    authitem = (ssc_auth_item_t*)*it;  //list->data;
+    authitem = (ssc_auth_item_t*)list->data;
     
     if (ssc_oper_check(ssc, authitem->ssc_op) != NULL) {
 
@@ -681,11 +651,9 @@ void ssc_auth(ssc_t *ssc, const char *data)
     su_free(home, authitem->ssc_username);
     su_free(home, authitem);
 
-    //next = g_list_next(list);
-    // remember, erase returns next element for lists
-    it = ssc->ssc_auth_pend->erase(it);  //g_list_remove_link(ssc->ssc_auth_pend, list);
-    //list = next;
-    //it = ++
+    next = g_list_next(list);
+    ssc->ssc_auth_pend = g_list_remove_link(ssc->ssc_auth_pend, list);
+    list = next;
   }
 
   if (auth_done == 0)
@@ -739,24 +707,16 @@ void ssc_invite(ssc_t *ssc, const char *destination)
      *  - see also: ssc_i_state(), priv_media_state_cb(), and ssc_answer()
      */ 
 
-    //  op->op_callstate |= opc_pending;
-    op->op_callstate = (op_callstate_t)(op->op_callstate | opc_pending);
+    op->op_callstate |= opc_pending;
 
-    // need to call priv_media_state_cb when 'state-changed' is signalled in
-    // SscMedia::ssc_media_signal_state_change()
-    //g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", G_CALLBACK (priv_media_state_cb), op);
+    g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", 
+		      G_CALLBACK (priv_media_state_cb), op);
     
 #if HAVE_MEDIA_IMPL
     {
       int res;
       /* active media before INVITE */
-      //res = ssc_media_activate(ssc->ssc_media);
-      res = ssc->ssc_media->ssc_media_activate(ssc->ssc_media);
-        
-      // TODO: with glib removed we have no signals, for now I just invoke the callback myself
-      // hopefully the point it time it got called previously with signals
-      priv_media_state_cb(NULL, sm_active, op);
-
+      res = ssc_media_activate(ssc->ssc_media);
       if (res < 0) {
 	printf("%s: ERROR: unable to active media subsystem, aborting session.\n", ssc->ssc_name);
 	priv_destroy_oper_with_disconnect (ssc, op);
@@ -782,23 +742,10 @@ void ssc_r_invite(int status, char const *phrase,
   printf("%s: INVITE: %03d %s\n", ssc->ssc_name, status, phrase);
 
   if (status >= 300) {
-    //op->op_callstate &= ~opc_sent;
-    op->op_callstate = (op_callstate_t)(op->op_callstate & ~opc_sent);
-
+    op->op_callstate &= ~opc_sent;
     if (status == 401 || status == 407)
       ssc_store_pending_auth(ssc, op, sip, tags);
   }
-  if (status == 180) {
-      // notify the client application that we are ringing
-      SofiaReply reply(OUTGOING_RINGING, "");
-      SofiaReply::send(ssc->ssc_output_fd, &reply);
-  }
-  if (status == 200) {
-      // notify the client application that we are ringing
-      SofiaReply reply(OUTGOING_ESTABLISHED, "");
-      SofiaReply::send(ssc->ssc_output_fd, &reply);
-  }
-
 }
 
 /**
@@ -815,8 +762,7 @@ void ssc_i_fork(int status, char const *phrase,
 
   /* We just release forked calls. */
   tl_gets(tags, NUTAG_HANDLE_REF(nh2), TAG_END());
-  //g_return_if_fail(nh2);
-  assert(nh2);
+  g_return_if_fail(nh2);
 
   nua_bye(nh2, TAG_END());
   nua_handle_destroy(nh2);
@@ -834,19 +780,16 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
   sip_to_t const *to;
   sip_subject_t const *subject;
 
-  //g_return_if_fail(sip);
-  assert(sip);
+  g_return_if_fail(sip);
 
   from = sip->sip_from;
   to = sip->sip_to;
   subject = sip->sip_subject;
 
-  //g_return_if_fail(from && to);
-  assert(from && to);
+  g_return_if_fail(from && to);
 
   if (op) {
-    //op->op_callstate |= opc_recv;
-    op->op_callstate = (op_callstate_t)(op->op_callstate | opc_recv);
+    op->op_callstate |= opc_recv;
   }
   else if ((op = ssc_oper_create_with_handle(ssc, SIP_METHOD_INVITE, nh, from))) {
     op->op_callstate = opc_recv;
@@ -870,11 +813,7 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
 	ssc_answer(ssc, SIP_200_OK);
       }
       else {
-	    printf("Please Answer(a), decline(d) or Decline(D) the call\n");
-          
-        // notify the client application that they should answer
-        SofiaReply reply(INCOMING_CALL, "incoming call");
-        SofiaReply::send(ssc->ssc_output_fd, &reply);
+	printf("Please Answer(a), decline(d) or Decline(D) the call\n");
       }
     }
     else {
@@ -888,13 +827,13 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
  * ssc_invite(). Verifies that the media subsystem has 
  * been activated and we are ready to answer with our SDP.
  */
-static void priv_media_state_cb(void* context, int state, void * data)
+static void priv_media_state_cb(void* context, guint state, gpointer data)
 {
 #if HAVE_MEDIA_IMPL
   ssc_oper_t *op = (ssc_oper_t*)data;
   ssc_t *ssc = op->op_ssc;
 
-  printf("%s, state %u", "priv_media_state_cb", state);
+  g_debug ("%s, state %u", G_STRFUNC, state);
 
   if (state == sm_local_ready ||
       state == sm_active) {
@@ -907,34 +846,29 @@ static void priv_media_state_cb(void* context, int state, void * data)
      *  - see also: ssc_i_state() and ssc_answer()
      */ 
     
-    if ((op->op_callstate & opc_pending) && ssc->ssc_media->ssc_media_is_initialized(ssc->ssc_media)) {
-      //char *l_sdp = NULL;
-      string l_sdp = "";
+    if ((op->op_callstate & opc_pending) && 
+	ssc_media_is_initialized(ssc->ssc_media)) {
+      gchar *l_sdp = NULL;
       
-      //op->op_callstate &= !opc_pending;
-      op->op_callstate = (op_callstate_t)(op->op_callstate & !opc_pending);
-
+      op->op_callstate &= !opc_pending;
       
       /* get the ports and list of media */
-      //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp, NULL);
-      l_sdp = ssc->ssc_media->ssc_media_get_property("localsdp");
-        
-      if (l_sdp.size()) {
-	printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp.c_str());
+      g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp, NULL);
+      
+      if (l_sdp) {
+	printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp);
       
 	nua_invite(op->op_handle,
-		   SOATAG_USER_SDP_STR(l_sdp.c_str()),
+		   SOATAG_USER_SDP_STR(l_sdp),
 		   SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
 		   SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
 		   TAG_END());
 	
-	//op->op_callstate |= opc_sent;
-    op->op_callstate = (op_callstate_t)(op->op_callstate | opc_sent);
+	op->op_callstate |= opc_sent;
 	printf("%s: INVITE to %s\n", ssc->ssc_name, op->op_ident);
       }
       else {
-	//op->op_callstate |= opc_none;
-    op->op_callstate = (op_callstate_t)(op->op_callstate | opc_none);
+	op->op_callstate |= opc_none;
 	printf("ERROR: no SDP provided by media subsystem, aborting call.\n");
 	priv_destroy_oper_with_disconnect (ssc, op);
 	/* ssc_oper_destroy(ssc, op); */
@@ -949,26 +883,23 @@ static void priv_media_state_cb(void* context, int state, void * data)
      *  - see also: ssc_i_state() and ssc_invite()
      */
     else if (op->op_callstate & opc_recv) {
-      //char *l_sdp_str = NULL;
-      string l_sdp_str = "";
+      char *l_sdp_str = NULL;
       int status = ssc->ssc_ans_status;
       char const *phrase = ssc->ssc_ans_phrase;
       
       /* get the ports and list of media */
-      //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp_str, NULL);
-      l_sdp_str = ssc->ssc_media->ssc_media_get_property("localsdp");
+      g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp_str, NULL);
 
       printf("%s: about to respond with local SDP:\n%s\n",
-	     ssc->ssc_name, l_sdp_str.c_str());
+	     ssc->ssc_name, l_sdp_str);
 
-      if (l_sdp_str.size()) {
+      if (l_sdp_str) {
 	if (status >= 200 && status < 300)
-	  //op->op_callstate |= opc_sent;
-      op->op_callstate = (op_callstate_t)(op->op_callstate | opc_sent);
+	  op->op_callstate |= opc_sent;
 	else
 	  op->op_callstate = opc_none;
 	nua_respond(op->op_handle, status, phrase, 
-		    SOATAG_USER_SDP_STR(l_sdp_str.c_str()),
+		    SOATAG_USER_SDP_STR(l_sdp_str),
 		    SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
 		    SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
 		    TAG_END());
@@ -982,13 +913,13 @@ static void priv_media_state_cb(void* context, int state, void * data)
   }
   else if (state == sm_error) {
     printf("%s: Media subsystem reported an error.\n", ssc->ssc_name);
-    ssc->ssc_media->ssc_media_deactivate(ssc->ssc_media);
+    ssc_media_deactivate(ssc->ssc_media);
     priv_destroy_oper_with_disconnect (ssc, op);
     /* ssc_oper_destroy (ssc, op); */
   }
   
   if (ssc->ssc_media_state_cb)
-    ssc->ssc_media_state_cb (ssc, op, (enum SscMediaState)state, ssc->ssc_cb_context);
+    ssc->ssc_media_state_cb (ssc, op, state, ssc->ssc_cb_context);
 
 #endif /* HAVE_MEDIA_IMPL */
 }
@@ -1019,17 +950,11 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
     if (status >= 200 && status < 300) {
       int res;
 
-      // need to call priv_media_state_cb when 'state-changed' is signalled in
-      // SscMedia::ssc_media_signal_state_change()
-      //g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", G_CALLBACK (priv_media_state_cb), op);
+      g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed", 
+			G_CALLBACK (priv_media_state_cb), op);
 
       /* active media before answering */
-      res = ssc->ssc_media->ssc_media_activate(ssc->ssc_media);
-      //res = ssc_media_activate(ssc->ssc_media);
-        
-      // with glib removed we have no signals, for now I just invoke the callback myself
-      // hopefully the point it time it got called previously with signals
-      priv_media_state_cb(NULL, sm_active, op);
+      res = ssc_media_activate(ssc->ssc_media);
       if (res < 0) {
 	printf("%s: ERROR: unable to active media subsystem, unable to answer session.\n", ssc->ssc_name);
 	priv_destroy_oper_with_disconnect (ssc, op);
@@ -1076,7 +1001,7 @@ void ssc_i_prack(nua_t *nua, ssc_t *ssc,
 {
   sip_rack_t const *rack;
 
-  assert(sip);
+  g_return_if_fail(sip);
 
   rack = sip->sip_rack;
 
@@ -1099,7 +1024,7 @@ void ssc_i_state(int status, char const *phrase,
   int offer_recv = 0, answer_recv = 0, offer_sent = 0, answer_sent = 0;
   int ss_state = nua_callstate_init;
 
-  assert(op);
+  g_return_if_fail(op);
 
   tl_gets(tags, 
 	  NUTAG_CALLSTATE_REF(ss_state),
@@ -1112,16 +1037,14 @@ void ssc_i_state(int status, char const *phrase,
 	  TAG_END());
 
   if (l_sdp) {
-    assert(answer_sent || offer_sent);
-    ssc->ssc_media->ssc_media_set_property("localsdp", l_sdp);
-    //g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", l_sdp, NULL);
+    g_return_if_fail(answer_sent || offer_sent);
+    g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", l_sdp, NULL);
     /* printf("%s: local SDP updated:\n%s\n\n", ssc->ssc_name, l_sdp); */
   }
   
   if (r_sdp) {
-    assert(answer_recv || offer_recv);
-      ssc->ssc_media->ssc_media_set_property("remotesdp", r_sdp);
-    //g_object_set(G_OBJECT(ssc->ssc_media), "remotesdp", r_sdp, NULL);
+    g_return_if_fail(answer_recv || offer_recv);
+    g_object_set(G_OBJECT(ssc->ssc_media), "remotesdp", r_sdp, NULL);
     /* printf("%s: remote SDP updated:\n%s\n\n", ssc->ssc_name, r_sdp); */
   }
 
@@ -1150,7 +1073,7 @@ void ssc_i_state(int status, char const *phrase,
     if (op->op_prev_state != ss_state) {
       /* note: only print if state has changed */
       printf("%s: call to %s is active => '%s'\n\taudio %s, video %s, chat %s.\n", 
-	     ssc->ssc_name, op->op_ident, nua_callstate_name((enum nua_callstate)ss_state),
+	     ssc->ssc_name, op->op_ident, nua_callstate_name(ss_state),
 	     cli_active(audio), cli_active(video), cli_active(chat));
       op->op_prev_state = ss_state;
     }
@@ -1169,15 +1092,15 @@ void ssc_i_state(int status, char const *phrase,
   case nua_callstate_terminated:
     if (op) {
       printf("%s: call to %s is terminated\n", ssc->ssc_name, op->op_ident);
-      op->op_callstate = (op_callstate_t)0;
+      op->op_callstate = 0;
       priv_destroy_oper_with_disconnect (ssc, op);
       /* ssc_oper_destroy(ssc, op); */
 
 #if HAVE_MEDIA_IMPL
       /* SDP O/A note: 
        * - de-active media subsystem */
-      if (ssc->ssc_media->ssc_media_is_initialized(ssc->ssc_media) == true)
-        ssc->ssc_media->ssc_media_deactivate(ssc->ssc_media);
+      if (ssc_media_is_initialized(ssc->ssc_media) == TRUE)
+	ssc_media_deactivate(ssc->ssc_media);
 #endif
 
     }
@@ -1202,7 +1125,7 @@ void ssc_bye(ssc_t *ssc)
   if (op) {
     printf("%s: BYE to %s\n", ssc->ssc_name, op->op_ident);
     nua_bye(op->op_handle, TAG_END());
-    op->op_callstate = (op_callstate_t)0;
+    op->op_callstate = 0;
   }
   else {
     printf("%s: no call to bye\n", ssc->ssc_name);
@@ -1352,10 +1275,8 @@ void ssc_r_message(int status, char const *phrase,
   if (status < 200)
     return;
 
-  if (status == 401 || status == 407) {
+  if (status == 401 || status == 407)
     ssc_store_pending_auth(ssc, op, sip, tags);
-    
-  }
 }
 
 void ssc_i_message(nua_t *nua, ssc_t *ssc,
@@ -1382,13 +1303,6 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
   if (subject) 
     printf("\tSubject: %s\n", subject->g_value);
   ssc_print_payload(ssc, sip->sip_payload);
-
-  // notify the client application of the message
-  // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
-  SofiaReply reply(INCOMING_MSG, "");
-  strncpy(reply.text, sip->sip_payload->pl_data, sip->sip_payload->pl_len);
-  reply.text[sip->sip_payload->pl_len] = 0;
-  SofiaReply::send(ssc->ssc_output_fd, &reply);
 
   if (op == NULL)
     op = ssc_oper_create_with_handle(ssc, SIP_METHOD_MESSAGE, nh, from);
@@ -1526,7 +1440,7 @@ void ssc_i_refer(nua_t *nua, ssc_t *ssc,
       su_free(ssc->ssc_home, refer_to_str);
    }
    else {
-     printf("\nPlease Refer to URI: " URL_PRINT_FORMAT "\n", URL_PRINT_ARGS(refer_to->r_url));
+     printf("\nPlease Refer to URI: "URL_PRINT_FORMAT"\n", URL_PRINT_ARGS(refer_to->r_url));
    }
 }
 
@@ -1720,7 +1634,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     printf("%s: REGISTER %s - registering address to network\n", ssc->ssc_name, op->op_ident);
     nua_register(op->op_handle, 
 		 TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
-		 NUTAG_M_FEATURES("expires=3600"),
+		 NUTAG_M_FEATURES("expires=180"),
 		 TAG_NULL());
   }
 
@@ -2014,21 +1928,21 @@ void ssc_param(ssc_t *ssc, char *param, char *s)
   if (!ns || strcmp(ns, "nua") == 0)
       for (list = nua_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = const_cast<char*>("found");
+	  ns = "found";
 	  break;
 	}
       }
   if (!ns || strcmp(ns, "nta") == 0) 
       for (list = nta_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = const_cast<char*>("found");
+	  ns = "found";
 	  break;
 	}
       }
   if (!ns || strcmp(ns, "sip") == 0) 
       for (list = sip_tag_list; (tag = *list); list++) {
 	if (strcmp(tag->tt_name, param) == 0) {
-	  ns = const_cast<char*>("found");
+	  ns = "found";
 	  break;
 	}
       }
@@ -2060,25 +1974,5 @@ void ssc_shutdown(ssc_t *ssc)
   printf("%s: quitting (this can take some time)\n", ssc->ssc_name);
 
   nua_shutdown(ssc->ssc_nua);
-}
-
-// reply sent back to the iOS App via pipe
-SofiaReply::SofiaReply()
-{
-    rc = 0;
-    text[0] = 0;
-}
-
-SofiaReply::SofiaReply(const int rc, const char * text)
-{
-    this->rc = rc;
-    strncpy(this->text, text, sizeof(this->text) - 1);
-    this->text[sizeof(this->text) - 1] = 0;
-}
-
-ssize_t SofiaReply::send(const int fd, const SofiaReply * sofiaReply)
-{
-    //char buf[100] = "auth";
-    return write(fd, sofiaReply, sizeof(*sofiaReply));
 }
 

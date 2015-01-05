@@ -59,9 +59,7 @@ void ssc_input_set_prompt(const char* prompt);
  * If a line of input is available, the handler callback will
  * called.
  */
-///void ssc_input_read_char(void);
-void ssc_input_read_char(int input_fd);
-
+void ssc_input_read_char(void);
 
 /**
  * Reads a string (at most 'size - 1' characters), and

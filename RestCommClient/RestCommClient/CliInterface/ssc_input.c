@@ -34,9 +34,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#if HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
-//#endif
+#endif
 
 #if HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -101,39 +101,29 @@ void ssc_input_set_prompt(const char* prompt)
 #endif
 }
 
-void ssc_input_read_char(int input_fd)
+void ssc_input_read_char(void)
 {
 #if USE_READLINE
   if (ssc_input_handler_f)
     rl_callback_read_char();
 #else
-  char buf[1024];
-  char * ptr = buf;
-  ssize_t n;
+  static char buf[1024];
+  int n;
 
-  // important: there might be more than one commands in buf, but each command ends in '$'
-  n = read(input_fd, buf, sizeof(buf) - 1);
-    
-  char * token;
-  //int pos = 0;
-  while ((token = strsep(&ptr, "$")) != NULL) {
-      if (n < 0) {
-          perror("input: read");
-      }
-      else if (n > 0) {
-          char *tmpbuf;
-          // not sure why n - 1 was used instead on n. Stange thing is that n - 1 worked in Linux but not in iOS
-          ///buf[n - 1] = 0;
-          //buf[n] = 0;
-          tmpbuf = strdup((const char*)token);
-          if (ssc_input_handler_f) {
-              ssc_input_handler_f(tmpbuf);
-          }
-          ssc_input_refresh();
-      }
+  n = read(0, buf, sizeof(buf) - 1);
+
+  if (n < 0) {
+    perror("input: read");
   }
-
-
+  else if (n > 0) {
+    char *tmpbuf;
+    buf[n - 1] = 0;
+    tmpbuf = strdup((const char*)buf);
+    if (ssc_input_handler_f) {
+      ssc_input_handler_f(tmpbuf);
+    }
+    ssc_input_refresh();
+  }
 #endif
 }
 

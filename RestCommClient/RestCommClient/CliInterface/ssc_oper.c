@@ -95,7 +95,7 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
       return NULL;
     }
 
-    if (!(op = (ssc_oper_t*)su_zalloc(ssc->ssc_home, sizeof(*op)))) {
+    if (!(op = su_zalloc(ssc->ssc_home, sizeof(*op)))) {
       printf("%s: %s: cannot create handle\n", ssc->ssc_name, name);
       return NULL;
     }
@@ -163,7 +163,7 @@ ssc_oper_t *ssc_oper_create_with_handle(ssc_t *ssc,
 
   enter;
 
-  if ((op = (ssc_oper_t*)su_zalloc(ssc->ssc_home, sizeof(*op)))) {
+  if ((op = su_zalloc(ssc->ssc_home, sizeof(*op)))) {
     op->op_next = ssc->ssc_operations;
     ssc->ssc_operations = op;      
 
