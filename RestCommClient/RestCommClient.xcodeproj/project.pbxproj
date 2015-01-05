@@ -22,12 +22,12 @@
 
 /* Begin PBXBuildFile section */
 		AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */; };
-		AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */; };
-		AEA6C4B219DB412A00BD2455 /* sofsip_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */; };
-		AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */; };
-		AEA6C4B419DB412A00BD2455 /* ssc_media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A819DB412A00BD2455 /* ssc_media.cpp */; };
-		AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */; };
-		AEA6C4B619DB412A00BD2455 /* ssc_sip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.cpp */; };
+		AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.c */; };
+		AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */; };
+		AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.c */; };
+		AEA6C4B419DB412A00BD2455 /* ssc_media.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A819DB412A00BD2455 /* ssc_media.c */; };
+		AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.c */; };
+		AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */; };
 		AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4B019DB412A00BD2455 /* SipManager.mm */; };
 		AEC1221019728C850035B864 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC1220F19728C850035B864 /* Foundation.framework */; };
 		AEC1221519728C850035B864 /* RestCommClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1221419728C850035B864 /* RestCommClient.h */; };
@@ -45,6 +45,17 @@
 		AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC12242197296110035B864 /* RCPresenceEvent.m */; };
 		AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2319ED91A100C60E2B /* libcrypto.a */; };
 		AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2419ED91A100C60E2B /* libssl.a */; };
+		AEC39AB41A5A970100B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */; };
+		AEC39AB61A5A975500B155E4 /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB51A5A975500B155E4 /* GStreamer.framework */; };
+		AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */; };
+		AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */; };
+		AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */; };
+		AEC39ACB1A5A9BF000B155E4 /* nice_local.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39ABD1A5A9BF000B155E4 /* nice_local.c */; };
+		AEC39ACC1A5A9BF000B155E4 /* replace_goption.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC01A5A9BF000B155E4 /* replace_goption.c */; };
+		AEC39ACD1A5A9BF000B155E4 /* ssc_media_gst_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */; };
+		AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */; };
+		AEC39ACF1A5A9BF000B155E4 /* ssc_media_nice.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */; };
+		AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AD21A5AAA7D00B155E4 /* su_source.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,17 +207,17 @@
 		AEA6C49919DB411100BD2455 /* url_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag.h; sourceTree = "<group>"; };
 		AEA6C49A19DB411100BD2455 /* url_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag_class.h; sourceTree = "<group>"; };
 		AEA6C49E19DB411100BD2455 /* notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
-		AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdp_utils.cpp; sourceTree = "<group>"; };
+		AEA6C4A219DB412A00BD2455 /* sdp_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdp_utils.c; sourceTree = "<group>"; };
 		AEA6C4A319DB412A00BD2455 /* sdp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdp_utils.h; sourceTree = "<group>"; };
-		AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sofsip_cli.cpp; sourceTree = "<group>"; };
+		AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sofsip_cli.c; sourceTree = "<group>"; };
 		AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sofsip_cli.h; sourceTree = "<group>"; };
-		AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_input.cpp; sourceTree = "<group>"; };
+		AEA6C4A619DB412A00BD2455 /* ssc_input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_input.c; sourceTree = "<group>"; };
 		AEA6C4A719DB412A00BD2455 /* ssc_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_input.h; sourceTree = "<group>"; };
-		AEA6C4A819DB412A00BD2455 /* ssc_media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_media.cpp; sourceTree = "<group>"; };
+		AEA6C4A819DB412A00BD2455 /* ssc_media.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media.c; sourceTree = "<group>"; };
 		AEA6C4A919DB412A00BD2455 /* ssc_media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media.h; sourceTree = "<group>"; };
-		AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_oper.cpp; sourceTree = "<group>"; };
+		AEA6C4AA19DB412A00BD2455 /* ssc_oper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_oper.c; sourceTree = "<group>"; };
 		AEA6C4AB19DB412A00BD2455 /* ssc_oper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_oper.h; sourceTree = "<group>"; };
-		AEA6C4AC19DB412A00BD2455 /* ssc_sip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_sip.cpp; sourceTree = "<group>"; };
+		AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_sip.c; sourceTree = "<group>"; };
 		AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
 		AEA6C4AF19DB412A00BD2455 /* SipManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipManager.h; sourceTree = "<group>"; };
 		AEA6C4B019DB412A00BD2455 /* SipManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SipManager.mm; sourceTree = "<group>"; };
@@ -234,6 +245,28 @@
 		AEC14C2319ED91A100C60E2B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC14C2419ED91A100C60E2B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC14C2719EDA85A00C60E2B /* libsystem_network.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_network.dylib; path = usr/lib/system/libsystem_network.dylib; sourceTree = SDKROOT; };
+		AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		AEC39AB51A5A975500B155E4 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../../Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework; sourceTree = "<group>"; };
+		AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket-stun.c"; sourceTree = "<group>"; };
+		AEC39AB81A5A9BF000B155E4 /* farsight-netsocket-stun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket-stun.h"; sourceTree = "<group>"; };
+		AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket-utils.c"; sourceTree = "<group>"; };
+		AEC39ABA1A5A9BF000B155E4 /* farsight-netsocket-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket-utils.h"; sourceTree = "<group>"; };
+		AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket.c"; sourceTree = "<group>"; };
+		AEC39ABC1A5A9BF000B155E4 /* farsight-netsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket.h"; sourceTree = "<group>"; };
+		AEC39ABD1A5A9BF000B155E4 /* nice_local.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nice_local.c; sourceTree = "<group>"; };
+		AEC39ABE1A5A9BF000B155E4 /* nice_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nice_local.h; sourceTree = "<group>"; };
+		AEC39ABF1A5A9BF000B155E4 /* replace_g_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = replace_g_debug.h; sourceTree = "<group>"; };
+		AEC39AC01A5A9BF000B155E4 /* replace_goption.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = replace_goption.c; sourceTree = "<group>"; };
+		AEC39AC11A5A9BF000B155E4 /* replace_goption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = replace_goption.h; sourceTree = "<group>"; };
+		AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_gst_utils.c; sourceTree = "<group>"; };
+		AEC39AC31A5A9BF000B155E4 /* ssc_media_gst_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_gst_utils.h; sourceTree = "<group>"; };
+		AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_gst.c; sourceTree = "<group>"; };
+		AEC39AC51A5A9BF000B155E4 /* ssc_media_gst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_gst.h; sourceTree = "<group>"; };
+		AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_nice.c; sourceTree = "<group>"; };
+		AEC39AC71A5A9BF000B155E4 /* ssc_media_nice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_nice.h; sourceTree = "<group>"; };
+		AEC39AD01A5AA9F500B155E4 /* su_glib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_glib.h; sourceTree = "<group>"; };
+		AEC39AD11A5AA9F500B155E4 /* su_source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_source.h; sourceTree = "<group>"; };
+		AEC39AD21A5AAA7D00B155E4 /* su_source.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = su_source.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +274,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEC39AB61A5A975500B155E4 /* GStreamer.framework in Frameworks */,
+				AEC39AB41A5A970100B155E4 /* VideoToolbox.framework in Frameworks */,
 				AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */,
 				AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */,
 				AEC1221019728C850035B864 /* Foundation.framework in Frameworks */,
@@ -303,6 +338,8 @@
 		AEA6C42F19DB411100BD2455 /* sofia-sip */ = {
 			isa = PBXGroup;
 			children = (
+				AEC39AD01A5AA9F500B155E4 /* su_glib.h */,
+				AEC39AD11A5AA9F500B155E4 /* su_source.h */,
 				AEA6C43019DB411100BD2455 /* auth_client.h */,
 				AEA6C43119DB411100BD2455 /* auth_client_plugin.h */,
 				AEA6C43219DB411100BD2455 /* auth_common.h */,
@@ -426,17 +463,35 @@
 		AEA6C4A119DB412A00BD2455 /* CliInterface */ = {
 			isa = PBXGroup;
 			children = (
-				AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */,
+				AEC39AD21A5AAA7D00B155E4 /* su_source.c */,
+				AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */,
+				AEC39AB81A5A9BF000B155E4 /* farsight-netsocket-stun.h */,
+				AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */,
+				AEC39ABA1A5A9BF000B155E4 /* farsight-netsocket-utils.h */,
+				AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */,
+				AEC39ABC1A5A9BF000B155E4 /* farsight-netsocket.h */,
+				AEC39ABD1A5A9BF000B155E4 /* nice_local.c */,
+				AEC39ABE1A5A9BF000B155E4 /* nice_local.h */,
+				AEC39ABF1A5A9BF000B155E4 /* replace_g_debug.h */,
+				AEC39AC01A5A9BF000B155E4 /* replace_goption.c */,
+				AEC39AC11A5A9BF000B155E4 /* replace_goption.h */,
+				AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */,
+				AEC39AC31A5A9BF000B155E4 /* ssc_media_gst_utils.h */,
+				AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */,
+				AEC39AC51A5A9BF000B155E4 /* ssc_media_gst.h */,
+				AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */,
+				AEC39AC71A5A9BF000B155E4 /* ssc_media_nice.h */,
+				AEA6C4A219DB412A00BD2455 /* sdp_utils.c */,
 				AEA6C4A319DB412A00BD2455 /* sdp_utils.h */,
-				AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */,
+				AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */,
 				AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */,
-				AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */,
+				AEA6C4A619DB412A00BD2455 /* ssc_input.c */,
 				AEA6C4A719DB412A00BD2455 /* ssc_input.h */,
-				AEA6C4A819DB412A00BD2455 /* ssc_media.cpp */,
+				AEA6C4A819DB412A00BD2455 /* ssc_media.c */,
 				AEA6C4A919DB412A00BD2455 /* ssc_media.h */,
-				AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */,
+				AEA6C4AA19DB412A00BD2455 /* ssc_oper.c */,
 				AEA6C4AB19DB412A00BD2455 /* ssc_oper.h */,
-				AEA6C4AC19DB412A00BD2455 /* ssc_sip.cpp */,
+				AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */,
 				AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */,
 			);
 			path = CliInterface;
@@ -474,6 +529,8 @@
 		AEC1220E19728C850035B864 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEC39AB51A5A975500B155E4 /* GStreamer.framework */,
+				AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */,
 				AE74178819EDB762008A78FE /* libSystem.dylib */,
 				AE74178919EDB762008A78FE /* libsystem_c.dylib */,
 				AE74178A19EDB762008A78FE /* libsystem_kernel.dylib */,
@@ -641,17 +698,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEA6C4B419DB412A00BD2455 /* ssc_media.cpp in Sources */,
-				AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */,
+				AEC39ACB1A5A9BF000B155E4 /* nice_local.c in Sources */,
+				AEA6C4B419DB412A00BD2455 /* ssc_media.c in Sources */,
+				AEC39ACF1A5A9BF000B155E4 /* ssc_media_nice.c in Sources */,
+				AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */,
+				AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */,
+				AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */,
 				AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
-				AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */,
+				AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
-				AEA6C4B219DB412A00BD2455 /* sofsip_cli.cpp in Sources */,
+				AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */,
+				AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */,
+				AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */,
 				AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */,
-				AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */,
-				AEA6C4B619DB412A00BD2455 /* ssc_sip.cpp in Sources */,
+				AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */,
+				AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */,
+				AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */,
 				AEC1223A197295CC0035B864 /* RCDevice.m in Sources */,
+				AEC39ACC1A5A9BF000B155E4 /* replace_goption.c in Sources */,
+				AEC39ACD1A5A9BF000B155E4 /* ssc_media_gst_utils.c in Sources */,
 				AEC1221719728C850035B864 /* RestCommClient.m in Sources */,
 				AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */,
 			);
@@ -724,6 +790,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"HAVE_GST=1",
+					"HAVE_GLIB=1",
+					"HAVE_NETINET_IN_H=1",
+					"HAVE_UNISTD_H=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -736,6 +806,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
@@ -773,6 +844,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
@@ -786,6 +858,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/RestCommClient.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
@@ -806,6 +882,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/RestCommClient.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
@@ -867,6 +947,7 @@
 				AE72641C19F4302E000AE2ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AEC1220719728C850035B864 /* Build configuration list for PBXProject "RestCommClient" */ = {
 			isa = XCConfigurationList;

@@ -36,7 +36,8 @@
  *
  */
 
-#include "config.h"
+// Now that we 're not building with autotools, let's comment it out and see.
+//#include "config.h"
 
 #ifdef SYMBIAN
 #include <e32def.h>
