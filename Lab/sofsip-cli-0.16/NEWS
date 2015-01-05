@@ -1,0 +1,174 @@
+NEWS for sofsip-cli
+===================
+
+List of changes in each public release of sofsip-cli (most 
+recent at the top).
+
+Changes in release: 0.16 (2009-03-02)
+-------------------------------------
+
+- Various compile problems related to the removed "fsgst"
+  media backend. So continuing the theme from 0.15, this 
+  is now a release that also compiles. ;)
+
+Changes in release: 0.15 (2009-01-26)
+-------------------------------------
+
+- A release tarball that actually works -- a big improvement 
+  since the v0.14 release. ;)
+- Fixed building without libnice (error when linking nice_tester).
+  Thanks to Stefano Sabatini for the bug report.
+- Updated to support libnice 0.0.4 (older versions are no longer
+  supported). See http://nice.freedesktop.org/wiki to
+  download the latest release.
+- Cross-compiling was not working due to invalid include 
+  directory list. Patch from Keith Mok.
+- Removed "farsight" and "fsgst" media backend implementations from 
+  the source tree. "farsight" was never fully operational, while 
+  "fsgst" no longer works with the most recent versions of Gstreamer. 
+  Fortunately there are now projects like telepathy-sofiasip (see 
+  <https://sourceforge.net/projects/tp-sofiasip>)  and 
+  telapathy-stream-engine (see 
+  <http://telepathy.freedesktop.org/releases/stream-engine/>) that
+  serve as much better, and especially more up-to-date, examples of
+  how to integrate Sofia-SIP signaling to media path setup, and how to 
+  implement  the media path with Gstreamer.
+
+Changes in release: 0.14 (2008-03-11)
+-------------------------------------
+
+- Now requires Sofia-SIP 1.12.3 or newer.
+- Use of STUN for SIP signalling (NAT/FW traversal) is now disabled 
+  by default.
+- Added a new media implementation "nice" that serves as 
+  a testing tool for the NICE library (IETF-ICE implementation).
+  Added "nice_tester" utility to the distribution. See README for 
+  more details.
+- Fixed bug in auto-answer (--autoanswer) feature. The media
+  session was not correctly setup when auto-answering.
+- Fixed various minor bugs in the codebase.
+
+Changes in release: 0.13 (2007-05-31)
+-------------------------------------
+
+- Use a random local UDP port for SIP by default (can be overridden 
+  with the "--contact" command-line option.
+- Fixed bugs in initiating multiple media sessions with "gstreamer" 
+  backend.
+- Fixed bug in responding to an 401/407 authentication challenge with
+  no realm.
+- Request for a lower, 180sec, registration refresh interval from 
+  the registrar by default.
+
+Changes in release: 0.12 (2006-10-20)
+-------------------------------------
+
+- Added a build time options (see SOFSIP_USE_GLIB_EVENT_LOOP
+  in src/sofsip_cli.c) to disable use of the glib eventloop,
+  and use of sofia-sip's own event loop instead. Glib/object
+  are still mandatory libraries, but this allows to better
+  understand which code is dependent on glib/object.
+- Moved streamer specific utilities from gsdp_utils.h to
+  ssc_media_gst_utils.h, renamed gsdp_utils.h to sdp_utils.h
+- Added summary output to the end of "./configure" runs.
+- Added a welcome to interactive mode banner.
+- Added 'set' (for settings) command to interactive mode.
+- Fixed a bug which caused a segfault when CTRL-D (like with
+  "echo h |./sofsip_cli") was received.
+- Fixed a bug in rejecting an incoming call.
+- Farsight is now disabled by default to avoid compilation
+  problems with different Farsight versions. You can reenable
+  it with "--with-farsight" configure option. This change 
+  does not affect the "fsgst" media implementation. See README
+  for more details about the different implementations.
+
+Changes in release: 0.11 (2006-08-07)
+------------------------------------
+
+- Fixed a dumb bug in input parsing: a command starting
+  with white-space (like ' m sip:foobar@somedomain.org' would
+  cause a segfault). Problem reported by Johannes Eickhold.
+- Added '--with-default-audio=FOO' configure switch. Allows
+  to select the default audio subsystem (see sofsip_cli(1)
+  man page and documentation for the SOFSIP_AUDIO environment 
+  variable).
+- Added a workaround for changed audio sink behaviour in
+  gstreamer-0.10.9. See #348677 at http://bugzilla.gnome.org.
+  Also #348675 affects sofsip-cli users.
+- Added some special case code for N770 gstreamer pipeline 
+  setup. Enable by compiling with '--with-default-audio=N770'
+  or by setting the 'SOFSIP_AUDIO=N770' enviroment variable
+  on runtime. Code contributed by Johannes Eickhold.
+
+Changes in release: 0.10 (2006-05-31)
+------------------------------------
+
+- More fixes to media setup problems when STUN is not 
+  used (as reported by H.L.).
+
+Changes in release: 0.9 (2006-05-30)
+------------------------------------
+
+- Renamed 'gstreamer' media implementation to 'fsgst', and
+  added a new 'gstreamer' implementation that relies only
+  on basic GStreamer elements (gstreamer, gst-plugins-base and
+  gst-plugins-good). The 'fsgst' uses GStreamer plus additional
+  plugins provided by the gst-plugins-farsight package (for RTP 
+  jitter buffering and RTCP support). See the updated README file 
+  for more information.
+- Fixed a bug that caused segfaults if communication failed
+  with the STUN server (reported by H.L.).
+- Added 'SOFSIP_AUDIO' environment variable. See sofsip_cli(1)
+  for some documentation.
+
+Changes in release: 0.8 (2006-05-23)
+------------------------------------
+
+- Now requires sofia-sip-1.11.8 or newer.
+- Extended the 'k' command syntax. It is now sufficient to just
+  give the password as a parameter (e.g. "k mysecret"). The 'scheme/method' 
+  and 'realm' fields are taken from the challenge sent by server (from 
+  the 'WWW-Authenticate' and 'Proxy-Authenticate' SIP headers), and
+  'username' from SIP 'From' header. It is still possible to specify
+  all authentication information explicitly using the old 
+  colon-separated-fields syntax. 
+- Added initial support for Farsight as a media subsystem (enable
+  with '--media-impl=farsight'. Is not fully working yet. 
+- To use the gstreamer media implementation, this release requires 
+  gst-plugins-farsight 2005-05-13 snapshot or newer.
+- If Farsight or Gstreamer libraries are not found at build time,
+  support for them is automatically disabled.
+
+Changes in release: 0.7 (2006-02-16)
+------------------------------------
+
+- Renamed "--media" to "--media-addr".
+- Added "--media-impl={dummy,gstreamer,farsight}" for 
+  selecting which media implementation to use.
+- Added "--autoanswer={yes,no} for controlling auto-answer
+  feature.
+- Updated to work with the new sofia-sip header namespace. Now requires
+  sofia-sip-1.11.6 to build.
+Ã-Added "addr <sip-uri>" command for changing the public
+  address (AoR) after startup.
+
+Changes in release: 0.6 (2006-02-15)
+------------------------------------
+
+- The gstreamer-rtp media subsystem is now only selected if
+  correct versions of all required gstreamer plugins are
+  available at runtime.
+- Improved the user-inteface for authentication handling,
+  so that users don't need to provide the challenge realm and 
+  scheme anymore, just the username and password.
+
+Changes in release: 0.5 (2006-02-10)
+------------------------------------
+
+- First release of the modified sofia-sip/utils/nua_cli.c 
+  program that was part of 1.11.0-1.11.5 Sofia-SIP releases.
+- Modified to use new libraries: GNU readline, glib (GOption, 
+  various others), gstreamer (media subsystem).
+- Added documentation: README, sofsip_cli(1) man page.
+- Updated the set of command-line and environment variables
+  for configuring sofsip-cli.

@@ -1,0 +1,145 @@
+README for sofsip-cli
+=====================
+
+This is a simple SIP VoIP/IM example client demonstrating 
+how to use the Sofia-SIP libsofia-sip-ua library interfaces.
+
+Features 
+--------
+
+* console mode user-interface (with readline support)
+* registration to SIP networks (UDP/TCP/TLS)
+* sending OPTIONS request to other SIP nodes
+* making and receiving calls (either with dummy media, or 
+  basic media support with the gstreamer, see below)
+* call control; call transfers, hold
+* sending and receiving instant messages
+* publishing and subscribing to presence 
+
+Dependencies
+------------
+
+Sofsip-cli requires the Sofia-SIP package to be installed. See 
+http://sofia-sip.sf.net for more information.
+
+For media support, sofsip-cli comes with multiple media implementations, 
+each of which has different set of dependencies to external packages.
+See the section below on media implementations.
+
+Sofsip-cli can optionally be compiled against the GNU readline
+library (GPL licensed).
+
+Media Implementations
+---------------------
+
+Sofsip-cli allows one to initiate and answer media sessions. For
+actual media processing, multiple alternative implementations 
+are available:
+
+Primary implementations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+GStreamer without gst-plugins-farsight ["--media-impl=gstreamer"]
+    - The default media implementation. Uses gstreamer-0.10
+      element to realize basic media support needed for voice calls.
+    - deps: gstreamer-0.10, gst-plugins-base and gst-plugins-good; see
+      notes for "fsgst" above concerning problems with specific gst versions
+    - limitations: no RTCP support, asymmetric RTP and no jitterbuffering.
+    - codecs: G711
+
+Test implementations (special purpose)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dummy media ["--media-impl=dummy"]
+    - A dummy implementation for testing purposes (does not send
+      any RTP packets and silently discards any packets received)
+    - deps: no extra packages required
+    - limitations: Only useful for testing SIP signaling.
+    - codecs: dummy-G711
+
+NICE test client ["--media-impl=nice"]
+    - Experimental media implementation that uses the NICE library (an
+      implementation of IETF ICE protocol) to establish connectivity for 
+      media over NATs and firewalls. This implementation is for testing 
+      only (only test packets are sent), but can be used against other 
+      IETF-ICE implementations as well (any RTP packets received are 
+      looped back with an altered SSRC).
+    - Acquiring the NICE library:  
+        - http://nice.freedesktop.org/wiki/
+    - Note: libnice 0.0.4 requires libglib v2.12 or newer.
+    - For automatic testing, 'src/nice_tester' is provided. It's a modified
+      version of 'sofsip-cli' that registers to network, makes a call to
+      the requested address and reports whether ICE connectivity establishment
+      was succesful. On the answering side, for instance a 'sofsip-cli' instance 
+      in auto-answer mode (--autoanswer), can be used.
+
+Documentation
+-------------
+
+Example of basic registration to network follows. You'll
+need a SIP account from some provider (try a web search for free
+SIP services).
+
+  sh> ./sofsip_cli sip:first.surname@mysipprovider.net
+  [ sofsip_cli starts ]
+  UA> r
+  [ registration is performed, you might get a prompt for password ]
+  UA> k mypassword
+  [ you should now be succesfully logged in ]
+
+After you are registered, you can send instant messages, and
+make calls as follows:
+
+  UA> m sip:friend@otherprovider.net
+  Enter message> hi there!
+  [ message is sent ]
+
+  UA> i sip:friend@otherprovider.net
+  [ an outgoing call is made ]
+
+If you can't, or don't want to, use SIP servers, you can also run
+multiple SIP clients, and make calls and send messages directly:
+
+  UA> i sip:192.168.0.1
+  [ call to SIP client listening on 192.168.0.1:5060 ]
+  UA> i sip:192.168.0.1:40000
+  [ call to SIP client listening on non-default port 40000 ]
+
+To select a specific transport protocol, or network protocol (IPv4 or
+IPv6), etc, you can use SIP URI params:
+ 
+  UA> ./sofsip_cli --contact="sip:*:5060;transport=tcp,udp"
+  [ sofsip_cli will prefer TCP as the transport ]
+
+If you want to explicitly define which SIP registrar to use, or to
+use a SIP proxy for outgoing message, use the '--proxy=SIPURI' and
+'--registrar=SIPURI' parameters.
+
+If you are behind a NAT, you can use STUN (RFC3489) for NAT
+traversal. You'll need an address of an STUN server (try a web
+search for free STUN servers):
+
+  sh> ./sofsip_cli --stun-server=stun.someprovider.com
+  [ enables STUN support for signaling and media ]
+
+To debug problems, set the "TPORT_LOG" variable to 1 in order to see 
+all received and sent signaling messages:
+
+  sh> export TPORT_LOG=1
+  sh> ./sofsip_cli sip:foo@myprovider.com
+
+See sofsip_cli(1) man page for more information.
+
+Contact information
+-------------------
+
+If you have any questions, or comments, feel free to mail
+the developer team to:
+
+   sofia-sip-devel@lists.sourceforge.net
+
+License
+-------
+
+LGPL. Note license of GNU readline (GPL), if support for it
+is enabled. See file COPYING for full details.

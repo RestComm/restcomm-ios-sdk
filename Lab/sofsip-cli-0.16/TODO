@@ -1,0 +1,15 @@
+Sofsip-cli-gst TODO list
+========================
+
+- add alternative interface for authenticating, where a realm
+  is taken from the challenge, and the username from current AOR
+    -> user just needs to enter the password
+
+- add use of STUN_DOMAIN and STUN_REQUIRE_INTEGRITY options (just
+  uncomment the code)
+
+- write a "Quick start" section to README
+
+- add Farsight media subsystem implementation
+
+- for more todo-items, see src/*.c files
