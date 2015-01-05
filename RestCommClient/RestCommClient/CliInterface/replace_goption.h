@@ -25,8 +25,9 @@
 #ifndef __G_OPTION_H__
 #define __G_OPTION_H__
 
-#include <glib/gerror.h>
-#include <glib/gquark.h>
+#include "glib.h"
+//#include <glib/gerror.h>
+//#include <glib/gquark.h>
 
 G_BEGIN_DECLS
 

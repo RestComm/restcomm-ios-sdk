@@ -28,7 +28,7 @@
 		AEA6C4B419DB412A00BD2455 /* ssc_media.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A819DB412A00BD2455 /* ssc_media.c */; };
 		AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.c */; };
 		AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */; };
-		AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4B019DB412A00BD2455 /* SipManager.mm */; };
+		AEA6C4B719DB412A00BD2455 /* SipManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4B019DB412A00BD2455 /* SipManager.m */; };
 		AEC1221019728C850035B864 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC1220F19728C850035B864 /* Foundation.framework */; };
 		AEC1221519728C850035B864 /* RestCommClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1221419728C850035B864 /* RestCommClient.h */; };
 		AEC1221719728C850035B864 /* RestCommClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1221619728C850035B864 /* RestCommClient.m */; };
@@ -220,7 +220,7 @@
 		AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_sip.c; sourceTree = "<group>"; };
 		AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
 		AEA6C4AF19DB412A00BD2455 /* SipManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipManager.h; sourceTree = "<group>"; };
-		AEA6C4B019DB412A00BD2455 /* SipManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SipManager.mm; sourceTree = "<group>"; };
+		AEA6C4B019DB412A00BD2455 /* SipManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipManager.m; sourceTree = "<group>"; };
 		AEC1220C19728C850035B864 /* libRestCommClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRestCommClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEC1220F19728C850035B864 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AEC1221319728C850035B864 /* RestCommClient-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RestCommClient-Prefix.pch"; sourceTree = "<group>"; };
@@ -267,6 +267,7 @@
 		AEC39AD01A5AA9F500B155E4 /* su_glib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_glib.h; sourceTree = "<group>"; };
 		AEC39AD11A5AA9F500B155E4 /* su_source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_source.h; sourceTree = "<group>"; };
 		AEC39AD21A5AAA7D00B155E4 /* su_source.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = su_source.c; sourceTree = "<group>"; };
+		AEC39AD61A5ACCEC00B155E4 /* su_port.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_port.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,6 +339,7 @@
 		AEA6C42F19DB411100BD2455 /* sofia-sip */ = {
 			isa = PBXGroup;
 			children = (
+				AEC39AD61A5ACCEC00B155E4 /* su_port.h */,
 				AEC39AD01A5AA9F500B155E4 /* su_glib.h */,
 				AEC39AD11A5AA9F500B155E4 /* su_source.h */,
 				AEA6C43019DB411100BD2455 /* auth_client.h */,
@@ -501,7 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				AEA6C4AF19DB412A00BD2455 /* SipManager.h */,
-				AEA6C4B019DB412A00BD2455 /* SipManager.mm */,
+				AEA6C4B019DB412A00BD2455 /* SipManager.m */,
 			);
 			path = SipManager;
 			sourceTree = "<group>";
@@ -704,7 +706,7 @@
 				AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */,
 				AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */,
 				AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */,
-				AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */,
+				AEA6C4B719DB412A00BD2455 /* SipManager.m in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
 				AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
@@ -771,6 +773,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -794,6 +797,8 @@
 					"HAVE_GLIB=1",
 					"HAVE_NETINET_IN_H=1",
 					"HAVE_UNISTD_H=1",
+					__arm__,
+					"HAVE_ARPA_INET_H=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -819,6 +824,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

@@ -88,6 +88,8 @@ struct ssc_s {
   int           ssc_autoanswer;
 
   GList        *ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */ 
+  int          ssc_input_fd;
+  int          ssc_output_fd;
 
   int           ssc_ans_status; /**< Answer status */
   char const   *ssc_ans_phrase; /**< Answer status */
@@ -125,7 +127,7 @@ struct ssc_conf_s {
 #define enter (void)0
 #endif
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf);
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd);
 void ssc_destroy(ssc_t *self);
 
 void ssc_store_pending_auth(ssc_t *ssc, ssc_oper_t *op, sip_t const *sip, tagi_t *tags);
@@ -157,5 +159,28 @@ void ssc_zap(ssc_t *ssc, char *d);
 
 void ssc_print_payload(ssc_t *ssc, sip_payload_t const *pl);
 void ssc_print_settings(ssc_t *ssc);
+
+struct SofiaReply {
+    int rc;
+    char text[256];
+};
+
+//extern SofiaReply;
+
+// reply sent back to the iOS App via pipe
+enum SipMsgEnum {
+    REPLY_AUTH = 1,
+    INCOMING_CALL,
+    INCOMING_MSG,
+    OUTGOING_RINGING,
+    OUTGOING_ESTABLISHED,
+};
+
+//SofiaReply();
+void setSofiaReply(const int rc, const char * text);
+struct SofiaReply * getSofiaReply(void);
+static ssize_t sendSofiaReply(const int fd, const struct SofiaReply * sofiaReply);
+
+
 
 #endif /* HAVE_SSC_SIP_H */

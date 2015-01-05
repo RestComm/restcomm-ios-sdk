@@ -89,6 +89,9 @@ struct cli_s {
   void         *cli_main;      /**< Pointer to mainloop */
   su_root_t    *cli_root;       /**< Pointer to application root */
 
+  int           cli_input_fd;  // pipe input file descriptor for commands
+  int           cli_output_fd;  // pipe input file descriptor for commands
+
   cli_input_t   cli_input;	/**< Input structure */
   unsigned      cli_init : 1;	/**< True if input is initialized */
   unsigned      cli_prompt : 1;	/**< True if showing prompt */
@@ -114,7 +117,7 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 
 static cli_t *global_cli_p = NULL;
 
-int main(int ac, char *av[])
+int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -129,6 +132,9 @@ int main(int ac, char *av[])
   sigaction(SIGABRT, &sigact, NULL);
   sigaction(SIGTERM, &sigact, NULL);
 #endif
+
+  cli->cli_input_fd = input_fd;
+  cli->cli_output_fd = output_fd;
 
   /* step: initialize sofia su OS abstraction layer */
   su_init();
@@ -159,7 +165,7 @@ int main(int ac, char *av[])
   assert(res == 0);
 
   /* step: create ssc signaling and media subsystem instance */
-  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf);
+  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
 
   if (res != -1 && cli->cli_ssc) {
 
@@ -322,9 +328,10 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
       break;
     }
   }
-
-  su_wait_create(&cli->cli_input, 0, SU_WAIT_IN); 
-  if (su_root_register(cli->cli_root, 
+  // notice that in iOS we can't register STDIN; we get an error 'Invalid argument'
+  // in su_root_register() below. Let's use a pipe instead for iOS core app <-> sofia sip communication
+  su_wait_create(&cli->cli_input, cli->cli_input_fd, SU_WAIT_IN);
+  if (su_root_register(cli->cli_root,
 		       &cli->cli_input, 
 		       sofsip_handle_input, 
 		       NULL, 
@@ -362,7 +369,7 @@ static int sofsip_handle_input(cli_t *cli, su_wait_t *w, void *p)
 {
   /* note: sofsip_handle_input_cb is called if a full
    *       line has been read */
-  ssc_input_read_char();
+  ssc_input_read_char(cli->cli_input_fd);
 
   return 0;
 }
@@ -371,8 +378,8 @@ static void sofsip_handle_input_cb(char *input)
 {
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
-  int n = command ? strlen(command) : 0;
-  char msgbuf[160];
+  int n = command ? (int)strlen(command) : 0;
+  char msgbuf[160] = "";
 
   /* see readline(2) */
   if (input == NULL) {
@@ -448,9 +455,28 @@ static void sofsip_handle_input_cb(char *input)
     ssc_list(cli->cli_ssc);
   }
   else if (match("m") || match("message")) {
-    ssc_input_set_prompt("Enter message> ");
-    ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_message(cli->cli_ssc, rest, msgbuf);
+    // 'rest' contains the destination and the message, delimited by a whitespace
+    char * token, * dest = NULL;
+    int pos = 0;
+    while ((token = strsep(&rest, " ")) != NULL) {
+        if (pos == 0) {
+            dest = token;
+            break;
+        }
+        /*
+        if (pos == 1) {
+            strncpy(msgbuf, token, sizeof(msgbuf) - 1);
+            msgbuf[sizeof(msgbuf) - 1] = 0;
+            break;
+        }
+         */
+        printf("%s\n", token);
+       pos++;
+    }
+
+    //ssc_input_set_prompt("Enter message> ");
+    //ssc_input_read_string(msgbuf, sizeof(msgbuf));
+    ssc_message(cli->cli_ssc, dest, rest);
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

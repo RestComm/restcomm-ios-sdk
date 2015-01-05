@@ -50,7 +50,8 @@
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
+    //self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
+    self.sipUriText.text = @"sip:1234@192.168.2.32:5080";
 #endif
     
 }

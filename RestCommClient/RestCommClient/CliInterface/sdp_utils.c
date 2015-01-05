@@ -33,6 +33,7 @@
 #include <config.h>
 #endif
 
+#include "glib.h"
 #include <stdio.h>
 #include <string.h>
 

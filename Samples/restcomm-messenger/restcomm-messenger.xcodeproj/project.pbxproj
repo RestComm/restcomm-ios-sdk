@@ -22,13 +22,18 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE56121B1A064F5B009C9A4F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
+		AEC39AD71A5AD8A600B155E4 /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAF1A5A961000B155E4 /* GStreamer.framework */; };
+		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
+		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
+		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
+		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
 		AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECB0D9019DB3E8000E7472F /* libRestCommClient.a */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-messengerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */; };
@@ -88,6 +93,12 @@
 		AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AAF1A5A961000B155E4 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../../../Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework; sourceTree = "<group>"; };
 		AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		AEC39ADC1A5ADFF200B155E4 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AEC39AE41A5AE11100B155E4 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
+		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
+		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		AECB0D8A19DB3E8000E7472F /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-messengerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messengerTests-Info.plist"; sourceTree = "<group>"; };
@@ -118,7 +129,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE56121B1A064F5B009C9A4F /* AVFoundation.framework in Frameworks */,
+				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
+				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
+				AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */,
+				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
+				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
+				AEC39AD71A5AD8A600B155E4 /* GStreamer.framework in Frameworks */,
 				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
 				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
@@ -163,6 +179,12 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEC39AE81A5AE18800B155E4 /* libresolv.dylib */,
+				AEC39AE41A5AE11100B155E4 /* libcrypto.a */,
+				AEC39AE51A5AE11100B155E4 /* libssl.a */,
+				AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */,
+				AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */,
+				AEC39ADC1A5ADFF200B155E4 /* AVKit.framework */,
 				AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */,
 				AEC39AAF1A5A961000B155E4 /* GStreamer.framework */,
 				AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */,
@@ -550,7 +572,10 @@
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";
@@ -573,7 +598,10 @@
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";
 				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";

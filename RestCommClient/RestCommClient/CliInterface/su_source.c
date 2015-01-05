@@ -62,7 +62,7 @@
 #include "sofia-sip/su_glib.h"
 
 #include "sofia-sip/su.h"
-#include "su_port.h"
+#include "sofia-sip/su_port.h"
 #include "sofia-sip/su_alloc.h"
 
 #include <stdlib.h>
@@ -315,7 +315,7 @@ void su_source_finalize(GSource *gs)
 {
   SuSource *ss = (SuSource *)gs;
   assert(gs);
-  SU_DEBUG_9(("su_source_finalize() called\n"));
+  //SU_DEBUG_9(("su_source_finalize() called\n"));
   su_source_port_deinit(ss->ss_port);
 }
 
@@ -1085,7 +1085,7 @@ static su_port_t *su_source_port_create(void)
   SuSource *ss;
   su_port_t *self = NULL;
 
-  SU_DEBUG_9(("su_source_port_create() called\n"));
+  //SU_DEBUG_9(("su_source_port_create() called\n"));
 
   ss = (SuSource *)g_source_new(su_source_funcs, (sizeof *ss));
 
@@ -1094,10 +1094,10 @@ static su_port_t *su_source_port_create(void)
     if (su_source_port_init(self, su_source_port_vtable) < 0)
       g_source_unref(ss->ss_source), self = NULL;
   } else {
-    su_perror("su_source_port_create(): g_source_new");
+    g_error("su_source_port_create(): g_source_new");
   }
 
-  SU_DEBUG_1(("su_source_port_create() returns %p\n", (void *)self));
+  //SU_DEBUG_1(("su_source_port_create() returns %p\n", (void *)self));
 
   return self;
 }

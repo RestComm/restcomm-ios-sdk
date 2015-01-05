@@ -7,7 +7,7 @@
 //
 
 #include <sys/event.h>
-#include <string>
+//#include <string>
 
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
@@ -27,8 +27,20 @@ int read_pipe[2];
 
 @implementation SipManager
 
+// add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
+//static void addFdSourceToRunLoop(int fd)
+- (void) addFdSourceToRunLoop:(int)fd
+{
+    CFFileDescriptorContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
+    CFFileDescriptorRef fdref = CFFileDescriptorCreate(kCFAllocatorDefault, fd, false, inputCallback, &context);
+    CFFileDescriptorEnableCallBacks(fdref, kCFFileDescriptorReadCallBack);
+    CFRunLoopSourceRef source = CFFileDescriptorCreateRunLoopSource(kCFAllocatorDefault, fdref, 0);
+    CFRunLoopAddSource(CFRunLoopGetMain(), source, kCFRunLoopCommonModes);
+    CFRelease(source);
+}
+
 // notice that we can make this an Objective-C method as well, if we want
-- (int)handleSofiaInput:(SofiaReply *) reply fd:(int) fd
+- (int)handleSofiaInput:(struct SofiaReply *) reply fd:(int) fd
 {
     if (reply->rc == REPLY_AUTH) {
         // reply to an authentication request with the credentials
@@ -55,14 +67,15 @@ int read_pipe[2];
 }
 
 // receive incoming events from sofia SIP via pipe
-static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes, void *info) {
+static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes, void *info)
+{
     // which fd corresponds to the given fdref
     int fd = CFFileDescriptorGetNativeDescriptor(fdref);
 
     // remember, 'info' is actually the Objective-C object 'SipManager', so here we are casting
     // it properly so that we can then use it to access Objective-C resources from C (access to App UI elements, etc)
     SipManager * sipManager = (__bridge id) info;
-    SofiaReply reply;
+    struct SofiaReply reply;
     
     // TODO: what is message is truncated?
     if (read(fd, &reply, sizeof(reply)) == -1) {
@@ -98,18 +111,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     //[self setParams:params];
     
     return self;
-}
-
-// add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
-//static void addFdSourceToRunLoop(int fd)
-- (void) addFdSourceToRunLoop:(int)fd
-{
-    CFFileDescriptorContext context = {0, (__bridge void *)(self), NULL, NULL, NULL};
-    CFFileDescriptorRef fdref = CFFileDescriptorCreate(kCFAllocatorDefault, fd, false, inputCallback, &context);
-    CFFileDescriptorEnableCallBacks(fdref, kCFFileDescriptorReadCallBack);
-    CFRunLoopSourceRef source = CFFileDescriptorCreateRunLoopSource(kCFAllocatorDefault, fdref, 0);
-    CFRunLoopAddSource(CFRunLoopGetMain(), source, kCFRunLoopCommonModes);
-    CFRelease(source);
 }
 
 // initialize sofia

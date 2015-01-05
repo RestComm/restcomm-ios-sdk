@@ -72,6 +72,10 @@
 #include "ssc_sip.h"
 #include "ssc_oper.h"
 
+/* Globals
+ * ------------------- */
+static struct SofiaReply sofiaReply;
+
 /* Function prototypes
  * ------------------- */
 
@@ -163,7 +167,7 @@ static void priv_destroy_oper_with_disconnect (ssc_t *self, ssc_oper_t *oper);
 /* Function definitions
  * -------------------- */
 
-ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
+ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd)
 {
   ssc_t *ssc;
   char *caps_str;
@@ -173,6 +177,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf)
   ssc = su_zalloc(home, sizeof(*ssc));
   if (!ssc)
     return ssc;
+
+  ssc->ssc_input_fd = input_fd;
+  ssc->ssc_output_fd = output_fd;
 
   ssc->ssc_name = "UA";
   ssc->ssc_home = home;
@@ -342,7 +349,7 @@ static ssc_auth_item_t *priv_store_pending_auth(su_home_t *home, const char *sch
   return authitem;
 }
 
-inline void priv_attach_op_and_username(ssc_t *self, ssc_auth_item_t *authitem, sip_from_t const *sipfrom, su_home_t *home, ssc_oper_t *op)
+void priv_attach_op_and_username(ssc_t *self, ssc_auth_item_t *authitem, sip_from_t const *sipfrom, su_home_t *home, ssc_oper_t *op)
 {
   authitem->ssc_op = op;
 
@@ -390,6 +397,10 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
     if (self->ssc_auth_req_cb)
       self->ssc_auth_req_cb (self, authitem, self->ssc_cb_context);
   }
+    
+    // notify the client application that they should provide credentials
+    setSofiaReply(REPLY_AUTH, "auth");
+    sendSofiaReply(self->ssc_output_fd, &sofiaReply);
 }
 
 
@@ -746,6 +757,17 @@ void ssc_r_invite(int status, char const *phrase,
     if (status == 401 || status == 407)
       ssc_store_pending_auth(ssc, op, sip, tags);
   }
+  if (status == 180) {
+      // notify the client application that we are ringing
+      setSofiaReply(OUTGOING_RINGING, "");
+      sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+  }
+  if (status == 200) {
+      // notify the client application that we are ringing
+      setSofiaReply(OUTGOING_ESTABLISHED, "");
+      sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+  }
+
 }
 
 /**
@@ -813,7 +835,10 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
 	ssc_answer(ssc, SIP_200_OK);
       }
       else {
-	printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+	    printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+        // notify the client application that they should answer
+        setSofiaReply(INCOMING_CALL, "incoming call");
+        sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
       }
     }
     else {
@@ -1304,6 +1329,13 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
     printf("\tSubject: %s\n", subject->g_value);
   ssc_print_payload(ssc, sip->sip_payload);
 
+  // notify the client application of the message
+  // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
+  setSofiaReply(INCOMING_MSG, "");
+  strncpy(sofiaReply.text, sip->sip_payload->pl_data, sip->sip_payload->pl_len);
+  sofiaReply.text[sip->sip_payload->pl_len] = 0;
+  sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+
   if (op == NULL)
     op = ssc_oper_create_with_handle(ssc, SIP_METHOD_MESSAGE, nh, from);
   if (op == NULL)
@@ -1634,7 +1666,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     printf("%s: REGISTER %s - registering address to network\n", ssc->ssc_name, op->op_ident);
     nua_register(op->op_handle, 
 		 TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
-		 NUTAG_M_FEATURES("expires=180"),
+		 NUTAG_M_FEATURES("expires=3600"),
 		 TAG_NULL());
   }
 
@@ -1976,3 +2008,29 @@ void ssc_shutdown(ssc_t *ssc)
   nua_shutdown(ssc->ssc_nua);
 }
 
+// reply sent back to the iOS App via pipe
+/*
+SofiaReply::SofiaReply()
+{
+    rc = 0;
+    text[0] = 0;
+}
+ */
+
+void setSofiaReply(const int rc, const char * text)
+{
+    sofiaReply.rc = rc;
+    strncpy(sofiaReply.text, text, sizeof(sofiaReply.text) - 1);
+    sofiaReply.text[sizeof(sofiaReply.text) - 1] = 0;
+}
+
+struct SofiaReply * getSofiaReply(void)
+{
+    return &sofiaReply;
+}
+
+ssize_t sendSofiaReply(const int fd, const struct SofiaReply * sofiaReply)
+{
+    //char buf[100] = "auth";
+    return write(fd, sofiaReply, sizeof(*sofiaReply));
+}
