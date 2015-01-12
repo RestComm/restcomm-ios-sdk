@@ -579,7 +579,8 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     self->sm_decoder = decoder;
 
     //audiosink = ssc_media_create_audio_sink(self->sm_ad_output_type);
-    audiosink = gst_element_factory_make ("alsasink", "ALSA");
+    //audiosink = gst_element_factory_make ("alsasink", "ALSA");
+    audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
     assert(audiosink != NULL);
     g_message("Created audio sink of type '%s' for playback.", self->sm_ad_output_type);
     if (!strcmp(self->sm_ad_output_type, "ALSA") && self->sm_ad_output_device)
@@ -602,7 +603,9 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     self->sm_tx_elements = TRUE;
 
     /* step: source element */
-    src1 = ssc_media_create_audio_src(self->sm_ad_input_type);
+    //src1 = ssc_media_create_audio_src(self->sm_ad_input_type);
+    src1 = gst_element_factory_make ("autoaudiosrc", "audiosrc");
+
     assert(src1 != NULL);
     if (!strcmp(self->sm_ad_input_type, "ALSA") && self->sm_ad_input_device)
       g_object_set (G_OBJECT (src1), "device", self->sm_ad_input_device, NULL);

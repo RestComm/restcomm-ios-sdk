@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */ = {isa = PBXBuildFile; fileRef = AE01D1141A64673E00D62211 /* gst_ios_init.m */; };
 		AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */; };
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.c */; };
 		AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */; };
@@ -82,6 +83,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE01D1131A64673E00D62211 /* gst_ios_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gst_ios_init.h; sourceTree = "<group>"; };
+		AE01D1141A64673E00D62211 /* gst_ios_init.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gst_ios_init.m; sourceTree = "<group>"; };
+		AE01D1161A64688200D62211 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE74178119EDB6B5008A78FE /* libc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libc.dylib; path = usr/lib/libc.dylib; sourceTree = SDKROOT; };
 		AE74178319EDB718008A78FE /* libpoll.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpoll.dylib; path = usr/lib/libpoll.dylib; sourceTree = SDKROOT; };
@@ -502,6 +506,8 @@
 		AEA6C4AE19DB412A00BD2455 /* SipManager */ = {
 			isa = PBXGroup;
 			children = (
+				AE01D1131A64673E00D62211 /* gst_ios_init.h */,
+				AE01D1141A64673E00D62211 /* gst_ios_init.m */,
 				AEA6C4AF19DB412A00BD2455 /* SipManager.h */,
 				AEA6C4B019DB412A00BD2455 /* SipManager.m */,
 			);
@@ -531,6 +537,7 @@
 		AEC1220E19728C850035B864 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE01D1161A64688200D62211 /* libstdc++.dylib */,
 				AEC39AB51A5A975500B155E4 /* GStreamer.framework */,
 				AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */,
 				AE74178819EDB762008A78FE /* libSystem.dylib */,
@@ -712,6 +719,7 @@
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
 				AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */,
 				AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */,
+				AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */,
 				AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */,
 				AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */,
 				AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */,

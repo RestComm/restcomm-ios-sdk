@@ -11,6 +11,7 @@
 
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
+#include "gst_ios_init.h"
 
 #import "SipManager.h"
 
@@ -128,6 +129,10 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     argv[2] = "-r";
     argv[3] = "sip:192.168.2.30:5080";
      */
+
+    // initialize gstreamer stuff
+    gst_ios_init();
+
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // communicate with sip sofia via the pipe
