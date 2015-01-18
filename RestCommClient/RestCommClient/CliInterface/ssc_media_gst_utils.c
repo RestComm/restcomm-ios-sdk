@@ -180,12 +180,12 @@ GstElement* ssc_media_create_audio_src(const char* type)
     factory = GST_ELEMENT_FACTORY(i->data);
     if (factory) {
       const char* klass_tags = gst_element_factory_get_klass(factory);
-      if (strstr(klass_tags, "Audio") && 
-	  (strstr(klass_tags, "Source") || strstr(klass_tags, "Src")) &&
-	  strstr(gst_element_factory_get_longname(factory), type)) {
-	/* g_debug("%s: match of %s and %s (tags:%s).\n", __func__, gst_element_factory_get_longname(factory), type, klass_tags); */
-	res = gst_element_factory_create(factory, "audiosrc");
-	break;
+        if (strstr(klass_tags, "Audio") && (strstr(klass_tags, "Source") || strstr(klass_tags, "Src"))) {
+	  //    strstr(gst_element_factory_get_longname(factory), type)) {
+	    g_message("Name: %s, Long Name: %s, Type: %s, Tags %s.\n",  gst_plugin_feature_get_name (GST_PLUGIN_FEATURE (factory)),
+                  gst_element_factory_get_longname(factory), type, klass_tags);
+        res = gst_element_factory_create(factory, "audiosrc");
+	    break;
       }
     }
     i = g_list_next(i);
@@ -207,10 +207,10 @@ GstElement* ssc_media_create_audio_sink(const char* type)
     if (factory) {
       const char* klass_tags = gst_element_factory_get_klass(factory);
       if (strstr(klass_tags, "Sink") && strstr(klass_tags, "Audio") &&
-	  strstr(gst_element_factory_get_longname(factory), type))  {
-	g_print("%s: match of %s and %s (tags:%s).\n", __func__, gst_element_factory_get_longname(factory), type, klass_tags);
-	res = gst_element_factory_create(factory, "audiosink");
-	break;
+          strstr(gst_element_factory_get_longname(factory), type))  {
+        g_print("%s: match of %s and %s (tags:%s).\n", __func__, gst_element_factory_get_longname(factory), type, klass_tags);
+	    res = gst_element_factory_create(factory, "audiosink");
+	    break;
       }
     }
     i = g_list_next(i);

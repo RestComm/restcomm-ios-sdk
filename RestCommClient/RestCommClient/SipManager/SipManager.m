@@ -13,6 +13,9 @@
 #include "ssc_sip.h"
 #include "gst_ios_init.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "SipManager.h"
 
 /* TODOs:
@@ -130,6 +133,21 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     argv[3] = "sip:192.168.2.30:5080";
      */
 
+    PermissionBlock permissionBlock = ^(BOOL granted) {
+        if (granted)
+        {
+            NSLog(@"## Granted");
+        }
+        else
+        {
+            // Warn no access to microphone
+            NSLog(@"##No access to mic");
+        }
+    };
+    //if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission)]) {
+    [[AVAudioSession sharedInstance] requestRecordPermission:permissionBlock];
+    //}
+    
     // initialize gstreamer stuff
     gst_ios_init();
 

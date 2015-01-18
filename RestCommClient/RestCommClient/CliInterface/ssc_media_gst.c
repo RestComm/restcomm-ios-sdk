@@ -521,7 +521,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
   SscMediaGst *self = SSC_MEDIA_GST(data);
   SscMedia *parent = SSC_MEDIA (self);
   GstElementFactory *factory;
-  GstElement *decoder, *depayloader, *audiosink, *conv;
+    GstElement *decoder, *depayloader, *audiosink;  //, *convert, *resample;
   GstElement *src1, *codec, *payload, *udpsrc, *udpsink;
   gsdp_codec_factories_t *factories = gsdp_codec_factories_create("PCMU");
 
@@ -544,9 +544,16 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 		      priv_cb_pipeline_bus, (void*)self);
   }
 
-  GError *err;
+  GError *err = NULL;
   GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
+  if (err != NULL) {
+      // Report error to user, and free error
+      fprintf (stderr, "error getting gsocket: %s\n", err->message);
+      g_error_free (err);
+  }
   assert (gsocket != NULL);
+
+    gst_debug_set_threshold_from_string("2,*audio*:4", TRUE);
 
   /* step: create RX elements */
   if (!self->sm_rx_elements && factories) {
@@ -567,28 +574,39 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 		 "port", self->sm_rtp_lport,
 		 "caps", pt_caps,
 		 NULL);
-
+      
     /* step: create depayloader->decoder->sink chain */
     depayloader = gst_element_factory_create (factories->depayloader, "depayloader");
     assert(depayloader != NULL);
     self->sm_depay = depayloader;
-    g_object_set (G_OBJECT(depayloader), "queue_delay", 0, NULL);
+    //g_object_set (G_OBJECT(depayloader), "queue_delay", 0, NULL);
 
     decoder = gst_element_factory_create (factories->decoder, "decoder");
     assert(decoder != NULL);
     self->sm_decoder = decoder;
-
+    
+    /*
+    convert = gst_element_factory_make ("audioconvert", "convert");
+    assert (convert != NULL);
+      
+    resample = gst_element_factory_make ("audioresample", "resample");
+    assert (resample != NULL);
+    */
+      
     //audiosink = ssc_media_create_audio_sink(self->sm_ad_output_type);
     //audiosink = gst_element_factory_make ("alsasink", "ALSA");
     audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
     assert(audiosink != NULL);
+    /*
     g_message("Created audio sink of type '%s' for playback.", self->sm_ad_output_type);
     if (!strcmp(self->sm_ad_output_type, "ALSA") && self->sm_ad_output_device)
       g_object_set (G_OBJECT (audiosink), "device", self->sm_ad_output_device, NULL);
     g_object_set (G_OBJECT (audiosink), "latency-time", G_GINT64_CONSTANT (20000), NULL);
     g_object_set (G_OBJECT (audiosink), "buffer-time", G_GINT64_CONSTANT (160000), NULL);
+     */
     // workaround for changed behaviour in gstreamer-0.10.9:
-    g_object_set (G_OBJECT (audiosink), "sync", FALSE, NULL);
+    //g_object_set (G_OBJECT (audiosink), "sync", FALSE, NULL);
+     
 
     /* step: add elements to the bin and establish links */
     gst_bin_add_many (GST_BIN (self->sm_pipeline), udpsrc, depayloader, decoder, audiosink, NULL);
@@ -603,34 +621,36 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     self->sm_tx_elements = TRUE;
 
     /* step: source element */
-    //src1 = ssc_media_create_audio_src(self->sm_ad_input_type);
     src1 = gst_element_factory_make ("autoaudiosrc", "audiosrc");
-
     assert(src1 != NULL);
+    /*
     if (!strcmp(self->sm_ad_input_type, "ALSA") && self->sm_ad_input_device)
       g_object_set (G_OBJECT (src1), "device", self->sm_ad_input_device, NULL);
     g_object_set (G_OBJECT (src1), "latency-time", G_GINT64_CONSTANT (20000), NULL);
-    g_object_set (G_OBJECT (src1), "blocksize", 320, NULL); /* 320 octets, 20msec at L16/1 */
+    g_object_set (G_OBJECT (src1), "blocksize", 320, NULL); // 320 octets, 20msec at L16/1
+      */
 
     /* step: codec -> rtp-packetizer -> udp */
     codec = gst_element_factory_create (factories->encoder, "codec");
     assert(codec != NULL);
     payload = gst_element_factory_create (factories->payloader, "payload");
     assert(payload != NULL);
-    g_object_set (G_OBJECT (payload), "max-ptime", 20 * GST_MSECOND, NULL); /* 20msec */
+    //g_object_set (G_OBJECT (payload), "max-ptime", 20 * GST_MSECOND, NULL); /* 20msec */
 
     /* step: create UDP source */
     udpsink = gst_element_factory_make ("udpsink", "sink");
     assert (udpsink != NULL);
     self->sm_udpsink = udpsink;
+
     // note that all the working examples I have found out there use both
     // async=false and sync=false, but I removed sync=false (which I thought
     // was a bit odd to use) and media still works so I'll leave it at that for now
     g_object_set (G_OBJECT (udpsink), 
-	//"sync", FALSE, 
-	"async", FALSE, 
-	"socket", gsocket,
-	NULL);
+                  //"sync", FALSE,
+                  "async", FALSE,
+                  //"socket", gsocket,
+                  //"sockfd", self->sm_rtp_sockfd,
+                  NULL);
 
     /* step: add elements to the bin and establish links */
     gst_bin_add_many (GST_BIN (self->sm_pipeline), src1, codec, payload, udpsink, NULL);
