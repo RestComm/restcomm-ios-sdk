@@ -516,18 +516,20 @@ static int priv_setup_rtpelements(SscMediaGst *self)
  * Callback issued when local socket is ready for
  * use.
  */
-static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
+static void __priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 {
   SscMediaGst *self = SSC_MEDIA_GST(data);
   SscMedia *parent = SSC_MEDIA (self);
-  GstElementFactory *factory;
-    GstElement *decoder, *depayloader, *audiosink;  //, *convert, *resample;
+  //GstElementFactory *factory;
+  GstElement *decoder, *depayloader, *audiosink, *convert_rx, *resample_rx, *convert_tx, *resample_tx;
   GstElement *src1, *codec, *payload, *udpsrc, *udpsink;
   gsdp_codec_factories_t *factories = gsdp_codec_factories_create("PCMU");
 
-  gint sockfd = -1;
+  //gint sockfd = -1;
 
   g_debug(G_STRFUNC);
+
+  gst_debug_set_threshold_from_string("2,*:3", TRUE);
 
   if (netsocket != NULL) {
     if (self->sm_rtp_sockfd == -1) 
@@ -553,8 +555,6 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
   }
   assert (gsocket != NULL);
 
-    gst_debug_set_threshold_from_string("2,*audio*:4", TRUE);
-
   /* step: create RX elements */
   if (!self->sm_rx_elements && factories) {
     self->sm_rx_elements = TRUE;
@@ -565,13 +565,18 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 		    "encoding-name", G_TYPE_STRING, "PCMU",
 		    NULL);
 
+    convert_rx = gst_element_factory_make ("audioconvert", "convert-rx");
+    assert (convert_rx != NULL);
+    resample_rx = gst_element_factory_make ("audioresample", "resample-rx");
+    assert (resample_rx != NULL);
+      
     /* step: create UDP source */
     udpsrc = gst_element_factory_make ("udpsrc", "src");
     assert (udpsrc != NULL);
     self->sm_udpsrc = udpsrc;
     g_object_set(G_OBJECT(self->sm_udpsrc), 
 		 "socket", gsocket,
-		 "port", self->sm_rtp_lport,
+		 //"port", self->sm_rtp_lport,
 		 "caps", pt_caps,
 		 NULL);
       
@@ -579,38 +584,17 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     depayloader = gst_element_factory_create (factories->depayloader, "depayloader");
     assert(depayloader != NULL);
     self->sm_depay = depayloader;
-    //g_object_set (G_OBJECT(depayloader), "queue_delay", 0, NULL);
 
     decoder = gst_element_factory_create (factories->decoder, "decoder");
     assert(decoder != NULL);
     self->sm_decoder = decoder;
     
-    /*
-    convert = gst_element_factory_make ("audioconvert", "convert");
-    assert (convert != NULL);
-      
-    resample = gst_element_factory_make ("audioresample", "resample");
-    assert (resample != NULL);
-    */
-      
-    //audiosink = ssc_media_create_audio_sink(self->sm_ad_output_type);
-    //audiosink = gst_element_factory_make ("alsasink", "ALSA");
     audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
     assert(audiosink != NULL);
-    /*
-    g_message("Created audio sink of type '%s' for playback.", self->sm_ad_output_type);
-    if (!strcmp(self->sm_ad_output_type, "ALSA") && self->sm_ad_output_device)
-      g_object_set (G_OBJECT (audiosink), "device", self->sm_ad_output_device, NULL);
-    g_object_set (G_OBJECT (audiosink), "latency-time", G_GINT64_CONSTANT (20000), NULL);
-    g_object_set (G_OBJECT (audiosink), "buffer-time", G_GINT64_CONSTANT (160000), NULL);
-     */
-    // workaround for changed behaviour in gstreamer-0.10.9:
-    //g_object_set (G_OBJECT (audiosink), "sync", FALSE, NULL);
      
-
     /* step: add elements to the bin and establish links */
-    gst_bin_add_many (GST_BIN (self->sm_pipeline), udpsrc, depayloader, decoder, audiosink, NULL);
-    gst_element_link_many (udpsrc, depayloader, decoder, audiosink, NULL);
+    gst_bin_add_many (GST_BIN (self->sm_pipeline), udpsrc, depayloader, decoder, convert_rx, resample_rx, audiosink, NULL);
+    gst_element_link_many (udpsrc, depayloader, decoder, convert_rx, resample_rx, audiosink, NULL);
   } 
   else {
     g_warning("RX elements already configured, unable update on-the-fly.\n");
@@ -623,19 +607,17 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     /* step: source element */
     src1 = gst_element_factory_make ("autoaudiosrc", "audiosrc");
     assert(src1 != NULL);
-    /*
-    if (!strcmp(self->sm_ad_input_type, "ALSA") && self->sm_ad_input_device)
-      g_object_set (G_OBJECT (src1), "device", self->sm_ad_input_device, NULL);
-    g_object_set (G_OBJECT (src1), "latency-time", G_GINT64_CONSTANT (20000), NULL);
-    g_object_set (G_OBJECT (src1), "blocksize", 320, NULL); // 320 octets, 20msec at L16/1
-      */
+
+    convert_tx = gst_element_factory_make ("audioconvert", "convert-tx");
+    assert (convert_tx != NULL);
+    resample_tx = gst_element_factory_make ("audioresample", "resample-tx");
+    assert (resample_tx != NULL);
 
     /* step: codec -> rtp-packetizer -> udp */
     codec = gst_element_factory_create (factories->encoder, "codec");
     assert(codec != NULL);
     payload = gst_element_factory_create (factories->payloader, "payload");
     assert(payload != NULL);
-    //g_object_set (G_OBJECT (payload), "max-ptime", 20 * GST_MSECOND, NULL); /* 20msec */
 
     /* step: create UDP source */
     udpsink = gst_element_factory_make ("udpsink", "sink");
@@ -648,13 +630,13 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     g_object_set (G_OBJECT (udpsink), 
                   //"sync", FALSE,
                   "async", FALSE,
-                  //"socket", gsocket,
+                  "socket", gsocket,
                   //"sockfd", self->sm_rtp_sockfd,
                   NULL);
 
     /* step: add elements to the bin and establish links */
-    gst_bin_add_many (GST_BIN (self->sm_pipeline), src1, codec, payload, udpsink, NULL);
-    gst_element_link_many (src1, codec, payload, udpsink, NULL);
+    gst_bin_add_many (GST_BIN (self->sm_pipeline), src1, convert_tx, resample_tx, codec, payload, udpsink, NULL);
+    gst_element_link_many (src1, convert_tx, resample_tx, codec, payload, udpsink, NULL);
   }
   else {
     g_warning("TX elements already configured, unable update on-the-fly.\n");
@@ -672,6 +654,81 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 
   /* note: emit "state-changed" signal from base class */
   ssc_media_signal_state_change (parent, sm_active);
+}
+
+static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
+{
+    SscMediaGst *self = SSC_MEDIA_GST(data);
+    SscMedia *parent = SSC_MEDIA (self);
+    GError *error = NULL;
+    
+    //GST_DEBUG ("Creating pipeline");
+    
+    gst_debug_set_threshold_from_string("2,*audio*:3", TRUE);
+    /* Build pipeline */
+    //pipeline = gst_parse_launch("audiotestsrc ! audioconvert ! audioresample ! autoaudiosink", &error);
+    // From mic to loudspeaker
+    //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! audioconvert ! audioresample ! autoaudiosink", &error);
+    // Only TX (no errors)
+    //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! udpsink name=udp-sink", &error);
+    // Only TX with jitter buffer (rtpbin) (no errors)
+    //self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! rtpbin.send_rtp_sink_0 rtpbin.send_rtp_src_0 ! udpsink name=udp-sink", &error);
+    // Only RX (no errors)
+    //self->sm_pipeline = gst_parse_launch("udpsrc name=udp-src caps=\"application/x-rtp,clock-rate=8000,encoding-name=PCMU\" ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink", &error);
+    // Only RX with jitter buffer (works with 'cannot get clock-rate for pt 0)
+    //self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtpbin.recv_rtp_sink_0 rtpbin. ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink", &error);
+    // Bydirectional
+    self->sm_pipeline = gst_parse_launch("udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! udpsink name=udp-sink", &error);
+    // Bydirectional with jitter buffer (not working yet)
+    /*
+    self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin \
+        udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtpbin.recv_rtp_sink_0 rtpbin. ! \
+        rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink \
+        autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! rtpbin.send_rtp_sink_0 rtpbin.send_rtp_src_0 ! udpsink name=udp-sink", &error);
+     */
+
+    if (error) {
+        gchar *message = g_strdup_printf("Unable to build pipeline: %s", error->message);
+        g_clear_error (&error);
+        // TODO:
+        //[self setUIMessage:message];
+        g_free (message);
+        return;
+    }
+
+    /**/
+    // convert socket to gsocket
+    GError *err = NULL;
+    GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
+    if (err != NULL) {
+        // Report error to user, and free error
+        fprintf (stderr, "error getting gsocket: %s\n", err->message);
+        g_error_free (err);
+    }
+    self->sm_udpsink = gst_bin_get_by_name (GST_BIN(self->sm_pipeline), "udp-sink");
+    g_object_set (G_OBJECT (self->sm_udpsink),
+                  "async", FALSE,
+                  //"socket", gsocket,
+                  NULL);
+    /**/
+    // convert socket to gsocket
+    self->sm_udpsrc = gst_bin_get_by_name (GST_BIN(self->sm_pipeline), "udp-src");
+    g_object_set (G_OBJECT (self->sm_udpsrc),
+                  //"port", self->sm_rtp_lport,
+                  "socket", gsocket,
+                  NULL);
+    
+    priv_update_rx_elements(self);
+    priv_update_tx_elements(self);
+    
+    g_message ("Starting the pipeline.\n");
+    
+    gst_element_set_state (self->sm_pipeline, GST_STATE_PLAYING);
+    
+    /* note: emit "state-changed" signal from base class */
+    ssc_media_signal_state_change (parent, sm_active);
+    
+    return;
 }
 
 static gboolean priv_cb_pipeline_bus (GstBus *bus, GstMessage *message, gpointer data)

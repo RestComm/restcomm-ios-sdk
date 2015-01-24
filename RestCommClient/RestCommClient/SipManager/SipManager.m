@@ -133,6 +133,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     argv[3] = "sip:192.168.2.30:5080";
      */
 
+    /*
     PermissionBlock permissionBlock = ^(BOOL granted) {
         if (granted)
         {
@@ -147,6 +148,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     //if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission)]) {
     [[AVAudioSession sharedInstance] requestRecordPermission:permissionBlock];
     //}
+     */
     
     // initialize gstreamer stuff
     gst_ios_init();
