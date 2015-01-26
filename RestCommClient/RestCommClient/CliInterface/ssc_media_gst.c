@@ -669,8 +669,8 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     //pipeline = gst_parse_launch("audiotestsrc ! audioconvert ! audioresample ! autoaudiosink", &error);
     // From mic to loudspeaker
     //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! audioconvert ! audioresample ! autoaudiosink", &error);
-    // Only TX (no errors)
-    //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! udpsink name=udp-sink", &error);
+    // Only TX (no errors) - fixed voice 'breaking' issue
+    //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! capsfilter caps=audio/x-raw,rate=44100 ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! udpsink name=udp-sink", &error);
     // Only TX with jitter buffer (rtpbin) (no errors)
     //self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! rtpbin.send_rtp_sink_0 rtpbin.send_rtp_src_0 ! udpsink name=udp-sink", &error);
     // Only RX (no errors)
@@ -678,7 +678,7 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     // Only RX with jitter buffer (works with 'cannot get clock-rate for pt 0)
     //self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtpbin.recv_rtp_sink_0 rtpbin. ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink", &error);
     // Bydirectional
-    self->sm_pipeline = gst_parse_launch("udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! udpsink name=udp-sink", &error);
+    self->sm_pipeline = gst_parse_launch("autoaudiosrc ! capsfilter caps=audio/x-raw,rate=44100 ! audioconvert ! audioresample ! queue ! mulawenc ! rtppcmupay ! udpsink name=udp-sink udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink", &error);
     // Bydirectional with jitter buffer (not working yet)
     /*
     self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin \

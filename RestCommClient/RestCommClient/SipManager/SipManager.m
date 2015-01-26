@@ -145,10 +145,12 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
             NSLog(@"##No access to mic");
         }
     };
-    //if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission)]) {
-    [[AVAudioSession sharedInstance] requestRecordPermission:permissionBlock];
-    //}
      */
+    //if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission)]) {
+    NSError *setCategoryError = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
+    //}
+    
     
     // initialize gstreamer stuff
     gst_ios_init();
