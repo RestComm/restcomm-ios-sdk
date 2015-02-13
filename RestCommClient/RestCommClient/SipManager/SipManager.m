@@ -81,7 +81,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     SipManager * sipManager = (__bridge id) info;
     struct SofiaReply reply;
     
-    // TODO: what is message is truncated?
+    // TODO: what if message is truncated?
     if (read(fd, &reply, sizeof(reply)) == -1) {
         perror("read from pipe in App");
         exit(EXIT_FAILURE);
@@ -104,6 +104,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     if (self) {
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -124,32 +125,9 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         perror("pipe");
         exit(EXIT_FAILURE);
     }
-    
-    /*
-    char ** argv = (char **) malloc(4 * sizeof(char*));
-    argv[0] = "cli";
-    argv[1] = "sip:alice@telestax.com";
-    argv[2] = "-r";
-    argv[3] = "sip:192.168.2.30:5080";
-     */
 
-    /*
-    PermissionBlock permissionBlock = ^(BOOL granted) {
-        if (granted)
-        {
-            NSLog(@"## Granted");
-        }
-        else
-        {
-            // Warn no access to microphone
-            NSLog(@"##No access to mic");
-        }
-    };
-     */
-    //if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission)]) {
     NSError *setCategoryError = nil;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
-    //}
     
     
     // initialize gstreamer stuff
@@ -162,10 +140,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     });
 
     [self addFdSourceToRunLoop:read_pipe[0]];
-    //[self updateParams:self.params];
-    // the registrar is builting to the cli for now
-    //[self register:@""];
-    //free(argv);
 
     return true;
 }
@@ -273,7 +247,6 @@ ssize_t pipeToSofia(const char * msg, int fd)
         if ([key isEqualToString:@"aor"]) {
             cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:key]];
             [self pipeToSofia:cmd];
-            //break;
             
         }
         else if ([key isEqualToString:@"registrar"]) {

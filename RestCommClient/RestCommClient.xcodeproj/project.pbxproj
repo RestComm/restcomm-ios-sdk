@@ -23,6 +23,10 @@
 /* Begin PBXBuildFile section */
 		AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */ = {isa = PBXBuildFile; fileRef = AE01D1141A64673E00D62211 /* gst_ios_init.m */; };
 		AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */; };
+		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
+		AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */; };
+		AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E61A8B98A700578A7B /* ARDUtilities.m */; };
+		AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */; };
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.c */; };
 		AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */; };
 		AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.c */; };
@@ -85,19 +89,16 @@
 /* Begin PBXFileReference section */
 		AE01D1131A64673E00D62211 /* gst_ios_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gst_ios_init.h; sourceTree = "<group>"; };
 		AE01D1141A64673E00D62211 /* gst_ios_init.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gst_ios_init.m; sourceTree = "<group>"; };
-		AE01D1161A64688200D62211 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
-		AE74178119EDB6B5008A78FE /* libc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libc.dylib; path = usr/lib/libc.dylib; sourceTree = SDKROOT; };
-		AE74178319EDB718008A78FE /* libpoll.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpoll.dylib; path = usr/lib/libpoll.dylib; sourceTree = SDKROOT; };
-		AE74178419EDB718008A78FE /* libproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libproc.dylib; path = usr/lib/libproc.dylib; sourceTree = SDKROOT; };
-		AE74178819EDB762008A78FE /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
-		AE74178919EDB762008A78FE /* libsystem_c.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_c.dylib; path = usr/lib/system/libsystem_c.dylib; sourceTree = SDKROOT; };
-		AE74178A19EDB762008A78FE /* libsystem_kernel.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_kernel.dylib; path = usr/lib/system/libsystem_kernel.dylib; sourceTree = SDKROOT; };
-		AE74178B19EDB762008A78FE /* libsystem_malloc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_malloc.dylib; path = usr/lib/system/libsystem_malloc.dylib; sourceTree = SDKROOT; };
-		AE74178C19EDB762008A78FE /* libsystem_notify.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_notify.dylib; path = usr/lib/system/libsystem_notify.dylib; sourceTree = SDKROOT; };
-		AE74178D19EDB762008A78FE /* libsystem_platform.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_platform.dylib; path = usr/lib/system/libsystem_platform.dylib; sourceTree = SDKROOT; };
-		AE74178E19EDB762008A78FE /* libsystem_pthread.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_pthread.dylib; path = usr/lib/system/libsystem_pthread.dylib; sourceTree = SDKROOT; };
-		AE74178F19EDB762008A78FE /* libutil.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libutil.dylib; path = usr/lib/libutil.dylib; sourceTree = SDKROOT; };
+		AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaWebRTC.h; sourceTree = "<group>"; };
+		AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaWebRTC.m; sourceTree = "<group>"; };
+		AE5821E21A8B968500578A7B /* ARDCEODTURNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDCEODTURNClient.h; sourceTree = "<group>"; };
+		AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDCEODTURNClient.m; sourceTree = "<group>"; };
+		AE5821E41A8B968500578A7B /* ARDTURNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDTURNClient.h; sourceTree = "<group>"; };
+		AE5821E61A8B98A700578A7B /* ARDUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDUtilities.m; sourceTree = "<group>"; };
+		AE5821E71A8B98A700578A7B /* ARDUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDUtilities.h; sourceTree = "<group>"; };
+		AE5821E91A8B991800578A7B /* RTCICEServer+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCICEServer+JSON.h"; sourceTree = "<group>"; };
+		AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCICEServer+JSON.m"; sourceTree = "<group>"; };
 		AEA6C42A19DB411100BD2455 /* sres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres.h; sourceTree = "<group>"; };
 		AEA6C42B19DB411100BD2455 /* sres_async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_async.h; sourceTree = "<group>"; };
 		AEA6C42C19DB411100BD2455 /* sres_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_cache.h; sourceTree = "<group>"; };
@@ -225,6 +226,7 @@
 		AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
 		AEA6C4AF19DB412A00BD2455 /* SipManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipManager.h; sourceTree = "<group>"; };
 		AEA6C4B019DB412A00BD2455 /* SipManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipManager.m; sourceTree = "<group>"; };
+		AEC00A0A1A8E785A00A9968F /* ARDAppClient+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDAppClient+Internal.h"; sourceTree = "<group>"; };
 		AEC1220C19728C850035B864 /* libRestCommClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRestCommClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEC1220F19728C850035B864 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AEC1221319728C850035B864 /* RestCommClient-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RestCommClient-Prefix.pch"; sourceTree = "<group>"; };
@@ -248,7 +250,6 @@
 		AEC12242197296110035B864 /* RCPresenceEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPresenceEvent.m; sourceTree = "<group>"; };
 		AEC14C2319ED91A100C60E2B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC14C2419ED91A100C60E2B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
-		AEC14C2719EDA85A00C60E2B /* libsystem_network.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_network.dylib; path = usr/lib/system/libsystem_network.dylib; sourceTree = SDKROOT; };
 		AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AB51A5A975500B155E4 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../../Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework; sourceTree = "<group>"; };
 		AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket-stun.c"; sourceTree = "<group>"; };
@@ -302,6 +303,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE5821D51A8AB12F00578A7B /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				AEC00A0A1A8E785A00A9968F /* ARDAppClient+Internal.h */,
+				AE5821E91A8B991800578A7B /* RTCICEServer+JSON.h */,
+				AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */,
+				AE5821E61A8B98A700578A7B /* ARDUtilities.m */,
+				AE5821E71A8B98A700578A7B /* ARDUtilities.h */,
+				AE5821E21A8B968500578A7B /* ARDCEODTURNClient.h */,
+				AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */,
+				AE5821E41A8B968500578A7B /* ARDTURNClient.h */,
+				AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */,
+				AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
 		AEA6C42619DB411100BD2455 /* sofia-sip-1.12.11 */ = {
 			isa = PBXGroup;
 			children = (
@@ -537,21 +555,8 @@
 		AEC1220E19728C850035B864 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE01D1161A64688200D62211 /* libstdc++.dylib */,
 				AEC39AB51A5A975500B155E4 /* GStreamer.framework */,
 				AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */,
-				AE74178819EDB762008A78FE /* libSystem.dylib */,
-				AE74178919EDB762008A78FE /* libsystem_c.dylib */,
-				AE74178A19EDB762008A78FE /* libsystem_kernel.dylib */,
-				AE74178B19EDB762008A78FE /* libsystem_malloc.dylib */,
-				AE74178C19EDB762008A78FE /* libsystem_notify.dylib */,
-				AE74178D19EDB762008A78FE /* libsystem_platform.dylib */,
-				AE74178E19EDB762008A78FE /* libsystem_pthread.dylib */,
-				AE74178F19EDB762008A78FE /* libutil.dylib */,
-				AE74178319EDB718008A78FE /* libpoll.dylib */,
-				AE74178419EDB718008A78FE /* libproc.dylib */,
-				AE74178119EDB6B5008A78FE /* libc.dylib */,
-				AEC14C2719EDA85A00C60E2B /* libsystem_network.dylib */,
 				AEC14C2319ED91A100C60E2B /* libcrypto.a */,
 				AEC14C2419ED91A100C60E2B /* libssl.a */,
 				AEC1220F19728C850035B864 /* Foundation.framework */,
@@ -564,6 +569,7 @@
 		AEC1221119728C850035B864 /* RestCommClient */ = {
 			isa = PBXGroup;
 			children = (
+				AE5821D51A8AB12F00578A7B /* Media */,
 				AEA6C4A119DB412A00BD2455 /* CliInterface */,
 				AEA6C4AE19DB412A00BD2455 /* SipManager */,
 				AEC1221419728C850035B864 /* RestCommClient.h */,
@@ -713,15 +719,19 @@
 				AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */,
 				AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */,
 				AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */,
+				AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */,
 				AEA6C4B719DB412A00BD2455 /* SipManager.m in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
+				AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */,
 				AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
 				AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */,
 				AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */,
 				AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */,
 				AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */,
+				AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */,
 				AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */,
+				AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */,
 				AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */,
 				AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */,
 				AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */,
@@ -878,6 +888,14 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
+					$SOURCE_ROOT/RestCommClient/Media,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
@@ -902,6 +920,14 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
+					$SOURCE_ROOT/RestCommClient/Media,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",

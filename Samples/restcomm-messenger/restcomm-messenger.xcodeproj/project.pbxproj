@@ -22,6 +22,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE5821CE1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */; };
+		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
+		AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
@@ -89,6 +92,9 @@
 
 /* Begin PBXFileReference section */
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8223-arm-intel-Debug.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8223-arm-intel-Debug.a"; sourceTree = "<group>"; };
+		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -138,6 +144,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */,
+				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
+				AE5821CE1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a in Frameworks */,
 				AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */,
 				AE65E3A61A6BC6BC00C0CB1B /* OpenGLES.framework in Frameworks */,
 				AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */,
@@ -193,6 +202,9 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE5821E01A8AB79400578A7B /* GLKit.framework */,
+				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
+				AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */,
 				AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */,
 				AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */,
 				AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */,
@@ -588,11 +600,20 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
+					$SOURCE_ROOT/RestCommClient/Media,
+				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -614,11 +635,20 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
+					$SOURCE_ROOT/RestCommClient/Media,
+				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
+					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";

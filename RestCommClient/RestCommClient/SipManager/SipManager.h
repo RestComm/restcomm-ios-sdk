@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "../Media/MediaWebRTC.h"
 
 @protocol SipManagerDeviceDelegate;
 @protocol SipManagerConnectionDelegate;
 
-@interface SipManager : NSObject
+@interface SipManager : NSObject<MediaDelegate>
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate;
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
@@ -29,6 +30,7 @@
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;
+@property MediaWebRTC * media;
 @property NSMutableDictionary* params;
 @end
 
