@@ -97,7 +97,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 {
     [RTCPeerConnectionFactory initializeSSL];
     
-    // TODO: probably need to adapt & use those
     NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
     _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
     [self configure];
@@ -160,12 +159,9 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     //if (self.defaultPeerConnectionConstraints) {
     //    return self.defaultPeerConnectionConstraints;
     //}
-    NSArray *optionalConstraints = @[
-                                     [[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]
-                                     ];
-    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc]
-                                        initWithMandatoryConstraints:nil
-                                        optionalConstraints:optionalConstraints];
+    NSArray *optionalConstraints = @[[[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]];
+    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
+                                                                             optionalConstraints:optionalConstraints];
     return constraints;
 }
 
@@ -177,10 +173,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
     // TODO: if we want to only work with audio, here's one place to update
-    NSArray *mandatoryConstraints = @[
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]
-                                      ];
+    NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -324,14 +318,14 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"Failed to set session description.",
                                        };
-            NSError *sdpError =
-            [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
-                                       code:kARDAppClientErrorSetSDP
-                                   userInfo:userInfo];
+            NSError *sdpError =[[NSError alloc] initWithDomain:kARDAppClientErrorDomain
+                                                          code:kARDAppClientErrorSetSDP
+                                                      userInfo:userInfo];
             // TODO: notify our delegate
             //[_delegate appClient:self didError:sdpError];
             return;
         }
+        
         // If we're answering and we've just set the remote offer we need to create
         // an answer and set the local description.
         if (!_isInitiator && !_peerConnection.localDescription) {

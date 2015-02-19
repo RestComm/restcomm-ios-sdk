@@ -67,16 +67,6 @@ typedef NS_ENUM(NSInteger, ARDAppClientState) {
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate;
 
-/*
-@property RTCPeerConnectionFactory * factory;
-@property RTCPeerConnection * peerConnection;
-@property NSMutableArray * messageQueue;
-@property NSMutableArray * iceServers;
-@property ARDCEODTURNClient * turnClient;
-@property BOOL isTurnComplete;
-@property BOOL isInitiator;
-@property ARDAppClientState state;
- */
 // our delegate is SIP Manager
 @property (weak) id<MediaDelegate> mediaDelegate;
 @property(nonatomic, readonly) ARDAppClientState state;

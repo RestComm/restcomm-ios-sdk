@@ -1,10 +1,24 @@
-//
-//  SipManager.m
-//  restcomm-messenger
-//
-//  Created by Antonis Tsakiridis on 9/27/14.
-//  Copyright (c) 2014 TeleStax. All rights reserved.
-//
+/*
+ * TeleStax, Open Source Cloud Communications
+ * Copyright 2011-2014, Telestax Inc and individual contributors
+ * by the @authors tag.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * For questions related to commercial use licensing, please contact sales@telestax.com.
+ *
+ */
 
 #include <sys/event.h>
 //#include <string>
@@ -75,7 +89,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 {
     // which fd corresponds to the given fdref
     int fd = CFFileDescriptorGetNativeDescriptor(fdref);
-
+    
     // remember, 'info' is actually the Objective-C object 'SipManager', so here we are casting
     // it properly so that we can then use it to access Objective-C resources from C (access to App UI elements, etc)
     SipManager * sipManager = (__bridge id) info;
@@ -125,22 +139,22 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         perror("pipe");
         exit(EXIT_FAILURE);
     }
-
+    
     NSError *setCategoryError = nil;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
     
     
     // initialize gstreamer stuff
     gst_ios_init();
-
+    
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // communicate with sip sofia via the pipe
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1]);
     });
-
+    
     [self addFdSourceToRunLoop:read_pipe[0]];
-
+    
     return true;
 }
 
@@ -170,7 +184,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     // convert args to cli command
     NSString* cmd = [NSString stringWithFormat:@"r %@", registrar];
     [self pipeToSofia:cmd];
-
+    
     return true;
 }
 
@@ -186,7 +200,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     NSString* cmd = [NSString stringWithFormat:@"i %@", recipient];
     [self pipeToSofia:cmd];
-
+    
     return true;
 }
 
@@ -203,7 +217,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     NSString* cmd = [NSString stringWithFormat:@"d"];
     [self pipeToSofia:cmd];
-
+    
     return true;
 }
 
@@ -219,7 +233,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     NSString* cmd = [NSString stringWithFormat:@"c"];
     [self pipeToSofia:cmd];
-
+    
     return true;
 }
 
