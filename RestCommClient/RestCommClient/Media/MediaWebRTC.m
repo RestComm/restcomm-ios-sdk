@@ -27,7 +27,7 @@
 
 /*
  * TeleStax, Open Source Cloud Communications
- * Copyright 2011-2014, Telestax Inc and individual contributors
+ * Copyright 2011-2015, Telestax Inc and individual contributors
  * by the @authors tag.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,6 +60,7 @@
 #import "RTCPair.h"
 #import "RTCVideoCapturer.h"
 #import "RTCVideoTrack.h"
+#import "RTCSessionDescription.h"
 
 @implementation MediaWebRTC
 
@@ -87,15 +88,16 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         // for now we are always iniator
         _isInitiator = YES;
 
-        [self main];
+        //[self main];
     }
     return self;
 }
 
 // entry point for WebRTC handling
-- (void) main
+- (void) main:(NSString*)sofia_handle
 {
     [RTCPeerConnectionFactory initializeSSL];
+    self.sofia_handle = sofia_handle;
     
     NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
     _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
@@ -261,8 +263,19 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     });
 }
 
+- (NSString*)updateSdpWithCandidates:(NSArray *)array
+{
+    // TODO: add handling for ICE candidates
+    //NSString * string = self.sofia_handle;
+    return [self.sofia_handle stringByAppendingFormat:@" %@", self.sdp];
+}
+
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
+    if (newState == RTCICEGatheringComplete) {
+        
+        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+    }
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
@@ -302,6 +315,9 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         }
         [_peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
+
+        // keep the SDP around; we'll be using it when all ICE candidates are downloaded
+        self.sdp = sdp.description;
         /* We don't need to send the SDP here; we will be using Sofia SIP facilities for that
         ARDSessionDescriptionMessage *message =
         [[ARDSessionDescriptionMessage alloc] initWithDescription:sdp];

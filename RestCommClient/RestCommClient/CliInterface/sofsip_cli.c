@@ -454,7 +454,7 @@ static void sofsip_handle_input_cb(char *input)
   else if (match("l") || match("list")) {
     ssc_list(cli->cli_ssc);
   }
-  else if (match("m") || match("message")) {
+  else if (match("m") || match("message") || match("webrtc-sdp")) {
     // 'rest' contains the destination and the message, delimited by a whitespace
     char * token, * dest = NULL;
     int pos = 0;
@@ -463,20 +463,20 @@ static void sofsip_handle_input_cb(char *input)
             dest = token;
             break;
         }
-        /*
-        if (pos == 1) {
-            strncpy(msgbuf, token, sizeof(msgbuf) - 1);
-            msgbuf[sizeof(msgbuf) - 1] = 0;
-            break;
-        }
-         */
         printf("%s\n", token);
        pos++;
     }
-
-    //ssc_input_set_prompt("Enter message> ");
-    //ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_message(cli->cli_ssc, dest, rest);
+    if (match("m") || match("message")) {
+       ssc_message(cli->cli_ssc, dest, rest);
+    }
+#if HAVE_MEDIA_WEBRTC_IMPL
+    if (match("webrtc-sdp")) {
+       void * op_context = NULL;
+       // convert address string to pointer, which is the Sofia operation handle
+       sscanf(dest, "%p", (void **)&op_context);
+       ssc_webrtc_sdp(op_context, rest);
+    }
+#endif
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

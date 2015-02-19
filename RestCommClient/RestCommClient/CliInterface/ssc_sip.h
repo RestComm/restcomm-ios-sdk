@@ -38,6 +38,7 @@ typedef struct ssc_conf_s ssc_conf_t;
 /* define type of context pointers for callbacks */
 #define NUA_MAGIC_T     ssc_t
 #define SOA_MAGIC_T     ssc_t
+#define HAVE_MEDIA_WEBRTC_IMPL 1
 
 #include "ssc_sip.h"
 #include "ssc_oper.h"
@@ -139,6 +140,7 @@ void ssc_cancel(ssc_t *ssc);
 void ssc_hold(ssc_t *ssc, char *destination, int hold);
 void ssc_info(ssc_t *ssc, const char *destination, const char *msg);
 void ssc_invite(ssc_t *ssc, const char *destination);
+void ssc_webrtc_sdp(void* op_context, char *sdp);
 void ssc_list(ssc_t *ssc);
 void ssc_media_describe(ssc_t *ssc, char *rest);
 void ssc_media_event(ssc_t *ssc, char *rest);
@@ -174,10 +176,13 @@ enum SipMsgEnum {
     INCOMING_MSG,
     OUTGOING_RINGING,
     OUTGOING_ESTABLISHED,
+    WEBRTC_SDP_REQUEST,
+    WEBRTC_SDP_RESPONSE,
 };
 
 //SofiaReply();
 void setSofiaReply(const int rc, const char * text);
+void setSofiaReplyPtr(const int rc, void * ptr);
 struct SofiaReply * getSofiaReply(void);
 static ssize_t sendSofiaReply(const int fd, const struct SofiaReply * sofiaReply);
 

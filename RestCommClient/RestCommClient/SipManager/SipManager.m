@@ -1,6 +1,6 @@
 /*
  * TeleStax, Open Source Cloud Communications
- * Copyright 2011-2014, Telestax Inc and individual contributors
+ * Copyright 2011-2015, Telestax Inc and individual contributors
  * by the @authors tag.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,6 +57,11 @@ int read_pipe[2];
     CFRelease(source);
 }
 
+- (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString
+{
+    [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
+}
+
 // notice that we can make this an Objective-C method as well, if we want
 - (int)handleSofiaInput:(struct SofiaReply *) reply fd:(int) fd
 {
@@ -81,6 +86,10 @@ int read_pipe[2];
         NSString* msg = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
         [self.deviceDelegate messageArrived:self withData:msg];
     }
+    else if (reply->rc == WEBRTC_SDP_REQUEST) {
+        [self.media main:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]];
+    }
+    
     return 0;
 }
 

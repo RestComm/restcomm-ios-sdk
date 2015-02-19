@@ -27,7 +27,7 @@
 
 /*
  * TeleStax, Open Source Cloud Communications
- * Copyright 2011-2014, Telestax Inc and individual contributors
+ * Copyright 2011-2015, Telestax Inc and individual contributors
  * by the @authors tag.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,10 +66,16 @@ typedef NS_ENUM(NSInteger, ARDAppClientState) {
 
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate;
+// TODO: change the name to something more appropriate
+- (void) main:(NSString*)sofia_handle;
+
 
 // our delegate is SIP Manager
 @property (weak) id<MediaDelegate> mediaDelegate;
 @property(nonatomic, readonly) ARDAppClientState state;
+// for now let's keep just one hanle -in a complex application we could have more
+@property (strong) NSString * sofia_handle;
+@property(strong) NSString *sdp;
 
 @end
 

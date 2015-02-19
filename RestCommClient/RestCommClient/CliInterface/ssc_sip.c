@@ -722,7 +722,9 @@ void ssc_invite(ssc_t *ssc, const char *destination)
         
         g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed",
                           G_CALLBACK (priv_media_state_cb), op);
-        
+
+#if !HAVE_MEDIA_WEBRTC_IMPL
+
 #if HAVE_MEDIA_IMPL
         {
             int res;
@@ -739,8 +741,44 @@ void ssc_invite(ssc_t *ssc, const char *destination)
 #else
         printf("%s: WARNING, no media subsystem available, unable start sessions\n", ssc->ssc_name);
 #endif
+
+#else
+        //int value = op;
+        char value_str[32] = "";
+        sprintf(value_str, "%p", op);
+        setSofiaReply(WEBRTC_SDP_REQUEST, value_str);
+        sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+
+#endif
     }
 }
+
+#if HAVE_MEDIA_WEBRTC_IMPL
+/**
+ * Callback that triggers the second phase of ssc_answer() and
+ * ssc_invite() for WebRTC. When WebRTC module is ready with full SDP
+ * (including ICE candidates), it calls this via the pipe interface
+ */
+void ssc_webrtc_sdp(void* op_context, char *sdp)
+{
+    ssc_oper_t *op = (ssc_oper_t*)op_context;
+    ssc_t *ssc = op->op_ssc;
+    int res;
+    
+    // set localsdp with WebRTC media
+    g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", sdp, NULL);
+    
+    /* active media before INVITE */
+    res = ssc_media_activate(ssc->ssc_media);
+    if (res < 0) {
+        printf("%s: ERROR: unable to active media subsystem, aborting session.\n", ssc->ssc_name);
+        priv_destroy_oper_with_disconnect (ssc, op);
+    }
+    else
+        printf("%s: INVITE to %s pending\n", ssc->ssc_name, op->op_ident);
+}
+#endif
+
 
 /**
  * Callback for an outgoing INVITE request.
@@ -848,8 +886,8 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
 }
 
 /**
- * Callback that triggers the second phase of ssc_answer() and
- * ssc_invite(). Verifies that the media subsystem has
+ * Callback that triggers the second (or third if WebRTC is involved) 
+ * phase of ssc_answer() and ssc_invite(). Verifies that the media subsystem has
  * been activated and we are ready to answer with our SDP.
  */
 static void priv_media_state_cb(void* context, guint state, gpointer data)
@@ -2022,6 +2060,14 @@ void setSofiaReply(const int rc, const char * text)
     sofiaReply.rc = rc;
     strncpy(sofiaReply.text, text, sizeof(sofiaReply.text) - 1);
     sofiaReply.text[sizeof(sofiaReply.text) - 1] = 0;
+}
+
+void setSofiaReplyPtr(const int rc, void * ptr)
+{
+    sofiaReply.rc = rc;
+    int value = ptr;
+    strncpy(sofiaReply.text, ptr, sizeof(void *));
+    sofiaReply.text[sizeof(void *)] = 0;
 }
 
 struct SofiaReply * getSofiaReply(void)

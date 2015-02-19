@@ -393,10 +393,13 @@ void ssc_media_set_local_to_caps(SscMedia *self)
     gchar *tmp_str = NULL;
     
     ssc_media_static_capabilities(self, &tmp_str);
+
+#if !HAVE_MEDIA_WEBRTC_IMPL
     printf("Set local SDP based on capabilities: %s\n", tmp_str);
     
-    g_object_set(G_OBJECT(self), 
+    g_object_set(G_OBJECT(self),
                  "localsdp", tmp_str, NULL);
+#endif
     
     free(tmp_str);
 }
