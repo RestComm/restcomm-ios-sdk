@@ -44,7 +44,8 @@
 
 @property(nonatomic, strong) RTCPeerConnection *peerConnection;
 @property(nonatomic, strong) RTCPeerConnectionFactory *factory;
-@property(nonatomic, strong) NSMutableArray *messageQueue;
+//@property(nonatomic, strong) NSMutableArray *messageQueue;
+@property(nonatomic, strong) NSMutableArray *iceCandidates;
 
 @property(nonatomic, assign) BOOL isTurnComplete;
 //@property(nonatomic, assign) BOOL hasReceivedSdp;
