@@ -89,6 +89,7 @@
 /* Begin PBXFileReference section */
 		AE01D1131A64673E00D62211 /* gst_ios_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gst_ios_init.h; sourceTree = "<group>"; };
 		AE01D1141A64673E00D62211 /* gst_ios_init.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gst_ios_init.m; sourceTree = "<group>"; };
+		AE03DEDD1A98E4D2000280E4 /* cli_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cli_common.h; sourceTree = "<group>"; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaWebRTC.h; sourceTree = "<group>"; };
 		AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaWebRTC.m; sourceTree = "<group>"; };
@@ -517,6 +518,7 @@
 				AEA6C4AB19DB412A00BD2455 /* ssc_oper.h */,
 				AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */,
 				AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */,
+				AE03DEDD1A98E4D2000280E4 /* cli_common.h */,
 			);
 			path = CliInterface;
 			sourceTree = "<group>";

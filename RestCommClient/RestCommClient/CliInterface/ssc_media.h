@@ -49,8 +49,6 @@
 #include <ws2tcpip.h>
 #endif
 
-#define HAVE_MEDIA_WEBRTC_IMPL 1
-
 G_BEGIN_DECLS
 
 /**

@@ -47,6 +47,8 @@
 #include <assert.h>
 #include <signal.h>
 
+#include "cli_common.h"
+
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
 #if HAVE_GLIB
@@ -403,8 +405,10 @@ static void sofsip_handle_input_cb(char *input)
   for (rest = command; *rest && !is_ws(*rest); rest++)
     ;
   /* Search non-whitespace and zero the whitespace */
-  while (rest < command + n && is_ws(*rest))
-    *rest++ = 0;
+  while (rest < command + n && is_ws(*rest)) {
+    *rest = 0;
+    rest += 1;
+  }
   if (rest >= command + n || !*rest)
     rest = NULL;
 

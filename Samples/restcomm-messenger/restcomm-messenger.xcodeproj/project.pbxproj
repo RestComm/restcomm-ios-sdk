@@ -22,7 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE5821CE1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */; };
+		AE03DEDC1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -91,6 +91,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8223-arm-intel.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8223-arm-intel.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8223-arm-intel-Debug.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8223-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -144,9 +145,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE03DEDC1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a in Frameworks */,
 				AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
-				AE5821CE1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a in Frameworks */,
 				AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */,
 				AE65E3A61A6BC6BC00C0CB1B /* OpenGLES.framework in Frameworks */,
 				AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */,
@@ -202,6 +203,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */,
 				AE5821E01A8AB79400578A7B /* GLKit.framework */,
 				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
 				AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */,

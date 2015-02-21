@@ -20,9 +20,9 @@
  *
  */
 
-#ifndef HAVE_SOFSIP_CLI_J
-#define HAVE_SOFSIP_CLI_J
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
-int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd);
+#define HAVE_MEDIA_WEBRTC_IMPL 1
 
 #endif

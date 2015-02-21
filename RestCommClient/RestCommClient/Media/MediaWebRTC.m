@@ -53,6 +53,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "RTCICECandidate.h"
 #import "RTCPeerConnection.h"
 #import "RTCICEServer.h"
 #import "RTCMediaConstraints.h"
@@ -227,6 +228,42 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     return localStream;
 }
 
+#pragma mark - Helpers
+- (NSString*)updateSdpWithCandidates:(NSArray *)array
+{
+    // Candidates go after the 'a=rtcp' SDP attribute
+    
+    // Split the SDP in 2 parts: firstPart is up to the end of the 'a=rtcp' line
+    // and the second part is from there to the end. Then insert the candidates
+    // in-between
+    
+    // Since iOS doesn't support regex in NSStrings we need to find the place
+    // to split by first searching for 'a=rtcp' and from that point to look
+    // for the end of this line (i.e. \r\n)
+    NSString *rtcpAttribute = @"a=rtcp:";
+    NSRange startRange = [self.sdp rangeOfString:rtcpAttribute];
+    NSString *fromRtcpAttribute = [self.sdp substringFromIndex:startRange.location];
+    NSRange endRange = [fromRtcpAttribute rangeOfString:@"\r\n"];
+    
+    // Found the split point, break the sdp string in 2
+    NSString *firstPart = [self.sdp substringToIndex:startRange.location + endRange.location + 2];
+    NSString *lastPart = [self.sdp substringFromIndex:startRange.location + endRange.location + 2];
+    NSMutableString * candidates = [[NSMutableString alloc] init];
+    for (int i = 0; i < _iceCandidates.count; i++) {
+        RTCICECandidate *iceCandidate = (RTCICECandidate*)[_iceCandidates objectAtIndex:i];
+        if ([iceCandidate.sdpMid isEqualToString:@"audio"]) {
+            // don't forget to prepend an 'a=' to make this an attribute line and to append '\r\n'
+            [candidates appendFormat:@"a=%@\r\n",iceCandidate.sdp];
+        }
+    }
+    NSString *updatedSdp = [NSString stringWithFormat:@"%@%@%@", firstPart, candidates, lastPart];
+    
+    // the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
+    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, updatedSdp];
+    return completeMessage;
+}
+
+
 
 #pragma mark - RTCPeerConnectionDelegate
 - (void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged {
@@ -263,24 +300,21 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     });
 }
 
-- (NSString*)updateSdpWithCandidates:(NSArray *)array
-{
-    // TODO: add handling for ICE candidates
-    //NSString * string = self.sofia_handle;
-    return [self.sofia_handle stringByAppendingFormat:@" %@", self.sdp];
-}
-
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         
-        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+        //[self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
     NSLog(@"gotICECandidate");
+    candidate.sdp;
     [_iceCandidates addObject:candidate];
+    if ([_iceCandidates count] == 1) {
+        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+    }
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
         //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];

@@ -49,6 +49,8 @@
 #include <stdarg.h>
 #include <assert.h>
 
+#include "cli_common.h"
+
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
 #if HAVE_GLIB

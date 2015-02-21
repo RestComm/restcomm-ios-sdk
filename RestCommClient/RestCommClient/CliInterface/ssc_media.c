@@ -47,6 +47,7 @@
 
 #include "ssc_media.h"
 #include "sdp_utils.h"
+#include "cli_common.h"
 
 #if !HAVE_G_DEBUG
 #include "replace_g_debug.h"

@@ -74,8 +74,8 @@ typedef NS_ENUM(NSInteger, ARDAppClientState) {
 @property (weak) id<MediaDelegate> mediaDelegate;
 @property(nonatomic, readonly) ARDAppClientState state;
 // for now let's keep just one hanle -in a complex application we could have more
-@property (strong) NSString * sofia_handle;
-@property(strong) NSString *sdp;
+@property NSString * sofia_handle;
+@property NSString * sdp;
 
 @end
 

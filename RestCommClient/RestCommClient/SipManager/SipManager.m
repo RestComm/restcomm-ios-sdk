@@ -185,7 +185,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (ssize_t)pipeToSofia:(NSString*)cmd
 {
     // TODO: write might not send all the string, make sure that the operation is repeated until all the string is sent
-    return pipeToSofia([cmd UTF8String], write_pipe[1]);
+    return pipeToSofia([cmd cStringUsingEncoding:NSUTF8StringEncoding], write_pipe[1]);
 }
 
 - (bool)register:(NSString*)registrar
