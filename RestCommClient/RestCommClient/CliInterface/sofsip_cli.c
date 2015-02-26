@@ -378,6 +378,7 @@ static int sofsip_handle_input(cli_t *cli, su_wait_t *w, void *p)
 
 static void sofsip_handle_input_cb(char *input)
 {
+  printf("INPUT: %s", input);
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
   int n = command ? (int)strlen(command) : 0;

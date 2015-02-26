@@ -107,7 +107,7 @@ void ssc_input_read_char(int input_fd)
   if (ssc_input_handler_f)
     rl_callback_read_char();
 #else
-  char buf[1024];
+  char buf[65535];
   char * ptr = buf;
   ssize_t n;
 
@@ -116,6 +116,12 @@ void ssc_input_read_char(int input_fd)
     
   char * token;
   //int pos = 0;
+  char delimiter = '$';
+  if (strchr(buf, delimiter) == NULL) {
+      printf("WARNING: Couldn't find delimiter char in the PIPE input -maybe buffer size is small??");
+      exit(1);
+  }
+    
   while ((token = strsep(&ptr, "$")) != NULL) {
       if (n < 0) {
           perror("input: read");

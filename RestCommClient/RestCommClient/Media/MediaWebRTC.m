@@ -260,6 +260,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     
     // the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
     NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, updatedSdp];
+    //NSLog(@"Complete Message: %@", completeMessage);
     return completeMessage;
 }
 
@@ -303,8 +304,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
-        
-        //[self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
 }
 
@@ -312,9 +312,11 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"gotICECandidate");
     candidate.sdp;
     [_iceCandidates addObject:candidate];
+    /*
     if ([_iceCandidates count] == 1) {
         [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
+    */
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
         //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
