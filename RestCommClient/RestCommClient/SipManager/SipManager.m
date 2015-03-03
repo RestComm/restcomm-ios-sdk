@@ -80,6 +80,8 @@ int read_pipe[2];
     else if (reply->rc == OUTGOING_ESTABLISHED) {
         // we have an incoming call, we need to ring
         [self.connectionDelegate outgoingEstablished:self];
+        // call is established, send the SDP over to WebRTC
+        [self.media processSignalingMessage:reply->text type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_MSG) {
         // we have an incoming call, we need to ring

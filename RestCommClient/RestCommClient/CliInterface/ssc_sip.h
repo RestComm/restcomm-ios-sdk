@@ -165,7 +165,7 @@ void ssc_print_settings(ssc_t *ssc);
 
 struct SofiaReply {
     int rc;
-    char text[256];
+    char text[65535];
 };
 
 //extern SofiaReply;

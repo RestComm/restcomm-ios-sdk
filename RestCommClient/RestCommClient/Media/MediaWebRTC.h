@@ -64,10 +64,18 @@ typedef NS_ENUM(NSInteger, ARDAppClientState) {
     kARDAppClientStateConnected,
 };
 
+typedef enum {
+    kARDSignalingMessageTypeCandidate,
+    kARDSignalingMessageTypeOffer,
+    kARDSignalingMessageTypeAnswer,
+    kARDSignalingMessageTypeBye,
+} ARDSignalingMessageType;
+
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate;
 // TODO: change the name to something more appropriate
 - (void) main:(NSString*)sofia_handle;
+- (void)processSignalingMessage:(char *)message type:(int)type;
 
 
 // our delegate is SIP Manager

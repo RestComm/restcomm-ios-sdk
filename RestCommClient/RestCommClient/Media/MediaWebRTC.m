@@ -264,7 +264,38 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     return completeMessage;
 }
 
-
+- (void)processSignalingMessage:(char *)message type:(int)type
+{
+    NSParameterAssert(_peerConnection);
+    switch (type) {
+        case kARDSignalingMessageTypeOffer:
+        case kARDSignalingMessageTypeAnswer: {
+            //ARDSessionDescriptionMessage *sdpMessage = (ARDSessionDescriptionMessage *)message;
+            // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
+                                                                                         sdp:[NSString stringWithUTF8String:message]];
+            [_peerConnection setRemoteDescriptionWithDelegate:self
+                                           sessionDescription:description];
+            break;
+        }
+        case kARDSignalingMessageTypeCandidate: {
+            // TODO: set values properly: @"audio", 0, received candidate
+            RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
+                                                                           index:0
+                                                                             sdp:[NSString stringWithUTF8String:message]];
+            //ARDICECandidateMessage *candidateMessage = (ARDICECandidateMessage *)message;
+            [_peerConnection addICECandidate:iceCandidate];
+            break;
+        }
+        /*
+        case kARDSignalingMessageTypeBye:
+            // Other client disconnected.
+            // disconnect.
+            [self disconnect];
+            break;
+         */
+    }
+}
 
 #pragma mark - RTCPeerConnectionDelegate
 - (void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged {
@@ -304,6 +335,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
+        // TODO: uncomment
         [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
 }

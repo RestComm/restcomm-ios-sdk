@@ -803,8 +803,8 @@ void ssc_r_invite(int status, char const *phrase,
         sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     }
     if (status == 200) {
-        // notify the client application that we are ringing
-        setSofiaReply(OUTGOING_ESTABLISHED, "");
+        // notify the client application that we are established
+        setSofiaReply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
         sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     }
     
