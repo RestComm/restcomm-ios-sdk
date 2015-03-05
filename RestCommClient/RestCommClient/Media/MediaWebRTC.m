@@ -176,8 +176,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
     // TODO: if we want to only work with audio, here's one place to update
-    NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
+    NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
+                                      //[[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -191,6 +191,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 - (RTCMediaStream *)createLocalMediaStream
 {
     RTCMediaStream* localStream = [_factory mediaStreamWithLabel:@"ARDAMS"];
+
+#if CUSTOM_ENABLE_VIDEO
     RTCVideoTrack* localVideoTrack = nil;
     
     // The iOS simulator doesn't provide any sort of camera capture
@@ -223,6 +225,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     }
     // TODO: uncomment this after I setup MediaWebRTC protocol
     //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
+#endif
 #endif
     [localStream addAudioTrack:[_factory audioTrackWithID:@"ARDAMSa0"]];
     return localStream;
@@ -272,8 +275,11 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         case kARDSignalingMessageTypeAnswer: {
             //ARDSessionDescriptionMessage *sdpMessage = (ARDSessionDescriptionMessage *)message;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+            NSString * msg = [NSString stringWithUTF8String:message]; // stringByReplacingOccurrencesOfString:@"\r\nm=video 0 RTP/SAVPF\n"
+                                                                      //                          withString:@"\n"];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
-                                                                                         sdp:[NSString stringWithUTF8String:message]];
+                                                                                         sdp:msg];
+            NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
             break;
@@ -342,7 +348,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
     NSLog(@"gotICECandidate");
-    candidate.sdp;
+    //candidate.sdp;
     [_iceCandidates addObject:candidate];
     /*
     if ([_iceCandidates count] == 1) {

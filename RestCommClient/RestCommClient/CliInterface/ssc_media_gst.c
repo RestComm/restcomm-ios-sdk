@@ -718,12 +718,12 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
                   "socket", gsocket,
                   NULL);
     
-    priv_update_rx_elements(self);
-    priv_update_tx_elements(self);
+    // Commented out all these not that we are working with WebRTC
+    ///priv_update_rx_elements(self);
+    ///priv_update_tx_elements(self);
     
-    g_message ("Starting the pipeline.\n");
-    
-    gst_element_set_state (self->sm_pipeline, GST_STATE_PLAYING);
+    ///g_message ("Starting the pipeline.\n");
+    ///gst_element_set_state (self->sm_pipeline, GST_STATE_PLAYING);
     
     /* note: emit "state-changed" signal from base class */
     ssc_media_signal_state_change (parent, sm_active);
