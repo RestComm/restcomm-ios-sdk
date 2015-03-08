@@ -267,6 +267,43 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     return completeMessage;
 }
 
+// remove candidate lines from the given sdp and return them as elements of an NSArray
+-(NSArray*)filterCandidatesFromSdp:(NSMutableString*)sdp
+{
+    NSMutableArray * candidates = [[NSMutableArray alloc] init];
+    
+    
+    NSString *searchedString = sdp;
+    NSRange searchedRange = NSMakeRange(0, [searchedString length]);
+    NSString *pattern = @"a=(candidate.*)\\r\\n";
+    NSError  *error = nil;
+    
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
+    NSArray* matches = [regex matchesInString:searchedString options:0 range: searchedRange];
+    for (NSTextCheckingResult* match in matches) {
+        //NSString* matchText = [searchedString substringWithRange:[match range]];
+        NSRange group1 = [match rangeAtIndex:1];
+        [candidates addObject:[searchedString substringWithRange:group1]];
+    }
+
+    // use the same regex, but this time to remove the candidates (we want a candidateless SDP)
+    [regex replaceMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@""];
+    //NSString *modifiedSdp = [regex stringByReplacingMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@""];
+
+    return candidates;
+}
+
+// TODO: remove when ready
+// temporary: until the MMS issue is fixed, try to workaround it by appending the missing part
+- (void)workaroundTruncation:(NSMutableString*)sdp
+{
+    NSString *pattern = @"cnam$"; //  (?:www\\.)?((?!-)[a-zA-Z0-9-]{2,63}(?<!-))\\.?((?:[a-zA-Z0-9]{2,})?(?:\\.[a-zA-Z0-9]{2,})?)";
+    NSError  *error = nil;
+
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
+    [regex replaceMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@"$0e:r5NeEmW7rYyFBr5w"];
+}
+
 - (void)processSignalingMessage:(char *)message type:(int)type
 {
     NSParameterAssert(_peerConnection);
@@ -275,22 +312,32 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         case kARDSignalingMessageTypeAnswer: {
             //ARDSessionDescriptionMessage *sdpMessage = (ARDSessionDescriptionMessage *)message;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
-            NSString * msg = [NSString stringWithUTF8String:message]; // stringByReplacingOccurrencesOfString:@"\r\nm=video 0 RTP/SAVPF\n"
-                                                                      //                          withString:@"\n"];
+            NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
+            [self workaroundTruncation:msg];
+            NSArray * candidates = [self filterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
                                                                                          sdp:msg];
-            NSLog(@"SDP answer: %@", description.description);
+            //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
+            
+            for (NSString * candidate in candidates) {
+                RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
+                                                                               index:0
+                                                                                 sdp:candidate];
+                [_peerConnection addICECandidate:iceCandidate];
+            }
+            
             break;
         }
         case kARDSignalingMessageTypeCandidate: {
             // TODO: set values properly: @"audio", 0, received candidate
+            /*
             RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
                                                                            index:0
                                                                              sdp:[NSString stringWithUTF8String:message]];
-            //ARDICECandidateMessage *candidateMessage = (ARDICECandidateMessage *)message;
             [_peerConnection addICECandidate:iceCandidate];
+             */
             break;
         }
         /*
@@ -342,7 +389,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         // TODO: uncomment
-        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+        //[self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
 }
 
@@ -350,11 +397,11 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"gotICECandidate");
     //candidate.sdp;
     [_iceCandidates addObject:candidate];
-    /*
+    /**/
     if ([_iceCandidates count] == 1) {
         [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
-    */
+    /**/
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
         //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
