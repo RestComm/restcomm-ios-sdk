@@ -112,20 +112,20 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             NSLog(@"Error retrieving TURN servers: %@", error);
         }
         MediaWebRTC *strongSelf = weakSelf;
-        [strongSelf.iceServers addObjectsFromArray:turnServers];
+        //[strongSelf.iceServers addObjectsFromArray:turnServers];
         strongSelf.isTurnComplete = YES;
         [strongSelf startSignalingIfReady];
     }];
 }
 
-- (void) terminate
+- (void) terminate		
 {
     [RTCPeerConnectionFactory deinitializeSSL];
 }
 
 - (void)configure {
     _factory = [[RTCPeerConnectionFactory alloc] init];
-    //_messageQueue = [NSMutableArray array];
+    //_messageQueue = [NSMutableArray array]; 
     _iceCandidates = [NSMutableArray array];
     _iceServers = [NSMutableArray arrayWithObject:[self defaultSTUNServer]];
 }
@@ -389,7 +389,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         // TODO: uncomment
-        //[self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
 }
 
@@ -397,11 +397,11 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"gotICECandidate");
     //candidate.sdp;
     [_iceCandidates addObject:candidate];
-    /**/
+    /*
     if ([_iceCandidates count] == 1) {
         [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
-    /**/
+    */
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
         //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];

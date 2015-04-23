@@ -22,7 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE03DEDC1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -30,6 +29,7 @@
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
 		AE65E3A61A6BC6BC00C0CB1B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
+		AE68CB0E1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -91,15 +91,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8223-arm-intel.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8223-arm-intel.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8223-arm-intel-Debug.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8223-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8849-arm-intel.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8849-arm-intel.a"; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* restcomm-messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -145,7 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE03DEDC1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a in Frameworks */,
+				AE68CB0E1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a in Frameworks */,
 				AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */,
@@ -203,10 +202,9 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE03DEDB1A98D4F2000280E4 /* libWebRTC-8223-arm-intel.a */,
+				AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */,
 				AE5821E01A8AB79400578A7B /* GLKit.framework */,
 				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
-				AE5821CD1A8AAC3900578A7B /* libWebRTC-8223-arm-intel-Debug.a */,
 				AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */,
 				AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */,
 				AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */,
@@ -329,6 +327,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TeleStax;
 				TargetAttributes = {
+					AE79D31519BC8DAD0023306C = {
+						DevelopmentTeam = 9LT3282HAP;
+					};
 					AE79D33919BC8DAE0023306C = {
 						TestTargetID = AE79D31519BC8DAD0023306C;
 					};
@@ -596,6 +597,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk",
@@ -631,6 +633,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk",
