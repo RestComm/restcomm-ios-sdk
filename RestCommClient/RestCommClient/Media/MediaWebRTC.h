@@ -74,7 +74,8 @@ typedef enum {
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate;
 // TODO: change the name to something more appropriate
-- (void) main:(NSString*)sofia_handle;
+- (void)connect:(NSString*)sofia_handle;
+- (void)disconnect;
 - (void)processSignalingMessage:(char *)message type:(int)type;
 
 
@@ -87,7 +88,9 @@ typedef enum {
 
 @end
 
+// use this protocol for WebRTC -> Sofia communication
 @protocol MediaDelegate <NSObject>
 // when WebRTC module knows the SDP string it needs to communicate it to its delegate (i.e. SIP Manager) who in turn will notify SIP sofia
 - (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString;
+//- (void)peerDisconnected:(MediaWebRTC *)media withData:(NSString *)data;
 @end

@@ -1210,6 +1210,10 @@ void ssc_r_bye(int status, char const *phrase,
     printf("%s: BYE: %03d %s\n", ssc->ssc_name, status, phrase);
     if (status < 200)
         return;
+#if HAVE_MEDIA_WEBRTC_IMPL
+    setSofiaReply(OUTGOING_BYE_RESPONSE, "");
+    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+#endif
 }
 
 /**
@@ -1223,6 +1227,10 @@ void ssc_i_bye(nua_t *nua, ssc_t *ssc,
     assert(op); assert(op->op_handle == nh);
     
     printf("%s: BYE received\n", ssc->ssc_name);
+#if HAVE_MEDIA_WEBRTC_IMPL
+    setSofiaReply(INCOMING_BYE, "");
+    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+#endif    
 }
 
 /**

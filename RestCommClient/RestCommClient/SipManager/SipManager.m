@@ -29,6 +29,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RTCPeerConnectionFactory.h"
 
 #import "SipManager.h"
 
@@ -57,10 +58,19 @@ int read_pipe[2];
     CFRelease(source);
 }
 
+#pragma mark - RTCSessionDescriptionDelegate WebRTC <-> Sofia communication: MediaDelegate protocol
 - (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString
 {
     [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
 }
+
+/*
+- (void)peerDisconnected:(MediaWebRTC *)media withData:(NSString *)data
+{
+    [self bye];
+    //[self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", data]];
+}
+ */
 
 // notice that we can make this an Objective-C method as well, if we want
 - (int)handleSofiaInput:(struct SofiaReply *) reply fd:(int) fd
@@ -78,18 +88,22 @@ int read_pipe[2];
         [self.connectionDelegate outgoingRinging:self];
     }
     else if (reply->rc == OUTGOING_ESTABLISHED) {
-        // we have an incoming call, we need to ring
         [self.connectionDelegate outgoingEstablished:self];
         // call is established, send the SDP over to WebRTC
         [self.media processSignalingMessage:reply->text type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_MSG) {
-        // we have an incoming call, we need to ring
         NSString* msg = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
         [self.deviceDelegate messageArrived:self withData:msg];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
-        [self.media main:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]];
+        // INVITE has been requested in Sofia, need to initialize WebRTC
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]];
+    }
+    else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
+        [self.media disconnect];
+        self.media = nil;
     }
     
     return 0;
@@ -129,7 +143,9 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     if (self) {
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        [RTCPeerConnectionFactory initializeSSL];
+        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        self.media = nil;
     }
     return self;
 }
@@ -141,6 +157,10 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     //[self setParams:params];
     
     return self;
+}
+
+- (void)dealloc {
+    [RTCPeerConnectionFactory deinitializeSSL];
 }
 
 // initialize sofia

@@ -89,21 +89,27 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         // for now we are always iniator
         _isInitiator = YES;
 
-        //[self main];
+        // in AppRTCDemo this happens in didFinishLaunching
+        //[RTCPeerConnectionFactory initializeSSL];
     }
     return self;
 }
 
+- (void)dealloc {
+    [self disconnect];
+}
+
 // entry point for WebRTC handling
-- (void) main:(NSString*)sofia_handle
+- (void) connect:(NSString*)sofia_handle
 {
-    [RTCPeerConnectionFactory initializeSSL];
     self.sofia_handle = sofia_handle;
     
+    // in AppRTCDemo this happens in constructor
     NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
     _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
     [self configure];
     
+    // in AppRTCDemo, connectToRoom
     // Request TURN
     __weak MediaWebRTC *weakSelf = self;
     [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
@@ -118,9 +124,40 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     }];
 }
 
-- (void) terminate		
+- (void)disconnect {
+    if (_state == kARDAppClientStateDisconnected) {
+        return;
+    }
+    /*
+    if (self.hasJoinedRoomServerRoom) {
+        [_roomServerClient leaveRoomWithRoomId:_roomId
+                                      clientId:_clientId
+                             completionHandler:nil];
+    }
+    
+    if (_channel) {
+        if (_channel.state == kARDSignalingChannelStateRegistered) {
+            // Tell the other client we're hanging up.
+            ARDByeMessage *byeMessage = [[ARDByeMessage alloc] init];
+            [_channel sendMessage:byeMessage];
+        }
+        // Disconnect from collider.
+        _channel = nil;
+    }
+    _clientId = nil;
+    _roomId = nil;
+     */
+    _isInitiator = NO;
+    //_hasReceivedSdp = NO;
+    //_messageQueue = [NSMutableArray array];
+    _peerConnection = nil;
+    _state = kARDAppClientStateDisconnected;
+}
+
+
+- (void) terminate
 {
-    [RTCPeerConnectionFactory deinitializeSSL];
+    //[RTCPeerConnectionFactory deinitializeSSL];
 }
 
 - (void)configure {
@@ -422,8 +459,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             NSLog(@"Failed to create session description. Error: %@", error);
-            /*
             [self disconnect];
+            /*
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"Failed to create session description.",
                                        };
@@ -451,7 +488,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             NSLog(@"Failed to set session description. Error: %@", error);
-            //[self disconnect];
+            [self disconnect];
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"Failed to set session description.",
                                        };
