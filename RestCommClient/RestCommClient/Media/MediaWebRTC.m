@@ -102,6 +102,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // entry point for WebRTC handling
 - (void) connect:(NSString*)sofia_handle
 {
+    //NSLog(@"#################### [MediaWebRTC connect] called");
     self.sofia_handle = sofia_handle;
     
     // in AppRTCDemo this happens in constructor
@@ -111,6 +112,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     
     // in AppRTCDemo, connectToRoom
     // Request TURN
+    /* TODO: uncomment this when we are ready to re-introduce TURN
     __weak MediaWebRTC *weakSelf = self;
     [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
                                                        NSError *error) {
@@ -118,10 +120,15 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             NSLog(@"Error retrieving TURN servers: %@", error);
         }
         MediaWebRTC *strongSelf = weakSelf;
-        //[strongSelf.iceServers addObjectsFromArray:turnServers];
+        [strongSelf.iceServers addObjectsFromArray:turnServers];
         strongSelf.isTurnComplete = YES;
         [strongSelf startSignalingIfReady];
     }];
+     */
+    
+    // TODO: remove this when we are ready to re-introduce TURN
+    self.isTurnComplete = YES;
+    [self startSignalingIfReady];
 }
 
 - (void)disconnect {
@@ -354,6 +361,9 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             NSArray * candidates = [self filterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
                                                                                          sdp:msg];
+            
+            //NSLog(@"#################### [MediaWebRTC processSignallingMessage] SDP answer received");
+
             //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
@@ -425,6 +435,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
+        //NSLog(@"#################### [MediaWebRTC iceGatheringChanged] SDP ready");
         // TODO: uncomment
         [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
     }
