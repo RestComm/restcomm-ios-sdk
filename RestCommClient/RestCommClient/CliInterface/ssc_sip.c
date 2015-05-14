@@ -224,7 +224,6 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      NUTAG_URL(conf->ssc_contact)),
                               TAG_IF(conf->ssc_media_addr,
                                      NUTAG_MEDIA_ADDRESS(conf->ssc_media_addr)),
-                              
                               /* note: use of STUN for signaling disabled */
                               /* TAG_IF(conf->ssc_stun_server, STUNTAG_SERVER(conf->ssc_stun_server)), */
                               /* TAG_IF(userdomain, STUNTAG_DOMAIN(userdomain)), */
