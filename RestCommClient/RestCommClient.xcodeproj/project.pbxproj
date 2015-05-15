@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */ = {isa = PBXBuildFile; fileRef = AE01D1141A64673E00D62211 /* gst_ios_init.m */; };
-		AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */; };
 		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
 		AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */; };
 		AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E61A8B98A700578A7B /* ARDUtilities.m */; };
@@ -34,7 +33,6 @@
 		AEA6C4B519DB412A00BD2455 /* ssc_oper.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.c */; };
 		AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.c */; };
 		AEA6C4B719DB412A00BD2455 /* SipManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4B019DB412A00BD2455 /* SipManager.m */; };
-		AEC1221019728C850035B864 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC1220F19728C850035B864 /* Foundation.framework */; };
 		AEC1221519728C850035B864 /* RestCommClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1221419728C850035B864 /* RestCommClient.h */; };
 		AEC1221719728C850035B864 /* RestCommClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1221619728C850035B864 /* RestCommClient.m */; };
 		AEC1221E19728C850035B864 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC1221D19728C850035B864 /* XCTest.framework */; };
@@ -48,10 +46,6 @@
 		AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223C197295EA0035B864 /* RCConnectionDelegate.m */; };
 		AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223F197295F90035B864 /* RCDeviceDelegate.m */; };
 		AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC12242197296110035B864 /* RCPresenceEvent.m */; };
-		AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2319ED91A100C60E2B /* libcrypto.a */; };
-		AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC14C2419ED91A100C60E2B /* libssl.a */; };
-		AEC39AB41A5A970100B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */; };
-		AEC39AB61A5A975500B155E4 /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB51A5A975500B155E4 /* GStreamer.framework */; };
 		AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */; };
 		AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */; };
 		AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */; };
@@ -281,12 +275,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEC39AB61A5A975500B155E4 /* GStreamer.framework in Frameworks */,
-				AEC39AB41A5A970100B155E4 /* VideoToolbox.framework in Frameworks */,
-				AEC14C2519ED91A100C60E2B /* libcrypto.a in Frameworks */,
-				AEC14C2619ED91A100C60E2B /* libssl.a in Frameworks */,
-				AEC1221019728C850035B864 /* Foundation.framework in Frameworks */,
-				AE1AB97E19EA7FB20002ECFA /* libsofia-sip-ua.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,7 +819,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
-					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
@@ -870,7 +857,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
-					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
@@ -893,17 +879,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
 					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
-					$SOURCE_ROOT/RestCommClient/Media,
+					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					"$SOURCE_ROOT/webrtc-9190/include",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
-					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
-					"$(SDKROOT)/usr/lib/system",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -925,17 +905,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
 					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
-					$SOURCE_ROOT/RestCommClient/Media,
+					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
+					"$SOURCE_ROOT/webrtc-9190/include",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/sofia-sip-1.12.11/lib",
-					"$(PROJECT_DIR)/openssl-1.0.1i/lib",
-					"$(SDKROOT)/usr/lib/system",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

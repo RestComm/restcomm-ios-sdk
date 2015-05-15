@@ -22,16 +22,16 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
+		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
+		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
+		AE505B861B0605B80053F5B6 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B851B0605B80053F5B6 /* libWebRTC.a */; };
+		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
-		AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
-		AE65E3A61A6BC6BC00C0CB1B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
-		AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
-		AE68CB0E1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
-		AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
@@ -91,6 +91,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE505B851B0605B80053F5B6 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = "../../RestCommClient/webrtc-9190/libWebRTC.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -144,24 +146,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE68CB0E1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a in Frameworks */,
-				AE5821E11A8AB79400578A7B /* GLKit.framework in Frameworks */,
-				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
-				AE65E3A81A6BC7AE00C0CB1B /* QuartzCore.framework in Frameworks */,
-				AE65E3A61A6BC6BC00C0CB1B /* OpenGLES.framework in Frameworks */,
+				AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */,
 				AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */,
 				AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */,
 				AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */,
-				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
 				AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
 				AEC39AD71A5AD8A600B155E4 /* GStreamer.framework in Frameworks */,
-				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
-				AE79D31C19BC8DAD0023306C /* CoreGraphics.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
+				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
+				AE505B861B0605B80053F5B6 /* libWebRTC.a in Frameworks */,
+				AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */,
+				AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */,
+				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
+				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
+				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +204,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE505B851B0605B80053F5B6 /* libWebRTC.a */,
+				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
 				AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */,
 				AE5821E01A8AB79400578A7B /* GLKit.framework */,
 				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
@@ -608,16 +612,15 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
-					$SOURCE_ROOT/RestCommClient/Media,
+					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds",
+					"$SOURCE_ROOT/../../RestCommClient/openssl-1.0.1i/lib/",
+					"$SOURCE_ROOT/../../RestCommClient/sofia-sip-1.12.11/lib",
+					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -644,16 +647,15 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/headers",
-					$SOURCE_ROOT/RestCommClient/Media,
+					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/Antonis/Documents/restcomm-ios-sdk/RestCommClient/openssl-1.0.1i/lib",
-					"/Users/Antonis/Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds",
+					"$SOURCE_ROOT/../../RestCommClient/openssl-1.0.1i/lib/",
+					"$SOURCE_ROOT/../../RestCommClient/sofia-sip-1.12.11/lib",
+					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";
