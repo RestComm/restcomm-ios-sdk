@@ -25,7 +25,6 @@
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
-		AE505B861B0605B80053F5B6 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B851B0605B80053F5B6 /* libWebRTC.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -57,6 +56,9 @@
 		AED0B0881A097764008A6057 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0791A097764008A6057 /* ringing.mp3 */; };
 		AED0B0891A097764008A6057 /* TabBarController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07B1A097764008A6057 /* TabBarController.mm */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
+		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
+		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
+		AEFB391F1B062B9800F85545 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B851B0605B80053F5B6 /* libWebRTC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +148,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEFB391F1B062B9800F85545 /* libWebRTC.a in Frameworks */,
+				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
+				AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */,
 				AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */,
 				AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */,
 				AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */,
@@ -158,7 +163,6 @@
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AEC6237119DDD26500F420CB /* libRestCommClient.a in Frameworks */,
-				AE505B861B0605B80053F5B6 /* libWebRTC.a in Frameworks */,
 				AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */,
 				AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
@@ -612,6 +616,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
@@ -647,6 +652,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
