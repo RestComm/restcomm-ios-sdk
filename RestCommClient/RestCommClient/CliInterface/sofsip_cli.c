@@ -54,9 +54,11 @@
 #if HAVE_GLIB
 #include <glib.h>
 #include <glib-object.h>
+/* This breaks latest Gstreamer so let's comment out
 #  if !HAVE_GOPTION
 #  include "replace_goption.h"
 #  endif
+*/
 #  if !HAVE_G_DEBUG
 #  include "replace_g_debug.h"
 #  endif

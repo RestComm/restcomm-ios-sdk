@@ -618,6 +618,7 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -654,6 +655,7 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
+					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;

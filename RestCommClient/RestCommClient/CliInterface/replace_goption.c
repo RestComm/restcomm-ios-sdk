@@ -1,3 +1,6 @@
+// IMPORTANT: this module doesn't work with the latest
+// GStreamer version -I'm leaving it in the distribution just for reference
+
 /* goption.c - Option parser
  *
  * This is a replacement for goption objects for glib 2.4.
