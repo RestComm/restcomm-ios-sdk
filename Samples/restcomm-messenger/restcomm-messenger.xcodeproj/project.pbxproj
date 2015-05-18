@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
@@ -58,7 +59,6 @@
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
-		AEFB391F1B062B9800F85545 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B851B0605B80053F5B6 /* libWebRTC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,8 +93,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
-		AE505B851B0605B80053F5B6 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = "../../RestCommClient/webrtc-9190/libWebRTC.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -102,7 +102,6 @@
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-8849-arm-intel.a"; path = "../../../../Downloads/rtc/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-8849-arm-intel.a"; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* restcomm-messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -148,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEFB391F1B062B9800F85545 /* libWebRTC.a in Frameworks */,
+				AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
 				AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */,
 				AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */,
@@ -208,9 +207,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE505B851B0605B80053F5B6 /* libWebRTC.a */,
+				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
-				AE68CB0D1AD6776C00B228DD /* libWebRTC-8849-arm-intel.a */,
 				AE5821E01A8AB79400578A7B /* GLKit.framework */,
 				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
 				AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */,
@@ -332,7 +330,7 @@
 		AE79D30E19BC8DAD0023306C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = TeleStax;
 				TargetAttributes = {
 					AE79D31519BC8DAD0023306C = {
@@ -516,7 +514,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -563,7 +560,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -593,6 +589,7 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -602,7 +599,6 @@
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -617,8 +613,8 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
-					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
-					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
+					$SOURCE_ROOT/../../RestCommClient/webrtc/include,
+					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -626,7 +622,7 @@
 					"$(inherited)",
 					"$SOURCE_ROOT/../../RestCommClient/openssl-1.0.1i/lib/",
 					"$SOURCE_ROOT/../../RestCommClient/sofia-sip-1.12.11/lib",
-					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190",
+					$SOURCE_ROOT/../../RestCommClient/webrtc,
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -639,7 +635,6 @@
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -654,8 +649,8 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
-					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190/include",
-					/Users/Antonis/Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers,
+					$SOURCE_ROOT/../../RestCommClient/webrtc/include,
+					"$(USER_LIBRARY_DIR)/Developer/GStreamer/iPhone.sdk/GStreamer.framework/Headers",
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -663,7 +658,7 @@
 					"$(inherited)",
 					"$SOURCE_ROOT/../../RestCommClient/openssl-1.0.1i/lib/",
 					"$SOURCE_ROOT/../../RestCommClient/sofia-sip-1.12.11/lib",
-					"$SOURCE_ROOT/../../RestCommClient/webrtc-9190",
+					$SOURCE_ROOT/../../RestCommClient/webrtc,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";
