@@ -53,6 +53,8 @@
 #include <netinet/in.h> /* POSIX */
 #endif
 
+#include <arpa/inet.h>
+
 #ifndef random
 #define random rand
 #endif

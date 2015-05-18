@@ -52,6 +52,7 @@
 #endif
 
 #include "ssc_input.h"
+#include <unistd.h>
 
 #if RL_READLINE_VERSION > 0x0400
 #define USE_READLINE 1
