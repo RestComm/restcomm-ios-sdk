@@ -92,7 +92,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  Initialize a new RCDevice object
  *
- *  @param capabilityToken Capability Token (**Not Implemented yet**)
+ *  @param capabilityToken Capability Token
  *  @param delegate        Delegate of RCDevice
  *
  *  @return Newly initialized object
