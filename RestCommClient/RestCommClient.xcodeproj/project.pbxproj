@@ -22,6 +22,11 @@
 
 /* Begin PBXBuildFile section */
 		AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */ = {isa = PBXBuildFile; fileRef = AE01D1141A64673E00D62211 /* gst_ios_init.m */; };
+		AE04E5931B0B724900F9F8A3 /* RCConnection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12235197295A10035B864 /* RCConnection.h */; };
+		AE04E5941B0B724900F9F8A3 /* RCDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12238197295CC0035B864 /* RCDevice.h */; };
+		AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223B197295EA0035B864 /* RCConnectionDelegate.h */; };
+		AE04E5961B0B724900F9F8A3 /* RCDeviceDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223E197295F90035B864 /* RCDeviceDelegate.h */; };
+		AE04E5971B0B724900F9F8A3 /* RCPresenceEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12241197296110035B864 /* RCPresenceEvent.h */; };
 		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
 		AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */; };
 		AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E61A8B98A700578A7B /* ARDUtilities.m */; };
@@ -73,6 +78,11 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AE04E5931B0B724900F9F8A3 /* RCConnection.h in CopyFiles */,
+				AE04E5941B0B724900F9F8A3 /* RCDevice.h in CopyFiles */,
+				AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */,
+				AE04E5961B0B724900F9F8A3 /* RCDeviceDelegate.h in CopyFiles */,
+				AE04E5971B0B724900F9F8A3 /* RCPresenceEvent.h in CopyFiles */,
 				AEC1221519728C850035B864 /* RestCommClient.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

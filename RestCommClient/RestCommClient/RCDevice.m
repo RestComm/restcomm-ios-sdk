@@ -23,6 +23,7 @@
 #import "RCDevice.h"
 #import "RCConnection.h"
 #import "RCConnectionDelegate.h"
+#import "SipManager.h"
 
 @interface RCDevice ()
 // private stuff

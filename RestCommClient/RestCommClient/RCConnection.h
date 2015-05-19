@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 
 #import "RCConnectionDelegate.h"
-#import "SipManager.h"
+
 
 /** @file RCConnection.h */
 
@@ -46,6 +46,7 @@ extern NSString* const RCConnectionIncomingParameterAPIVersionKey;
 extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 
 @class SipManager;
+@protocol SipManagerConnectionDelegate;
 
 /**
  *  RCConnection represents a call. An RCConnection can be either incoming or outgoing. RCConnections are not created by themselves but

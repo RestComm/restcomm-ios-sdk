@@ -700,7 +700,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					$SOURCE_ROOT/../../RestCommClient/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
@@ -735,7 +734,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 					$SOURCE_ROOT/../../RestCommClient/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";

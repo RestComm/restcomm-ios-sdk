@@ -24,7 +24,6 @@
 
 #import "RCDeviceDelegate.h"
 #import "RCConnectionDelegate.h"
-#import "SipManager.h"
 
 /** @file RCDevice.h */
 
@@ -46,6 +45,7 @@ extern NSString* const RCDeviceCapabilityApplicationParametersKey;
 extern NSString* const RCDeviceCapabilityClientNameKey;
 
 @class RCConnection;
+@protocol SipManagerDeviceDelegate;
 
 /**
  *  RCDevice Represents an abstraction of a communications device able to make and receive calls, send and receive messages etc. Remember that
