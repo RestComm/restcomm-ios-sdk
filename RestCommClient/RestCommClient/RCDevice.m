@@ -112,6 +112,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     connection.incoming = false;
     connection.state = RCConnectionStatePending;
     
+    // Check if aor and registrar are passed and if so trigger a registration before calling
+    //[self.sipManager updateParams:parameters];
+    
     // make a call to whoever parameters designate
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
     [self.sipManager invite:[parameters objectForKey:@"username"]];
