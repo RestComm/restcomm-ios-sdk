@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
 		AE182F9A1B0A5C7100B40A0F /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F991B0A5C7100B40A0F /* GStreamer.framework */; };
+		AE41B0F11B0C907D000E91BB /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE41B0F01B0C907D000E91BB /* libRestCommClient.a */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
@@ -37,8 +38,6 @@
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
-		AE95208B1B0B268C00E947D8 /* icon-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520881B0B268C00E947D8 /* icon-57x57.png */; };
-		AE95208C1B0B268C00E947D8 /* icon-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520891B0B268C00E947D8 /* icon-72x72.png */; };
 		AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = AE95208F1B0B2AC100E947D8 /* icon-29x29.png */; };
 		AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */; };
 		AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520911B0B2AC100E947D8 /* icon-40x40.png */; };
@@ -56,20 +55,17 @@
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
-		AECDB8A41B0DFB9900563107 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECDB8A31B0DFB9900563107 /* libRestCommClient.a */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
-		AED0B0661A0976F8008A6057 /* restcomm-messengerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */; };
+		AED0B0661A0976F8008A6057 /* restcomm-helloworldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-helloworldTests.m */; };
 		AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0691A097764008A6057 /* AppDelegate.m */; };
 		AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06A1A097764008A6057 /* Main_iPad.storyboard */; };
 		AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */; };
 		AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06E1A097764008A6057 /* InfoPlist.strings */; };
 		AED0B0821A097764008A6057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0701A097764008A6057 /* Images.xcassets */; };
 		AED0B0831A097764008A6057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0711A097764008A6057 /* main.m */; };
-		AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0751A097764008A6057 /* SettingsViewController.mm */; };
 		AED0B0861A097764008A6057 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0771A097764008A6057 /* calling.mp3 */; };
 		AED0B0871A097764008A6057 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0781A097764008A6057 /* message.mp3 */; };
 		AED0B0881A097764008A6057 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0791A097764008A6057 /* ringing.mp3 */; };
-		AED0B0891A097764008A6057 /* TabBarController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07B1A097764008A6057 /* TabBarController.mm */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
@@ -88,6 +84,7 @@
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE182F991B0A5C7100B40A0F /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../RestCommClient/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
+		AE41B0F01B0C907D000E91BB /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -96,14 +93,12 @@
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		AE79D31619BC8DAD0023306C /* restcomm-messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE79D31619BC8DAD0023306C /* restcomm-helloworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-helloworld.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		AE79D31D19BC8DAD0023306C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		AE79D33A19BC8DAE0023306C /* restcomm-messengerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-messengerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE79D33A19BC8DAE0023306C /* restcomm-helloworldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-helloworldTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33B19BC8DAE0023306C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AE9520881B0B268C00E947D8 /* icon-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-57x57.png"; sourceTree = "<group>"; };
-		AE9520891B0B268C00E947D8 /* icon-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72x72.png"; sourceTree = "<group>"; };
 		AE95208F1B0B2AC100E947D8 /* icon-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29x29.png"; sourceTree = "<group>"; };
 		AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29x29@2x.png"; sourceTree = "<group>"; };
 		AE9520911B0B2AC100E947D8 /* icon-40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40x40.png"; sourceTree = "<group>"; };
@@ -124,10 +119,9 @@
 		AEC39AE41A5AE11100B155E4 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
-		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		AED0B0621A0976F8008A6057 /* restcomm-messengerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messengerTests-Info.plist"; sourceTree = "<group>"; };
-		AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-messengerTests.m"; sourceTree = "<group>"; };
+		AED0B0621A0976F8008A6057 /* restcomm-helloworldTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-helloworldTests-Info.plist"; sourceTree = "<group>"; };
+		AED0B0631A0976F8008A6057 /* restcomm-helloworldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-helloworldTests.m"; sourceTree = "<group>"; };
 		AED0B0681A097764008A6057 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AED0B0691A097764008A6057 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		AED0B06B1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -135,15 +129,11 @@
 		AED0B06F1A097764008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0701A097764008A6057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AED0B0711A097764008A6057 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messenger-Info.plist"; sourceTree = "<group>"; };
-		AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "restcomm-messenger-Prefix.pch"; sourceTree = "<group>"; };
-		AED0B0741A097764008A6057 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		AED0B0751A097764008A6057 /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
+		AED0B0721A097764008A6057 /* restcomm-helloworld-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-helloworld-Info.plist"; sourceTree = "<group>"; };
+		AED0B0731A097764008A6057 /* restcomm-helloworld-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "restcomm-helloworld-Prefix.pch"; sourceTree = "<group>"; };
 		AED0B0771A097764008A6057 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
 		AED0B0781A097764008A6057 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
 		AED0B0791A097764008A6057 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
-		AED0B07A1A097764008A6057 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
-		AED0B07B1A097764008A6057 /* TabBarController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TabBarController.mm; sourceTree = "<group>"; };
 		AED0B07C1A097764008A6057 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		AED0B07D1A097764008A6057 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
@@ -168,7 +158,7 @@
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AE182F9A1B0A5C7100B40A0F /* GStreamer.framework in Frameworks */,
-				AECDB8A41B0DFB9900563107 /* libRestCommClient.a in Frameworks */,
+				AE41B0F11B0C907D000E91BB /* libRestCommClient.a in Frameworks */,
 				AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */,
 				AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
@@ -193,10 +183,10 @@
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
-				AED0B0671A097764008A6057 /* restcomm-messenger */,
+				AED0B0671A097764008A6057 /* restcomm-helloworld */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
-				AED0B05F1A0976F8008A6057 /* restcomm-messengerTests */,
+				AED0B05F1A0976F8008A6057 /* restcomm-helloworldTests */,
 				AED9718919E98DB9000F7A8E /* readme.markdown */,
 			);
 			sourceTree = "<group>";
@@ -204,8 +194,8 @@
 		AE79D31719BC8DAD0023306C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AE79D31619BC8DAD0023306C /* restcomm-messenger.app */,
-				AE79D33A19BC8DAE0023306C /* restcomm-messengerTests.xctest */,
+				AE79D31619BC8DAD0023306C /* restcomm-helloworld.app */,
+				AE79D33A19BC8DAE0023306C /* restcomm-helloworldTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,7 +203,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AECDB8A31B0DFB9900563107 /* libRestCommClient.a */,
+				AE41B0F01B0C907D000E91BB /* libRestCommClient.a */,
 				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
 				AE182F991B0A5C7100B40A0F /* GStreamer.framework */,
@@ -261,8 +251,6 @@
 				AE9520941B0B2AC100E947D8 /* icon-60x60@3x.png */,
 				AE9520951B0B2AC100E947D8 /* icon-76x76.png */,
 				AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */,
-				AE9520881B0B268C00E947D8 /* icon-57x57.png */,
-				AE9520891B0B268C00E947D8 /* icon-72x72.png */,
 			);
 			path = icon;
 			sourceTree = "<group>";
@@ -285,17 +273,17 @@
 			path = splash;
 			sourceTree = "<group>";
 		};
-		AED0B05F1A0976F8008A6057 /* restcomm-messengerTests */ = {
+		AED0B05F1A0976F8008A6057 /* restcomm-helloworldTests */ = {
 			isa = PBXGroup;
 			children = (
 				AED0B0601A0976F8008A6057 /* InfoPlist.strings */,
-				AED0B0621A0976F8008A6057 /* restcomm-messengerTests-Info.plist */,
-				AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */,
+				AED0B0621A0976F8008A6057 /* restcomm-helloworldTests-Info.plist */,
+				AED0B0631A0976F8008A6057 /* restcomm-helloworldTests.m */,
 			);
-			path = "restcomm-messengerTests";
+			path = "restcomm-helloworldTests";
 			sourceTree = "<group>";
 		};
-		AED0B0671A097764008A6057 /* restcomm-messenger */ = {
+		AED0B0671A097764008A6057 /* restcomm-helloworld */ = {
 			isa = PBXGroup;
 			children = (
 				AE9520861B0B268C00E947D8 /* img */,
@@ -306,17 +294,13 @@
 				AED0B06E1A097764008A6057 /* InfoPlist.strings */,
 				AED0B0701A097764008A6057 /* Images.xcassets */,
 				AED0B0711A097764008A6057 /* main.m */,
-				AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */,
-				AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */,
-				AED0B0741A097764008A6057 /* SettingsViewController.h */,
-				AED0B0751A097764008A6057 /* SettingsViewController.mm */,
+				AED0B0721A097764008A6057 /* restcomm-helloworld-Info.plist */,
+				AED0B0731A097764008A6057 /* restcomm-helloworld-Prefix.pch */,
 				AED0B0761A097764008A6057 /* sounds */,
-				AED0B07A1A097764008A6057 /* TabBarController.h */,
-				AED0B07B1A097764008A6057 /* TabBarController.mm */,
 				AED0B07C1A097764008A6057 /* ViewController.h */,
 				AED0B07D1A097764008A6057 /* ViewController.mm */,
 			);
-			path = "restcomm-messenger";
+			path = "restcomm-helloworld";
 			sourceTree = "<group>";
 		};
 		AED0B0761A097764008A6057 /* sounds */ = {
@@ -332,9 +316,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AE79D31519BC8DAD0023306C /* restcomm-messenger */ = {
+		AE79D31519BC8DAD0023306C /* restcomm-helloworld */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-messenger" */;
+			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */;
 			buildPhases = (
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
@@ -344,14 +328,14 @@
 			);
 			dependencies = (
 			);
-			name = "restcomm-messenger";
+			name = "restcomm-helloworld";
 			productName = "test-ios-sip-sofia";
-			productReference = AE79D31619BC8DAD0023306C /* restcomm-messenger.app */;
+			productReference = AE79D31619BC8DAD0023306C /* restcomm-helloworld.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AE79D33919BC8DAE0023306C /* restcomm-messengerTests */ = {
+		AE79D33919BC8DAE0023306C /* restcomm-helloworldTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-messengerTests" */;
+			buildConfigurationList = AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */;
 			buildPhases = (
 				AE79D33619BC8DAE0023306C /* Sources */,
 				AE79D33719BC8DAE0023306C /* Frameworks */,
@@ -362,9 +346,9 @@
 			dependencies = (
 				AE79D34019BC8DAE0023306C /* PBXTargetDependency */,
 			);
-			name = "restcomm-messengerTests";
+			name = "restcomm-helloworldTests";
 			productName = "test-ios-sip-sofiaTests";
-			productReference = AE79D33A19BC8DAE0023306C /* restcomm-messengerTests.xctest */;
+			productReference = AE79D33A19BC8DAE0023306C /* restcomm-helloworldTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -384,7 +368,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "restcomm-messenger" */;
+			buildConfigurationList = AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "restcomm-helloworld" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -397,8 +381,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AE79D31519BC8DAD0023306C /* restcomm-messenger */,
-				AE79D33919BC8DAE0023306C /* restcomm-messengerTests */,
+				AE79D31519BC8DAD0023306C /* restcomm-helloworld */,
+				AE79D33919BC8DAE0023306C /* restcomm-helloworldTests */,
 				AED9718319E98B48000F7A8E /* Documentation */,
 			);
 		};
@@ -410,7 +394,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */,
-				AE95208C1B0B268C00E947D8 /* icon-72x72.png in Resources */,
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
@@ -428,7 +411,6 @@
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AED0B0881A097764008A6057 /* ringing.mp3 in Resources */,
-				AE95208B1B0B268C00E947D8 /* icon-57x57.png in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,8 +462,6 @@
 				AED0B0831A097764008A6057 /* main.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
-				AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */,
-				AED0B0891A097764008A6057 /* TabBarController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED0B0661A0976F8008A6057 /* restcomm-messengerTests.m in Sources */,
+				AED0B0661A0976F8008A6057 /* restcomm-helloworldTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,7 +478,7 @@
 /* Begin PBXTargetDependency section */
 		AE79D34019BC8DAE0023306C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AE79D31519BC8DAD0023306C /* restcomm-messenger */;
+			target = AE79D31519BC8DAD0023306C /* restcomm-helloworld */;
 			targetProxy = AE79D33F19BC8DAE0023306C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -634,17 +614,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
-					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
+				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependecies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
-				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
+				INFOPLIST_FILE = "restcomm-helloworld/restcomm-helloworld-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -655,7 +634,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "restcomm-messenger";
+				PRODUCT_NAME = "restcomm-helloworld";
 				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
@@ -670,17 +649,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
-					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
+				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependecies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
-				INFOPLIST_FILE = "restcomm-messenger/restcomm-messenger-Info.plist";
+				INFOPLIST_FILE = "restcomm-helloworld/restcomm-helloworld-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -690,7 +668,7 @@
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "restcomm-messenger";
+				PRODUCT_NAME = "restcomm-helloworld";
 				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
@@ -706,13 +684,13 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
+				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "restcomm-messengerTests/restcomm-messengerTests-Info.plist";
-				PRODUCT_NAME = "restcomm-messengerTests";
+				INFOPLIST_FILE = "restcomm-helloworldTests/restcomm-helloworldTests-Info.plist";
+				PRODUCT_NAME = "restcomm-helloworldTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -728,9 +706,9 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
-				INFOPLIST_FILE = "restcomm-messengerTests/restcomm-messengerTests-Info.plist";
-				PRODUCT_NAME = "restcomm-messengerTests";
+				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
+				INFOPLIST_FILE = "restcomm-helloworldTests/restcomm-helloworldTests-Info.plist";
+				PRODUCT_NAME = "restcomm-helloworldTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -753,7 +731,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "restcomm-messenger" */ = {
+		AE79D31119BC8DAD0023306C /* Build configuration list for PBXProject "restcomm-helloworld" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE79D34919BC8DAE0023306C /* Debug */,
@@ -762,7 +740,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-messenger" */ = {
+		AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE79D34C19BC8DAE0023306C /* Debug */,
@@ -771,7 +749,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-messengerTests" */ = {
+		AE79D34E19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE79D34F19BC8DAE0023306C /* Debug */,
