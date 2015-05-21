@@ -102,6 +102,7 @@
 
 - (IBAction)dialPressed:(id)sender
 {
+    //[[Crashlytics sharedInstance] crash];
     [self.parameters setObject:self.sipUriText.text forKey:@"username"];
     
     // #START-CONNECTION: call the other party
