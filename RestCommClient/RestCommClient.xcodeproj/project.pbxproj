@@ -716,7 +716,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${PROJECT_DIR}/doc\"\n/opt/local/bin/doxygen Doxyfile";
+			shellScript = "#cd \"${PROJECT_DIR}/doc\"\n#/opt/local/bin/doxygen Doxyfile\n\n/usr/local/bin/appledoc -h --no-create-docset --project-name \"Restcomm iOS Client\" --project-company Telestax --company-id com.telestax --output \"${PROJECT_DIR}/../doc\" --index-desc \"${PROJECT_DIR}/doc/index.markdown\" \"${PROJECT_DIR}/../dependencies/packages/RestCommClientLib/include\" || echo";
 		};
 		AED6CCA31B0C9ED500DC1A55 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
