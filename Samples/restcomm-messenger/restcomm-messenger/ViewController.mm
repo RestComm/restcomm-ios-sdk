@@ -35,6 +35,7 @@
 
 @implementation ViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -65,9 +66,8 @@
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     //self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
+    //self.sipUriText.text = @"sip:1235@184.73.77.124:5080";
     self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
-    //self.sipUriText.text = @"sip:john@192.168.2.20";
-    //self.sipUriText.text = @"sip:john@192.168.2.32:5080";
 #endif
     
 }

@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
 		AE182F9A1B0A5C7100B40A0F /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F991B0A5C7100B40A0F /* GStreamer.framework */; };
+		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
@@ -43,7 +44,6 @@
 		AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */; };
 		AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520911B0B2AC100E947D8 /* icon-40x40.png */; };
 		AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520921B0B2AC100E947D8 /* icon-40x40@2x.png */; };
-		AE95209B1B0B2AC100E947D8 /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520931B0B2AC100E947D8 /* icon-60x60@2x.png */; };
 		AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520941B0B2AC100E947D8 /* icon-60x60@3x.png */; };
 		AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520951B0B2AC100E947D8 /* icon-76x76.png */; };
 		AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */; };
@@ -88,6 +88,7 @@
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE182F991B0A5C7100B40A0F /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../RestCommClient/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
+		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -108,7 +109,6 @@
 		AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29x29@2x.png"; sourceTree = "<group>"; };
 		AE9520911B0B2AC100E947D8 /* icon-40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40x40.png"; sourceTree = "<group>"; };
 		AE9520921B0B2AC100E947D8 /* icon-40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40x40@2x.png"; sourceTree = "<group>"; };
-		AE9520931B0B2AC100E947D8 /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE9520941B0B2AC100E947D8 /* icon-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@3x.png"; sourceTree = "<group>"; };
 		AE9520951B0B2AC100E947D8 /* icon-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-76x76.png"; sourceTree = "<group>"; };
 		AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-76x76@2x.png"; sourceTree = "<group>"; };
@@ -245,7 +245,6 @@
 			children = (
 				AE95209F1B0B2C4D00E947D8 /* splash */,
 				AE9520871B0B268C00E947D8 /* icon */,
-				AE95208A1B0B268C00E947D8 /* splash */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -253,11 +252,11 @@
 		AE9520871B0B268C00E947D8 /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */,
 				AE95208F1B0B2AC100E947D8 /* icon-29x29.png */,
 				AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */,
 				AE9520911B0B2AC100E947D8 /* icon-40x40.png */,
 				AE9520921B0B2AC100E947D8 /* icon-40x40@2x.png */,
-				AE9520931B0B2AC100E947D8 /* icon-60x60@2x.png */,
 				AE9520941B0B2AC100E947D8 /* icon-60x60@3x.png */,
 				AE9520951B0B2AC100E947D8 /* icon-76x76.png */,
 				AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */,
@@ -265,13 +264,6 @@
 				AE9520891B0B268C00E947D8 /* icon-72x72.png */,
 			);
 			path = icon;
-			sourceTree = "<group>";
-		};
-		AE95208A1B0B268C00E947D8 /* splash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = splash;
 			sourceTree = "<group>";
 		};
 		AE95209F1B0B2C4D00E947D8 /* splash */ = {
@@ -412,6 +404,7 @@
 				AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */,
 				AE95208C1B0B268C00E947D8 /* icon-72x72.png in Resources */,
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
+				AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */,
 				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
 				AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */,
@@ -424,7 +417,6 @@
 				AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
 				AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */,
-				AE95209B1B0B2AC100E947D8 /* icon-60x60@2x.png in Resources */,
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AED0B0881A097764008A6057 /* ringing.mp3 in Resources */,

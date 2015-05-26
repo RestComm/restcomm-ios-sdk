@@ -21,7 +21,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>   // sounds
+//#import <AVFoundation/AVFoundation.h>   // sounds
 
 
 #import "RestCommClient.h"
@@ -29,8 +29,8 @@
 @interface ViewController : UIViewController<RCDeviceDelegate,RCConnectionDelegate>
 @property (nonatomic,retain) RCDevice* device;
 @property (nonatomic,retain) RCConnection* connection;
-@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
+//@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property NSMutableDictionary * parameters;
-@property AVAudioPlayer * messagePlayer;
-@property AVAudioPlayer * ringingPlayer;
+//@property AVAudioPlayer * messagePlayer;
+//@property AVAudioPlayer * ringingPlayer;
 @end
