@@ -677,7 +677,7 @@
 		AE79D34F19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-client.app/test-ios-client";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -699,7 +699,7 @@
 		AE79D35019BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test-ios-client.app/test-ios-client";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
