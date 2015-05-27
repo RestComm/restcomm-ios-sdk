@@ -66,8 +66,8 @@
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     //self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
-    //self.sipUriText.text = @"sip:1235@184.73.77.124:5080";
-    self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    //self.sipUriText.text = @"sip:5126001502@23.23.228.238:5080";
 #endif
     
 }

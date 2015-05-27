@@ -22,12 +22,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
-		AE182F9A1B0A5C7100B40A0F /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F991B0A5C7100B40A0F /* GStreamer.framework */; };
-		AE41B0F11B0C907D000E91BB /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE41B0F01B0C907D000E91BB /* libRestCommClient.a */; };
-		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
-		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
-		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
+		AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */; };
+		AE1C05B91B15DDAF00F5E834 /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */; };
+		AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */; };
+		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
+		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
+		AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -52,7 +52,6 @@
 		AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
-		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
@@ -84,6 +83,12 @@
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE182F991B0A5C7100B40A0F /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../RestCommClient/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
+		AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
+		AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../dependencies/packages/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
+		AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AE1C05BC1B15DDF200F5E834 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
+		AE1C05BD1B15DDF200F5E834 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
+		AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../dependencies/packages/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE41B0F01B0C907D000E91BB /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -144,7 +149,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */,
+				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
+				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
 				AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */,
 				AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */,
@@ -152,16 +158,14 @@
 				AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */,
 				AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */,
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
-				AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
-				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
-				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
-				AE182F9A1B0A5C7100B40A0F /* GStreamer.framework in Frameworks */,
-				AE41B0F11B0C907D000E91BB /* libRestCommClient.a in Frameworks */,
-				AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */,
-				AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */,
-				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
+				AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */,
+				AE1C05B91B15DDAF00F5E834 /* GStreamer.framework in Frameworks */,
+				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
+				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
+				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
+				AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 			);
@@ -203,6 +207,12 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */,
+				AE1C05BC1B15DDF200F5E834 /* libcrypto.a */,
+				AE1C05BD1B15DDF200F5E834 /* libssl.a */,
+				AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */,
+				AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */,
+				AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */,
 				AE41B0F01B0C907D000E91BB /* libRestCommClient.a */,
 				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,

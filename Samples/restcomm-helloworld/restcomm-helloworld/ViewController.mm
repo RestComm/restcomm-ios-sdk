@@ -20,7 +20,7 @@
  *
  */
 
-#include <unistd.h>
+//#include <unistd.h>
 
 #import "ViewController.h"
 #import "RestCommClient.h"
@@ -40,7 +40,7 @@
                        nil];
 
     // CHANGEME: set the IP address of your RestComm instance in the URI below
-    [self.parameters setObject:@"sip:192.168.2.32:5080" forKey:@"registrar"];
+    [self.parameters setObject:@"sip:54.225.212.193:5080" forKey:@"registrar"];
 
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:@"" delegate:self];
@@ -60,7 +60,7 @@
 {
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
-    [self.parameters setObject:@"sip:1235@192.168.2.32:5080" forKey:@"username"];
+    [self.parameters setObject:@"sip:1235@54.225.212.193:5080" forKey:@"username"];
 
     // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];

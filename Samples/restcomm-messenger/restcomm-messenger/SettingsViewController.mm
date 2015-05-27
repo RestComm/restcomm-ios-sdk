@@ -57,8 +57,8 @@
     // set some defaults when in debug to avoid typing
     self.aorText.text = @"sip:bob@telestax.com";
     //self.registrarText.text = @"23.23.228.238";
-    //self.registrarText.text = @"184.73.77.124";
-    self.registrarText.text = @"192.168.2.32";
+    self.registrarText.text = @"54.225.212.193";
+    //self.registrarText.text = @"23.23.228.238";
 #endif
 }
 
