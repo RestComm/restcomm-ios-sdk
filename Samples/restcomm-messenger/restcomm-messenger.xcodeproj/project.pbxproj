@@ -38,8 +38,6 @@
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
-		AE95208B1B0B268C00E947D8 /* icon-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520881B0B268C00E947D8 /* icon-57x57.png */; };
-		AE95208C1B0B268C00E947D8 /* icon-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520891B0B268C00E947D8 /* icon-72x72.png */; };
 		AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = AE95208F1B0B2AC100E947D8 /* icon-29x29.png */; };
 		AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */; };
 		AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520911B0B2AC100E947D8 /* icon-40x40.png */; };
@@ -103,8 +101,6 @@
 		AE79D31D19BC8DAD0023306C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AE79D33A19BC8DAE0023306C /* restcomm-messengerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-messengerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33B19BC8DAE0023306C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AE9520881B0B268C00E947D8 /* icon-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-57x57.png"; sourceTree = "<group>"; };
-		AE9520891B0B268C00E947D8 /* icon-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72x72.png"; sourceTree = "<group>"; };
 		AE95208F1B0B2AC100E947D8 /* icon-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29x29.png"; sourceTree = "<group>"; };
 		AE9520901B0B2AC100E947D8 /* icon-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29x29@2x.png"; sourceTree = "<group>"; };
 		AE9520911B0B2AC100E947D8 /* icon-40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40x40.png"; sourceTree = "<group>"; };
@@ -260,8 +256,6 @@
 				AE9520941B0B2AC100E947D8 /* icon-60x60@3x.png */,
 				AE9520951B0B2AC100E947D8 /* icon-76x76.png */,
 				AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */,
-				AE9520881B0B268C00E947D8 /* icon-57x57.png */,
-				AE9520891B0B268C00E947D8 /* icon-72x72.png */,
 			);
 			path = icon;
 			sourceTree = "<group>";
@@ -402,7 +396,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */,
-				AE95208C1B0B268C00E947D8 /* icon-72x72.png in Resources */,
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */,
 				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
@@ -420,7 +413,6 @@
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AED0B0881A097764008A6057 /* ringing.mp3 in Resources */,
-				AE95208B1B0B268C00E947D8 /* icon-57x57.png in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
