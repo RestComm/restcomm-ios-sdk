@@ -56,9 +56,7 @@
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     self.aorText.text = @"sip:bob@telestax.com";
-    //self.registrarText.text = @"23.23.228.238";
     self.registrarText.text = @"54.225.212.193";
-    //self.registrarText.text = @"23.23.228.238";
 #endif
 }
 
@@ -87,8 +85,6 @@
     }
     if (![self.registrarText.text isEqualToString:@""]) {
         [params setObject:[NSString stringWithFormat:@"sip:%@:5080", self.registrarText.text] forKey:@"registrar"];
-        //[params setObject:self.registrarText.text forKey:@"registrar"];
-        //[params setObject:[NSString stringWithFormat:@"sip:%@@%@:5080", @"%@", self.registrarText.text] forKey:@"uas-uri-template"];
         update = true;
     }
 
@@ -106,16 +102,5 @@
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

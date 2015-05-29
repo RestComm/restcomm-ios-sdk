@@ -46,11 +46,9 @@
     // TODO: capabilityTokens aren't handled yet
     NSString* capabilityToken = @"";
     
-    // let's hardcode a template for RestComm, so that only the username is needed in our methods below
-    //self.parameters = [NSMutableDictionary dictionaryWithObject:@"sip:%@@192.168.2.32:5080" forKey:@"uas-uri-template"];
     self.parameters = [[NSMutableDictionary alloc] init];
     
-    // #INIT-CLIENT: initialize RestComm Client by setting up an RCDevice
+    // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
 
     TabBarController * tabBarController = (TabBarController *)self.tabBarController;
@@ -65,9 +63,7 @@
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:alice@23.23.228.238:5080";
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
-    //self.sipUriText.text = @"sip:5126001502@23.23.228.238:5080";
 #endif
     
 }
@@ -90,7 +86,7 @@
 {
     [self.parameters setObject:self.sipUriText.text forKey:@"username"];
     
-    // #SEND-MSG: send an instant message using RCDevice
+    // send an instant message using RCDevice
     [self.device sendMessage:self.sipMessageText.text to:self.parameters];
     
     [self prependToDialog:self.sipMessageText.text sender:@"Me"];
@@ -102,12 +98,10 @@
 
 - (IBAction)dialPressed:(id)sender
 {
-    //[[Crashlytics sharedInstance] crash];
     [self.parameters setObject:self.sipUriText.text forKey:@"username"];
     
-    // #START-CONNECTION: call the other party
+    // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];
-    //self.sipUriText.text = @"";
 
     // hide keyboard
     [self.sipUriText endEditing:false];
@@ -128,7 +122,7 @@
     [self.ringingPlayer stop];
     self.ringingPlayer.currentTime = 0.0;
     
-    // #REJECT: reject the pending RCConnection
+    // reject the pending RCConnection
     [self.pendingIncomingConnection reject];
     
     self.pendingIncomingConnection = nil;
@@ -162,14 +156,14 @@
     
 }
 
-// #RECV-MSG: received incoming message
+// received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
 {
     [self.messagePlayer play];
     [self prependToDialog:message sender:@"alice"];
 }
 
-// #RECV-CONNECTION: 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
+// 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
     [self.ringingPlayer play];

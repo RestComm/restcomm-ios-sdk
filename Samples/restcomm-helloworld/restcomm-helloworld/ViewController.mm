@@ -20,8 +20,6 @@
  *
  */
 
-//#include <unistd.h>
-
 #import "ViewController.h"
 #import "RestCommClient.h"
 

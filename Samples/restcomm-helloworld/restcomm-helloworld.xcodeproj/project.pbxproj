@@ -245,7 +245,6 @@
 			children = (
 				AE95209F1B0B2C4D00E947D8 /* splash */,
 				AE9520871B0B268C00E947D8 /* icon */,
-				AE95208A1B0B268C00E947D8 /* splash */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -263,13 +262,6 @@
 				AE9520961B0B2AC100E947D8 /* icon-76x76@2x.png */,
 			);
 			path = icon;
-			sourceTree = "<group>";
-		};
-		AE95208A1B0B268C00E947D8 /* splash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = splash;
 			sourceTree = "<group>";
 		};
 		AE95209F1B0B2C4D00E947D8 /* splash */ = {
@@ -306,9 +298,9 @@
 				AED0B0711A097764008A6057 /* main.m */,
 				AED0B0721A097764008A6057 /* restcomm-helloworld-Info.plist */,
 				AED0B0731A097764008A6057 /* restcomm-helloworld-Prefix.pch */,
-				AED0B0761A097764008A6057 /* sounds */,
 				AED0B07C1A097764008A6057 /* ViewController.h */,
 				AED0B07D1A097764008A6057 /* ViewController.mm */,
+				AED0B0761A097764008A6057 /* sounds */,
 			);
 			path = "restcomm-helloworld";
 			sourceTree = "<group>";

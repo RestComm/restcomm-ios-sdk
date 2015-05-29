@@ -79,6 +79,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     else if (self.state == RCConnectionStateConnected) {
         [self.sipManager bye];
     }
+    self.state = RCConnectionStateDisconnected;
 }
 
 - (void)sendDigits:(NSString*)digits
