@@ -232,6 +232,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(caps_str,
                                      SOATAG_USER_SDP_STR(caps_str)),
                               SOATAG_AF(SOA_AF_IP4_IP6),
+                              // When using webrtc media disable SOA engine for SDP handling
+                              NUTAG_MEDIA_ENABLE(0),
                               TAG_NULL());
     
     /* step: free the static caps */
@@ -756,9 +758,10 @@ void ssc_invite(ssc_t *ssc, const char *destination)
 
 #if HAVE_MEDIA_WEBRTC_IMPL
 /**
- * Callback that triggers the second phase of ssc_answer() and
+ * Callback that triggers the second phase of 
  * ssc_invite() for WebRTC. When WebRTC module is ready with full SDP
- * (including ICE candidates), it calls this via the pipe interface
+ * (including ICE candidates), it calls this via the pipe interface to 
+ * set the local sdp and activate media
  */
 void ssc_webrtc_sdp(void* op_context, char *sdp)
 {
@@ -778,8 +781,22 @@ void ssc_webrtc_sdp(void* op_context, char *sdp)
     else
         printf("%s: INVITE to %s pending\n", ssc->ssc_name, op->op_ident);
 }
-#endif
 
+/**
+ * Callback that triggers the second phase of ssc_answer()
+ * for WebRTC. When WebRTC module is ready with full SDP
+ * (including ICE candidates), it calls this via the pipe interface
+ * to set the localsdp
+ */
+void ssc_webrtc_sdp_called(void* op_context, char *sdp)
+{
+    ssc_oper_t *op = (ssc_oper_t*)op_context;
+    ssc_t *ssc = op->op_ssc;
+    
+    // set localsdp with WebRTC media
+    g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", sdp, NULL);
+}
+#endif
 
 /**
  * Callback for an outgoing INVITE request.
@@ -875,8 +892,10 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
             }
             else {
                 printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+                char value_str[65536] = "";
+                sprintf(value_str, "%p %s", op, sip->sip_payload->pl_data);
                 // notify the client application that they should answer
-                setSofiaReply(INCOMING_CALL, "incoming call");
+                setSofiaReply(INCOMING_CALL, value_str);
                 sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
             }
         }
@@ -922,8 +941,14 @@ static void priv_media_state_cb(void* context, guint state, gpointer data)
             if (l_sdp) {
                 printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp);
                 
+                // When working with webrtc media using the SOA ruins the SDP for some reason.
+                // Since webrtc handles the SDP completely, let's disable SOA
+                // (see nua_create, NUTAG_MEDIA_ENABLE(0)) and use the webrtc string directy with
+                // SIPTAG_PAYLOAD_STR() and SIPTAG_CONTENT_TYPE_STR()
                 nua_invite(op->op_handle,
-                           SOATAG_USER_SDP_STR(l_sdp),
+                           //SOATAG_USER_SDP_STR(l_sdp),
+                           SIPTAG_PAYLOAD_STR(l_sdp),
+                           SIPTAG_CONTENT_TYPE_STR("application/sdp"),
                            SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
                            SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
                            TAG_END());
@@ -962,8 +987,14 @@ static void priv_media_state_cb(void* context, guint state, gpointer data)
                     op->op_callstate |= opc_sent;
                 else
                     op->op_callstate = opc_none;
+                // When working with webrtc media using the SOA ruins the SDP for some reason.
+                // Since webrtc handles the SDP completely, let's disable SOA
+                // (see nua_create, NUTAG_MEDIA_ENABLE(0)) and use the webrtc string directy with
+                // SIPTAG_PAYLOAD_STR() and SIPTAG_CONTENT_TYPE_STR()
                 nua_respond(op->op_handle, status, phrase,
-                            SOATAG_USER_SDP_STR(l_sdp_str),
+                            //SOATAG_USER_SDP_STR(l_sdp_str),
+                            SIPTAG_PAYLOAD_STR(l_sdp_str),
+                            SIPTAG_CONTENT_TYPE_STR("application/sdp"),
                             SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
                             SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
                             TAG_END());

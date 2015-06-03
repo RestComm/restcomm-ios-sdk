@@ -59,9 +59,14 @@ int read_pipe[2];
 }
 
 #pragma mark - RTCSessionDescriptionDelegate WebRTC <-> Sofia communication: MediaDelegate protocol
-- (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString
+- (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString isInitiator:(BOOL)initiator
 {
-    [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
+    if (initiator) {
+        [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
+    }
+    else {
+        [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp-called %@", sdpString]];
+    }
 }
 
 /*
@@ -81,6 +86,19 @@ int read_pipe[2];
     }
     else if (reply->rc == INCOMING_CALL) {
         // we have an incoming call, we need to ring
+        
+        // the incoming message has first the address of the Sofia operation (until the first space)
+        // and then the SDP, let's parse them into separate strings
+        NSString * string = [NSString stringWithUTF8String:reply->text];
+        NSRange range = [string rangeOfString:@" "];
+        NSString * address = [string substringToIndex:range.location];
+        NSString * sdp = [string substringFromIndex:range.location + 1];
+
+        // TODO: initialize WebRTC module centrally
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        [self.media connect:address sdp:sdp isInitiator:NO];
+
+        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
         [self.deviceDelegate callArrived:self];
     }
     else if (reply->rc == OUTGOING_RINGING) {
@@ -99,7 +117,7 @@ int read_pipe[2];
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]];
+        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding] sdp:nil isInitiator:YES];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];

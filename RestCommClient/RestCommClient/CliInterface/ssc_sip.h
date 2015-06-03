@@ -141,6 +141,7 @@ void ssc_info(ssc_t *ssc, const char *destination, const char *msg);
 void ssc_invite(ssc_t *ssc, const char *destination);
 #if HAVE_MEDIA_WEBRTC_IMPL
 void ssc_webrtc_sdp(void* op_context, char *sdp);
+void ssc_webrtc_sdp_called(void* op_context, char *sdp);
 #endif
 void ssc_list(ssc_t *ssc);
 void ssc_media_describe(ssc_t *ssc, char *rest);

@@ -88,6 +88,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         _isTurnComplete = NO;
         // for now we are always iniator
         _isInitiator = YES;
+        self.sofia_handle = nil;
 
         // in AppRTCDemo this happens in didFinishLaunching
         //[RTCPeerConnectionFactory initializeSSL];
@@ -100,10 +101,18 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 }
 
 // entry point for WebRTC handling
-- (void) connect:(NSString*)sofia_handle
+// sofia handle is used for outgoing calls; nil in incoming
+// sdp is used for incoming calls; nil in outgoing
+- (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator
 {
+    if (!initiator) {
+        _isInitiator = NO;
+    }
+    
     //NSLog(@"#################### [MediaWebRTC connect] called");
-    self.sofia_handle = sofia_handle;
+    if (sofia_handle) {
+        self.sofia_handle = sofia_handle;
+    }
     
     // in AppRTCDemo this happens in constructor
     NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
@@ -128,7 +137,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     
     // TODO: remove this when we are ready to re-introduce TURN
     self.isTurnComplete = YES;
-    [self startSignalingIfReady];
+    [self startSignalingIfReady:sdp];
 }
 
 - (void)disconnect {
@@ -181,7 +190,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
                                     password:@""];
 }
 
-- (void)startSignalingIfReady {
+- (void)startSignalingIfReady:(NSString*)sdp {
     if (!_isTurnComplete) {
         return;
     }
@@ -197,7 +206,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     if (_isInitiator) {
         [self sendOffer];
     } else {
-        // TODO: not implemented yet
+        [self processSignalingMessage:[sdp UTF8String] type:kARDSignalingMessageTypeOffer];
+        // old code
         //[self waitForAnswer];
     }
 }
@@ -352,9 +362,27 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 {
     NSParameterAssert(_peerConnection);
     switch (type) {
-        case kARDSignalingMessageTypeOffer:
+        case kARDSignalingMessageTypeOffer: {
+            // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+            NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
+            //[self workaroundTruncation:msg];
+            NSArray * candidates = [self filterCandidatesFromSdp:msg];
+            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"offer"
+                                                                                         sdp:msg];
+            //NSLog(@"SDP answer: %@", description.description);
+            [_peerConnection setRemoteDescriptionWithDelegate:self
+                                           sessionDescription:description];
+            for (NSString * candidate in candidates) {
+                RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
+                                                                               index:0
+                                                                                 sdp:candidate];
+                [_peerConnection addICECandidate:iceCandidate];
+            }
+            
+            break;
+
+        }
         case kARDSignalingMessageTypeAnswer: {
-            //ARDSessionDescriptionMessage *sdpMessage = (ARDSessionDescriptionMessage *)message;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             [self workaroundTruncation:msg];
@@ -436,8 +464,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         //NSLog(@"#################### [MediaWebRTC iceGatheringChanged] SDP ready");
-        // TODO: uncomment
-        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
+        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
     }
 }
 

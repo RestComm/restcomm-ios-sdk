@@ -436,7 +436,7 @@ static void sofsip_handle_input_cb(char *input)
     ssc_answer(cli->cli_ssc, SIP_480_TEMPORARILY_UNAVAILABLE);
   }
   else if (MATCH("D")) {
-    ssc_answer(cli->cli_ssc, SIP_603_DECLINE); 
+    ssc_answer(cli->cli_ssc, SIP_603_DECLINE);
   }
   else if (match("h") || match("help")) {
     sofsip_help(cli);
@@ -461,7 +461,7 @@ static void sofsip_handle_input_cb(char *input)
   else if (match("l") || match("list")) {
     ssc_list(cli->cli_ssc);
   }
-  else if (match("m") || match("message") || match("webrtc-sdp")) {
+  else if (match("m") || match("message") || match("webrtc-sdp") || match("webrtc-sdp-called")) {
     // 'rest' contains the destination and the message, delimited by a whitespace
     char * token, * dest = NULL;
     int pos = 0;
@@ -482,6 +482,14 @@ static void sofsip_handle_input_cb(char *input)
        // convert address string to pointer, which is the Sofia operation handle
        sscanf(dest, "%p", (void **)&op_context);
        ssc_webrtc_sdp(op_context, rest);
+    }
+    if (match("webrtc-sdp-called")) {
+       void * op_context = NULL;
+       // convert address string to pointer, which is the Sofia operation handle
+       sscanf(dest, "%p", (void **)&op_context);
+       ssc_webrtc_sdp_called(op_context, rest);
+
+
     }
 #endif
   }
