@@ -90,7 +90,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 @property (nonatomic, assign) id<RCConnectionDelegate> delegate;
 
 /**
- *  @abstract Is connection currently muted? If a connection is muted the remote party cannot hear the local party (**Not Implemented yet**)
+ *  @abstract Is connection currently muted? If a connection is muted the remote party cannot hear the local party
  */
 @property (nonatomic, getter = isMuted) BOOL muted;
 

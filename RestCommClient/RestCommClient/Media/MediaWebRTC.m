@@ -285,6 +285,20 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     return localStream;
 }
 
+- (void)mute
+{
+    NSArray * streams = _peerConnection.localStreams;
+    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
+    [track setEnabled:NO];
+}
+
+- (void)unmute
+{
+    NSArray * streams = _peerConnection.localStreams;
+    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
+    [track setEnabled:YES];
+}
+
 #pragma mark - Helpers
 - (NSString*)updateSdpWithCandidates:(NSArray *)array
 {

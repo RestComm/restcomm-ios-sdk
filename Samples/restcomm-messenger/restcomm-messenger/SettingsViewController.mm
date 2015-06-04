@@ -56,7 +56,8 @@
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     self.aorText.text = @"sip:bob@telestax.com";
-    self.registrarText.text = @"54.225.212.193";
+    //self.registrarText.text = @"54.225.212.193";
+    self.registrarText.text = @"192.168.2.32";
 #endif
 }
 
@@ -76,7 +77,7 @@
 - (IBAction)updatePressed:(id)sender
 {
     TabBarController * tabBarController = (TabBarController*)self.tabBarController;
-    RCDevice * device = tabBarController.device;
+    RCDevice * device = tabBarController.viewController.device;
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     bool update = false;
     if (![self.aorText.text isEqualToString:@""]) {
@@ -90,6 +91,25 @@
 
     if (update) {
         [device updateParams:params];
+    }
+}
+
+- (IBAction)toggleMute:(id)sender
+{
+    TabBarController * tabBarController = (TabBarController*)self.tabBarController;
+    RCConnection * connection = tabBarController.viewController.connection;
+
+    // if we aren't in connected state it doesn't make any sense to mute
+    if (connection.state != RCConnectionStateConnected) {
+        return;
+    }
+    
+    UISwitch * muteSwitch = sender;
+    if (muteSwitch.isOn) {
+        connection.muted = true;
+    }
+    else {
+        connection.muted = false;
     }
 }
 

@@ -30,6 +30,7 @@
 
 @implementation RCConnection
 @synthesize state;
+@synthesize muted;
 
 NSString* const RCConnectionIncomingParameterFromKey = @"RCConnectionIncomingParameterFromKey";
 NSString* const RCConnectionIncomingParameterToKey = @"RCConnectionIncomingParameterToKey";
@@ -44,7 +45,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         self.delegate = delegate;
         self.sipManager = nil;
         self.state = RCConnectionStateDisconnected;
-        self.muted = NO;
+        muted = NO;
     }
     return self;
 }
@@ -98,6 +99,19 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 {
     [self.delegate connectionDidConnect:self];
     [self setState:RCConnectionStateConnected];
+}
+
+- (void)setMuted:(BOOL)isMuted
+{
+    // avoid endless loop
+    muted = isMuted;
+    [self.sipManager setMuted:isMuted];
+
+}
+
+- (BOOL)isMuted
+{
+    return self.sipManager.muted;
 }
 
 @end

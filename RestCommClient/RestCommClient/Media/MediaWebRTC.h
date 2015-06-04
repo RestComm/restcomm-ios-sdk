@@ -77,7 +77,8 @@ typedef enum {
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator;
 - (void)disconnect;
 - (void)processSignalingMessage:(char *)message type:(int)type;
-
+- (void)mute;
+- (void)unmute;
 
 // our delegate is SIP Manager
 @property (weak) id<MediaDelegate> mediaDelegate;

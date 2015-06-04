@@ -53,7 +53,9 @@
 
     TabBarController * tabBarController = (TabBarController *)self.tabBarController;
     // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
-    tabBarController.device = self.device;
+    tabBarController.viewController = self;
+    //tabBarController.device = self.device;
+    //tabBarController.connection = self.connection;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -63,8 +65,8 @@
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
-    //self.sipUriText.text = @"sip:1311@192.168.2.32:5080";
+    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    self.sipUriText.text = @"sip:1311@192.168.2.32:5080";
 #endif
     
 }
@@ -116,6 +118,7 @@
     [self.pendingIncomingConnection accept];
     self.connection = self.pendingIncomingConnection;
     [self.answerButton.layer removeAllAnimations];
+    //self.pendingIncomingConnection = nil;
 }
 
 - (IBAction)declinePressed:(id)sender
@@ -137,12 +140,14 @@
     [self.connection disconnect];
     
     self.connection = nil;
+    self.pendingIncomingConnection = nil;
 }
 
 - (IBAction)cancelPressed:(id)sender
 {
     [self.connection disconnect];
     self.connection = nil;
+    self.pendingIncomingConnection = nil;
 }
 
 // ---------- Delegate methods for RC Device

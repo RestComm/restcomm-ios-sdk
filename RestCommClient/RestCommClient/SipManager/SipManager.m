@@ -45,7 +45,7 @@ int write_pipe[2];
 int read_pipe[2];
 
 @implementation SipManager
-
+@synthesize muted;
 // add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
 //static void addFdSourceToRunLoop(int fd)
 - (void) addFdSourceToRunLoop:(int)fd
@@ -319,6 +319,21 @@ ssize_t pipeToSofia(const char * msg, int fd)
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
     return true;
+}
+
+- (BOOL)getMuted {
+    return self.muted;
+}
+
+- (void)setMuted:(BOOL)isMuted {
+    muted = isMuted;
+    // TODO: need to initialize WebRTC as soon as SipManager comes up
+    if (muted == YES) {
+        [self.media mute];
+    }
+    else {
+        [self.media unmute];
+    }
 }
 
 @end

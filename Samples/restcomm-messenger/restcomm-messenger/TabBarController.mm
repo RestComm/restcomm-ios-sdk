@@ -33,7 +33,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.device = nil;
+        self.viewController = nil;
+//        self.device = nil;
+//        self.connection = nil;
     }
     return self;
 }
