@@ -59,7 +59,7 @@ int read_pipe[2];
 }
 
 #pragma mark - RTCSessionDescriptionDelegate WebRTC <-> Sofia communication: MediaDelegate protocol
-- (void)sdpReady:(MediaWebRTC *)media withData:(NSString *)sdpString isInitiator:(BOOL)initiator
+- (void)mediaController:(MediaWebRTC *)media didCreateSdp:(NSString *)sdpString isInitiator:(BOOL)initiator
 {
     if (initiator) {
         [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
@@ -67,6 +67,19 @@ int read_pipe[2];
     else {
         [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp-called %@", sdpString]];
     }
+}
+
+// TODO: webrtc module has come up with a local video track, we need to render it inside a UIView and return that
+// view back to RCConnection. That way the application doesn't need to know about RTCVideoTracks, which are
+// webrtc implementation details
+- (void)mediaController:(MediaWebRTC *)mediaController didReceiveLocalVideoTrack:(RTCVideoTrack *)videoTrack
+{
+    
+}
+
+- (void)mediaController:(MediaWebRTC *)mediaController didReceiveRemoteVideoTrack:(RTCVideoTrack *)videoTrack
+{
+    
 }
 
 /*
@@ -95,7 +108,7 @@ int read_pipe[2];
         NSString * sdp = [string substringFromIndex:range.location + 1];
 
         // TODO: initialize WebRTC module centrally
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
         [self.media connect:address sdp:sdp isInitiator:NO];
 
         // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
@@ -116,12 +129,12 @@ int read_pipe[2];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
         [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding] sdp:nil isInitiator:YES];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
-        self.media = nil;
+        //self.media = nil;
     }
     
     return 0;
@@ -162,8 +175,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
         [RTCPeerConnectionFactory initializeSSL];
-        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        self.media = nil;
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -179,6 +191,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 
 - (void)dealloc {
     [RTCPeerConnectionFactory deinitializeSSL];
+    self.media = nil;
 }
 
 // initialize sofia

@@ -26,6 +26,7 @@
 @interface SettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
+@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 
 @end
 
@@ -59,6 +60,17 @@
     //self.registrarText.text = @"54.225.212.193";
     self.registrarText.text = @"192.168.2.32";
 #endif
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    TabBarController * tabBarController = (TabBarController*)self.tabBarController;
+    if (tabBarController.viewController.connection.state == RCConnectionStateConnected) {
+        self.muteSwitch.enabled = true;
+    }
+    else {
+        self.muteSwitch.enabled = false;
+    }
 }
 
 - (void)hideKeyBoard

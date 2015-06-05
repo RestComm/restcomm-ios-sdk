@@ -108,6 +108,9 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     if (!initiator) {
         _isInitiator = NO;
     }
+    else {
+        _isInitiator = YES;
+    }
     
     //NSLog(@"#################### [MediaWebRTC connect] called");
     if (sofia_handle) {
@@ -278,6 +281,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         [localStream addVideoTrack:localVideoTrack];
     }
     // TODO: uncomment this after I setup MediaWebRTC protocol
+    [self.mediaDelegate sipManager:self didReceiveLocalVideoTrack:localVideoTrack];
     //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
 #endif
 #endif
@@ -453,7 +457,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         if (stream.videoTracks.count) {
             // TODO: notify our delegate
             //RTCVideoTrack *videoTrack = stream.videoTracks[0];
-            //[_delegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
+            //[self.mediaDelegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
         }
     });
 }
@@ -478,7 +482,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         //NSLog(@"#################### [MediaWebRTC iceGatheringChanged] SDP ready");
-        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        [self.mediaDelegate mediaController:self didCreateSdp:[self updateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
     }
 }
 

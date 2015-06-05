@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /** @file RCConnectionDelegate.h */
 
@@ -61,5 +62,19 @@
  *  @param connection Connection of interest
  */
 - (void)connectionDidDisconnect:(RCConnection*)connection;
+
+/**
+ *  @abstract Received local video track for the connection (**Not Implemented yet**)
+ *
+ *  @param connection Connection of interest
+ */
+- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(UIView *)localVideoView;
+
+/**
+ *  @abstract Connection was disconnected (**Not Implemented yet**)
+ *
+ *  @param connection Connection of interest
+ */
+- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(UIView *)remoteVideoView;
 
 @end
