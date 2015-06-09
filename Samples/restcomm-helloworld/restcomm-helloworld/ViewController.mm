@@ -72,10 +72,16 @@
 
 - (IBAction)hangUpPressed:(id)sender
 {
-    // disconnect the established RCConnection
-    [self.connection disconnect];
-    
-    self.connection = nil;
+    [self disconnect];
+}
+
+- (void)disconnect
+{
+    if (self.connection) {
+        [self.connection disconnect];
+        
+        self.connection = nil;
+    }
 }
 
 // ---------- Delegate methods for RC Device

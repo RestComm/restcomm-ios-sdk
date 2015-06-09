@@ -152,11 +152,17 @@ extern char REGISTRAR[];
 
 - (IBAction)hangUpPressed:(id)sender
 {
-    // disconnect the established RCConnection
-    [self.connection disconnect];
-    
-    self.connection = nil;
-    self.pendingIncomingConnection = nil;
+    [self disconnect];
+}
+
+- (void)disconnect
+{
+    if (self.connection) {
+        [self.connection disconnect];
+        
+        self.connection = nil;
+        self.pendingIncomingConnection = nil;
+    }
 }
 
 - (IBAction)cancelPressed:(id)sender
