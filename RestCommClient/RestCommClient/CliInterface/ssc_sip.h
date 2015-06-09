@@ -182,6 +182,7 @@ enum SipMsgEnum {
     WEBRTC_SDP_RESPONSE,
     OUTGOING_BYE_RESPONSE,
     INCOMING_BYE,
+    ANSWER_PRESSED,
 };
 
 //SofiaReply();

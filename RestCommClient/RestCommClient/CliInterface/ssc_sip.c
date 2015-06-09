@@ -77,6 +77,7 @@
 /* Globals
  * ------------------- */
 static struct SofiaReply sofiaReply;
+char stored_sdp[65536] = "";
 
 /* Function prototypes
  * ------------------- */
@@ -712,6 +713,14 @@ void ssc_invite(ssc_t *ssc, const char *destination)
 {
     ssc_oper_t *op;
     
+    /* enable this to not allow second outgoing call on top of the first
+    int check_states = opc_pending | opc_complete | opc_sent | opc_active;
+    if (ssc_oper_find_by_callstate(ssc, check_states)) {
+        printf("There's a call already in progress, ignoring new request\n");
+        return;
+    }
+     */
+
     op = ssc_oper_create(ssc, SIP_METHOD_INVITE, destination, TAG_END());
     if (op) {
         /* SDP O/A note:
@@ -795,6 +804,15 @@ void ssc_webrtc_sdp_called(void* op_context, char *sdp)
     
     // set localsdp with WebRTC media
     g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", sdp, NULL);
+    
+    int res = ssc_media_activate(ssc->ssc_media);
+    if (res < 0) {
+        printf("%s: ERROR: unable to active media subsystem, unable to answer session.\n", ssc->ssc_name);
+        priv_destroy_oper_with_disconnect (ssc, op);
+        // ssc_oper_destroy(ssc, op);
+    }
+    else
+        printf("%s: answering to the offer received from %s\n", ssc->ssc_name, op->op_ident);
 }
 #endif
 
@@ -892,10 +910,16 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
             }
             else {
                 printf("Please Answer(a), decline(d) or Decline(D) the call\n");
+
+                /*
                 char value_str[65536] = "";
                 sprintf(value_str, "%p %s", op, sip->sip_payload->pl_data);
+                 */
+                //g_object_set(G_OBJECT(ssc->ssc_media), "remotesdp", sip->sip_payload->pl_data, NULL);
+                strncpy(stored_sdp, sip->sip_payload->pl_data, 65535);
+
                 // notify the client application that they should answer
-                setSofiaReply(INCOMING_CALL, value_str);
+                setSofiaReply(INCOMING_CALL, "");
                 sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
             }
         }
@@ -1048,15 +1072,31 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
             g_signal_connect (G_OBJECT (ssc->ssc_media), "state-changed",
                               G_CALLBACK (priv_media_state_cb), op);
             
+            
+            //gchar *r_sdp = NULL;
+            //g_object_get(G_OBJECT(ssc->ssc_media), "remotesdp", &r_sdp, NULL);
+            
+            if (strlen(stored_sdp) > 0) {
+              char value_str[65536] = "";
+              sprintf(value_str, "%p %s", op, stored_sdp);
+
+              // notify the client application that they should answer
+              setSofiaReply(ANSWER_PRESSED, value_str);
+              sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+              strncpy(stored_sdp, "", 65535);
+            }
+
             /* active media before answering */
+            /*
             res = ssc_media_activate(ssc->ssc_media);
             if (res < 0) {
                 printf("%s: ERROR: unable to active media subsystem, unable to answer session.\n", ssc->ssc_name);
                 priv_destroy_oper_with_disconnect (ssc, op);
-                /* ssc_oper_destroy(ssc, op); */
+                // ssc_oper_destroy(ssc, op);
             }
             else
                 printf("%s: answering to the offer received from %s\n", ssc->ssc_name, op->op_ident);
+             */
         }
         else {
             /* call rejected */

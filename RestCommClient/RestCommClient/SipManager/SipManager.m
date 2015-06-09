@@ -100,6 +100,10 @@ int read_pipe[2];
     else if (reply->rc == INCOMING_CALL) {
         // we have an incoming call, we need to ring
         
+        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
+        [self.deviceDelegate callArrived:self];
+    }
+    else if (reply->rc == ANSWER_PRESSED) {
         // the incoming message has first the address of the Sofia operation (until the first space)
         // and then the SDP, let's parse them into separate strings
         NSString * string = [NSString stringWithUTF8String:reply->text];
@@ -107,12 +111,8 @@ int read_pipe[2];
         NSString * address = [string substringToIndex:range.location];
         NSString * sdp = [string substringFromIndex:range.location + 1];
 
-        // TODO: initialize WebRTC module centrally
-        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
         [self.media connect:address sdp:sdp isInitiator:NO];
-
-        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
-        [self.deviceDelegate callArrived:self];
     }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
@@ -129,12 +129,12 @@ int read_pipe[2];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
-        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
         [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding] sdp:nil isInitiator:YES];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
-        //self.media = nil;
+        self.media = nil;
     }
     
     return 0;
@@ -172,10 +172,27 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 {
     self = [super init];
     if (self) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        NSError *error = nil;
+        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+                      withOptions:AVAudioSessionCategoryOptionMixWithOthers
+                            error:&error]) {
+            // handle error
+            NSLog(@"Error setting AVAudioSession category");
+        }
+        if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
+                                         error:&error]) {
+            NSLog(@"Error overriding output to speaker");
+        }
+        
+        if (![session setActive:YES error:&error]) {
+            NSLog(@"Error activating audio session");
+        }
+        
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
         [RTCPeerConnectionFactory initializeSSL];
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -201,10 +218,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         perror("pipe");
         exit(EXIT_FAILURE);
     }
-    
-    NSError *setCategoryError = nil;
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
-    
     
     // initialize gstreamer stuff
     gst_ios_init();
@@ -295,7 +308,6 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     NSString* cmd = [NSString stringWithFormat:@"c"];
     [self pipeToSofia:cmd];
-    
     return true;
 }
 
