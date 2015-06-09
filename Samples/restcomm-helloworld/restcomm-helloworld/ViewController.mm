@@ -42,6 +42,7 @@
 
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:@"" delegate:self];
+    self.connection = nil;
     
     // update our parms
     [self.device updateParams:self.parameters];
@@ -56,6 +57,11 @@
 // ---------- UI events
 - (IBAction)dialPressed:(id)sender
 {
+    if (self.connection) {
+        NSLog(@"Connection already ongoing");
+        return;
+    }
+
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
     [self.parameters setObject:@"sip:1235@54.225.212.193:5080" forKey:@"username"];
@@ -119,7 +125,7 @@
 
 - (void)connectionDidDisconnect:(RCConnection*)connection
 {
-    
+    self.connection = nil;
 }
 
 - (BOOL)shouldAutorotate
