@@ -23,11 +23,13 @@
 #import "SettingsViewController.h"
 #import "TabBarController.h"
 
+char AOR[] = "sip:bob@telestax.com";
+char REGISTRAR[] = "192.168.2.32";
+
 @interface SettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
 @property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
-
 @end
 
 @implementation SettingsViewController
@@ -54,12 +56,9 @@
     
     [self.view addGestureRecognizer:tapGesture];
 
-#ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.aorText.text = @"sip:bob@telestax.com";
-    //self.registrarText.text = @"54.225.212.193";
-    self.registrarText.text = @"192.168.2.32";
-#endif
+    self.aorText.text = [NSString stringWithUTF8String:AOR];
+    self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
 }
 
 - (void)viewWillAppear:(BOOL)animated

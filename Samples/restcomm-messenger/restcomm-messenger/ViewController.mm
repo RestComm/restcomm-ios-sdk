@@ -26,6 +26,9 @@
 #import "RestCommClient.h"
 #import "TabBarController.h"
 
+extern char AOR[];
+extern char REGISTRAR[];
+
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 @property (weak, nonatomic) IBOutlet UITextField *sipUriText;
@@ -50,12 +53,11 @@
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
+    self.connection = nil;
 
     TabBarController * tabBarController = (TabBarController *)self.tabBarController;
     // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
     tabBarController.viewController = self;
-    //tabBarController.device = self.device;
-    //tabBarController.connection = self.connection;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -65,10 +67,21 @@
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
     self.sipUriText.text = @"sip:1311@192.168.2.32:5080";
+#else
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    // try to register when coming up with the existing settings
+    [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
+    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
+    
+    // update our parms
+    [self.device updateParams:self.parameters];
 }
 
 - (void)hideKeyBoard
@@ -104,8 +117,11 @@
     [self.parameters setObject:self.sipUriText.text forKey:@"username"];
     
     // call the other party
+    if (self.connection) {
+        NSLog(@"Connection already ongoing");
+        return;
+    }
     self.connection = [self.device connect:self.parameters delegate:self];
-
     // hide keyboard
     [self.sipUriText endEditing:false];
 }
@@ -113,7 +129,7 @@
 - (IBAction)answerPressed:(id)sender
 {
     [self.ringingPlayer stop];
-    self.ringingPlayer.currentTime = 0.0;    
+    self.ringingPlayer.currentTime = 0.0;
 
     [self.pendingIncomingConnection accept];
     self.connection = self.pendingIncomingConnection;
@@ -165,7 +181,7 @@
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
 {
-    [self.messagePlayer play];
+    //[self.messagePlayer play];
     [self prependToDialog:message sender:@"alice"];
 }
 
@@ -217,6 +233,9 @@
 
 - (void)connectionDidDisconnect:(RCConnection*)connection
 {
+    NSLog(@"connectionDidDisconnect");
+    self.connection = nil;
+    self.pendingIncomingConnection = nil;
     
 }
 

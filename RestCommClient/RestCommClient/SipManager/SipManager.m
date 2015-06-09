@@ -135,6 +135,7 @@ int read_pipe[2];
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
         self.media = nil;
+        [self.connectionDelegate incomingBye:self];
     }
     
     return 0;
@@ -175,19 +176,26 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSError *error = nil;
         if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-                      withOptions:AVAudioSessionCategoryOptionMixWithOthers
+                      withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
                             error:&error]) {
             // handle error
             NSLog(@"Error setting AVAudioSession category");
         }
+        /*
         if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
                                          error:&error]) {
             NSLog(@"Error overriding output to speaker");
         }
+         */
         
         if (![session setActive:YES error:&error]) {
             NSLog(@"Error activating audio session");
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didSessionRouteChange:)
+                                                     name:AVAudioSessionRouteChangeNotification
+                                                   object:nil];
         
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
@@ -195,6 +203,24 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
+}
+
+- (void)didSessionRouteChange:(NSNotification *)notification
+{
+    NSDictionary *interuptionDict = notification.userInfo;
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    
+    switch (routeChangeReason) {
+        case AVAudioSessionRouteChangeReasonCategoryChange: {
+            // Set speaker as default route
+            NSError* error;
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params

@@ -286,6 +286,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 #endif
 #endif
     [localStream addAudioTrack:[_factory audioTrackWithID:@"ARDAMSa0"]];
+    
     return localStream;
 }
 

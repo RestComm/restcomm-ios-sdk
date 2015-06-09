@@ -34,8 +34,6 @@
     if (self) {
         // Custom initialization
         self.viewController = nil;
-//        self.device = nil;
-//        self.connection = nil;
     }
     return self;
 }

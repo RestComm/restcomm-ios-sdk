@@ -101,6 +101,12 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self setState:RCConnectionStateConnected];
 }
 
+- (void)incomingBye:(SipManager *)sipManager
+{
+    [self.delegate connectionDidDisconnect:self];
+    self.state = RCConnectionStateDisconnected;
+}
+
 - (void)setMuted:(BOOL)isMuted
 {
     // avoid endless loop

@@ -26,7 +26,5 @@
 
 @interface TabBarController : UITabBarController
 // owner of RCDevice is ViewControllelr
-//@property (weak) RCDevice* device;
-//@property (weak) RCConnection* connection;
 @property (weak) ViewController* viewController;
 @end
