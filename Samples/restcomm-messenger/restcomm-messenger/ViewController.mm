@@ -128,26 +128,31 @@ extern char REGISTRAR[];
 
 - (IBAction)answerPressed:(id)sender
 {
-    [self.ringingPlayer stop];
-    self.ringingPlayer.currentTime = 0.0;
+    if (self.ringingPlayer.isPlaying) {
+        [self.ringingPlayer stop];
+        self.ringingPlayer.currentTime = 0.0;
+    }
 
-    [self.pendingIncomingConnection accept];
-    self.connection = self.pendingIncomingConnection;
-    [self.answerButton.layer removeAllAnimations];
-    //self.pendingIncomingConnection = nil;
+    if (self.pendingIncomingConnection) {
+        [self.pendingIncomingConnection accept];
+        self.connection = self.pendingIncomingConnection;
+        [self.answerButton.layer removeAllAnimations];
+    }
 }
 
 - (IBAction)declinePressed:(id)sender
 {
-    [self.ringingPlayer stop];
-    self.ringingPlayer.currentTime = 0.0;
+    if (self.ringingPlayer.isPlaying) {
+        [self.ringingPlayer stop];
+        self.ringingPlayer.currentTime = 0.0;
+    }
     
-    // reject the pending RCConnection
-    [self.pendingIncomingConnection reject];
-    
-    self.pendingIncomingConnection = nil;
-    
-    [self.answerButton.layer removeAllAnimations];
+    if (self.pendingIncomingConnection) {
+        // reject the pending RCConnection
+        [self.pendingIncomingConnection reject];
+        self.pendingIncomingConnection = nil;
+        [self.answerButton.layer removeAllAnimations];
+    }
 }
 
 - (IBAction)hangUpPressed:(id)sender

@@ -356,7 +356,9 @@ static int priv_activate_gst(SscMedia *parent)
     /* XXX: if unable to start, report errors via ssc_media_is_active() */
     
     if (self->sm_depay == NULL) {
+        // TODO: this isn't needed anymore, we 're using webrtc media
         res = priv_setup_rtpelements(self);
+        //ssc_media_signal_state_change (parent, sm_active);
     }
     
     return res;
