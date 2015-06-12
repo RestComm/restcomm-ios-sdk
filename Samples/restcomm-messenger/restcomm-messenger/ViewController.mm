@@ -192,7 +192,7 @@ extern char REGISTRAR[];
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
 {
-    //[self.messagePlayer play];
+    [self.messagePlayer play];
     [self prependToDialog:message sender:@"alice"];
 }
 

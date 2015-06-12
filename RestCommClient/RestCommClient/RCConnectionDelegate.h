@@ -57,7 +57,7 @@
 - (void)connectionDidConnect:(RCConnection*)connection;
 
 /**
- *  @abstract Connection was disconnected (**Not Implemented yet**)
+ *  @abstract Connection was disconnected
  *
  *  @param connection Connection of interest
  */

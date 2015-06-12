@@ -114,6 +114,7 @@ void ssc_input_read_char(int input_fd)
 
   // important: there might be more than one commands in buf, but each command ends in '$'
   n = read(input_fd, buf, sizeof(buf) - 1);
+  buf[n] = '\0';
     
   char * token;
   //int pos = 0;

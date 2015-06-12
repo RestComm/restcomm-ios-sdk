@@ -262,7 +262,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 // use a plain C function for the actual transmission, as we will be using it from our C callback as well
 ssize_t pipeToSofia(const char * msg, int fd)
 {
-    char delimitedMsg[strlen(msg) + 2];
+    char * delimitedMsg = (char*)malloc(strlen(msg) + 2);
     // important: I'm adding a '$' at the end to mark end of command, because in the
     // receiving side more than one commands might be received in one go
     strcpy(delimitedMsg, msg);
@@ -271,6 +271,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (rc == -1) {
         NSLog(@"Error writing to pipe");
     }
+    free(delimitedMsg);
     return rc;
 }
 
