@@ -41,7 +41,8 @@ typedef struct ssc_conf_s ssc_conf_t;
 
 #include "ssc_sip.h"
 #include "ssc_oper.h"
-#include "ssc_media.h"
+//#include "ssc_media.h"
+#include "ssc_media_webrtc.h"
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_header.h>
@@ -80,7 +81,8 @@ struct ssc_s {
   su_root_t    *ssc_root;       /**< Pointer to application root */
 
   nua_t        *ssc_nua;        /**< Pointer to NUA object */
-  SscMedia     *ssc_media;      /**< Pointer to media subsystem */
+  SscMediaWebrtc *ssc_media;      /**< Pointer to media subsystem */
+
   ssc_oper_t   *ssc_operations;	/**< Remote destinations */
 
   char         *ssc_address;    /**< Current AOR */
@@ -115,8 +117,8 @@ struct ssc_conf_s {
   const char   *ssc_proxy;	/**< SIP outbound proxy (SIP URI) */
   const char   *ssc_registrar;	/**< SIP registrar (SIP URI) */
   const char   *ssc_stun_server;/**< STUN server address (hostname, IP address) */
-  gboolean      ssc_autoanswer; /**< Whether to autoanswer to calls */
-  gboolean      ssc_register;	/**< Whether to register at startup */
+  bool      ssc_autoanswer; /**< Whether to autoanswer to calls */
+  bool      ssc_register;	/**< Whether to register at startup */
 };
 
 #if HAVE_FUNC

@@ -22,17 +22,6 @@
  *
  */
 
-/*
- * Status:
- *  - nop
- *
- * Todo:
- *  - see comments marked with 'XXX'
- *
- * Notes:
- *  - see test-sscm.c
- */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
