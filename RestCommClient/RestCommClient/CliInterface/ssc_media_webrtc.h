@@ -13,18 +13,14 @@
 #include <stdbool.h>
 #include <sofia-sip/sdp.h>
 #include <iostream>
+#include <string>
 
-class test {
-    char * test;
-};
-
-
+using namespace std;
 typedef struct  {
-    
     su_home_t    *sm_home;
-    char         *local_sdp;    /**< remote SDP, parsed */
-    char         *remote_sdp;   /**< remote SDP, raw text */
-    int           sm_state;
+    string       local_sdp;    /**< remote SDP, parsed */
+    string       remote_sdp;   /**< remote SDP, raw text */
+    int          sm_state;
 
     sdp_parser_t *sm_sdp_local;
     sdp_parser_t *sm_sdp_remote;
@@ -53,8 +49,8 @@ int ssc_media_activate(SscMediaWebrtc * media);
 bool ssc_media_is_initialized(SscMediaWebrtc * media);
 int setLocalSdp(SscMediaWebrtc * media, const char * sdp);
 int setRemoteSdp(SscMediaWebrtc * media, const char * sdp);
-int getLocalSdp(SscMediaWebrtc * media, char * sdp);
-int getRemoteSdp(SscMediaWebrtc * media, char * sdp);
+string getLocalSdp(SscMediaWebrtc * media);
+string getRemoteSdp(SscMediaWebrtc * media);
 int ssc_media_deactivate(SscMediaWebrtc * media);
 
 

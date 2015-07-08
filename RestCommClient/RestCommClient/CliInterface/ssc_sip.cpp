@@ -1010,17 +1010,17 @@ static void priv_media_state_cb(void* context, int state, void * data)
         
         if ((op->op_callstate & opc_pending) &&
             ssc_media_is_initialized(ssc->ssc_media)) {
-            char *l_sdp = NULL;
+            string l_sdp = "";
             
             //op->op_callstate &= !opc_pending;
             op->op_callstate = (op_callstate_t)(op->op_callstate & !opc_pending);
             
             /* get the ports and list of media */
             //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp, NULL);
-            getLocalSdp(ssc->ssc_media, l_sdp);
+            l_sdp = getLocalSdp(ssc->ssc_media);
             
-            if (l_sdp) {
-                printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp);
+            if (!l_sdp.empty()) {
+                printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp.c_str());
                 
                 // When working with webrtc media using the SOA ruins the SDP for some reason.
                 // Since webrtc handles the SDP completely, let's disable SOA
@@ -1028,7 +1028,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
                 // SIPTAG_PAYLOAD_STR() and SIPTAG_CONTENT_TYPE_STR()
                 nua_invite(op->op_handle,
                            //SOATAG_USER_SDP_STR(l_sdp),
-                           SIPTAG_PAYLOAD_STR(l_sdp),
+                           SIPTAG_PAYLOAD_STR(l_sdp.c_str()),
                            SIPTAG_CONTENT_TYPE_STR("application/sdp"),
                            SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
                            SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
@@ -1056,18 +1056,18 @@ static void priv_media_state_cb(void* context, int state, void * data)
          *  - see also: ssc_i_state() and ssc_invite()
          */
         else if (op->op_callstate & opc_recv) {
-            char *l_sdp_str = NULL;
+            string l_sdp_str = "";
             int status = ssc->ssc_ans_status;
             char const *phrase = ssc->ssc_ans_phrase;
             
             /* get the ports and list of media */
             //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp_str, NULL);
-            getLocalSdp(ssc->ssc_media, l_sdp_str);
+            l_sdp_str = getLocalSdp(ssc->ssc_media);
             
             printf("%s: about to respond with local SDP:\n%s\n",
-                   ssc->ssc_name, l_sdp_str);
+                   ssc->ssc_name, l_sdp_str.c_str());
             
-            if (l_sdp_str) {
+            if (!l_sdp_str.empty()) {
                 if (status >= 200 && status < 300) {
                     //op->op_callstate |= opc_sent;
                     op->op_callstate = (op_callstate_t)(op->op_callstate | opc_sent);
@@ -1080,7 +1080,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
                 // SIPTAG_PAYLOAD_STR() and SIPTAG_CONTENT_TYPE_STR()
                 nua_respond(op->op_handle, status, phrase,
                             //SOATAG_USER_SDP_STR(l_sdp_str),
-                            SIPTAG_PAYLOAD_STR(l_sdp_str),
+                            SIPTAG_PAYLOAD_STR(l_sdp_str.c_str()),
                             SIPTAG_CONTENT_TYPE_STR("application/sdp"),
                             SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
                             SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),

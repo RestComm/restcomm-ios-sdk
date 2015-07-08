@@ -15,7 +15,7 @@
 SscMediaWebrtc *priv_create_ssc_media()
 {
     SscMediaWebrtc * media = (SscMediaWebrtc *)malloc(sizeof(SscMediaWebrtc));
-    media->sm_home = (su_home_t *)su_home_new(sizeof (media->sm_home));
+    media->sm_home = (su_home_t *)su_home_new(sizeof (*media->sm_home));
     
     return media;
 }
@@ -124,26 +124,28 @@ int ssc_media_activate(SscMediaWebrtc * media)
 
 int setLocalSdp(SscMediaWebrtc * media, const char * sdp)
 {
-    media->local_sdp = su_strdup(media->sm_home, sdp);
+    media->local_sdp = sdp;
     return 0;
 }
 
 int setRemoteSdp(SscMediaWebrtc * media, const char * sdp)
 {
-    media->remote_sdp = su_strdup(media->sm_home, sdp);
+    media->remote_sdp = sdp;
     return 0;
 }
 
-int getLocalSdp(SscMediaWebrtc * media, char * sdp)
+string getLocalSdp(SscMediaWebrtc * media)
 {
-    sdp = su_strdup(media->sm_home, media->local_sdp);
-    return 0;
+    return media->local_sdp;
+    //sdp = su_strdup(media->sm_home, media->local_sdp);
+    //return 0;
 }
 
-int getRemoteSdp(SscMediaWebrtc * media, char * sdp)
+string getRemoteSdp(SscMediaWebrtc * media)
 {
-    sdp = su_strdup(media->sm_home, media->remote_sdp);
-    return 0;
+    return media->remote_sdp;
+    //sdp = su_strdup(media->sm_home, media->remote_sdp);
+    //return 0;
 }
 
 bool ssc_media_is_initialized(SscMediaWebrtc * media)
