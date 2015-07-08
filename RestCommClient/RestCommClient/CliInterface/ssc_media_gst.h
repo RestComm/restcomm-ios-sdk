@@ -33,7 +33,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gst/gst.h>
+//#include <gst/gst.h>
 
 #include <unistd.h>
 #include <netinet/in.h>
@@ -41,7 +41,7 @@
 #include <sofia-sip/su.h>
 
 #include "ssc_media.h"
-#include "farsight-netsocket.h"
+//#include "farsight-netsocket.h"
 
 G_BEGIN_DECLS
 
@@ -75,16 +75,16 @@ struct _SscMediaGst {
   /* scope/protected: 
    * ---------------- */
 
-  FarsightNetsocket* sm_netsocket;
+  //FarsightNetsocket* sm_netsocket;
   int           sm_rtp_sockfd;
   int           sm_rtcp_sockfd;
   guint16       sm_rtp_lport;
   guint32       sm_pt;
-  GstElement   *sm_pipeline;         
-  GstElement   *sm_udpsrc;           /**< owned by gst-pipeline */ 
-  GstElement   *sm_udpsink;          /**< owned by gst-pipeline */ 
-  GstElement   *sm_depay;            /**< owned by gst-pipeline */ 
-  GstElement   *sm_decoder;          /**< owned by gst-pipeline */ 
+  //GstElement   *sm_pipeline;
+  //GstElement   *sm_udpsrc;           /**< owned by gst-pipeline */
+  //GstElement   *sm_udpsink;          /**< owned by gst-pipeline */
+  //GstElement   *sm_depay;            /**< owned by gst-pipeline */
+  //GstElement   *sm_decoder;          /**< owned by gst-pipeline */
   char         *sm_ad_input_type;
   char         *sm_ad_input_device;
   char         *sm_ad_output_type;

@@ -24,6 +24,8 @@
 #import "TabBarController.h"
 
 char AOR[] = "sip:bob@telestax.com";
+// elastic
+//char REGISTRAR[] = "54.225.212.193";
 char REGISTRAR[] = "192.168.2.32";
 
 @interface SettingsViewController ()

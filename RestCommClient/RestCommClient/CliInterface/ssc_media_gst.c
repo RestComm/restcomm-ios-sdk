@@ -54,9 +54,9 @@
 
 #include "sdp_utils.h"
 #include "ssc_media_gst.h"
-#include "ssc_media_gst_utils.h"
-#include "farsight-netsocket-stun.h"
-#include "farsight-netsocket-utils.h"
+//#include "ssc_media_gst_utils.h"
+//#include "farsight-netsocket-stun.h"
+//#include "farsight-netsocket-utils.h"
 
 #if !HAVE_G_DEBUG
 #include "replace_g_debug.h"
@@ -98,8 +98,8 @@ static int priv_refresh_gst(SscMedia *sscm);
 static int priv_static_capabilities_gst(SscMedia *sscm, char **dst);
 
 static gboolean priv_cb_pipeline_bus (GstBus *bus, GstMessage *message, gpointer data);
-static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data);
-static int priv_update_rx_elements(SscMediaGst *self);
+//static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data);
+//static int priv_update_rx_elements(SscMediaGst *self);
 static int priv_update_tx_elements(SscMediaGst *self);
 static int priv_setup_rtpelements(SscMediaGst *self);
 static gboolean priv_verify_required_elements(void);
@@ -353,13 +353,13 @@ static int priv_activate_gst(SscMedia *parent)
     
     g_debug(G_STRFUNC);
     
-    /* XXX: if unable to start, report errors via ssc_media_is_active() */
-    
-    if (self->sm_depay == NULL) {
+    // TODO: now that gsreamer is removed we can't have this check. Check if we need to add anything else
+    //if (self->sm_depay == NULL) {
         // TODO: this isn't needed anymore, we 're using webrtc media
-        res = priv_setup_rtpelements(self);
-        //ssc_media_signal_state_change (parent, sm_active);
-    }
+        //res = priv_setup_rtpelements(self);
+        ssc_media_signal_state_change (parent, sm_active);
+        //priv_cb_ready(NULL, self);
+    //}
     
     return res;
 }
@@ -383,29 +383,34 @@ static int priv_deactivate_gst(SscMedia *parent)
     
     g_debug(G_STRFUNC);
     
+    /*
     if (self->sm_pipeline) {
-        /* XXX: freezes with gst-0.8.9, still problems with 0.10.0 */
         gst_element_set_state (self->sm_pipeline, GST_STATE_PAUSED);
         gst_element_set_state (self->sm_pipeline, GST_STATE_NULL);
     }
+    */
     
     parent->sm_state = sm_disabled;
     
+    /*
     if (self->sm_netsocket)
         g_object_unref(G_OBJECT (self->sm_netsocket)), self->sm_netsocket = NULL;
+     */
     
     if (self->sm_rtp_sockfd != -1)
         close(self->sm_rtp_sockfd), self->sm_rtp_sockfd = -1;
     if (self->sm_rtcp_sockfd != -1)
         close(self->sm_rtcp_sockfd), self->sm_rtp_sockfd = self->sm_rtcp_sockfd = -1;
     
+    /*
     if (self->sm_pipeline) {
-        /* XXX: gets stuck on gst-0.10.2, must fix, we are leaking memory otherwise */
+        // XXX: gets stuck on gst-0.10.2, must fix, we are leaking memory otherwise
         gst_object_unref(GST_OBJECT (self->sm_pipeline));
         
         self->sm_pipeline = NULL;
-        self->sm_depay = NULL; /* needed to make activate->deactive work right */
+        self->sm_depay = NULL;
     }
+    */
     
     self->sm_rx_elements = 0;
     self->sm_tx_elements = 0;
@@ -447,7 +452,7 @@ static int priv_static_capabilities_gst(SscMedia *parent, char **dest)
     return 0;
 }
 
-
+/*
 static int priv_setup_rtpelements(SscMediaGst *self)
 {
     GType netsocket_type = FARSIGHT_NETSOCKET_TYPE;
@@ -458,19 +463,17 @@ static int priv_setup_rtpelements(SscMediaGst *self)
     
     g_debug(G_STRFUNC);
     
-    /* take the local port from local SDP */
     if (self->sm_rtp_lport != 0)
         l_port = self->sm_rtp_lport;
     
-    /* precond: */
     g_assert(self->sm_depay == NULL);
     
     pri_sockfd =
     farsight_netsocket_bind_udp_port(AF_INET,
-                                     NULL, /* local-if */
-                                     &l_port, /* use a random port */
-                                     TRUE, /* scan if l_port was reserved */
-                                     NULL /* do not request for aux sock */
+                                     NULL,
+                                     &l_port,
+                                     TRUE,
+                                     NULL
                                      );
     
     if (pri_sockfd >= 0) {
@@ -492,7 +495,6 @@ static int priv_setup_rtpelements(SscMediaGst *self)
                                   G_CALLBACK (priv_cb_ready), self);
                 self->sm_netsocket = netsocket;
                 
-                /* note: the bind will result in a call of sscpriv_cb_ready */
                 cb_sched = farsight_netsocket_map(netsocket);
                 
                 if (cb_sched != TRUE) {
@@ -503,7 +505,6 @@ static int priv_setup_rtpelements(SscMediaGst *self)
         }
         
         if (cb_sched != TRUE) {
-            /* STUN not used, emit ready immediately */
             priv_cb_ready(NULL, self);
         }
     }
@@ -513,151 +514,9 @@ static int priv_setup_rtpelements(SscMediaGst *self)
     
     return (pri_sockfd >= 0 ? 0 : -1);
 }
-
-/**
- * Callback issued when local socket is ready for
- * use.
  */
-static void __priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
-{
-    SscMediaGst *self = SSC_MEDIA_GST(data);
-    SscMedia *parent = SSC_MEDIA (self);
-    //GstElementFactory *factory;
-    GstElement *decoder, *depayloader, *audiosink, *convert_rx, *resample_rx, *convert_tx, *resample_tx;
-    GstElement *src1, *codec, *payload, *udpsrc, *udpsink;
-    gsdp_codec_factories_t *factories = gsdp_codec_factories_create("PCMU");
-    
-    //gint sockfd = -1;
-    
-    g_debug(G_STRFUNC);
-    
-    gst_debug_set_threshold_from_string("2,*:3", TRUE);
-    
-    if (netsocket != NULL) {
-        if (self->sm_rtp_sockfd == -1)
-            g_object_get(G_OBJECT(netsocket), "sockfd", &self->sm_rtp_sockfd, NULL);
-    }
-    
-    assert(self->sm_rtp_sockfd > -1);
-    
-    /* step: create the pipeline */
-    if (!self->sm_pipeline) {
-        /* step: create a pipeline and assign error callback */
-        self->sm_pipeline = gst_pipeline_new ("rtp-pipeline");
-        gst_bus_add_watch(gst_pipeline_get_bus(GST_PIPELINE(self->sm_pipeline)),
-                          priv_cb_pipeline_bus, (void*)self);
-    }
-    
-    GError *err = NULL;
-    GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
-    if (err != NULL) {
-        // Report error to user, and free error
-        fprintf (stderr, "error getting gsocket: %s\n", err->message);
-        g_error_free (err);
-    }
-    assert (gsocket != NULL);
-    
-    /* step: create RX elements */
-    if (!self->sm_rx_elements && factories) {
-        self->sm_rx_elements = TRUE;
-        
-        // TODO: this should probably be set dynamically based on SDP negotiation
-        GstCaps *pt_caps = gst_caps_new_simple ("application/x-rtp",
-                                                "clock-rate", G_TYPE_INT, 8000,
-                                                "encoding-name", G_TYPE_STRING, "PCMU",
-                                                NULL);
-        
-        convert_rx = gst_element_factory_make ("audioconvert", "convert-rx");
-        assert (convert_rx != NULL);
-        resample_rx = gst_element_factory_make ("audioresample", "resample-rx");
-        assert (resample_rx != NULL);
-        
-        /* step: create UDP source */
-        udpsrc = gst_element_factory_make ("udpsrc", "src");
-        assert (udpsrc != NULL);
-        self->sm_udpsrc = udpsrc;
-        g_object_set(G_OBJECT(self->sm_udpsrc),
-                     "socket", gsocket,
-                     //"port", self->sm_rtp_lport,
-                     "caps", pt_caps,
-                     NULL);
-        
-        /* step: create depayloader->decoder->sink chain */
-        depayloader = gst_element_factory_create (factories->depayloader, "depayloader");
-        assert(depayloader != NULL);
-        self->sm_depay = depayloader;
-        
-        decoder = gst_element_factory_create (factories->decoder, "decoder");
-        assert(decoder != NULL);
-        self->sm_decoder = decoder;
-        
-        audiosink = gst_element_factory_make ("autoaudiosink", "audiosink");
-        assert(audiosink != NULL);
-        
-        /* step: add elements to the bin and establish links */
-        gst_bin_add_many (GST_BIN (self->sm_pipeline), udpsrc, depayloader, decoder, convert_rx, resample_rx, audiosink, NULL);
-        gst_element_link_many (udpsrc, depayloader, decoder, convert_rx, resample_rx, audiosink, NULL);
-    }
-    else {
-        g_warning("RX elements already configured, unable update on-the-fly.\n");
-    }
-    
-    /* step: create TX elements */
-    if (!self->sm_tx_elements && factories) {
-        self->sm_tx_elements = TRUE;
-        
-        /* step: source element */
-        src1 = gst_element_factory_make ("autoaudiosrc", "audiosrc");
-        assert(src1 != NULL);
-        
-        convert_tx = gst_element_factory_make ("audioconvert", "convert-tx");
-        assert (convert_tx != NULL);
-        resample_tx = gst_element_factory_make ("audioresample", "resample-tx");
-        assert (resample_tx != NULL);
-        
-        /* step: codec -> rtp-packetizer -> udp */
-        codec = gst_element_factory_create (factories->encoder, "codec");
-        assert(codec != NULL);
-        payload = gst_element_factory_create (factories->payloader, "payload");
-        assert(payload != NULL);
-        
-        /* step: create UDP source */
-        udpsink = gst_element_factory_make ("udpsink", "sink");
-        assert (udpsink != NULL);
-        self->sm_udpsink = udpsink;
-        
-        // note that all the working examples I have found out there use both
-        // async=false and sync=false, but I removed sync=false (which I thought
-        // was a bit odd to use) and media still works so I'll leave it at that for now
-        g_object_set (G_OBJECT (udpsink),
-                      //"sync", FALSE,
-                      "async", FALSE,
-                      "socket", gsocket,
-                      //"sockfd", self->sm_rtp_sockfd,
-                      NULL);
-        
-        /* step: add elements to the bin and establish links */
-        gst_bin_add_many (GST_BIN (self->sm_pipeline), src1, convert_tx, resample_tx, codec, payload, udpsink, NULL);
-        gst_element_link_many (src1, convert_tx, resample_tx, codec, payload, udpsink, NULL);
-    }
-    else {
-        g_warning("TX elements already configured, unable update on-the-fly.\n");
-    }
-    
-    if (factories)
-        gsdp_codec_factories_free(factories);
-    
-    priv_update_rx_elements(self);
-    priv_update_tx_elements(self);
-    
-    g_message ("Starting the pipeline.\n");
-    
-    gst_element_set_state (self->sm_pipeline, GST_STATE_PLAYING);
-    
-    /* note: emit "state-changed" signal from base class */
-    ssc_media_signal_state_change (parent, sm_active);
-}
 
+/*
 static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
 {
     SscMediaGst *self = SSC_MEDIA_GST(data);
@@ -667,7 +526,6 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     //GST_DEBUG ("Creating pipeline");
     
     gst_debug_set_threshold_from_string("2,*audio*:3", TRUE);
-    /* Build pipeline */
     //pipeline = gst_parse_launch("audiotestsrc ! audioconvert ! audioresample ! autoaudiosink", &error);
     // From mic to loudspeaker
     //self->sm_pipeline = gst_parse_launch("autoaudiosrc ! audioconvert ! audioresample ! autoaudiosink", &error);
@@ -682,12 +540,6 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
     // Bydirectional
     self->sm_pipeline = gst_parse_launch("autoaudiosrc ! capsfilter caps=audio/x-raw,rate=44100 ! audioconvert ! audioresample ! queue ! mulawenc ! rtppcmupay ! udpsink name=udp-sink udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink", &error);
     // Bydirectional with jitter buffer (not working yet)
-    /*
-     self->sm_pipeline = gst_parse_launch("rtpbin name=rtpbin \
-     udpsrc name=udp-src caps=\"application/x-rtp,media=audio,clock-rate=8000,encoding-name=PCMU\" ! rtpbin.recv_rtp_sink_0 rtpbin. ! \
-     rtppcmudepay ! mulawdec ! audioconvert ! audioresample ! autoaudiosink \
-     autoaudiosrc ! audioconvert ! audioresample ! mulawenc ! rtppcmupay ! rtpbin.send_rtp_sink_0 rtpbin.send_rtp_src_0 ! udpsink name=udp-sink", &error);
-     */
     
     if (error) {
         gchar *message = g_strdup_printf("Unable to build pipeline: %s", error->message);
@@ -698,7 +550,6 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
         return;
     }
     
-    /**/
     // convert socket to gsocket
     GError *err = NULL;
     GSocket * gsocket = g_socket_new_from_fd(self->sm_rtp_sockfd, &err);
@@ -712,7 +563,6 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
                   "async", FALSE,
                   //"socket", gsocket,
                   NULL);
-    /**/
     // convert socket to gsocket
     self->sm_udpsrc = gst_bin_get_by_name (GST_BIN(self->sm_pipeline), "udp-src");
     g_object_set (G_OBJECT (self->sm_udpsrc),
@@ -720,18 +570,12 @@ static void priv_cb_ready(FarsightNetsocket *netsocket, gpointer data)
                   "socket", gsocket,
                   NULL);
     
-    // Commented out all these not that we are working with WebRTC
-    ///priv_update_rx_elements(self);
-    ///priv_update_tx_elements(self);
-    
-    ///g_message ("Starting the pipeline.\n");
-    ///gst_element_set_state (self->sm_pipeline, GST_STATE_PLAYING);
-    
-    /* note: emit "state-changed" signal from base class */
+    // note: emit "state-changed" signal from base class
     ssc_media_signal_state_change (parent, sm_active);
     
     return;
 }
+ */
 
 static gboolean priv_cb_pipeline_bus (GstBus *bus, GstMessage *message, gpointer data)
 {
@@ -789,6 +633,7 @@ static gboolean priv_cb_pipeline_bus (GstBus *bus, GstMessage *message, gpointer
  * Updates configuration of RX elements of
  * an already activated session.
  */
+/*
 static int priv_update_rx_elements(SscMediaGst *self)
 {
     SscMedia *parent = SSC_MEDIA (self);
@@ -800,7 +645,7 @@ static int priv_update_rx_elements(SscMediaGst *self)
     if (parent->sm_sdp_local) 
         l_sdp = sdp_session(parent->sm_sdp_local);
     
-    /* step: update the port number in local SDP */
+    // step: update the port number in local SDP
     if (l_sdp) {
         
         if (self->sm_netsocket) {
@@ -826,17 +671,18 @@ static int priv_update_rx_elements(SscMediaGst *self)
         }
         
         if (l_sdp->sdp_media->m_port == 0) {
-            /* local media active but SDP port zero, update */
+            // local media active but SDP port zero, update
             l_sdp->sdp_media->m_port = self->sm_rtp_lport;
         }
         
-        /* make sure the local ascii-SDP is regenerated */ 
+        // make sure the local ascii-SDP is regenerated
         if (parent->sm_sdp_local_str) 
             g_free(parent->sm_sdp_local_str), parent->sm_sdp_local_str = NULL;
     }
     
     return result;
 }
+ */
 
 /**
  * Updates configuration of TX elements of
@@ -851,12 +697,14 @@ static int priv_update_tx_elements(SscMediaGst *self)
     g_debug(G_STRFUNC);
     
     if (r_c && r_sdp) {
-        g_return_val_if_fail(self->sm_udpsink != NULL, -1);
+        //g_return_val_if_fail(self->sm_udpsink != NULL, -1);
         g_message("RTP destination is: %s:%lu.", r_c->c_address, r_sdp->sdp_media->m_port);
+        /*
         g_object_set(G_OBJECT(self->sm_udpsink), 
                      "host", r_c->c_address, 
                      "port", r_sdp->sdp_media->m_port,
                      NULL);
+         */
     }
     else 
         g_message("No RTP destination available (r_sdp=%p).", (void*)r_sdp);

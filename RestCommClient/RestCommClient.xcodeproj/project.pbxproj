@@ -32,7 +32,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */ = {isa = PBXBuildFile; fileRef = AE01D1141A64673E00D62211 /* gst_ios_init.m */; };
 		AE04E5931B0B724900F9F8A3 /* RCConnection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12235197295A10035B864 /* RCConnection.h */; };
 		AE04E5941B0B724900F9F8A3 /* RCDevice.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12238197295CC0035B864 /* RCDevice.h */; };
 		AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223B197295EA0035B864 /* RCConnectionDelegate.h */; };
@@ -62,13 +61,7 @@
 		AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223C197295EA0035B864 /* RCConnectionDelegate.m */; };
 		AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223F197295F90035B864 /* RCDeviceDelegate.m */; };
 		AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC12242197296110035B864 /* RCPresenceEvent.m */; };
-		AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */; };
-		AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */; };
-		AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */; };
-		AEC39ACB1A5A9BF000B155E4 /* nice_local.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39ABD1A5A9BF000B155E4 /* nice_local.c */; };
-		AEC39ACD1A5A9BF000B155E4 /* ssc_media_gst_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */; };
 		AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */; };
-		AEC39ACF1A5A9BF000B155E4 /* ssc_media_nice.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */; };
 		AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */ = {isa = PBXBuildFile; fileRef = AEC39AD21A5AAA7D00B155E4 /* su_source.c */; };
 /* End PBXBuildFile section */
 
@@ -101,8 +94,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AE01D1131A64673E00D62211 /* gst_ios_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gst_ios_init.h; sourceTree = "<group>"; };
-		AE01D1141A64673E00D62211 /* gst_ios_init.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gst_ios_init.m; sourceTree = "<group>"; };
 		AE03DEDD1A98E4D2000280E4 /* cli_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cli_common.h; sourceTree = "<group>"; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaWebRTC.h; sourceTree = "<group>"; };
@@ -267,21 +258,9 @@
 		AEC14C2419ED91A100C60E2B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AB31A5A970100B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AB51A5A975500B155E4 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../../Library/Developer/GStreamer/iPhone.sdk/GStreamer.framework; sourceTree = "<group>"; };
-		AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket-stun.c"; sourceTree = "<group>"; };
-		AEC39AB81A5A9BF000B155E4 /* farsight-netsocket-stun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket-stun.h"; sourceTree = "<group>"; };
-		AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket-utils.c"; sourceTree = "<group>"; };
-		AEC39ABA1A5A9BF000B155E4 /* farsight-netsocket-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket-utils.h"; sourceTree = "<group>"; };
-		AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "farsight-netsocket.c"; sourceTree = "<group>"; };
-		AEC39ABC1A5A9BF000B155E4 /* farsight-netsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "farsight-netsocket.h"; sourceTree = "<group>"; };
-		AEC39ABD1A5A9BF000B155E4 /* nice_local.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nice_local.c; sourceTree = "<group>"; };
-		AEC39ABE1A5A9BF000B155E4 /* nice_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nice_local.h; sourceTree = "<group>"; };
 		AEC39ABF1A5A9BF000B155E4 /* replace_g_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = replace_g_debug.h; sourceTree = "<group>"; };
-		AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_gst_utils.c; sourceTree = "<group>"; };
-		AEC39AC31A5A9BF000B155E4 /* ssc_media_gst_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_gst_utils.h; sourceTree = "<group>"; };
 		AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_gst.c; sourceTree = "<group>"; };
 		AEC39AC51A5A9BF000B155E4 /* ssc_media_gst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_gst.h; sourceTree = "<group>"; };
-		AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ssc_media_nice.c; sourceTree = "<group>"; };
-		AEC39AC71A5A9BF000B155E4 /* ssc_media_nice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_nice.h; sourceTree = "<group>"; };
 		AEC39AD01A5AA9F500B155E4 /* su_glib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_glib.h; sourceTree = "<group>"; };
 		AEC39AD11A5AA9F500B155E4 /* su_source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_source.h; sourceTree = "<group>"; };
 		AEC39AD21A5AAA7D00B155E4 /* su_source.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = su_source.c; sourceTree = "<group>"; };
@@ -495,21 +474,9 @@
 			isa = PBXGroup;
 			children = (
 				AEC39AD21A5AAA7D00B155E4 /* su_source.c */,
-				AEC39AB71A5A9BF000B155E4 /* farsight-netsocket-stun.c */,
-				AEC39AB81A5A9BF000B155E4 /* farsight-netsocket-stun.h */,
-				AEC39AB91A5A9BF000B155E4 /* farsight-netsocket-utils.c */,
-				AEC39ABA1A5A9BF000B155E4 /* farsight-netsocket-utils.h */,
-				AEC39ABB1A5A9BF000B155E4 /* farsight-netsocket.c */,
-				AEC39ABC1A5A9BF000B155E4 /* farsight-netsocket.h */,
-				AEC39ABD1A5A9BF000B155E4 /* nice_local.c */,
-				AEC39ABE1A5A9BF000B155E4 /* nice_local.h */,
 				AEC39ABF1A5A9BF000B155E4 /* replace_g_debug.h */,
-				AEC39AC21A5A9BF000B155E4 /* ssc_media_gst_utils.c */,
-				AEC39AC31A5A9BF000B155E4 /* ssc_media_gst_utils.h */,
 				AEC39AC41A5A9BF000B155E4 /* ssc_media_gst.c */,
 				AEC39AC51A5A9BF000B155E4 /* ssc_media_gst.h */,
-				AEC39AC61A5A9BF000B155E4 /* ssc_media_nice.c */,
-				AEC39AC71A5A9BF000B155E4 /* ssc_media_nice.h */,
 				AEA6C4A219DB412A00BD2455 /* sdp_utils.c */,
 				AEA6C4A319DB412A00BD2455 /* sdp_utils.h */,
 				AEA6C4A419DB412A00BD2455 /* sofsip_cli.c */,
@@ -530,8 +497,6 @@
 		AEA6C4AE19DB412A00BD2455 /* SipManager */ = {
 			isa = PBXGroup;
 			children = (
-				AE01D1131A64673E00D62211 /* gst_ios_init.h */,
-				AE01D1141A64673E00D62211 /* gst_ios_init.m */,
 				AEA6C4AF19DB412A00BD2455 /* SipManager.h */,
 				AEA6C4B019DB412A00BD2455 /* SipManager.m */,
 			);
@@ -738,12 +703,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEC39ACB1A5A9BF000B155E4 /* nice_local.c in Sources */,
 				AEA6C4B419DB412A00BD2455 /* ssc_media.c in Sources */,
-				AEC39ACF1A5A9BF000B155E4 /* ssc_media_nice.c in Sources */,
-				AEC39AC91A5A9BF000B155E4 /* farsight-netsocket-utils.c in Sources */,
 				AEA6C4B319DB412A00BD2455 /* ssc_input.c in Sources */,
-				AEC39AC81A5A9BF000B155E4 /* farsight-netsocket-stun.c in Sources */,
 				AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */,
 				AEA6C4B719DB412A00BD2455 /* SipManager.m in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
@@ -752,16 +713,13 @@
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
 				AEC39AD31A5AAA7D00B155E4 /* su_source.c in Sources */,
 				AEC39ACE1A5A9BF000B155E4 /* ssc_media_gst.c in Sources */,
-				AE01D1151A64673E00D62211 /* gst_ios_init.m in Sources */,
 				AEA6C4B219DB412A00BD2455 /* sofsip_cli.c in Sources */,
 				AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */,
 				AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */,
 				AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */,
-				AEC39ACA1A5A9BF000B155E4 /* farsight-netsocket.c in Sources */,
 				AEA6C4B119DB412A00BD2455 /* sdp_utils.c in Sources */,
 				AEA6C4B619DB412A00BD2455 /* ssc_sip.c in Sources */,
 				AEC1223A197295CC0035B864 /* RCDevice.m in Sources */,
-				AEC39ACD1A5A9BF000B155E4 /* ssc_media_gst_utils.c in Sources */,
 				AEC1221719728C850035B864 /* RestCommClient.m in Sources */,
 				AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */,
 			);

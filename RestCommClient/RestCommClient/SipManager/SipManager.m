@@ -25,7 +25,7 @@
 
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
-#include "gst_ios_init.h"
+//#include "gst_ios_init.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
@@ -246,7 +246,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     }
     
     // initialize gstreamer stuff
-    gst_ios_init();
+    //gst_ios_init();
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

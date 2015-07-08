@@ -65,7 +65,7 @@
 #include "ssc_media_gst.h"
 #endif
 #if HAVE_LIBNICE
-#include "ssc_media_nice.h"
+//#include "ssc_media_nice.h"
 #endif
 
 #include <sofia-sip/stun_tag.h>

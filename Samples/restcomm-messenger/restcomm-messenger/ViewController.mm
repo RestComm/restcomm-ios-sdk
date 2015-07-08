@@ -67,9 +67,10 @@ extern char REGISTRAR[];
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1311@192.168.2.32:5080";
+    //self.sipUriText.text = @"sip:1311@52.17.24.9:5080";
+    self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
 #else
-    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    self.sipUriText.text = @"sip:1235@54.205.80.5:5080";
 #endif
     
 }
