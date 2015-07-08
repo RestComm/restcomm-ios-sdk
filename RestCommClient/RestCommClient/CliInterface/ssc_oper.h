@@ -52,6 +52,25 @@ typedef struct ssc_oper_s ssc_oper_t;
 #define enter (void)0
 #endif
 
+/** Call state.
+ *
+ * - opc_sent when initial INVITE has been sent
+ * - opc_recv when initial INVITE has been received
+ * - opc_complate when 200 Ok has been sent/received
+ * - opc_active when media is used
+ * - opc_sent when re-INVITE has been sent
+ * - opc_recv when re-INVITE has been received
+ */
+enum op_callstate_t {
+    opc_none,
+    opc_sent = 1,
+    opc_recv = 2,
+    opc_complete = 3,
+    opc_active = 4,
+    opc_sent_hold = 8,             /**< Call put on hold */
+    opc_pending = 16               /**< Waiting for local resources */
+};
+
 struct ssc_oper_s {
   ssc_oper_t   *op_next;
 
@@ -70,25 +89,7 @@ struct ssc_oper_s {
   sip_method_t  op_method;	/**< REGISTER, INVITE, MESSAGE, or SUBSCRIBE */
   char const   *op_method_name;
 
-  /** Call state. 
-   *
-   * - opc_sent when initial INVITE has been sent
-   * - opc_recv when initial INVITE has been received
-   * - opc_complate when 200 Ok has been sent/received
-   * - opc_active when media is used
-   * - opc_sent when re-INVITE has been sent
-   * - opc_recv when re-INVITE has been received
-   */
-  enum { 
-    opc_none, 
-    opc_sent = 1, 
-    opc_recv = 2, 
-    opc_complete = 3, 
-    opc_active = 4,
-    opc_sent_hold = 8,             /**< Call put on hold */
-    opc_pending = 16               /**< Waiting for local resources */
-  } op_callstate;
-
+  enum op_callstate_t op_callstate;
   int           op_prev_state;     /**< Previous call state */
 
   unsigned      op_persistent : 1; /**< Is this handle persistent? */

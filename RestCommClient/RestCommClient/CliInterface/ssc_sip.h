@@ -55,6 +55,9 @@ typedef struct ssc_conf_s ssc_conf_t;
 #include <sofia-sip/sl_utils.h>
 #include <sofia-sip/su_debug.h>
 
+#include <iostream>
+#include <list>
+
 typedef void (*ssc_exit_cb)(void);
 typedef void (*ssc_event_cb)(ssc_t *ssc, nua_event_t event, void *context);
 typedef void (*ssc_registration_cb)(ssc_t *ssc, int registered, void *context);
@@ -89,7 +92,8 @@ struct ssc_s {
 
   int           ssc_autoanswer;
 
-  GList        *ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */ 
+  //GList        *ssc_auth_pend;  /**< Pending authentication requests (ssc_auth_item_t) */
+  std::list<ssc_auth_item_t*> * ssc_auth_pend;
   int          ssc_input_fd;
   int          ssc_output_fd;
 

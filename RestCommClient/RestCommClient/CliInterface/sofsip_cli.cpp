@@ -51,21 +51,23 @@
 
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
+/*
 #if HAVE_GLIB
 #include <glib.h>
 #include <glib-object.h>
-/* This breaks latest Gstreamer so let's comment out
-#  if !HAVE_GOPTION
-#  include "replace_goption.h"
-#  endif
-*/
+// This breaks latest Gstreamer so let's comment out
+//#  if !HAVE_GOPTION
+//#  include "replace_goption.h"
+//#  endif
+
 #  if !HAVE_G_DEBUG
 #  include "replace_g_debug.h"
 #  endif
 #  if HAVE_GST
 #  include <gst/gst.h>
 #  endif
-#endif /* HAVE_GLIB */
+#endif // HAVE_GLIB
+*/
 
 typedef struct cli_s cli_t;
 
@@ -74,7 +76,7 @@ typedef struct cli_s cli_t;
 #include "ssc_sip.h"
 #include "ssc_input.h"
 
-#include <sofia-sip/su_glib.h>
+//#include <sofia-sip/su_glib.h>
 
 typedef su_wait_t cli_input_t;
 
@@ -146,7 +148,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
 
   /* step: initialize glib and gstreamer */
 #if HAVE_GLIB
-  g_type_init();
+  //g_type_init();
 #if HAVE_GST
   {
     //guint major, minor, micro, nano;
@@ -197,6 +199,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
 
 static void sofsip_mainloop_create(cli_t *cli)
 {
+    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GSource *gsource = NULL;
   GMainLoop *ptr = NULL;
@@ -207,48 +210,57 @@ static void sofsip_mainloop_create(cli_t *cli)
   g_source_attach(gsource, g_main_loop_get_context(ptr));
   cli->cli_main = (GMainLoop*)ptr;
 #else
+     */
   cli->cli_root = su_root_create(cli);
-#endif
+//#endif
 }
 
 static void sofsip_mainloop_run(cli_t *cli)
 {
+    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
     GMainLoop *ptr = (GMainLoop*)cli->cli_main;
     g_main_loop_run(ptr);
 #else
+     */
     su_root_run(cli->cli_root);
-#endif
+//#endif
 }
 
 static void sofsip_mainloop_destroy(cli_t *cli)
 {
+    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GSource *source = su_glib_root_gsource(cli->cli_root);
   g_source_unref(source);
 #endif
+     */
 
   /* then the common part */
   su_root_destroy(cli->cli_root), cli->cli_root = NULL;
 
+    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   {
     GMainLoop *ptr = (GMainLoop*)cli->cli_main;
     g_main_loop_unref(ptr);
   }
 #else
+     */
   /* no-op */
-#endif
+//#endif
 }
 
 static void sofsip_shutdown_cb(void)
 {
+    /*
 #if SOFSIP_USE_GLIB_EVENT_LOOP
   GMainLoop *ptr = (GMainLoop*)global_cli_p->cli_main;
   g_main_loop_quit(ptr);
 #else
+     */
   su_root_break(global_cli_p->cli_root);
-#endif
+//#endif
 }
 
 static void sofsip_signal_handler(int signo)
@@ -291,8 +303,10 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
 {
   ssc_conf_t *conf = cli->cli_conf;
   int i;
-  /* gboolean b = FALSE; */
-  /* long, short, flags, arg, arg_data, desc, arg_desc */
+    
+    /*
+  // gboolean b = FALSE;
+  // long, short, flags, arg, arg_data, desc, arg_desc
   GOptionEntry options[] = {
     { "autoanswer", 'a', 0, G_OPTION_ARG_NONE, &conf->ssc_autoanswer, "Auto-answer to calls", NULL },
     { "register", 'R', 0, G_OPTION_ARG_NONE, &conf->ssc_register, "Register at startup", NULL },
@@ -306,6 +320,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   };
   GOptionContext *context;
   GError *error = NULL;
+     */
 
   /* step: process environment variables */
   conf->ssc_aor = getenv("SOFSIP_ADDRESS");
@@ -314,7 +329,8 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
 
-  /* step: process command line arguments */
+  /*
+  // step: process command line arguments
   context = g_option_context_new("- sofsip_cli usage");
   g_option_context_add_main_entries(context, options, "sofsip_cli");
 #if HAVE_GST
@@ -325,6 +341,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
       exit (1);
   }
   g_option_context_free(context);
+   */
 
   for (i = 1; i < ac; i++) {
     if (av[i] && av[i][0] != '-') {

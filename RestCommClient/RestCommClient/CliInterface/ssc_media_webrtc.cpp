@@ -7,15 +7,15 @@
 //
 
 #include <string.h>
-#include "ssc_media_webrtc.h"
 #include <stdlib.h>
+#include "ssc_media_webrtc.h"
 
 //SscMediaWebrtc * media;
 
 SscMediaWebrtc *priv_create_ssc_media()
 {
     SscMediaWebrtc * media = (SscMediaWebrtc *)malloc(sizeof(SscMediaWebrtc));
-    media->sm_home = su_home_new(sizeof (media->sm_home));
+    media->sm_home = (su_home_t *)su_home_new(sizeof (media->sm_home));
     
     return media;
 }

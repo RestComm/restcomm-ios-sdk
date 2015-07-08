@@ -12,6 +12,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <sofia-sip/sdp.h>
+#include <iostream>
+
+class test {
+    char * test;
+};
+
 
 typedef struct  {
     

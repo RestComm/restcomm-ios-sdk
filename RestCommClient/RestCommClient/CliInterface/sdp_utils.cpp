@@ -33,7 +33,7 @@
 #include <config.h>
 #endif
 
-#include "glib.h"
+//#include "glib.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -51,6 +51,7 @@
  *
  * @return zero on success, non-zero on error
  */
+/* removing glib dependency causes leak -let's leave this out for now
 int sdp_print_to_text(su_home_t *home, sdp_parser_t *parser, char **sdp_str)
 {
   int res = -1;
@@ -73,6 +74,7 @@ int sdp_print_to_text(su_home_t *home, sdp_parser_t *parser, char **sdp_str)
 
   return res;
 }
+ */
 
 
 /**
@@ -99,7 +101,7 @@ int sdp_set_contact(sdp_parser_t *parser, sdp_media_t *media, sdp_nettype_e ntyp
   }
 
   if (!sdp_connection) {
-    sdp_connection = su_salloc(home, sizeof(*sdp_connection));
+    sdp_connection = (sdp_connection_t*)su_salloc(home, sizeof(*sdp_connection));
     media->m_connections = sdp_connection;
   }
 

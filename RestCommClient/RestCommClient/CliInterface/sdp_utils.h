@@ -26,7 +26,7 @@
 
 #include <sofia-sip/sdp.h>
 
-int sdp_print_to_text(su_home_t *home, sdp_parser_t *parser, char **sdp_str);
+//int sdp_print_to_text(su_home_t *home, sdp_parser_t *parser, char **sdp_str);
 
 int sdp_set_contact(sdp_parser_t *parser, sdp_media_t *media, sdp_nettype_e ntype, sdp_addrtype_e atype, const char *caddress);
 
