@@ -42,7 +42,7 @@ typedef struct ssc_conf_s ssc_conf_t;
 #include "ssc_sip.h"
 #include "ssc_oper.h"
 //#include "ssc_media.h"
-#include "ssc_media_webrtc.h"
+#include "ssc_media_simple.h"
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_header.h>

@@ -60,7 +60,7 @@
 //#define HAVE_MEDIA_IMPL 0
 //#endif
 
-#include "ssc_media_webrtc.h"
+#include "ssc_media_simple.h"
 //#if HAVE_GST
 //#include <gst/gst.h>
 //#include "ssc_media_gst.h"
