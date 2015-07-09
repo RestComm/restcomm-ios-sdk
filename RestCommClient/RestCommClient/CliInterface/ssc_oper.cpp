@@ -46,12 +46,12 @@
 #include <stdarg.h>
 #include <assert.h>
 
-#if HAVE_GLIB
+//#if HAVE_GLIB
 //#include <glib.h>
-#define HAVE_MEDIA_IMPL 1
-#else
-#define HAVE_MEDIA_IMPL 0
-#endif
+//#define HAVE_MEDIA_IMPL 1
+//#else
+//#define HAVE_MEDIA_IMPL 0
+//#endif
 
 #include <sofia-sip/su.h>
 
@@ -210,10 +210,10 @@ void ssc_oper_destroy(ssc_t *ssc, ssc_oper_t *op)
 
   if (active_invites == 0) {
     /* last INVITE operation */
-#if HAVE_MEDIA_IMPL
+//#if HAVE_MEDIA_IMPL
     if (ssc_media_is_initialized(ssc->ssc_media) == true)
       ssc_media_deactivate(ssc->ssc_media);
-#endif
+//#endif
   }
 
   su_free(ssc->ssc_home, op);

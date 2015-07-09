@@ -147,17 +147,17 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
   su_home_init(cli->cli_home);
 
   /* step: initialize glib and gstreamer */
-#if HAVE_GLIB
+//#if HAVE_GLIB
   //g_type_init();
-#if HAVE_GST
-  {
+//#if HAVE_GST
+//  {
     //guint major, minor, micro, nano;
     //gst_init (NULL, NULL);
     //gst_version (&major, &minor, &micro, &nano);
     //g_message ("This program is linked against GStreamer %d.%d.%d\n", major, minor, micro);
-  }
-#endif
-#endif
+//  }
+//#endif
+//#endif
 
   /* step: create a su event loop and connect it mainloop */
   sofsip_mainloop_create(cli);

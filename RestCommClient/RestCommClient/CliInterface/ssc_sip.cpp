@@ -53,24 +53,24 @@
 
 /* note: glib is still a mandatory library - this is just to mark places
  *       of glib/gobject use in code */
-#if HAVE_GLIB
+//#if HAVE_GLIB
 //#include "ssc_media.h"
-#define HAVE_MEDIA_IMPL 1
-#else
-#define HAVE_MEDIA_IMPL 0
-#endif
+//#define HAVE_MEDIA_IMPL 1
+//#else
+//#define HAVE_MEDIA_IMPL 0
+//#endif
 
 #include "ssc_media_webrtc.h"
-#if HAVE_GST
+//#if HAVE_GST
 //#include <gst/gst.h>
 //#include "ssc_media_gst.h"
-#endif
-#if HAVE_LIBNICE
+//#endif
+//#if HAVE_LIBNICE
 //#include "ssc_media_nice.h"
-#endif
+//#endif
 
 #include <sofia-sip/stun_tag.h>
-#include <sofia-sip/su_source.h>
+//#include <sofia-sip/su_source.h>
 
 #include "ssc_sip.h"
 #include "ssc_oper.h"
@@ -195,13 +195,13 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     /* step: create media subsystem instance */
     ssc->ssc_media = priv_create_ssc_media();
     
-#if HAVE_MEDIA_IMPL
-    //g_assert(ssc->ssc_media);
+//#if HAVE_MEDIA_IMPL
+    assert(ssc->ssc_media);
     /* step: query capabilities of the media subsystem */
     ssc_media_static_capabilities(ssc->ssc_media, &caps_str);
-#else
-    printf("%s: WARNING, no media subsystem available, disabling media features\n", ssc->ssc_name);
-#endif /* HAVE_MEDIA_IMPL */
+//#else
+//    printf("%s: WARNING, no media subsystem available, disabling media features\n", ssc->ssc_name);
+//#endif /* HAVE_MEDIA_IMPL */
     
     /* step: find out the home domain of the account */
     if (conf->ssc_aor)
@@ -991,7 +991,7 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
  */
 static void priv_media_state_cb(void* context, int state, void * data)
 {
-#if HAVE_MEDIA_IMPL
+//#if HAVE_MEDIA_IMPL
     ssc_oper_t *op = (ssc_oper_t*)data;
     ssc_t *ssc = op->op_ssc;
     
@@ -1104,7 +1104,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
     //if (ssc->ssc_media_state_cb)
     //    ssc->ssc_media_state_cb (ssc, op, (enum SscMediaState)state, ssc->ssc_cb_context);
     
-#endif /* HAVE_MEDIA_IMPL */
+//#endif /* HAVE_MEDIA_IMPL */
 }
 
 /**
@@ -1128,7 +1128,7 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
          *  - this is an async operation so we need to use a callback
          */
         
-#if HAVE_MEDIA_IMPL
+//#if HAVE_MEDIA_IMPL
         /* active media before sending offer */
         if (status >= 200 && status < 300) {
             //int res;
@@ -1170,9 +1170,9 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
             priv_destroy_oper_with_disconnect (ssc, op);
             /* ssc_oper_destroy(ssc, op); */
         }
-#else
-        printf("%s: WARNING, no media subsystem available, unable to answer\n", ssc->ssc_name);
-#endif /* HAVE_MEDIA_IMPL */
+//#else
+//        printf("%s: WARNING, no media subsystem available, unable to answer\n", ssc->ssc_name);
+//#endif /* HAVE_MEDIA_IMPL */
         
     }
     else
@@ -1313,12 +1313,12 @@ void ssc_i_state(int status, char const *phrase,
                 priv_destroy_oper_with_disconnect (ssc, op);
                 /* ssc_oper_destroy(ssc, op); */
                 
-#if HAVE_MEDIA_IMPL
+//#if HAVE_MEDIA_IMPL
                 /* SDP O/A note:
                  * - de-active media subsystem */
-                if (ssc_media_is_initialized(ssc->ssc_media) == TRUE)
+                if (ssc_media_is_initialized(ssc->ssc_media) == true)
                     ssc_media_deactivate(ssc->ssc_media);
-#endif
+//#endif
                 
             }
             break;
