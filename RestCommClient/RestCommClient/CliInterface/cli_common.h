@@ -23,6 +23,6 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#define HAVE_MEDIA_WEBRTC_IMPL 1
+//#define HAVE_MEDIA_WEBRTC_IMPL 1
 
 #endif

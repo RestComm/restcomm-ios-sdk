@@ -796,7 +796,7 @@ void ssc_invite(ssc_t *ssc, const char *destination)
     }
 }
 
-#if HAVE_MEDIA_WEBRTC_IMPL
+//#if HAVE_MEDIA_WEBRTC_IMPL
 /**
  * Callback that triggers the second phase of 
  * ssc_invite() for WebRTC. When WebRTC module is ready with full SDP
@@ -853,7 +853,7 @@ void ssc_webrtc_sdp_called(void* op_context, char *sdp)
     }
     priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
 }
-#endif
+//#endif
 
 /**
  * Callback for an outgoing INVITE request.
@@ -1362,10 +1362,11 @@ void ssc_r_bye(int status, char const *phrase,
     printf("%s: BYE: %03d %s\n", ssc->ssc_name, status, phrase);
     if (status < 200)
         return;
-#if HAVE_MEDIA_WEBRTC_IMPL
+
+//#if HAVE_MEDIA_WEBRTC_IMPL
     setSofiaReply(OUTGOING_BYE_RESPONSE, "");
     sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-#endif
+//#endif
 }
 
 /**
@@ -1379,10 +1380,11 @@ void ssc_i_bye(nua_t *nua, ssc_t *ssc,
     assert(op); assert(op->op_handle == nh);
     
     printf("%s: BYE received\n", ssc->ssc_name);
-#if HAVE_MEDIA_WEBRTC_IMPL
+
+//#if HAVE_MEDIA_WEBRTC_IMPL
     setSofiaReply(INCOMING_BYE, "");
     sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-#endif    
+//#endif
 }
 
 /**

@@ -493,7 +493,6 @@ static void sofsip_handle_input_cb(char *input)
     if (match("m") || match("message")) {
        ssc_message(cli->cli_ssc, dest, rest);
     }
-#if HAVE_MEDIA_WEBRTC_IMPL
     if (match("webrtc-sdp")) {
        void * op_context = NULL;
        // convert address string to pointer, which is the Sofia operation handle
@@ -505,10 +504,7 @@ static void sofsip_handle_input_cb(char *input)
        // convert address string to pointer, which is the Sofia operation handle
        sscanf(dest, "%p", (void **)&op_context);
        ssc_webrtc_sdp_called(op_context, rest);
-
-
     }
-#endif
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);
