@@ -79,6 +79,7 @@
  * ------------------- */
 static struct SofiaReply sofiaReply;
 char stored_sdp[65536] = "";
+//SscMediaSimple * media = NULL;
 
 /* Function prototypes
  * ------------------- */
@@ -175,7 +176,7 @@ static void priv_destroy_oper_with_disconnect (ssc_t *self, ssc_oper_t *oper);
 ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, const int input_fd, const int output_fd)
 {
     ssc_t *ssc;
-    char *caps_str;
+    string caps_str;
     char *userdomain = NULL;
     const char *contact;
     
@@ -192,13 +193,14 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc->ssc_home = home;
     ssc->ssc_root = root;
     
-    /* step: create media subsystem instance */
-    ssc->ssc_media = priv_create_ssc_media();
     
+    /* step: create media subsystem instance */
+    //ssc->ssc_media = priv_create_ssc_media();
+    ssc->ssc_media = new SscMediaSimple();
 //#if HAVE_MEDIA_IMPL
     assert(ssc->ssc_media);
     /* step: query capabilities of the media subsystem */
-    ssc_media_static_capabilities(ssc->ssc_media, &caps_str);
+    caps_str = ssc->ssc_media->ssc_media_static_capabilities();
 //#else
 //    printf("%s: WARNING, no media subsystem available, disabling media features\n", ssc->ssc_name);
 //#endif /* HAVE_MEDIA_IMPL */
@@ -234,15 +236,15 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               /* TAG_IF(userdomain, STUNTAG_DOMAIN(userdomain)), */
                               
                               /* Used in OPTIONS */
-                              TAG_IF(caps_str,
-                                     SOATAG_USER_SDP_STR(caps_str)),
+                              TAG_IF(caps_str.c_str(),
+                                     SOATAG_USER_SDP_STR(caps_str.c_str())),
                               SOATAG_AF(SOA_AF_IP4_IP6),
                               // When using webrtc media disable SOA engine for SDP handling
                               NUTAG_MEDIA_ENABLE(0),
                               TAG_NULL());
     
     /* step: free the static caps */
-    free(caps_str);
+    //free(caps_str);
     
     if (conf->ssc_register)
         ssc_register(ssc, NULL);
@@ -348,7 +350,8 @@ void ssc_destroy(ssc_t *self)
     
     if (self->ssc_media) {
         //g_object_unref(self->ssc_media), self->ssc_media = NULL;
-        ssc_media_finalize(self->ssc_media);
+        delete self->ssc_media;
+        //ssc_media_finalize(self->ssc_media);
         self->ssc_media = NULL;
     }
     if (self->ssc_address)
@@ -810,11 +813,11 @@ void ssc_webrtc_sdp(void* op_context, char *sdp)
     int res;
     
     // set localsdp with WebRTC media
-    setLocalSdp(ssc->ssc_media, sdp);
+    ssc->ssc_media->setLocalSdp(sdp);
     //g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", sdp, NULL);
     
     /* active media before INVITE */
-    res = ssc_media_activate(ssc->ssc_media);
+    res = ssc->ssc_media->ssc_media_activate();
     
     if (res < 0) {
         printf("%s: ERROR: unable to active media subsystem, aborting session.\n", ssc->ssc_name);
@@ -839,10 +842,10 @@ void ssc_webrtc_sdp_called(void* op_context, char *sdp)
     ssc_t *ssc = op->op_ssc;
     
     // set localsdp with WebRTC media
-    setLocalSdp(ssc->ssc_media, sdp);
+    ssc->ssc_media->setLocalSdp(sdp);
     //g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", sdp, NULL);
     
-    int res = ssc_media_activate(ssc->ssc_media);
+    int res = ssc->ssc_media->ssc_media_activate();
     if (res < 0) {
         printf("%s: ERROR: unable to active media subsystem, unable to answer session.\n", ssc->ssc_name);
         priv_destroy_oper_with_disconnect (ssc, op);
@@ -1009,7 +1012,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
          */
         
         if ((op->op_callstate & opc_pending) &&
-            ssc_media_is_initialized(ssc->ssc_media)) {
+            ssc->ssc_media->ssc_media_is_initialized()) {
             string l_sdp = "";
             
             //op->op_callstate &= !opc_pending;
@@ -1017,7 +1020,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
             
             /* get the ports and list of media */
             //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp, NULL);
-            l_sdp = getLocalSdp(ssc->ssc_media);
+            l_sdp = ssc->ssc_media->getLocalSdp();
             
             if (!l_sdp.empty()) {
                 printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp.c_str());
@@ -1062,7 +1065,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
             
             /* get the ports and list of media */
             //g_object_get(G_OBJECT(ssc->ssc_media), "localsdp", &l_sdp_str, NULL);
-            l_sdp_str = getLocalSdp(ssc->ssc_media);
+            l_sdp_str = ssc->ssc_media->getLocalSdp();
             
             printf("%s: about to respond with local SDP:\n%s\n",
                    ssc->ssc_name, l_sdp_str.c_str());
@@ -1095,7 +1098,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
     }
     else if (state == sm_error) {
         printf("%s: Media subsystem reported an error.\n", ssc->ssc_name);
-        ssc_media_deactivate(ssc->ssc_media);
+        ssc->ssc_media->ssc_media_deactivate();
         priv_destroy_oper_with_disconnect (ssc, op);
         /* ssc_oper_destroy (ssc, op); */
     }
@@ -1250,7 +1253,7 @@ void ssc_i_state(int status, char const *phrase,
         }
         //g_return_if_fail(answer_sent || offer_sent);
         //g_object_set(G_OBJECT(ssc->ssc_media), "localsdp", l_sdp, NULL);
-        setLocalSdp(ssc->ssc_media, l_sdp);
+        ssc->ssc_media->setLocalSdp(l_sdp);
         /* printf("%s: local SDP updated:\n%s\n\n", ssc->ssc_name, l_sdp); */
     }
     
@@ -1261,7 +1264,7 @@ void ssc_i_state(int status, char const *phrase,
         }
         //g_return_if_fail(answer_recv || offer_recv);
         //g_object_set(G_OBJECT(ssc->ssc_media), "remotesdp", r_sdp, NULL);
-        setRemoteSdp(ssc->ssc_media, r_sdp);
+        ssc->ssc_media->setRemoteSdp(r_sdp);
         /* printf("%s: remote SDP updated:\n%s\n\n", ssc->ssc_name, r_sdp); */
     }
     
@@ -1316,8 +1319,8 @@ void ssc_i_state(int status, char const *phrase,
 //#if HAVE_MEDIA_IMPL
                 /* SDP O/A note:
                  * - de-active media subsystem */
-                if (ssc_media_is_initialized(ssc->ssc_media) == true)
-                    ssc_media_deactivate(ssc->ssc_media);
+                if (ssc->ssc_media->ssc_media_is_initialized() == true)
+                    ssc->ssc_media->ssc_media_deactivate();
 //#endif
                 
             }

@@ -84,7 +84,7 @@ struct ssc_s {
   su_root_t    *ssc_root;       /**< Pointer to application root */
 
   nua_t        *ssc_nua;        /**< Pointer to NUA object */
-  SscMediaWebrtc *ssc_media;      /**< Pointer to media subsystem */
+  SscMediaSimple *ssc_media;      /**< Pointer to media subsystem */
 
   ssc_oper_t   *ssc_operations;	/**< Remote destinations */
 

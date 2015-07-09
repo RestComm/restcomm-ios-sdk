@@ -60,7 +60,7 @@
 		AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223C197295EA0035B864 /* RCConnectionDelegate.m */; };
 		AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC1223F197295F90035B864 /* RCDeviceDelegate.m */; };
 		AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC12242197296110035B864 /* RCPresenceEvent.m */; };
-		AEE70FCA1B4D189D00A70733 /* ssc_media_webrtc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEE70FC81B4D189C00A70733 /* ssc_media_webrtc.cpp */; };
+		AEE70FCA1B4D189D00A70733 /* ssc_media_simple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEE70FC81B4D189C00A70733 /* ssc_media_simple.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -257,8 +257,8 @@
 		AEC39AD01A5AA9F500B155E4 /* su_glib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_glib.h; sourceTree = "<group>"; };
 		AEC39AD11A5AA9F500B155E4 /* su_source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_source.h; sourceTree = "<group>"; };
 		AEC39AD61A5ACCEC00B155E4 /* su_port.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = su_port.h; sourceTree = "<group>"; };
-		AEE70FC81B4D189C00A70733 /* ssc_media_webrtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_media_webrtc.cpp; sourceTree = "<group>"; };
-		AEE70FC91B4D189C00A70733 /* ssc_media_webrtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_webrtc.h; sourceTree = "<group>"; };
+		AEE70FC81B4D189C00A70733 /* ssc_media_simple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_media_simple.cpp; sourceTree = "<group>"; };
+		AEE70FC91B4D189C00A70733 /* ssc_media_simple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_media_simple.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,8 +478,8 @@
 				AEA6C4AC19DB412A00BD2455 /* ssc_sip.cpp */,
 				AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */,
 				AE03DEDD1A98E4D2000280E4 /* cli_common.h */,
-				AEE70FC81B4D189C00A70733 /* ssc_media_webrtc.cpp */,
-				AEE70FC91B4D189C00A70733 /* ssc_media_webrtc.h */,
+				AEE70FC81B4D189C00A70733 /* ssc_media_simple.cpp */,
+				AEE70FC91B4D189C00A70733 /* ssc_media_simple.h */,
 			);
 			path = CliInterface;
 			sourceTree = "<group>";
@@ -693,7 +693,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEE70FCA1B4D189D00A70733 /* ssc_media_webrtc.cpp in Sources */,
+				AEE70FCA1B4D189D00A70733 /* ssc_media_simple.cpp in Sources */,
 				AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */,
 				AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */,
 				AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */,

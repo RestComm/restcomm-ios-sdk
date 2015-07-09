@@ -211,8 +211,8 @@ void ssc_oper_destroy(ssc_t *ssc, ssc_oper_t *op)
   if (active_invites == 0) {
     /* last INVITE operation */
 //#if HAVE_MEDIA_IMPL
-    if (ssc_media_is_initialized(ssc->ssc_media) == true)
-      ssc_media_deactivate(ssc->ssc_media);
+    if (ssc->ssc_media->ssc_media_is_initialized() == true)
+      ssc->ssc_media->ssc_media_deactivate();
 //#endif
   }
 
