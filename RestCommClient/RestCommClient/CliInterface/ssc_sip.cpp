@@ -178,7 +178,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc_t *ssc;
     string caps_str;
     char *userdomain = NULL;
-    const char *contact;
+    const char *contact = NULL;
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -216,7 +216,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     if (conf->ssc_contact)
         contact = conf->ssc_contact;
     else
-        contact = "sip:*:*";
+        contact = "sip:*:*;transport=tcp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
@@ -227,8 +227,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      NUTAG_PROXY(conf->ssc_proxy)),
                               TAG_IF(conf->ssc_registrar,
                                      NUTAG_REGISTRAR(conf->ssc_registrar)),
-                              TAG_IF(conf->ssc_contact,
-                                     NUTAG_URL(conf->ssc_contact)),
+                              TAG_IF(contact,
+                                     NUTAG_URL(contact)),
+                              //NUTAG_M_PARAMS("transport=tcp"),
                               TAG_IF(conf->ssc_media_addr,
                                      NUTAG_MEDIA_ADDRESS(conf->ssc_media_addr)),
                               /* note: use of STUN for signaling disabled */
