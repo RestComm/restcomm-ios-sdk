@@ -290,6 +290,21 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
+- (bool)unregister:(NSString*)registrar
+{
+    NSString* cmd = nil;
+    if (registrar) {
+        // convert args to cli command
+        cmd = [NSString stringWithFormat:@"u %@", registrar];
+    }
+    else {
+        cmd = [NSString stringWithFormat:@"u"];
+    }
+    [self pipeToSofia:cmd];
+    
+    return true;
+}
+
 - (bool)message:(NSString*)msg to:(NSString*)recipient;
 {
     NSString* cmd = [NSString stringWithFormat:@"m %@ %@", recipient, msg];

@@ -32,6 +32,7 @@
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)eventLoop;
 - (bool)register:(NSString*)registrar;
+- (bool)unregister:(NSString*)registrar;
 - (bool)message:(NSString*)msg to:(NSString*)recipient;
 - (bool)invite:(NSString*)recipient;
 - (bool)answer;

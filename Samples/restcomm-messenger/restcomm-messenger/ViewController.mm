@@ -45,6 +45,7 @@ extern char REGISTRAR[];
 
     // auto correct off for SIP uri
     self.sipUriText.autocorrectionType = UITextAutocorrectionTypeNo;
+    //self.deviceRegistered = NO;
 
     // TODO: capabilityTokens aren't handled yet
     NSString* capabilityToken = @"";
@@ -72,17 +73,14 @@ extern char REGISTRAR[];
 #else
     self.sipUriText.text = @"sip:1235@54.205.80.5:5080";
 #endif
-    
+
+    //[self connect:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    // try to register when coming up with the existing settings
-    [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
-    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
-    
-    // update our parms
-    [self.device updateParams:self.parameters];
 }
 
 - (void)hideKeyBoard
@@ -161,6 +159,19 @@ extern char REGISTRAR[];
     [self disconnect];
 }
 
+- (void)register:(NSNotification *)notification
+{
+    if (self.device) {
+        // try to register when coming up with the existing settings
+        [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
+        [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
+        
+        // update our parms
+        [self.device updateParams:self.parameters];
+        //self.deviceRegistered = YES;
+    }
+}
+
 - (void)disconnect
 {
     if (self.connection) {
@@ -169,6 +180,12 @@ extern char REGISTRAR[];
         self.connection = nil;
         self.pendingIncomingConnection = nil;
     }
+}
+
+- (void)unregister:(NSNotification *)notification
+{
+    [self disconnect];
+    [self.device unlisten];
 }
 
 - (IBAction)cancelPressed:(id)sender

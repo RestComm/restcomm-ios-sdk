@@ -27,7 +27,8 @@
 #import "RestCommClient.h"
 
 @interface ViewController : UIViewController<RCDeviceDelegate,RCConnectionDelegate>
-- (void)disconnect;
+//- (void)connect;
+//- (void)disconnect;
 
 @property (nonatomic,retain) RCDevice* device;
 @property (nonatomic,retain) RCConnection* connection;
@@ -35,4 +36,5 @@
 @property NSMutableDictionary * parameters;
 @property AVAudioPlayer * messagePlayer;
 @property AVAudioPlayer * ringingPlayer;
+//@property BOOL deviceRegistered;
 @end

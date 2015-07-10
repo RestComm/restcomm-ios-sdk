@@ -93,7 +93,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)unlisten
 {
     NSLog(@"[RCDevice unlisten]");
-    
+    [self.sipManager unregister:nil];
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken

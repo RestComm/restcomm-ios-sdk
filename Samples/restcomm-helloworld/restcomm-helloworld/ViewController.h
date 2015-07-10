@@ -25,9 +25,10 @@
 #import "RestCommClient.h"
 
 @interface ViewController : UIViewController<RCDeviceDelegate,RCConnectionDelegate>
-- (void)disconnect;
+//- (void)disconnect;
 
 @property (nonatomic,retain) RCDevice* device;
 @property (nonatomic,retain) RCConnection* connection;
 @property NSMutableDictionary * parameters;
+@property BOOL isRegistered;
 @end

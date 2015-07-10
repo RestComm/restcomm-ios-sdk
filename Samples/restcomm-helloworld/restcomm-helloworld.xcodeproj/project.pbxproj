@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */; };
-		AE1C05B91B15DDAF00F5E834 /* GStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */; };
 		AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */; };
 		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
 		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
@@ -84,7 +83,6 @@
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE182F991B0A5C7100B40A0F /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../RestCommClient/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
 		AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
-		AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = ../../dependencies/packages/GStreamer/GStreamer.framework; sourceTree = "<group>"; };
 		AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE1C05BC1B15DDF200F5E834 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AE1C05BD1B15DDF200F5E834 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
@@ -161,7 +159,6 @@
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
 				AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */,
-				AE1C05B91B15DDAF00F5E834 /* GStreamer.framework in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
 				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
 				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
@@ -211,7 +208,6 @@
 				AE1C05BC1B15DDF200F5E834 /* libcrypto.a */,
 				AE1C05BD1B15DDF200F5E834 /* libssl.a */,
 				AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */,
-				AE1C05B81B15DDAF00F5E834 /* GStreamer.framework */,
 				AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */,
 				AE41B0F01B0C907D000E91BB /* libRestCommClient.a */,
 				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
