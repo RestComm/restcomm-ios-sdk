@@ -95,20 +95,20 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)outgoingRinging:(SipManager *)sipManager
 {
-    [self.delegate connectionDidStartConnecting:self];
     [self setState:RCConnectionStateConnecting];
+    [self.delegate connectionDidStartConnecting:self];
 }
 
 - (void)outgoingEstablished:(SipManager *)sipManager
 {
-    [self.delegate connectionDidConnect:self];
     [self setState:RCConnectionStateConnected];
+    [self.delegate connectionDidConnect:self];
 }
 
 - (void)incomingBye:(SipManager *)sipManager
 {
-    [self.delegate connectionDidDisconnect:self];
     self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidDisconnect:self];
 }
 
 - (void)setMuted:(BOOL)isMuted
