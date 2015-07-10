@@ -30,5 +30,6 @@
 @property (nonatomic,retain) RCDevice* device;
 @property (nonatomic,retain) RCConnection* connection;
 @property NSMutableDictionary * parameters;
+@property BOOL isInitialized;
 @property BOOL isRegistered;
 @end

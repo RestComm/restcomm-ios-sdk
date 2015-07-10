@@ -71,5 +71,14 @@
  *  @param message Instant message text
  */
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message;
+
+@optional
+/**
+ *  @abstract RCDevice finished initializing signalling
+ *
+ *  @param device  Device of interest
+ */
+- (void)deviceDidInitializeSignaling:(RCDevice *)device;
+
 @end
 

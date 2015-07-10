@@ -146,6 +146,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.delegate device:self didReceiveIncomingConnection:connection];
 }
 
+- (void)signallingInitialized:(SipManager *)sipManager
+{
+    [self.delegate deviceDidInitializeSignaling:self];
+}
+
 - (void) updateParams:(NSDictionary*)params
 {
     [self.sipManager updateParams:params];

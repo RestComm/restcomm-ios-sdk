@@ -36,5 +36,6 @@
 @property NSMutableDictionary * parameters;
 @property AVAudioPlayer * messagePlayer;
 @property AVAudioPlayer * ringingPlayer;
-//@property BOOL deviceRegistered;
+@property BOOL isInitialized;
+@property BOOL isRegistered;
 @end

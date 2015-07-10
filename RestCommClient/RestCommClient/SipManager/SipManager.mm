@@ -137,6 +137,9 @@ int read_pipe[2];
         self.media = nil;
         [self.connectionDelegate incomingBye:self];
     }
+    else if (reply->rc == SIGNALLING_INITIALIZED) {
+        [self.deviceDelegate signallingInitialized:self];
+    }
     
     return 0;
 }

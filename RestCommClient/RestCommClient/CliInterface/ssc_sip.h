@@ -189,6 +189,7 @@ enum SipMsgEnum {
     OUTGOING_BYE_RESPONSE,
     INCOMING_BYE,
     ANSWER_PRESSED,
+    SIGNALLING_INITIALIZED,
 };
 
 //SofiaReply();

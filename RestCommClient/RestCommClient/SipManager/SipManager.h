@@ -56,6 +56,7 @@
 - (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message;
 // 'ringing' for incoming connections
 - (void)callArrived:(SipManager *)sipManager;
+- (void)signallingInitialized:(SipManager *)sipManager;
 @end
 
 @protocol SipManagerConnectionDelegate <NSObject>

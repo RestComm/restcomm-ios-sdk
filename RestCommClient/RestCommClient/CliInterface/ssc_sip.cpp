@@ -269,6 +269,10 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     
     su_free(home, userdomain);
     
+    // Notify application that singnalling is initialized
+    setSofiaReply(SIGNALLING_INITIALIZED, "");
+    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    
     return ssc;
 }
 

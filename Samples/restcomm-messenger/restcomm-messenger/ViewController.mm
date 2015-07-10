@@ -45,7 +45,8 @@ extern char REGISTRAR[];
 
     // auto correct off for SIP uri
     self.sipUriText.autocorrectionType = UITextAutocorrectionTypeNo;
-    //self.deviceRegistered = NO;
+    self.isRegistered = NO;
+    self.isInitialized = NO;
 
     // TODO: capabilityTokens aren't handled yet
     NSString* capabilityToken = @"";
@@ -81,6 +82,8 @@ extern char REGISTRAR[];
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    //[self register:nil];
+    //self.registerOccuredOnce = YES;
 }
 
 - (void)hideKeyBoard
@@ -161,16 +164,22 @@ extern char REGISTRAR[];
 
 - (void)register:(NSNotification *)notification
 {
-    if (self.device) {
-        // try to register when coming up with the existing settings
-        [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
-        [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
-        
-        // update our parms
-        [self.device updateParams:self.parameters];
-        //self.deviceRegistered = YES;
+    if (self.device && self.isInitialized && !self.isRegistered) {
+        [self register];
     }
 }
+
+- (void)register
+{
+    // try to register when coming up with the existing settings
+    [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
+    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
+    
+    // update our parms
+    [self.device updateParams:self.parameters];
+    self.isRegistered = YES;
+}
+
 
 - (void)disconnect
 {
@@ -186,6 +195,7 @@ extern char REGISTRAR[];
 {
     [self disconnect];
     [self.device unlisten];
+    self.isRegistered = NO;
 }
 
 - (IBAction)cancelPressed:(id)sender
@@ -205,6 +215,12 @@ extern char REGISTRAR[];
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
     
+}
+
+- (void)deviceDidInitializeSignaling:(RCDevice *)device
+{
+    [self register];
+    self.isInitialized = YES;
 }
 
 // received incoming message

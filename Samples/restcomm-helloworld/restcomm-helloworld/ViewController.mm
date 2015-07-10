@@ -33,6 +33,9 @@
 {
     [super viewDidLoad];
 
+    self.isRegistered = NO;
+    self.isInitialized = NO;
+
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"sip:bob@telestax.com", @"aor",
                        nil];
@@ -88,10 +91,16 @@
 
 - (void)register:(NSNotification *)notification
 {
-    if (self.device) {
-        // update our parms
-        [self.device updateParams:self.parameters];
+    if (self.device && self.isInitialized && !self.isRegistered) {
+        [self register];
     }
+}
+
+- (void)register
+{
+    // update our parms
+    [self.device updateParams:self.parameters];
+    self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
@@ -128,6 +137,13 @@
 {
     
 }
+
+- (void)deviceDidInitializeSignaling:(RCDevice *)device
+{
+    [self register];
+    self.isInitialized = YES;
+}
+
 
 // ---------- Delegate methods for RC Connection
 // not implemented yet
