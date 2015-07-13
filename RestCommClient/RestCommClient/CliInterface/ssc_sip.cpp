@@ -1028,7 +1028,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
             l_sdp = ssc->ssc_media->getLocalSdp();
             
             if (!l_sdp.empty()) {
-                printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp.c_str());
+                //printf("%s: about to make a call with local SDP:\n%s\n", ssc->ssc_name, l_sdp.c_str());
                 
                 // When working with webrtc media using the SOA ruins the SDP for some reason.
                 // Since webrtc handles the SDP completely, let's disable SOA

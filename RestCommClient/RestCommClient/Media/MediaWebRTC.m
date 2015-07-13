@@ -468,7 +468,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 }
 
 - (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection {
-    NSLog(@"WARNING: Renegotiation needed but unimplemented.");
+    //NSLog(@"WARNING: Renegotiation needed but unimplemented.");
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
@@ -488,7 +488,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
-    NSLog(@"gotICECandidate");
+    //NSLog(@"gotICECandidate");
     //candidate.sdp;
     [_iceCandidates addObject:candidate];
     /*

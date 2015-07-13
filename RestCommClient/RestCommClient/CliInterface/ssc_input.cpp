@@ -129,6 +129,9 @@ void ssc_input_read_char(int input_fd)
           perror("input: read");
       }
       else if (n > 0) {
+          if (!strcmp(token, "")) {
+              break;
+          }
           char *tmpbuf;
           // not sure why n - 1 was used instead on n. Stange thing is that n - 1 worked in Linux but not in iOS
           ///buf[n - 1] = 0;
