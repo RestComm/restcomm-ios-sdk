@@ -95,7 +95,8 @@ int read_pipe[2];
 {
     if (reply->rc == REPLY_AUTH) {
         // reply to an authentication request with the credentials
-        pipeToSofia("k 1234", write_pipe[1]);
+        NSString * string = [NSString stringWithFormat:@"k %@", [self.params objectForKey:@"password"]];
+        pipeToSofia([string UTF8String], write_pipe[1]);
     }
     else if (reply->rc == INCOMING_CALL) {
         // we have an incoming call, we need to ring
@@ -385,6 +386,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
         else if ([key isEqualToString:@"registrar"]) {
             cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
             [self pipeToSofia:cmd];
+        }
+        else if ([key isEqualToString:@"password"]) {
+            [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
         }
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);

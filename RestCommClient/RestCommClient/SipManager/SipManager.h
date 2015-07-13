@@ -42,8 +42,6 @@
 - (bool)bye;
 - (bool)cli:(NSString*)cmd;
 - (bool)updateParams:(NSDictionary*)params;
-//- (BOOL)getMuted;
-//- (void)setMuted:(BOOL)muted;
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;

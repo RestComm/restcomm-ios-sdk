@@ -174,6 +174,7 @@ extern char REGISTRAR[];
     // try to register when coming up with the existing settings
     [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
     [self.parameters setObject:[NSString stringWithFormat:@"sip:%s:5080", REGISTRAR] forKey:@"registrar"];
+    [self.parameters setObject:@"1234" forKey:@"password"];
     
     // update our parms
     [self.device updateParams:self.parameters];
