@@ -130,6 +130,9 @@ int read_pipe[2];
         NSString* msg = [whole componentsSeparatedByString:@"|"][1];
         [self.deviceDelegate messageArrived:self withData:msg from:username];
     }
+    else if (reply->rc == INCOMING_CANCELLED) {
+        [self.connectionDelegate incomingCancelled:self];
+    }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];

@@ -61,6 +61,7 @@
 - (void)outgoingRinging:(SipManager *)sipManager;
 - (void)outgoingEstablished:(SipManager *)sipManager;
 - (void)incomingBye:(SipManager *)sipManager;
+- (void)incomingCancelled:(SipManager *)sipManager;
 //- (void)incomingRinging:(SipManager *)sipManager;
 //- (void)incomingEstablished:(SipManager *)sipManager;
 @end

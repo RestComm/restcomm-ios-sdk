@@ -138,7 +138,7 @@ extern char REGISTRAR[];
     if (self.pendingIncomingConnection) {
         [self.pendingIncomingConnection accept];
         self.connection = self.pendingIncomingConnection;
-        [self.answerButton.layer removeAllAnimations];
+        //[self.answerButton.layer removeAllAnimations];
     }
 }
 
@@ -153,7 +153,7 @@ extern char REGISTRAR[];
         // reject the pending RCConnection
         [self.pendingIncomingConnection reject];
         self.pendingIncomingConnection = nil;
-        [self.answerButton.layer removeAllAnimations];
+        //[self.answerButton.layer removeAllAnimations];
     }
 }
 
@@ -238,6 +238,7 @@ extern char REGISTRAR[];
     self.pendingIncomingConnection = connection;
     
     // let's add some animation to get users attention (alpha)
+    /*
     CAKeyframeAnimation * alphaAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     
     alphaAnimation.values = [NSArray arrayWithObjects:@1.0F, @1.0F, @0.0F, @0.0F, @1.0F, @1.0F, nil];
@@ -250,6 +251,7 @@ extern char REGISTRAR[];
     group.animations = [NSArray arrayWithObjects:alphaAnimation, nil];
     
     [self.answerButton.layer addAnimation:group forKey:@"flash-animation"];
+     */
 }
 
 // not implemented yet
@@ -275,6 +277,21 @@ extern char REGISTRAR[];
 - (void)connectionDidConnect:(RCConnection*)connection
 {
     NSLog(@"connectionDidConnect");
+}
+
+- (void)connectionDidCancel:(RCConnection*)connection
+{
+    NSLog(@"connectionDidCancel");
+    if (self.ringingPlayer.isPlaying) {
+        [self.ringingPlayer stop];
+        self.ringingPlayer.currentTime = 0.0;
+    }
+    
+    if (self.pendingIncomingConnection) {
+        self.pendingIncomingConnection = nil;
+        self.connection = nil;
+        //[self.answerButton.layer removeAllAnimations];
+    }
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection

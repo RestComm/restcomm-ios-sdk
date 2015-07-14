@@ -57,6 +57,20 @@
 - (void)connectionDidConnect:(RCConnection*)connection;
 
 /**
+ *  @abstract Incoming connection was cancelled
+ *
+ *  @param connection Connection of interest
+ */
+- (void)connectionDidCancel:(RCConnection*)connection;
+
+/**
+ *  @abstract Connection was declined from the remote party
+ *
+ *  @param connection Connection of interest
+ */
+- (void)connectionDidDecline:(RCConnection*)connection;
+
+/**
  *  @abstract Connection was disconnected
  *
  *  @param connection Connection of interest

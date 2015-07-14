@@ -1428,6 +1428,9 @@ void ssc_i_cancel(nua_t *nua, ssc_t *ssc,
     assert(op); assert(op->op_handle == nh);
     
     printf("%s: CANCEL received\n", ssc->ssc_name);
+    
+    setSofiaReply(INCOMING_CANCELLED, "");
+    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
 }
 
 void ssc_zap(ssc_t *ssc, char *which)
