@@ -80,7 +80,7 @@ typedef struct cli_s cli_t;
 
 typedef su_wait_t cli_input_t;
 
-#define SOFSIP_PROMPT "sofsip> "  
+#define SOFSIP_PROMPT ""
 
 /**
  * Built time option to disable use of glib event loop

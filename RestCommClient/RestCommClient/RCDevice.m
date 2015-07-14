@@ -63,7 +63,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate
 {
-    NSLog(@"[RCDevice initWithCapabilityToken]");
+    //NSLog(@"[RCDevice initWithCapabilityToken]");
     self = [super init];
     if (self) {
         self.delegate = delegate;

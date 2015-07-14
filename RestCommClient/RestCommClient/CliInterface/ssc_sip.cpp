@@ -260,7 +260,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                        TAG_IF(conf->ssc_certdir,
                               NUTAG_CERTIFICATE_DIR(conf->ssc_certdir)),
                        TAG_NULL());
-        nua_get_params(ssc->ssc_nua, TAG_ANY(), TAG_NULL());
+        //nua_get_params(ssc->ssc_nua, TAG_ANY(), TAG_NULL());
     }
     else {
         ssc_destroy(ssc);
@@ -591,6 +591,7 @@ static void priv_callback(nua_event_t event,
         case nua_i_active:
         case nua_i_ack:
         case nua_i_terminated:
+        case nua_r_set_params:
             break;
             
         default:
