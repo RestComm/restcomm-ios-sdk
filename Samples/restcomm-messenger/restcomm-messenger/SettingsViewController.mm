@@ -26,7 +26,7 @@
 char AOR[] = "sip:bob@telestax.com";
 // elastic
 //char REGISTRAR[] = "54.225.212.193";
-char REGISTRAR[] = "192.168.2.32";
+char REGISTRAR[] = "192.168.2.32:5080";
 
 @interface SettingsViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
@@ -98,7 +98,7 @@ char REGISTRAR[] = "192.168.2.32";
         update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        [params setObject:[NSString stringWithFormat:@"sip:%@:5080", self.registrarText.text] forKey:@"registrar"];
+        [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
         update = true;
     }
 
