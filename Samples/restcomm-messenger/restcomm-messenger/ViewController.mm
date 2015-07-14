@@ -225,10 +225,10 @@ extern char REGISTRAR[];
 }
 
 // received incoming message
-- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message
+- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
     [self.messagePlayer play];
-    [self prependToDialog:message sender:@"alice"];
+    [self prependToDialog:message sender:[params objectForKey:@"from"]];
 }
 
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user

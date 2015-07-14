@@ -1523,6 +1523,7 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
     sip_from_t const *from;
     sip_to_t const *to;
     sip_subject_t const *subject;
+    std::string username = "john-doe";
     
     assert(sip);
     
@@ -1540,11 +1541,18 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
         printf("\tSubject: %s\n", subject->g_value);
     ssc_print_payload(ssc, sip->sip_payload);
     
+    if (from && from->a_url->url_user) {
+        username = from->a_url->url_user;
+    }
+    
     // notify the client application of the message
     // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
     setSofiaReply(INCOMING_MSG, "");
-    strncpy(sofiaReply.text, sip->sip_payload->pl_data, sip->sip_payload->pl_len);
-    sofiaReply.text[sip->sip_payload->pl_len] = 0;
+    username += "|";  // character that won't show in the username
+    username += sip->sip_payload->pl_data;
+    strcpy(sofiaReply.text, username.c_str());
+    //strncpy(sofiaReply.text, sip->sip_payload->pl_data, sip->sip_payload->pl_len);
+    //sofiaReply.text[sip->sip_payload->pl_len] = 0;
     sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     
     if (op == NULL)

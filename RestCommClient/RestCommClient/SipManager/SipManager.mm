@@ -125,8 +125,10 @@ int read_pipe[2];
         [self.media processSignalingMessage:reply->text type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_MSG) {
-        NSString* msg = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
-        [self.deviceDelegate messageArrived:self withData:msg];
+        NSString* whole = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
+        NSString* username = [whole componentsSeparatedByString:@"|"][0];
+        NSString* msg = [whole componentsSeparatedByString:@"|"][1];
+        [self.deviceDelegate messageArrived:self withData:msg from:username];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC

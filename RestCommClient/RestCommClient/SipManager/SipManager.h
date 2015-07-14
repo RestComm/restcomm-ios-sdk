@@ -51,7 +51,7 @@
 @end
 
 @protocol SipManagerDeviceDelegate <NSObject>
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message;
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message from:(NSString*)from;
 // 'ringing' for incoming connections
 - (void)callArrived:(SipManager *)sipManager;
 - (void)signallingInitialized:(SipManager *)sipManager;

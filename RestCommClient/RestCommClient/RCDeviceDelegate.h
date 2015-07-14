@@ -70,7 +70,7 @@
  *  @param device  Device of interest
  *  @param message Instant message text
  */
-- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message;
+- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params;
 
 @optional
 /**

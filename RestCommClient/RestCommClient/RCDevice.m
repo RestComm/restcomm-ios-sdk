@@ -130,9 +130,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 }
 
 #pragma mark SipManager Delegate methods
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message
+- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message from:(NSString*)from
 {
-    [self.delegate device:self didReceiveIncomingMessage:message];
+    [self.delegate device:self didReceiveIncomingMessage:message withParams:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
 }
 
 - (void)callArrived:(SipManager *)sipManager
