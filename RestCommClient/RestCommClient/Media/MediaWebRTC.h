@@ -76,7 +76,7 @@ typedef enum {
 // TODO: change the name to something more appropriate
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator;
 - (void)disconnect;
-- (void)processSignalingMessage:(char *)message type:(int)type;
+- (void)processSignalingMessage:(const char *)message type:(int)type;
 - (void)mute;
 - (void)unmute;
 

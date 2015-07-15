@@ -144,7 +144,10 @@ int read_pipe[2];
         [self.connectionDelegate incomingBye:self];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
-        [self.deviceDelegate signallingInitialized:self];
+        // delay execution of my block for 1 seconds.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self.deviceDelegate signallingInitialized:self];
+        });
     }
     
     return 0;
@@ -214,6 +217,15 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     return self;
 }
 
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params
+{
+    self = [self initWithDelegate:deviceDelegate];
+    [self.params setDictionary:params];
+    //[self setParams:params];
+    
+    return self;
+}
+
 - (void)didSessionRouteChange:(NSNotification *)notification
 {
     NSDictionary *interuptionDict = notification.userInfo;
@@ -230,15 +242,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         default:
             break;
     }
-}
-
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params
-{
-    self = [self initWithDelegate:deviceDelegate];
-    [self.params setDictionary:params];
-    //[self setParams:params];
-    
-    return self;
 }
 
 - (void)dealloc {

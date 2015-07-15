@@ -73,9 +73,9 @@ static NSString *kARDDefaultSTUNServerUrl =
     @"stun:stun.l.google.com:19302";
 
 static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
-static NSInteger kARDAppClientErrorUnknown = -1;
+//static NSInteger kARDAppClientErrorUnknown = -1;
 //static NSInteger kARDAppClientErrorRoomFull = -2;
-static NSInteger kARDAppClientErrorCreateSDP = -3;
+//static NSInteger kARDAppClientErrorCreateSDP = -3;
 static NSInteger kARDAppClientErrorSetSDP = -4;
 //static NSInteger kARDAppClientErrorInvalidClient = -5;
 //static NSInteger kARDAppClientErrorInvalidRoom = -6;
@@ -377,7 +377,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     [regex replaceMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@"$0e:r5NeEmW7rYyFBr5w"];
 }
 
-- (void)processSignalingMessage:(char *)message type:(int)type
+- (void)processSignalingMessage:(const char *)message type:(int)type
 {
     NSParameterAssert(_peerConnection);
     switch (type) {
