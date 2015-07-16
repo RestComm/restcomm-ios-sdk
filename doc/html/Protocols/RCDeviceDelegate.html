@@ -45,11 +45,13 @@
 	
 	<option value="//api/name/device:didReceiveIncomingConnection:">&nbsp;&nbsp;&nbsp;&nbsp;- device:didReceiveIncomingConnection:</option>
 	
-	<option value="//api/name/device:didReceiveIncomingMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- device:didReceiveIncomingMessage:</option>
+	<option value="//api/name/device:didReceiveIncomingMessage:withParams:">&nbsp;&nbsp;&nbsp;&nbsp;- device:didReceiveIncomingMessage:withParams:</option>
 	
 	<option value="//api/name/device:didReceivePresenceUpdate:">&nbsp;&nbsp;&nbsp;&nbsp;- device:didReceivePresenceUpdate:</option>
 	
 	<option value="//api/name/device:didStopListeningForIncomingConnections:">&nbsp;&nbsp;&nbsp;&nbsp;- device:didStopListeningForIncomingConnections:</option>
+	
+	<option value="//api/name/deviceDidInitializeSignaling:">&nbsp;&nbsp;&nbsp;&nbsp;- deviceDidInitializeSignaling:</option>
 	
 	<option value="//api/name/deviceDidStartListeningForIncomingConnections:">&nbsp;&nbsp;&nbsp;&nbsp;- deviceDidStartListeningForIncomingConnections:</option>
 	
@@ -83,11 +85,13 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device:didReceiveIncomingConnection:">device:didReceiveIncomingConnection:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device:didReceiveIncomingMessage:">device:didReceiveIncomingMessage:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device:didReceiveIncomingMessage:withParams:">device:didReceiveIncomingMessage:withParams:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device:didReceivePresenceUpdate:">device:didReceivePresenceUpdate:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/device:didStopListeningForIncomingConnections:">device:didStopListeningForIncomingConnections:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/deviceDidInitializeSignaling:">deviceDidInitializeSignaling:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/deviceDidStartListeningForIncomingConnections:">deviceDidStartListeningForIncomingConnections:</a></span></li>
 	
@@ -170,7 +174,13 @@
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/device:didReceiveIncomingMessage:">&ndash;&nbsp;device:didReceiveIncomingMessage:</a></code>
+		<code><a href="#//api/name/device:didReceiveIncomingMessage:withParams:">&ndash;&nbsp;device:didReceiveIncomingMessage:withParams:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/deviceDidInitializeSignaling:">&ndash;&nbsp;deviceDidInitializeSignaling:</a></code>
 	</span>
 	
 	
@@ -243,8 +253,8 @@
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/device:didReceiveIncomingMessage:" title="device:didReceiveIncomingMessage:"></a>
-	<h3 class="subsubtitle method-title">device:didReceiveIncomingMessage:</h3>
+	<a name="//api/name/device:didReceiveIncomingMessage:withParams:" title="device:didReceiveIncomingMessage:withParams:"></a>
+	<h3 class="subsubtitle method-title">device:didReceiveIncomingMessage:withParams:</h3>
 	
 	
 	
@@ -254,7 +264,7 @@
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)device:(RCDevice *)<em>device</em> didReceiveIncomingMessage:(NSString *)<em>message</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)device:(RCDevice *)<em>device</em> didReceiveIncomingMessage:(NSString *)<em>message</em> withParams:(NSDictionary *)<em>params</em></code></div>
 
     
 	
@@ -396,6 +406,52 @@
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/deviceDidInitializeSignaling:" title="deviceDidInitializeSignaling:"></a>
+	<h3 class="subsubtitle method-title">deviceDidInitializeSignaling:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p><a href="../Classes/RCDevice.html">RCDevice</a> finished initializing signalling</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)deviceDidInitializeSignaling:(RCDevice *)<em>device</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>device</em></dt>
+			<dd><p>Device of interest</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">RCDeviceDelegate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/deviceDidStartListeningForIncomingConnections:" title="deviceDidStartListeningForIncomingConnections:"></a>
 	<h3 class="subsubtitle method-title">deviceDidStartListeningForIncomingConnections:</h3>
 	
@@ -456,7 +512,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-06-11)</span><br />
+						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-07-16)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 963)</a>.</span></p>
 						

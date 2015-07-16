@@ -69,21 +69,14 @@ extern char REGISTRAR[];
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:1311@52.17.24.9:5080";
-    self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    //self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
 #else
-    self.sipUriText.text = @"sip:1235@54.205.80.5:5080";
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
 
-    //[self connect:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    //[self register:nil];
-    //self.registerOccuredOnce = YES;
 }
 
 - (void)hideKeyBoard
@@ -138,7 +131,6 @@ extern char REGISTRAR[];
     if (self.pendingIncomingConnection) {
         [self.pendingIncomingConnection accept];
         self.connection = self.pendingIncomingConnection;
-        //[self.answerButton.layer removeAllAnimations];
     }
 }
 
@@ -153,7 +145,6 @@ extern char REGISTRAR[];
         // reject the pending RCConnection
         [self.pendingIncomingConnection reject];
         self.pendingIncomingConnection = nil;
-        //[self.answerButton.layer removeAllAnimations];
     }
 }
 
@@ -237,21 +228,6 @@ extern char REGISTRAR[];
     [self.ringingPlayer play];
     self.pendingIncomingConnection = connection;
     
-    // let's add some animation to get users attention (alpha)
-    /*
-    CAKeyframeAnimation * alphaAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
-    
-    alphaAnimation.values = [NSArray arrayWithObjects:@1.0F, @1.0F, @0.0F, @0.0F, @1.0F, @1.0F, nil];
-    alphaAnimation.keyTimes = [NSArray arrayWithObjects:@0.0F, @0.3F, @0.4F, @0.7F, @0.8F, @1.0F, nil];
-    
-    CAAnimationGroup* group = [CAAnimationGroup animation];
-    // repeat forever
-    group.repeatCount = HUGE_VALF;
-    group.duration = 1.0;
-    group.animations = [NSArray arrayWithObjects:alphaAnimation, nil];
-    
-    [self.answerButton.layer addAnimation:group forKey:@"flash-animation"];
-     */
 }
 
 // not implemented yet
@@ -290,7 +266,6 @@ extern char REGISTRAR[];
     if (self.pendingIncomingConnection) {
         self.pendingIncomingConnection = nil;
         self.connection = nil;
-        //[self.answerButton.layer removeAllAnimations];
     }
 }
 
@@ -299,7 +274,13 @@ extern char REGISTRAR[];
     NSLog(@"connectionDidDisconnect");
     self.connection = nil;
     self.pendingIncomingConnection = nil;
-    
+}
+
+- (void)connectionDidGetDeclined:(RCConnection*)connection
+{
+    NSLog(@"connectionDidGetDeclined");
+    self.connection = nil;
+    self.pendingIncomingConnection = nil;
 }
 
 // helpers

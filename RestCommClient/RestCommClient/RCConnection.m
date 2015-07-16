@@ -79,7 +79,14 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 {
     NSLog(@"[RCConnection disconnect]");
     if (self.state == RCConnectionStateConnecting) {
-        [self.sipManager cancel];
+        if (!self.isIncoming) {
+            // for outgoing calls in state connecting (i.e. ringing), treat disconnect as cancel
+            [self.sipManager cancel];
+        }
+        else {
+            // for incoming calls in state connecting (i.e. ringing), treat disconnect as decline
+            [self.sipManager decline];
+        }
     }
     else if (self.state == RCConnectionStateConnected) {
         [self.sipManager bye];
