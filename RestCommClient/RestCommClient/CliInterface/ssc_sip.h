@@ -191,6 +191,7 @@ enum SipMsgEnum {
     ANSWER_PRESSED,
     SIGNALLING_INITIALIZED,
     INCOMING_CANCELLED,
+    OUTGOING_DECLINED,
 };
 
 //SofiaReply();

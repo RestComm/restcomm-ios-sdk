@@ -188,7 +188,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     if (conf->ssc_contact)
         contact = conf->ssc_contact;
     else
-        contact = "sip:*:*;transport=tcp";
+        contact = "sip:*:5060;transport=tcp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
@@ -753,6 +753,12 @@ void ssc_r_invite(int status, char const *phrase,
         op->op_callstate = (op_callstate_t)(op->op_callstate & ~opc_sent);
         if (status == 401 || status == 407)
             ssc_store_pending_auth(ssc, op, sip, tags);
+
+        if (status == 486 || status == 600 || status == 603) {
+            // notify the client application that we are ringing
+            setSofiaReply(OUTGOING_DECLINED, "");
+            sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        }
     }
     if (status == 180) {
         // notify the client application that we are ringing

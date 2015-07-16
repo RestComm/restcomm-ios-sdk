@@ -23,7 +23,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#define DEBUG_SOFIA 0
+#define DEBUG_SOFIA 1
 
 //#define HAVE_MEDIA_WEBRTC_IMPL 1
 #define DEBUG_PRINTF(...) \

@@ -133,6 +133,9 @@ int read_pipe[2];
     else if (reply->rc == INCOMING_CANCELLED) {
         [self.connectionDelegate incomingCancelled:self];
     }
+    else if (reply->rc == OUTGOING_DECLINED) {
+        [self.connectionDelegate outgoingDeclined:self];
+    }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];

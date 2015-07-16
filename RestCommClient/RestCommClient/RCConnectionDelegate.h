@@ -68,7 +68,7 @@
  *
  *  @param connection Connection of interest
  */
-- (void)connectionDidDecline:(RCConnection*)connection;
+- (void)connectionDidGetDeclined:(RCConnection*)connection;
 
 /**
  *  @abstract Connection was disconnected

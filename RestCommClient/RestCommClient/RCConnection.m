@@ -105,6 +105,12 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self.delegate connectionDidConnect:self];
 }
 
+- (void)outgoingDeclined:(SipManager *)sipManager
+{
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidGetDeclined:self];
+}
+
 - (void)incomingBye:(SipManager *)sipManager
 {
     self.state = RCConnectionStateDisconnected;
