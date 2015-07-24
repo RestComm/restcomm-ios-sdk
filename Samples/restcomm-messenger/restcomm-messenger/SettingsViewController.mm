@@ -66,12 +66,15 @@ char REGISTRAR[] = "54.225.212.193:5080";
 - (void)viewWillAppear:(BOOL)animated
 {
     TabBarController * tabBarController = (TabBarController*)self.tabBarController;
+    // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
+    /*
     if (tabBarController.viewController.connection.state == RCConnectionStateConnected) {
         self.muteSwitch.enabled = true;
     }
     else {
         self.muteSwitch.enabled = false;
     }
+     */
 }
 
 - (void)hideKeyBoard
@@ -109,6 +112,8 @@ char REGISTRAR[] = "54.225.212.193:5080";
 
 - (IBAction)toggleMute:(id)sender
 {
+    // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
+    /*
     TabBarController * tabBarController = (TabBarController*)self.tabBarController;
     RCConnection * connection = tabBarController.viewController.connection;
 
@@ -124,6 +129,7 @@ char REGISTRAR[] = "54.225.212.193:5080";
     else {
         connection.muted = false;
     }
+     */
 }
 
 - (BOOL)shouldAutorotate

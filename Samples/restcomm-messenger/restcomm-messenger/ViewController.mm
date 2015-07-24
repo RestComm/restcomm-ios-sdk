@@ -25,6 +25,7 @@
 #import "ViewController.h"
 #import "RestCommClient.h"
 #import "TabBarController.h"
+#import "CallViewController.h"
 
 extern char AOR[];
 extern char REGISTRAR[];
@@ -33,7 +34,7 @@ extern char REGISTRAR[];
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 @property (weak, nonatomic) IBOutlet UITextField *sipUriText;
 @property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
-@property (weak, nonatomic) IBOutlet UIButton *answerButton;
+//@property (weak, nonatomic) IBOutlet UIButton *answerButton;
 @end
 
 @implementation ViewController
@@ -55,7 +56,7 @@ extern char REGISTRAR[];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
-    self.connection = nil;
+    //self.connection = nil;
 
     TabBarController * tabBarController = (TabBarController *)self.tabBarController;
     // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
@@ -107,10 +108,26 @@ extern char REGISTRAR[];
     [self.sipMessageText endEditing:false];
 }
 
+/**/
 - (IBAction)dialPressed:(id)sender
 {
-    [self.parameters setObject:self.sipUriText.text forKey:@"username"];
+    //[self performSegueWithIdentifier:@"invoke-call-controller" sender:self];
+    // start the call
+    /**/
+    CallViewController *callViewController =
+    [[CallViewController alloc] initWithDevice:self.device andParams:[NSDictionary dictionaryWithObject:self.sipUriText.text
+                                                                                                 forKey:@"username"]];
+    //videoCallViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:callViewController
+                       animated:YES
+                     completion:nil];
+     /**/
+
     
+    //[self.parameters setObject:self.sipUriText.text forKey:@"username"];
+    
+    // TODO: open the call view
+    /*
     // call the other party
     if (self.connection) {
         NSLog(@"Connection already ongoing");
@@ -119,8 +136,10 @@ extern char REGISTRAR[];
     self.connection = [self.device connect:self.parameters delegate:self];
     // hide keyboard
     [self.sipUriText endEditing:false];
+     */
 }
 
+/*
 - (IBAction)answerPressed:(id)sender
 {
     if (self.ringingPlayer.isPlaying) {
@@ -153,6 +172,26 @@ extern char REGISTRAR[];
     [self disconnect];
 }
 
+- (IBAction)cancelPressed:(id)sender
+{
+    if (self.connection) {
+        [self.connection disconnect];
+        self.connection = nil;
+        self.pendingIncomingConnection = nil;
+    }
+}
+
+- (void)disconnect
+{
+    if (self.connection) {
+        [self.connection disconnect];
+        
+        self.connection = nil;
+        self.pendingIncomingConnection = nil;
+    }
+}
+ */
+ 
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized && !self.isRegistered) {
@@ -172,29 +211,11 @@ extern char REGISTRAR[];
     self.isRegistered = YES;
 }
 
-
-- (void)disconnect
-{
-    if (self.connection) {
-        [self.connection disconnect];
-        
-        self.connection = nil;
-        self.pendingIncomingConnection = nil;
-    }
-}
-
 - (void)unregister:(NSNotification *)notification
 {
-    [self disconnect];
+    //[self disconnect];
     [self.device unlisten];
     self.isRegistered = NO;
-}
-
-- (IBAction)cancelPressed:(id)sender
-{
-    [self.connection disconnect];
-    self.connection = nil;
-    self.pendingIncomingConnection = nil;
 }
 
 // ---------- Delegate methods for RC Device
@@ -225,8 +246,9 @@ extern char REGISTRAR[];
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
-    [self.ringingPlayer play];
-    self.pendingIncomingConnection = connection;
+    // TODO: open call view
+    //[self.ringingPlayer play];
+    //self.pendingIncomingConnection = connection;
     
 }
 
@@ -234,53 +256,6 @@ extern char REGISTRAR[];
 - (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent
 {
     
-}
-
-// ---------- Delegate methods for RC Connection
-// not implemented yet
-- (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error
-{
-    
-}
-
-// optional
-// 'ringing' for outgoing connections
-- (void)connectionDidStartConnecting:(RCConnection*)connection
-{
-    NSLog(@"connectionDidStartConnecting");
-}
-
-- (void)connectionDidConnect:(RCConnection*)connection
-{
-    NSLog(@"connectionDidConnect");
-}
-
-- (void)connectionDidCancel:(RCConnection*)connection
-{
-    NSLog(@"connectionDidCancel");
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-    
-    if (self.pendingIncomingConnection) {
-        self.pendingIncomingConnection = nil;
-        self.connection = nil;
-    }
-}
-
-- (void)connectionDidDisconnect:(RCConnection*)connection
-{
-    NSLog(@"connectionDidDisconnect");
-    self.connection = nil;
-    self.pendingIncomingConnection = nil;
-}
-
-- (void)connectionDidGetDeclined:(RCConnection*)connection
-{
-    NSLog(@"connectionDidGetDeclined");
-    self.connection = nil;
-    self.pendingIncomingConnection = nil;
 }
 
 // helpers
@@ -304,19 +279,6 @@ extern char REGISTRAR[];
         NSLog(@"Error: %@", [error description]);
         return;
     }
-    
-    // ringing
-    filename = @"ringing.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    self.ringingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-    if (!self.ringingPlayer) {
-        NSLog(@"Error: %@", [error description]);
-        return;
-    }
-    self.ringingPlayer.numberOfLoops = -1; // repeat forever
 }
 
 - (BOOL)shouldAutorotate
@@ -327,6 +289,16 @@ extern char REGISTRAR[];
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"invoke-call-controller"]) {
+        CallViewController *callViewController = [segue destinationViewController];
+        callViewController.delegate = self;
+        [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
+    }
+    
 }
 
 @end

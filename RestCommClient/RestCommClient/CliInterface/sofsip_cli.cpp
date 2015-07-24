@@ -71,15 +71,15 @@ typedef su_wait_t cli_input_t;
 // let's reference nua & nta module global log facilities to be able to update their levels
 extern su_log_t nua_log[];
 extern su_log_t nta_log[];
-/*
-extern su_log_t iptsec_log[];
+
+
+//extern su_log_t iptsec_log[];
 extern su_log_t nea_log[];
 extern su_log_t nth_client_log[];
 extern su_log_t nth_server_log[];
-extern su_log_t soa_log[];
-extern su_log_t sresolv_log[];
-extern su_log_t stun_log[];
- */
+//extern su_log_t soa_log[];
+//extern su_log_t sresolv_log[];
+//extern su_log_t stun_log[];
 
 struct cli_s {
   su_home_t     cli_home[1];	/**< Our memory home */
@@ -265,8 +265,11 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   cli->cli_init = 1;
 
   // set default level to 2: non-critical errors
-  su_log_set_level(nua_log, 0);
-  su_log_set_level(nta_log, 0);
+  //su_log_set_level(nua_log, 9);
+  //su_log_set_level(nta_log, 9);
+  //su_log_set_level(nea_log, 9);
+  //su_log_set_level(nth_client_log, 9);
+  //su_log_set_level(nth_server_log, 9);
     
   /*
   su_log_set_level(iptsec_log, 2);

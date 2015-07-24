@@ -188,7 +188,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     if (conf->ssc_contact)
         contact = conf->ssc_contact;
     else
-        contact = "sip:*:5060;transport=udp";
+        contact = "sip:*:5090;transport=udp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
@@ -769,6 +769,10 @@ void ssc_r_invite(int status, char const *phrase,
         // notify the client application that we are established
         setSofiaReply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
         sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        
+        // TODO: remove when done debugging
+        //nua_get_hparams(nh, TAG_ANY(), TAG_NULL());
+        //nua_get_params(nua, TAG_ANY(), TAG_NULL());
     }
     
 }
@@ -812,10 +816,22 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
         DEBUG_PRINTF("Error: sip is NULL in ssc_i_invite");
         return;
     }
+    
+    /*
+    char const *s_contact = NULL;
 
+    tl_gets(tags,
+            SIPTAG_CONTACT_STR_REF(s_contact),
+            TAG_END());
+     */
+    
     from = sip->sip_from;
     to = sip->sip_to;
     subject = sip->sip_subject;
+    //sip_contact_t const *contact = sip->sip_contact;
+    //sip_contact_t * contact = sip_contact_make(ssc->ssc_home, "sip:alice@54.225.212.193:5080;transport=udp");
+    //url_t * url = url_make(ssc->ssc_home, "sip:alice@54.225.212.193:5080;transport=udp");
+    //sip->sip_contact->m_url = url;
     
     if (!(from && to)) {
         DEBUG_PRINTF("Error: sip is NULL in ssc_i_invite");
@@ -854,6 +870,12 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
                 // notify the client application that they should answer
                 setSofiaReply(INCOMING_CALL, "");
                 sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+
+                // TODO: remove when done debugging
+                //nua_get_hparams(nua_default(nua), TAG_ANY(), TAG_NULL());
+                //nua_get_params(nua, TAG_ANY(), TAG_NULL());
+                //nua_set_hparams(nh, SIPTAG_CONTACT_STR("sip:alice@54.225.212.191.5080;transport=udp"), TAG_NULL());
+                //nua_get_hparams(nh, TAG_ANY(), TAG_NULL());
             }
         }
         else {
@@ -956,6 +978,11 @@ static void priv_media_state_cb(void* context, int state, void * data)
                             SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
                             SOATAG_RTP_SELECT(SOA_RTP_SELECT_ALL),
                             TAG_END());
+                
+                // TODO: remove when done debugging
+                //nua_get_hparams(op->op_handle, TAG_ANY(), TAG_NULL());
+                //nua_get_params(nua, TAG_ANY(), TAG_NULL());
+
             }
             else {
                 DEBUG_PRINTF("ERROR: no SDP provided by media subsystem, unable to answer call.");
@@ -1171,10 +1198,20 @@ void ssc_i_state(int status, char const *phrase,
 void ssc_bye(ssc_t *ssc)
 {
     ssc_oper_t *op = ssc_oper_find_call(ssc);
+    //sip_to_t * to = sip_to_make(ssc->ssc_home, "sip:alice@54.225.212.193:5080");
     
     if (op) {
+        /*
+        nua_set_hparams(op->op_handle,
+                        //SIPTAG_REQUEST_STR("BYE sip:alice@54.225.212.193:5080 SIP/2.0"),
+                        TAG_NULL());
+         */
         DEBUG_PRINTF("%s: BYE to %s\n", ssc->ssc_name, op->op_ident);
-        nua_bye(op->op_handle, TAG_END());
+        nua_bye(op->op_handle,
+                //SIPTAG_REQUEST_STR("BYE sip:alice@54.225.212.193:5080 SIP/2.0"),
+                //NUTAG_URL(to->a_url),  // doesn't change anything
+                //SIPTAG_TO(sip_to_make(ssc->ssc_home, "sip:alice@54.225.212.193:5080")),
+                TAG_END());
         op->op_callstate = (op_callstate_t)0;
     }
     else {

@@ -133,9 +133,6 @@
                                 <state key="normal" title="Dial">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="dialPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QAk-OV-VPF"/>
-                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Message:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTk-Pn-KdC">
                                 <rect key="frame" x="36" y="275" width="163" height="61"/>

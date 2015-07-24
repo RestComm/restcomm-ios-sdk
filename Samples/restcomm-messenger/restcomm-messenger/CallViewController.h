@@ -23,19 +23,23 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>   // sounds
 
-#import "CallViewController.h"
 #import "RestCommClient.h"
 
-@interface ViewController : UIViewController<RCDeviceDelegate, CallDelegate>
-//- (void)connect;
-//- (void)disconnect;
+@protocol CallDelegate;
 
-@property (nonatomic,retain) RCDevice* device;
-//@property (nonatomic,retain) RCConnection* connection;
-//@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
+@interface CallViewController : UIViewController<RCConnectionDelegate>
+- (id)initWithDevice:(RCDevice*)device andParams:(NSDictionary *)params;
+// owner is ViewController
+@property (weak) RCDevice * device;
+@property (nonatomic,retain) RCConnection* connection;
+@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
+@property (weak) id<CallDelegate> delegate;
 @property NSMutableDictionary * parameters;
 @property AVAudioPlayer * messagePlayer;
-//@property AVAudioPlayer * ringingPlayer;
-@property BOOL isInitialized;
-@property BOOL isRegistered;
+@property AVAudioPlayer * ringingPlayer;
+@property AVAudioPlayer * callingPlayer;
+@end
+
+@protocol CallDelegate <NSObject>
+- (void)callViewController:(CallViewController *)callViewController didSendStatus:(NSString *)status subStatus:(NSString*)subStatus;
 @end
