@@ -24,7 +24,7 @@
 
 #import "ViewController.h"
 #import "RestCommClient.h"
-#import "TabBarController.h"
+#import "SettingsNavigationController.h"
 #import "CallViewController.h"
 
 extern char AOR[];
@@ -58,9 +58,9 @@ extern char REGISTRAR[];
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
     //self.connection = nil;
 
-    TabBarController * tabBarController = (TabBarController *)self.tabBarController;
+    //TabBarController * tabBarController = (TabBarController *)self.tabBarController;
     // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
-    tabBarController.viewController = self;
+    //tabBarController.viewController = self;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -330,7 +330,10 @@ extern char REGISTRAR[];
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
-    
+    if ([segue.identifier isEqualToString:@"invoke-settings"]) {
+        SettingsNavigationController * settingsNavigationController = [segue destinationViewController];
+        settingsNavigationController.device = self.device;
+    }
 }
 
 @end

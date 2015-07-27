@@ -21,7 +21,7 @@
  */
 
 #import "SettingsViewController.h"
-#import "TabBarController.h"
+#import "SettingsNavigationController.h"
 
 char AOR[] = "sip:bob@telestax.com";
 // elastic
@@ -65,9 +65,12 @@ char REGISTRAR[] = "192.168.2.32:5080";
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
+    self.navigationItem.leftBarButtonItem = backButton;
+    /*
     TabBarController * tabBarController = (TabBarController*)self.tabBarController;
     // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
-    /*
     if (tabBarController.viewController.connection.state == RCConnectionStateConnected) {
         self.muteSwitch.enabled = true;
     }
@@ -75,6 +78,12 @@ char REGISTRAR[] = "192.168.2.32:5080";
         self.muteSwitch.enabled = false;
     }
      */
+}
+
+- (IBAction)backPressed
+{
+    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
+
 }
 
 - (void)hideKeyBoard
@@ -92,8 +101,9 @@ char REGISTRAR[] = "192.168.2.32:5080";
 
 - (IBAction)updatePressed:(id)sender
 {
-    TabBarController * tabBarController = (TabBarController*)self.tabBarController;
-    RCDevice * device = tabBarController.viewController.device;
+    /**/
+    //TabBarController * tabBarController = (TabBarController*)self.tabBarController;
+    //this.device = tabBarController.viewController.device;
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     bool update = false;
     if (![self.aorText.text isEqualToString:@""]) {
@@ -106,8 +116,10 @@ char REGISTRAR[] = "192.168.2.32:5080";
     }
 
     if (update) {
-        [device updateParams:params];
+        SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
+        [settingsNavigationController.device updateParams:params];
     }
+     /**/
 }
 
 - (IBAction)toggleMute:(id)sender

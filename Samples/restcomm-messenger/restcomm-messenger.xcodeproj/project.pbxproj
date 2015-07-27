@@ -50,6 +50,7 @@
 		AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */; };
 		AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */; };
 		AE96D8D71B664633008FAC51 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8D61B664633008FAC51 /* CallViewController.m */; };
+		AE96D8E61B66630A008FAC51 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
@@ -114,6 +115,8 @@
 		AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024@2x.png"; sourceTree = "<group>"; };
 		AE96D8D51B664633008FAC51 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		AE96D8D61B664633008FAC51 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
+		AE96D8E41B66630A008FAC51 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsNavigationController.h; sourceTree = "<group>"; };
+		AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsNavigationController.m; sourceTree = "<group>"; };
 		AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		AEC39ADC1A5ADFF200B155E4 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -302,6 +305,8 @@
 				AED0B07B1A097764008A6057 /* TabBarController.mm */,
 				AED0B07C1A097764008A6057 /* ViewController.h */,
 				AED0B07D1A097764008A6057 /* ViewController.mm */,
+				AE96D8E41B66630A008FAC51 /* SettingsNavigationController.h */,
+				AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */,
 				AE96D8D51B664633008FAC51 /* CallViewController.h */,
 				AE96D8D61B664633008FAC51 /* CallViewController.m */,
 			);
@@ -465,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE96D8D71B664633008FAC51 /* CallViewController.m in Sources */,
+				AE96D8E61B66630A008FAC51 /* SettingsNavigationController.m in Sources */,
 				AED0B0831A097764008A6057 /* main.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
