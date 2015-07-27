@@ -35,7 +35,7 @@
 @property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property (weak) id<CallDelegate> delegate;
 @property NSMutableDictionary * parameters;
-@property AVAudioPlayer * messagePlayer;
+//@property AVAudioPlayer * messagePlayer;
 @property AVAudioPlayer * ringingPlayer;
 @property AVAudioPlayer * callingPlayer;
 @end

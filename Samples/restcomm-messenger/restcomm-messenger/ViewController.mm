@@ -70,8 +70,8 @@ extern char REGISTRAR[];
     [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
-    //self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
+    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
@@ -113,7 +113,7 @@ extern char REGISTRAR[];
 {
     //[self performSegueWithIdentifier:@"invoke-call-controller" sender:self];
     // start the call
-    /**/
+    /*
     CallViewController *callViewController =
     [[CallViewController alloc] initWithDevice:self.device andParams:[NSDictionary dictionaryWithObject:self.sipUriText.text
                                                                                                  forKey:@"username"]];
@@ -121,7 +121,7 @@ extern char REGISTRAR[];
     [self presentViewController:callViewController
                        animated:YES
                      completion:nil];
-     /**/
+     */
 
     
     //[self.parameters setObject:self.sipUriText.text forKey:@"username"];
@@ -191,6 +191,10 @@ extern char REGISTRAR[];
     }
 }
  */
+- (IBAction)registerPressed:(id)sender
+{
+}
+
  
 - (void)register:(NSNotification *)notification
 {
@@ -249,6 +253,19 @@ extern char REGISTRAR[];
     // TODO: open call view
     //[self.ringingPlayer play];
     //self.pendingIncomingConnection = connection;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.pendingIncomingConnection = connection;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
+
+    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:callViewController
+                       animated:YES
+                     completion:nil];
     
 }
 
@@ -261,8 +278,20 @@ extern char REGISTRAR[];
 // helpers
 - (void)prependToDialog:(NSString*)msg sender:(NSString*)sender
 {
-    NSString* updatedDialog = [NSString stringWithFormat:@"%@: %@\n%@", sender, msg, self.sipDialogText.text];
-    self.sipDialogText.text = [NSString stringWithString:updatedDialog];
+    if ([self.sipDialogText.text isEqualToString:@""]) {
+        self.sipDialogText.text = [NSString stringWithFormat:@"%@", msg];
+        //self.sipDialogText.text = [self.sipDialogText.text stringByAppendingString: //stringWithString:updatedDialog];
+    }
+    else {
+        NSString* updatedDialog = [NSString stringWithFormat:@"%@\n%@: %@", self.sipDialogText.text, sender, msg];
+        self.sipDialogText.text = [NSString stringWithString:updatedDialog];
+    }
+    
+    // after appending scroll down too
+    if (self.sipDialogText.text.length > 0 ) {
+        NSRange bottom = NSMakeRange(self.sipDialogText.text.length - 1, 1);
+        [self.sipDialogText scrollRangeToVisible:bottom];
+    }
 }
 
 - (void)prepareSounds
@@ -296,6 +325,9 @@ extern char REGISTRAR[];
     if ([segue.identifier isEqualToString:@"invoke-call-controller"]) {
         CallViewController *callViewController = [segue destinationViewController];
         callViewController.delegate = self;
+        callViewController.device = self.device;
+        callViewController.parameters = [[NSMutableDictionary alloc] init];
+        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
     

@@ -31,12 +31,14 @@
 //@property (weak, nonatomic) IBOutlet UITextField *sipUriText;
 //@property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
 //@property (weak, nonatomic) IBOutlet UIButton *answerButton;
+@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 @end
 
 @implementation CallViewController
 
 
-- (instancetype)initWithDevice:(RCDevice*)device andParams:(NSDictionary *)params
+/*
+- (instancetype)initWithDevice:(RCDevice*)device andParams:(NSMutableDictionary *)params
 {
     if (self = [super init]) {
         self.device = device;
@@ -44,28 +46,34 @@
     }
     return self;
 }
+ */
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.connection = nil;
-    self.pendingIncomingConnection = nil;
+    [self prepareSounds];
+    self.muteSwitch.enabled = false;
+    //self.muteSwitch.isOn = false;
+
+    //self.connection = nil;
+    //self.pendingIncomingConnection = nil;
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //[self.parameters setObject:self.sipUriText.text forKey:@"username"];
-    
-    /*
-    // call the other party
-    if (self.connection) {
-        NSLog(@"Connection already ongoing");
-        return;
+    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
+        // call the other party
+        if (self.connection) {
+            NSLog(@"Connection already ongoing");
+            return;
+        }
+        self.connection = [self.device connect:self.parameters delegate:self];
     }
-    self.connection = [self.device connect:self.parameters delegate:self];
-     */
+    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
+        [self.ringingPlayer play];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -148,6 +156,7 @@
 - (void)connectionDidConnect:(RCConnection*)connection
 {
     NSLog(@"connectionDidConnect");
+    self.muteSwitch.enabled = true;
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
@@ -161,6 +170,8 @@
     if (self.pendingIncomingConnection) {
         self.pendingIncomingConnection = nil;
         self.connection = nil;
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:nil];
     }
 }
 
@@ -169,6 +180,8 @@
     NSLog(@"connectionDidDisconnect");
     self.connection = nil;
     self.pendingIncomingConnection = nil;
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection
@@ -176,22 +189,42 @@
     NSLog(@"connectionDidGetDeclined");
     self.connection = nil;
     self.pendingIncomingConnection = nil;
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
+
+- (IBAction)toggleMute:(id)sender
+{
+    // if we aren't in connected state it doesn't make any sense to mute
+    if (self.connection.state != RCConnectionStateConnected) {
+        return;
+    }
+    
+    UISwitch * muteSwitch = sender;
+    if (muteSwitch.isOn) {
+        self.connection.muted = true;
+    }
+    else {
+        self.connection.muted = false;
+    }
 }
 
 - (void)prepareSounds
 {
     // message
-    NSString * filename = @"message.mp3";
+    NSString * filename; // = @"message.mp3";
     // we are assuming the extension will always be the last 3 letters of the filename
-    NSString * file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
+    NSString * file;  // = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                      //                                ofType:[filename substringFromIndex:[filename length] - 3]];
     
     NSError *error;
+    /*
     self.messagePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
     if (!self.messagePlayer) {
         NSLog(@"Error: %@", [error description]);
         return;
     }
+     */
     
     // ringing
     filename = @"ringing.mp3";
