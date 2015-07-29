@@ -233,8 +233,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
     // TODO: if we want to only work with audio, here's one place to update
-    NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
-                                      //[[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
+    NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -249,6 +249,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 {
     RTCMediaStream* localStream = [_factory mediaStreamWithLabel:@"ARDAMS"];
 
+#define CUSTOM_ENABLE_VIDEO 1
 #if CUSTOM_ENABLE_VIDEO
     RTCVideoTrack* localVideoTrack = nil;
     
@@ -280,8 +281,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     if (localVideoTrack) {
         [localStream addVideoTrack:localVideoTrack];
     }
-    // TODO: uncomment this after I setup MediaWebRTC protocol
-    [self.mediaDelegate sipManager:self didReceiveLocalVideoTrack:localVideoTrack];
+    
+    [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:localVideoTrack];
     //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
 #endif
 #endif
@@ -305,6 +306,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 }
 
 #pragma mark - Helpers
+// from candidateless sdp stored at self.sdp and candidates stored at array, we construct a full sdp
 - (NSString*)updateSdpWithCandidates:(NSArray *)array
 {
     // Candidates go after the 'a=rtcp' SDP attribute
@@ -456,8 +458,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
               (unsigned long)stream.audioTracks.count);
         
         if (stream.videoTracks.count) {
-            // TODO: notify our delegate
-            //RTCVideoTrack *videoTrack = stream.videoTracks[0];
+            RTCVideoTrack *videoTrack = stream.videoTracks[0];
+            [self.mediaDelegate mediaController:self didReceiveRemoteVideoTrack:videoTrack];
             //[self.mediaDelegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
         }
     });

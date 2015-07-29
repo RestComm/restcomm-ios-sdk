@@ -74,12 +74,12 @@ int read_pipe[2];
 // webrtc implementation details
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveLocalVideoTrack:(RTCVideoTrack *)videoTrack
 {
-    
+    [self.connectionDelegate sipManager:self receivedLocalVideo:videoTrack];
 }
 
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveRemoteVideoTrack:(RTCVideoTrack *)videoTrack
 {
-    
+    [self.connectionDelegate sipManager:self receivedRemoteVideo:videoTrack];
 }
 
 /*

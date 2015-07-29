@@ -22,6 +22,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "RTCVideoTrack.h"
 
 /** @file RCConnectionDelegate.h */
 
@@ -82,13 +83,13 @@
  *
  *  @param connection Connection of interest
  */
-- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(UIView *)localVideoView;
+- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoView;
 
 /**
  *  @abstract Connection was disconnected (**Not Implemented yet**)
  *
  *  @param connection Connection of interest
  */
-- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(UIView *)remoteVideoView;
+- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoView;
 
 @end

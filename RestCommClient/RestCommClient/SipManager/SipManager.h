@@ -63,6 +63,8 @@
 - (void)incomingBye:(SipManager *)sipManager;
 - (void)incomingCancelled:(SipManager *)sipManager;
 - (void)outgoingDeclined:(SipManager *)sipManager;
+- (void)sipManager:(SipManager *)sipManager receivedLocalVideo:(RTCVideoTrack *)localView;
+- (void)sipManager:(SipManager *)sipManager receivedRemoteVideo:(RTCVideoTrack *)remoteView;
 //- (void)incomingRinging:(SipManager *)sipManager;
 //- (void)incomingEstablished:(SipManager *)sipManager;
 @end

@@ -24,6 +24,7 @@
 
 #import "CallViewController.h"
 #import "RestCommClient.h"
+
 //#import "TabBarController.h"
 
 @interface CallViewController ()
@@ -31,11 +32,14 @@
 //@property (weak, nonatomic) IBOutlet UITextField *sipUriText;
 //@property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
 //@property (weak, nonatomic) IBOutlet UIButton *answerButton;
+@property (weak, nonatomic) IBOutlet UIButton *declineButton;
 @property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
+@property ARDVideoCallView *videoCallView;
+@property RTCVideoTrack *remoteVideoTrack;
+@property RTCVideoTrack *localVideoTrack;
 @end
 
 @implementation CallViewController
-
 
 /*
 - (instancetype)initWithDevice:(RCDevice*)device andParams:(NSMutableDictionary *)params
@@ -58,6 +62,15 @@
 
     //self.connection = nil;
     //self.pendingIncomingConnection = nil;
+    
+    //self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:CGRectZero];
+    self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
+    self.videoCallView.delegate = self;
+    //self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
+    //self.view = self.videoCallView;
+    [self.view insertSubview:self.videoCallView belowSubview:self.declineButton];
+    //[self.view addSubview:self.videoCallView];
+
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -74,6 +87,8 @@
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
         [self.ringingPlayer play];
     }
+    
+    //[self.view insertSubview:self.videoCallView aboveSubview:self.view];
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,6 +152,27 @@
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:nil];
     }
+    [self stopVideoRendering];
+}
+
+- (void)stopVideoRendering
+{
+    if (self.remoteVideoTrack) {
+        [self.remoteVideoTrack removeRenderer:self.videoCallView.remoteVideoView];
+        self.remoteVideoTrack = nil;
+        [self.videoCallView.remoteVideoView renderFrame:nil];
+    }
+    if (self.localVideoTrack) {
+        [self.localVideoTrack removeRenderer:self.videoCallView.localVideoView];
+        self.localVideoTrack = nil;
+        [self.videoCallView.localVideoView renderFrame:nil];
+    }
+}
+
+// ---------- Video View delegate methods:
+- (void)videoCallViewDidHangup:(ARDVideoCallView *)view
+{
+    [self disconnect];
 }
 
 // ---------- Delegate methods for RC Connection
@@ -170,6 +206,8 @@
     if (self.pendingIncomingConnection) {
         self.pendingIncomingConnection = nil;
         self.connection = nil;
+        [self stopVideoRendering];
+
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:nil];
     }
@@ -180,6 +218,8 @@
     NSLog(@"connectionDidDisconnect");
     self.connection = nil;
     self.pendingIncomingConnection = nil;
+    [self stopVideoRendering];
+
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -189,8 +229,27 @@
     NSLog(@"connectionDidGetDeclined");
     self.connection = nil;
     self.pendingIncomingConnection = nil;
+    [self stopVideoRendering];
+
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
+}
+
+- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack
+{
+    if (!self.localVideoTrack) {
+        self.localVideoTrack = localVideoTrack;
+        [self.localVideoTrack addRenderer:self.videoCallView.localVideoView];
+    }
+}
+
+- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoTrack
+{
+    if (!self.remoteVideoTrack) {
+        self.remoteVideoTrack = remoteVideoTrack;
+        [self.remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
+        //self.videoCallView.statusLabel.hidden = YES;
+    }
 }
 
 - (IBAction)toggleMute:(id)sender

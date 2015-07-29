@@ -22,6 +22,7 @@
 
 #import "RCConnection.h"
 #import "SipManager.h"
+#import "RTCVideoTrack.h"
 
 @interface RCConnection ()
 // private methods
@@ -128,6 +129,16 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 {
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidCancel:self];
+}
+
+- (void)sipManager:(SipManager *)sipManager receivedLocalVideo:(RTCVideoTrack *)localView
+{
+    [self.delegate connection:self didReceiveLocalVideo:localView];
+}
+
+- (void)sipManager:(SipManager *)sipManager receivedRemoteVideo:(RTCVideoTrack *)remoteView
+{
+    [self.delegate connection:self didReceiveRemoteVideo:remoteView];
 }
 
 - (void)setMuted:(BOOL)isMuted

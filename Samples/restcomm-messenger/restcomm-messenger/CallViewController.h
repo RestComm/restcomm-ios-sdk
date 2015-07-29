@@ -22,13 +22,13 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>   // sounds
-
+#import "ARDVideoCallView.h"
 #import "RestCommClient.h"
 
 @protocol CallDelegate;
 
-@interface CallViewController : UIViewController<RCConnectionDelegate>
-- (id)initWithDevice:(RCDevice*)device andParams:(NSDictionary *)params;
+@interface CallViewController : UIViewController<RCConnectionDelegate, ARDVideoCallViewDelegate>
+//- (id)initWithDevice:(RCDevice*)device andParams:(NSDictionary *)params;
 // owner is ViewController
 @property (weak) RCDevice * device;
 @property (nonatomic,retain) RCConnection* connection;

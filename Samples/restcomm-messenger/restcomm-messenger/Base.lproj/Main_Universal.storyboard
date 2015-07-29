@@ -190,6 +190,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="declineButton" destination="SrQ-5D-pcv" id="cFP-Ni-nJJ"/>
                         <outlet property="muteSwitch" destination="Awg-1u-Ah4" id="CgY-a5-oAd"/>
                     </connections>
                 </viewController>
