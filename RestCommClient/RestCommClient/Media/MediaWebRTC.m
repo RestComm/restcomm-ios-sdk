@@ -315,57 +315,125 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     // and the second part is from there to the end. Then insert the candidates
     // in-between
     
-    // Since iOS doesn't support regex in NSStrings we need to find the place
-    // to split by first searching for 'a=rtcp' and from that point to look
-    // for the end of this line (i.e. \r\n)
-    NSString *rtcpAttribute = @"a=rtcp:";
-    NSRange startRange = [self.sdp rangeOfString:rtcpAttribute];
-    NSString *fromRtcpAttribute = [self.sdp substringFromIndex:startRange.location];
-    NSRange endRange = [fromRtcpAttribute rangeOfString:@"\r\n"];
-    
-    // Found the split point, break the sdp string in 2
-    NSString *firstPart = [self.sdp substringToIndex:startRange.location + endRange.location + 2];
-    NSString *lastPart = [self.sdp substringFromIndex:startRange.location + endRange.location + 2];
-    NSMutableString * candidates = [[NSMutableString alloc] init];
+    // split audio & video candidates in 2 groups of strings
+    BOOL videoEnabled = NO;
+    NSMutableString * audioCandidates = [[NSMutableString alloc] init];
+    NSMutableString * videoCandidates = [[NSMutableString alloc] init];
     for (int i = 0; i < _iceCandidates.count; i++) {
         RTCICECandidate *iceCandidate = (RTCICECandidate*)[_iceCandidates objectAtIndex:i];
         if ([iceCandidate.sdpMid isEqualToString:@"audio"]) {
             // don't forget to prepend an 'a=' to make this an attribute line and to append '\r\n'
-            [candidates appendFormat:@"a=%@\r\n",iceCandidate.sdp];
+            [audioCandidates appendFormat:@"a=%@\r\n",iceCandidate.sdp];
+        }
+        if ([iceCandidate.sdpMid isEqualToString:@"video"]) {
+            // don't forget to prepend an 'a=' to make this an attribute line and to append '\r\n'
+            [videoCandidates appendFormat:@"a=%@\r\n",iceCandidate.sdp];
+            videoEnabled = YES;
         }
     }
-    NSString *updatedSdp = [NSString stringWithFormat:@"%@%@%@", firstPart, candidates, lastPart];
+
+    // insert inside the candidateless SDP the candidates per media type
+    NSMutableString *fullString = [[NSMutableString alloc] initWithString:@""];
+    NSString *searchedString = self.sdp;
+    NSRange searchedRange = NSMakeRange(0, [searchedString length]);
+    NSString *pattern = @"(.*?)(a=rtcp:.*?\\r\\n)";
+    NSError  *error = nil;
+
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                           options:NSRegularExpressionDotMatchesLineSeparators
+                                                                             error:&error];
+    if (error != nil) {
+        NSLog(@"updateSdpWithCandidates: regex error");
+        return @"";
+    }
     
-    // the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
-    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, updatedSdp];
-    //NSLog(@"Complete Message: %@", completeMessage);
+    NSArray* matches = [regex matchesInString:searchedString options:0 range:searchedRange];
+    int matchIndex = 0;
+    for (NSTextCheckingResult* match in matches) {
+        /*
+        NSString * temp = [searchedString substringWithRange:[match rangeAtIndex:0]];
+        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
+        temp = [searchedString substringWithRange:[match rangeAtIndex:1]];
+        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1: %@", temp);
+        temp = [searchedString substringWithRange:[match rangeAtIndex:2]];
+        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2: %@", temp);
+         */
+        if (matchIndex == 0) {
+            [fullString appendString:[[NSString stringWithFormat:@"%@%@%@", [searchedString substringWithRange:[match rangeAtIndex:1]],
+                          [searchedString substringWithRange:[match rangeAtIndex:2]],
+                          audioCandidates] mutableCopy]];
+        }
+        else {
+            if (videoEnabled) {
+                // only add video candidates if enabled
+                NSUInteger finalLocation = [match rangeAtIndex:2].location + [match rangeAtIndex:2].length;
+                NSRange finalRange = NSMakeRange(finalLocation, [searchedString length] - finalLocation);
+                [fullString appendString:[NSString stringWithFormat:@"%@%@%@%@", [searchedString substringWithRange:[match rangeAtIndex:1]],
+                                          [searchedString substringWithRange:[match rangeAtIndex:2]],
+                                          videoCandidates,
+                                          [searchedString substringWithRange:finalRange]]];
+            }
+            else {
+                [fullString appendString:[searchedString substringWithRange:[match rangeAtIndex:1]]];
+            }
+        }
+        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Full: %@", fullString);
+        matchIndex++;
+        // important note: tried to fix this functionality with replaceMatchesInString, which would be the tool for the job, but
+        // the replacement was never made correctly, it's as if the searchedString's length is fixed and after the replacement
+        // there was a piece missing (even though the replacement was done correctly)
+        //int times = [regex replaceMatchesInString:searchedString options:0 range:searchedRange withTemplate:[NSString stringWithFormat:@"%@%@%@%@",
+    }
+    
+    // important: the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
+    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, fullString];
+
     return completeMessage;
 }
 
 // remove candidate lines from the given sdp and return them as elements of an NSArray
--(NSArray*)filterCandidatesFromSdp:(NSMutableString*)sdp
+-(NSDictionary*)filterCandidatesFromSdp:(NSMutableString*)sdp
 {
-    NSMutableArray * candidates = [[NSMutableArray alloc] init];
-    
+    NSMutableArray * audioCandidates = [[NSMutableArray alloc] init];
+    NSMutableArray * videoCandidates = [[NSMutableArray alloc] init];
     
     NSString *searchedString = sdp;
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"a=(candidate.*)\\r\\n";
+    NSString *pattern = @"m=audio|m=video|a=(candidate.*)\\r\\n";
     NSError  *error = nil;
     
+    NSString * collectionState = @"none";
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
     NSArray* matches = [regex matchesInString:searchedString options:0 range: searchedRange];
     for (NSTextCheckingResult* match in matches) {
         //NSString* matchText = [searchedString substringWithRange:[match range]];
-        NSRange group1 = [match rangeAtIndex:1];
-        [candidates addObject:[searchedString substringWithRange:group1]];
+        NSString * stringMatch = [searchedString substringWithRange:[match range]];
+        if ([stringMatch isEqualToString:@"m=audio"]) {
+            // enter audio collection state
+            collectionState = @"audio";
+            continue;
+        }
+        if ([stringMatch isEqualToString:@"m=video"]) {
+            // enter audio video collection state
+            collectionState = @"audio";
+            continue;
+        }
+        
+        if ([collectionState isEqualToString:@"audio"]) {
+            [audioCandidates addObject:[searchedString substringWithRange:[match rangeAtIndex:1]]];
+        }
+        if ([collectionState isEqualToString:@"video"]) {
+            [videoCandidates addObject:[searchedString substringWithRange:[match rangeAtIndex:1]]];
+        }
     }
 
-    // use the same regex, but this time to remove the candidates (we want a candidateless SDP)
-    [regex replaceMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@""];
-    //NSString *modifiedSdp = [regex stringByReplacingMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@""];
+    NSString *removePattern = @"a=(candidate.*)\\r\\n";
+    NSRegularExpression* removeRegex = [NSRegularExpression regularExpressionWithPattern:removePattern options:0 error:&error];
+    // remove the candidates (we want a candidateless SDP)
+    [removeRegex replaceMatchesInString:sdp options:0 range:NSMakeRange(0, [sdp length]) withTemplate:@""];
 
-    return candidates;
+    return [NSDictionary dictionaryWithObjectsAndKeys:audioCandidates, @"audio",
+            videoCandidates, @"video", nil];
 }
 
 // TODO: remove when ready
@@ -387,17 +455,20 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             //[self workaroundTruncation:msg];
-            NSArray * candidates = [self filterCandidatesFromSdp:msg];
+            NSDictionary * candidates = [self filterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"offer"
                                                                                          sdp:msg];
             //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
-            for (NSString * candidate in candidates) {
-                RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
-                                                                               index:0
-                                                                                 sdp:candidate];
-                [_peerConnection addICECandidate:iceCandidate];
+            for (NSString * key in candidates) {
+                for (NSString * candidate in [candidates objectForKey:key]) {
+                    // remember that we have set 'key' to be either 'audio' or 'video' inside filterCandidatesFromSdp
+                    RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
+                                                                                   index:0
+                                                                                     sdp:candidate];
+                    [_peerConnection addICECandidate:iceCandidate];
+                }
             }
             
             break;
@@ -407,21 +478,19 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             [self workaroundTruncation:msg];
-            NSArray * candidates = [self filterCandidatesFromSdp:msg];
+            NSDictionary * candidates = [self filterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
                                                                                          sdp:msg];
-            
-            //NSLog(@"#################### [MediaWebRTC processSignallingMessage] SDP answer received");
-
             //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
-            
-            for (NSString * candidate in candidates) {
-                RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
-                                                                               index:0
-                                                                                 sdp:candidate];
-                [_peerConnection addICECandidate:iceCandidate];
+            for (NSString * key in candidates) {
+                for (NSString * candidate in [candidates objectForKey:key]) {
+                    RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
+                                                                                   index:0
+                                                                                     sdp:candidate];
+                    [_peerConnection addICECandidate:iceCandidate];
+                }
             }
             
             break;
