@@ -309,16 +309,10 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // from candidateless sdp stored at self.sdp and candidates stored at array, we construct a full sdp
 - (NSString*)updateSdpWithCandidates:(NSArray *)array
 {
-    // Candidates go after the 'a=rtcp' SDP attribute
-    
-    // Split the SDP in 2 parts: firstPart is up to the end of the 'a=rtcp' line
-    // and the second part is from there to the end. Then insert the candidates
-    // in-between
-    
     // split audio & video candidates in 2 groups of strings
-    BOOL videoEnabled = NO;
     NSMutableString * audioCandidates = [[NSMutableString alloc] init];
     NSMutableString * videoCandidates = [[NSMutableString alloc] init];
+    BOOL isVideo = NO;
     for (int i = 0; i < _iceCandidates.count; i++) {
         RTCICECandidate *iceCandidate = (RTCICECandidate*)[_iceCandidates objectAtIndex:i];
         if ([iceCandidate.sdpMid isEqualToString:@"audio"]) {
@@ -328,17 +322,16 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         if ([iceCandidate.sdpMid isEqualToString:@"video"]) {
             // don't forget to prepend an 'a=' to make this an attribute line and to append '\r\n'
             [videoCandidates appendFormat:@"a=%@\r\n",iceCandidate.sdp];
-            videoEnabled = YES;
+            isVideo = YES;
         }
     }
-
+    
     // insert inside the candidateless SDP the candidates per media type
-    NSMutableString *fullString = [[NSMutableString alloc] initWithString:@""];
-    NSString *searchedString = self.sdp;
+    NSMutableString *searchedString = [self.sdp mutableCopy];
     NSRange searchedRange = NSMakeRange(0, [searchedString length]);
-    NSString *pattern = @"(.*?)(a=rtcp:.*?\\r\\n)";
+    NSString *pattern = @"a=rtcp:.*?\\r\\n";
     NSError  *error = nil;
-
+    
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                            options:NSRegularExpressionDotMatchesLineSeparators
                                                                              error:&error];
@@ -347,46 +340,30 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         return @"";
     }
     
-    NSArray* matches = [regex matchesInString:searchedString options:0 range:searchedRange];
+    NSTextCheckingResult* match = [regex firstMatchInString:searchedString options:0 range:searchedRange];
     int matchIndex = 0;
-    for (NSTextCheckingResult* match in matches) {
-        /*
-        NSString * temp = [searchedString substringWithRange:[match rangeAtIndex:0]];
+    NSString * temp = [searchedString substringWithRange:[match range]];
+    NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
+    if (matchIndex == 0) {
+        [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
+                                                                                                             @"$0",audioCandidates]];
+        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1st: %@", searchedString);
+    }
+    
+    // search again since the searchedString has been altered
+    NSArray* matches = [regex matchesInString:searchedString options:0 range:searchedRange];
+    if ([matches count] == 2) {
+        // count of 2 means we also have video. If we don't we shouldn't do anything
+        NSTextCheckingResult* match = [matches objectAtIndex:1];
+        NSString * temp = [searchedString substringWithRange:[match range]];
         NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
-        temp = [searchedString substringWithRange:[match rangeAtIndex:1]];
-        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1: %@", temp);
-        temp = [searchedString substringWithRange:[match rangeAtIndex:2]];
-        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2: %@", temp);
-         */
-        if (matchIndex == 0) {
-            [fullString appendString:[[NSString stringWithFormat:@"%@%@%@", [searchedString substringWithRange:[match rangeAtIndex:1]],
-                          [searchedString substringWithRange:[match rangeAtIndex:2]],
-                          audioCandidates] mutableCopy]];
-        }
-        else {
-            if (videoEnabled) {
-                // only add video candidates if enabled
-                NSUInteger finalLocation = [match rangeAtIndex:2].location + [match rangeAtIndex:2].length;
-                NSRange finalRange = NSMakeRange(finalLocation, [searchedString length] - finalLocation);
-                [fullString appendString:[NSString stringWithFormat:@"%@%@%@%@", [searchedString substringWithRange:[match rangeAtIndex:1]],
-                                          [searchedString substringWithRange:[match rangeAtIndex:2]],
-                                          videoCandidates,
-                                          [searchedString substringWithRange:finalRange]]];
-            }
-            else {
-                [fullString appendString:[searchedString substringWithRange:[match rangeAtIndex:1]]];
-            }
-        }
-        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Full: %@", fullString);
-        matchIndex++;
-        // important note: tried to fix this functionality with replaceMatchesInString, which would be the tool for the job, but
-        // the replacement was never made correctly, it's as if the searchedString's length is fixed and after the replacement
-        // there was a piece missing (even though the replacement was done correctly)
-        //int times = [regex replaceMatchesInString:searchedString options:0 range:searchedRange withTemplate:[NSString stringWithFormat:@"%@%@%@%@",
+        [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
+                                                                                                 @"$0", videoCandidates]];
+        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2st: %@", searchedString);
     }
     
     // important: the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
-    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, fullString];
+    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, searchedString];
 
     return completeMessage;
 }
@@ -484,6 +461,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
+            /*
             for (NSString * key in candidates) {
                 for (NSString * candidate in [candidates objectForKey:key]) {
                     RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
@@ -492,6 +470,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
                     [_peerConnection addICECandidate:iceCandidate];
                 }
             }
+             */
             
             break;
         }
