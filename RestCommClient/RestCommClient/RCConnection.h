@@ -106,8 +106,10 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 
 /**
  *  @abstract Accept an incoming connection that is ringing. The connection state changes to 'RCConnectionStateConnected'
+ *  @param parameters A dictionary with parameters for the accept. Currently supported parameters are 'video-enabled' to 
+ *                    indicate whether we want to answer the call with webrtc video or audio only
  */
-- (void)accept;
+- (void)accept:(NSDictionary*)parameters;
 
 /**
  *  @abstract Ignore connection (**Not Implemented yet**)

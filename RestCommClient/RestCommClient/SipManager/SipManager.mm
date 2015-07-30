@@ -113,7 +113,7 @@ int read_pipe[2];
         NSString * sdp = [string substringFromIndex:range.location + 1];
 
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:address sdp:sdp isInitiator:NO];
+        [self.media connect:address sdp:sdp isInitiator:NO withVideo:self.videoAllowed];
     }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
@@ -139,7 +139,8 @@ int read_pipe[2];
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding] sdp:nil isInitiator:YES];
+        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]
+                        sdp:nil isInitiator:YES withVideo:self.videoAllowed];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
@@ -202,6 +203,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
             NSLog(@"Error overriding output to speaker");
         }
          */
+        self.videoAllowed = NO;
         
         if (![session setActive:YES error:&error]) {
             NSLog(@"Error activating audio session");
@@ -328,8 +330,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)invite:(NSString*)recipient
+- (bool)invite:(NSString*)recipient withVideo:(BOOL)video
 {
+    self.videoAllowed = video;
     NSString* cmd = [NSString stringWithFormat:@"i %@", recipient];
     [self pipeToSofia:cmd];
     
@@ -337,8 +340,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
 }
 
 // anwer incoming call
-- (bool)answer
+- (bool)answerWithVideo:(BOOL)video
 {
+    self.videoAllowed = video;
     NSString* cmd = [NSString stringWithFormat:@"a"];
     [self pipeToSofia:cmd];
     

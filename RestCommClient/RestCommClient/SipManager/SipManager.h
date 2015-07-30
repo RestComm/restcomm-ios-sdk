@@ -34,8 +34,8 @@
 - (bool)register:(NSString*)registrar;
 - (bool)unregister:(NSString*)registrar;
 - (bool)message:(NSString*)msg to:(NSString*)recipient;
-- (bool)invite:(NSString*)recipient;
-- (bool)answer;
+- (bool)invite:(NSString*)recipient withVideo:(BOOL)video;
+- (bool)answerWithVideo:(BOOL)video;
 - (bool)decline;
 - (bool)authenticate:(NSString*)string;
 - (bool)cancel;
@@ -48,6 +48,7 @@
 @property MediaWebRTC * media;
 @property NSMutableDictionary* params;
 @property (nonatomic) BOOL muted;
+@property BOOL videoAllowed;
 @end
 
 @protocol SipManagerDeviceDelegate <NSObject>

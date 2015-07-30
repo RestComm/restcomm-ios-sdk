@@ -89,7 +89,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         // for now we are always iniator
         _isInitiator = YES;
         self.sofia_handle = nil;
-
+        self.videoAllowed = NO;
         // in AppRTCDemo this happens in didFinishLaunching
         //[RTCPeerConnectionFactory initializeSSL];
     }
@@ -103,7 +103,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // entry point for WebRTC handling
 // sofia handle is used for outgoing calls; nil in incoming
 // sdp is used for incoming calls; nil in outgoing
-- (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator
+- (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed
 {
     if (!initiator) {
         _isInitiator = NO;
@@ -233,8 +233,17 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
     // TODO: if we want to only work with audio, here's one place to update
+    /*
+    NSMutableArray * mandatoryConstraints = [NSMutableArray arrayWithObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
+    if (self.videoAllowed) {
+        [mandatoryConstraints addObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
+    }*/
+    NSString * video = @"false";
+    if (self.videoAllowed) {
+        video = @"true";
+    }
     NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:video]];
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -307,7 +316,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 
 #pragma mark - Helpers
 // from candidateless sdp stored at self.sdp and candidates stored at array, we construct a full sdp
-- (NSString*)updateSdpWithCandidates:(NSArray *)array
+- (NSString*)outgoingUpdateSdpWithCandidates:(NSArray *)array
 {
     // split audio & video candidates in 2 groups of strings
     NSMutableString * audioCandidates = [[NSMutableString alloc] init];
@@ -336,18 +345,18 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
                                                                            options:NSRegularExpressionDotMatchesLineSeparators
                                                                              error:&error];
     if (error != nil) {
-        NSLog(@"updateSdpWithCandidates: regex error");
+        NSLog(@"outgoingUpdateSdpWithCandidates: regex error");
         return @"";
     }
     
     NSTextCheckingResult* match = [regex firstMatchInString:searchedString options:0 range:searchedRange];
     int matchIndex = 0;
-    NSString * temp = [searchedString substringWithRange:[match range]];
-    NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
+    //NSString * temp = [searchedString substringWithRange:[match range]];
+    //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
     if (matchIndex == 0) {
         [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
                                                                                                              @"$0",audioCandidates]];
-        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1st: %@", searchedString);
+        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1st: %@", searchedString);
     }
     
     // search again since the searchedString has been altered
@@ -355,11 +364,11 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     if ([matches count] == 2) {
         // count of 2 means we also have video. If we don't we shouldn't do anything
         NSTextCheckingResult* match = [matches objectAtIndex:1];
-        NSString * temp = [searchedString substringWithRange:[match range]];
-        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
+        //NSString * temp = [searchedString substringWithRange:[match range]];
+        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
         [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
                                                                                                  @"$0", videoCandidates]];
-        NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2st: %@", searchedString);
+        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2st: %@", searchedString);
     }
     
     // important: the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
@@ -369,7 +378,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 }
 
 // remove candidate lines from the given sdp and return them as elements of an NSArray
--(NSDictionary*)filterCandidatesFromSdp:(NSMutableString*)sdp
+-(NSDictionary*)incomingFilterCandidatesFromSdp:(NSMutableString*)sdp
 {
     NSMutableArray * audioCandidates = [[NSMutableArray alloc] init];
     NSMutableArray * videoCandidates = [[NSMutableArray alloc] init];
@@ -432,7 +441,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             //[self workaroundTruncation:msg];
-            NSDictionary * candidates = [self filterCandidatesFromSdp:msg];
+            NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"offer"
                                                                                          sdp:msg];
             //NSLog(@"SDP answer: %@", description.description);
@@ -440,7 +449,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
                                            sessionDescription:description];
             for (NSString * key in candidates) {
                 for (NSString * candidate in [candidates objectForKey:key]) {
-                    // remember that we have set 'key' to be either 'audio' or 'video' inside filterCandidatesFromSdp
+                    // remember that we have set 'key' to be either 'audio' or 'video' inside incomingFilterCandidatesFromSdp
                     RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
                                                                                    index:0
                                                                                      sdp:candidate];
@@ -455,7 +464,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             [self workaroundTruncation:msg];
-            NSDictionary * candidates = [self filterCandidatesFromSdp:msg];
+            NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
                                                                                          sdp:msg];
             //NSLog(@"SDP answer: %@", description.description);
@@ -533,7 +542,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
         //NSLog(@"#################### [MediaWebRTC iceGatheringChanged] SDP ready");
-        [self.mediaDelegate mediaController:self didCreateSdp:[self updateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
     }
 }
 

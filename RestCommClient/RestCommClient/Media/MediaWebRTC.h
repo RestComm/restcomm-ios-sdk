@@ -74,7 +74,7 @@ typedef enum {
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate;
 // TODO: change the name to something more appropriate
-- (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator;
+- (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed;
 - (void)disconnect;
 - (void)processSignalingMessage:(const char *)message type:(int)type;
 - (void)mute;
@@ -86,6 +86,7 @@ typedef enum {
 // for now let's keep just one hanle -in a complex application we could have more
 @property NSString * sofia_handle;
 @property NSString * sdp;
+@property BOOL videoAllowed;
 
 @end
 

@@ -52,12 +52,17 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 }
 
 
-- (void)accept
+- (void)accept:(NSDictionary*)parameters
 {
     NSLog(@"[RCConnection accept]");
 
     if (self.isIncoming && self.state == RCConnectionStateConnecting) {
-        [self.sipManager answer];
+        BOOL videoAllowed = NO;
+        if ([parameters objectForKey:@"video-enabled"]) {
+            videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
+        };
+
+        [self.sipManager answerWithVideo:videoAllowed];
         self.state = RCConnectionStateConnected;
     }
 }

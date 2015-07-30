@@ -111,9 +111,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     connection.sipManager = self.sipManager;
     connection.incoming = false;
     connection.state = RCConnectionStatePending;
-    
+    BOOL videoAllowed = NO;
+    if ([parameters objectForKey:@"video-enabled"]) {
+        videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
+    };
     // make a call to whoever parameters designate
-    [self.sipManager invite:[parameters objectForKey:@"username"]];
+    [self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed];
 
     return connection;
 }
