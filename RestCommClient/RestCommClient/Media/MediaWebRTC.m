@@ -111,7 +111,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     else {
         _isInitiator = YES;
     }
-    
+    self.videoAllowed = videoAllowed;
     //NSLog(@"#################### [MediaWebRTC connect] called");
     if (sofia_handle) {
         self.sofia_handle = sofia_handle;
@@ -237,13 +237,16 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSMutableArray * mandatoryConstraints = [NSMutableArray arrayWithObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
     if (self.videoAllowed) {
         [mandatoryConstraints addObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
-    }*/
+    }
+    */
+    /**/
     NSString * video = @"false";
     if (self.videoAllowed) {
         video = @"true";
     }
     NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
                                       [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:video]];
+    /**/
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -258,43 +261,42 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 {
     RTCMediaStream* localStream = [_factory mediaStreamWithLabel:@"ARDAMS"];
 
-#define CUSTOM_ENABLE_VIDEO 1
-#if CUSTOM_ENABLE_VIDEO
-    RTCVideoTrack* localVideoTrack = nil;
-    
-    // The iOS simulator doesn't provide any sort of camera capture
-    // support or emulation (http://goo.gl/rHAnC1) so don't bother
-    // trying to open a local stream.
-    // TODO(tkchin): local video capture for OSX. See
-    // https://code.google.com/p/webrtc/issues/detail?id=3417.
+    if (self.videoAllowed) {
+        RTCVideoTrack* localVideoTrack = nil;
+        
+        // The iOS simulator doesn't provide any sort of camera capture
+        // support or emulation (http://goo.gl/rHAnC1) so don't bother
+        // trying to open a local stream.
+        // TODO(tkchin): local video capture for OSX. See
+        // https://code.google.com/p/webrtc/issues/detail?id=3417.
 #if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
-    NSString *cameraID = nil;
-    for (AVCaptureDevice *captureDevice in
-         [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-        if (captureDevice.position == AVCaptureDevicePositionFront) {
-            cameraID = [captureDevice localizedName];
-            break;
+        NSString *cameraID = nil;
+        for (AVCaptureDevice *captureDevice in
+             [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+            if (captureDevice.position == AVCaptureDevicePositionFront) {
+                cameraID = [captureDevice localizedName];
+                break;
+            }
         }
-    }
-    NSAssert(cameraID, @"Unable to get the front camera id");
-    
-    RTCVideoCapturer *capturer =
-    [RTCVideoCapturer capturerWithDeviceName:cameraID];
-    RTCMediaConstraints *mediaConstraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
-                                                                                  optionalConstraints:nil];
-    RTCVideoSource *videoSource =
-    [_factory videoSourceWithCapturer:capturer
-                          constraints:mediaConstraints];
-    localVideoTrack =
-    [_factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
-    if (localVideoTrack) {
-        [localStream addVideoTrack:localVideoTrack];
-    }
-    
-    [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:localVideoTrack];
-    //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
+        NSAssert(cameraID, @"Unable to get the front camera id");
+        
+        RTCVideoCapturer *capturer =
+        [RTCVideoCapturer capturerWithDeviceName:cameraID];
+        RTCMediaConstraints *mediaConstraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
+                                                                                      optionalConstraints:nil];
+        RTCVideoSource *videoSource =
+        [_factory videoSourceWithCapturer:capturer
+                              constraints:mediaConstraints];
+        localVideoTrack =
+        [_factory videoTrackWithID:@"ARDAMSv0" source:videoSource];
+        if (localVideoTrack) {
+            [localStream addVideoTrack:localVideoTrack];
+        }
+        
+        [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:localVideoTrack];
+        //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
 #endif
-#endif
+    }
     [localStream addAudioTrack:[_factory audioTrackWithID:@"ARDAMSa0"]];
     
     return localStream;
