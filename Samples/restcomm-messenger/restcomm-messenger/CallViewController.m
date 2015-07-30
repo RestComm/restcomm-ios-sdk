@@ -66,11 +66,9 @@
     //self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:CGRectZero];
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
     self.videoCallView.delegate = self;
-    //self.videoCallView.statusLabel.text = [self statusTextForState:RTCICEConnectionNew];
     //self.view = self.videoCallView;
+    // decline button is the first subview, so let's place video underneath it
     [self.view insertSubview:self.videoCallView belowSubview:self.declineButton];
-    //[self.view addSubview:self.videoCallView];
-
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -82,6 +80,7 @@
             NSLog(@"Connection already ongoing");
             return;
         }
+        
         self.connection = [self.device connect:self.parameters delegate:self];
     }
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
@@ -99,13 +98,30 @@
 
 - (IBAction)answerPressed:(id)sender
 {
+    [self answer:NO];
+}
+
+- (IBAction)answerVideoPressed:(id)sender
+{
+    [self answer:YES];
+}
+
+- (void)answer:(BOOL)allowVideo
+{
     if (self.ringingPlayer.isPlaying) {
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
     
     if (self.pendingIncomingConnection) {
-        [self.pendingIncomingConnection accept];
+        if (allowVideo) {
+            [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
+                                                                               forKey:@"video-enabled"]];
+        }
+        else {
+            [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
+                                                                               forKey:@"video-enabled"]];
+        }
         self.connection = self.pendingIncomingConnection;
     }
 }

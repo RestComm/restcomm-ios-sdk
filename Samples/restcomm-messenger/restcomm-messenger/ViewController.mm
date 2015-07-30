@@ -258,6 +258,7 @@ extern char REGISTRAR[];
     callViewController.delegate = self;
     callViewController.device = self.device;
     callViewController.pendingIncomingConnection = connection;
+    callViewController.pendingIncomingConnection.delegate = callViewController;
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
@@ -322,13 +323,20 @@ extern char REGISTRAR[];
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"invoke-call-controller"]) {
+    if ([segue.identifier isEqualToString:@"invoke-call-controller"] || [segue.identifier isEqualToString:@"invoke-video-call-controller"]) {
         CallViewController *callViewController = [segue destinationViewController];
         callViewController.delegate = self;
         callViewController.device = self.device;
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
+        
+        if ([segue.identifier isEqualToString:@"invoke-call-controller"]) {
+            [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
+        }
+        else {
+            [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+        }
     }
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
         SettingsNavigationController * settingsNavigationController = [segue destinationViewController];
