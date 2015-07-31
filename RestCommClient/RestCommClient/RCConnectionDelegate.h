@@ -79,17 +79,19 @@
 - (void)connectionDidDisconnect:(RCConnection*)connection;
 
 /**
- *  @abstract Received local video track for the connection (**Not Implemented yet**)
+ *  @abstract Received local video track for the connection. To see the video it must be rendered inside a suitable view
  *
  *  @param connection Connection of interest
+ *  @param localVideoTrack Local video track
  */
-- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoView;
+- (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack;
 
 /**
- *  @abstract Connection was disconnected (**Not Implemented yet**)
+ *  @abstract Received remote video track for the connection. To see the video it must be rendered inside a suitable view
  *
  *  @param connection Connection of interest
+ *  @param remoteVideoTrack Remote video track
  */
-- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoView;
+- (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoTrack;
 
 @end

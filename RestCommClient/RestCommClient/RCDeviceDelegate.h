@@ -69,6 +69,7 @@
  *
  *  @param device  Device of interest
  *  @param message Instant message text
+ *  @param params Dictionary with parameters of the incoming message
  */
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params;
 

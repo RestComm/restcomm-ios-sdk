@@ -56,13 +56,13 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/accept">&nbsp;&nbsp;&nbsp;&nbsp;- accept</option>
+	<option value="//api/name/accept:">&nbsp;&nbsp;&nbsp;&nbsp;- accept:</option>
 	
 	<option value="//api/name/disconnect">&nbsp;&nbsp;&nbsp;&nbsp;- disconnect</option>
 	
 	<option value="//api/name/ignore">&nbsp;&nbsp;&nbsp;&nbsp;- ignore</option>
 	
-	<option value="//api/name/initWithDelegate:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithDelegate:</option>
+	<option value="//api/name/initWithDelegate:andDevice:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithDelegate:andDevice:</option>
 	
 	<option value="//api/name/reject">&nbsp;&nbsp;&nbsp;&nbsp;- reject</option>
 	
@@ -110,13 +110,13 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/accept">accept</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/accept:">accept:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/disconnect">disconnect</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/ignore">ignore</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithDelegate:">initWithDelegate:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithDelegate:andDevice:">initWithDelegate:andDevice:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/reject">reject</a></span></li>
 	
@@ -169,7 +169,7 @@ and returns a new RCConnection. On the other hand when an incoming connection ar
 control the connection.</p>
 
 <p>When an incoming connection arrives through <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingConnection:">[RCDeviceDelegate device:didReceiveIncomingConnection:]</a> it is considered RCConnectionStateConnecting until it is either
-accepted with <a href="#//api/name/accept">[RCConnection accept]</a> or rejected with <a href="#//api/name/reject">[RCConnection reject]</a>. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
+accepted with [RCConnection accept] or rejected with <a href="#//api/name/reject">[RCConnection reject]</a>. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
 state (TODO: the media part is only implemented for outgoing connections; for incoming connections only the signaling in in place for now -we are working on that)</p>
 
 <p>When an outgoing connection is created with <a href="../Classes/RCDevice.html#//api/name/connect:delegate:">[RCDevice connect:delegate:]</a> it starts with state RCConnectionStatePending. Once it starts ringing on the remote party it
@@ -224,13 +224,13 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/initWithDelegate:">&ndash;&nbsp;initWithDelegate:</a></code>
+		<code><a href="#//api/name/initWithDelegate:andDevice:">&ndash;&nbsp;initWithDelegate:andDevice:</a></code>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/accept">&ndash;&nbsp;accept</a></code>
+		<code><a href="#//api/name/accept:">&ndash;&nbsp;accept:</a></code>
 	</span>
 	
 	
@@ -467,8 +467,8 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/accept" title="accept"></a>
-	<h3 class="subsubtitle method-title">accept</h3>
+	<a name="//api/name/accept:" title="accept:"></a>
+	<h3 class="subsubtitle method-title">accept:</h3>
 	
 	
 	
@@ -478,9 +478,20 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)accept</code></div>
+	<div class="method-subsection method-declaration"><code>- (void)accept:(NSDictionary *)<em>parameters</em></code></div>
 
     
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parameters</em></dt>
+			<dd><p>A dictionary with <a href="#//api/name/parameters">parameters</a> for the accept. Currently supported <a href="#//api/name/parameters">parameters</a> are &lsquo;video-enabled&rsquo; to
+indicate whether we want to answer the call with webrtc video or audio only</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -575,18 +586,18 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/initWithDelegate:" title="initWithDelegate:"></a>
-	<h3 class="subsubtitle method-title">initWithDelegate:</h3>
+	<a name="//api/name/initWithDelegate:andDevice:" title="initWithDelegate:andDevice:"></a>
+	<h3 class="subsubtitle method-title">initWithDelegate:andDevice:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Initialize a new RCConnection object</p>
+		<p>Initialize a new RCConnection object (Important: not to be used by the Application; this is for internal use)</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (id)initWithDelegate:(id&lt;RCConnectionDelegate&gt;)<em>delegate</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (id)initWithDelegate:(id&lt;RCConnectionDelegate&gt;)<em>delegate</em> andDevice:(RCDevice *)<em>device</em></code></div>
 
     
 	
@@ -596,6 +607,11 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 		<dl class="argument-def parameter-def">
 			<dt><em>delegate</em></dt>
 			<dd><p>Delegate of RCConnection that will be receiving RCConnection events (see <a href="../Protocols/RCConnectionDelegate.html">RCConnectionDelegate</a>)</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>device</em></dt>
+			<dd><p><a href="../Classes/RCDevice.html">RCDevice</a> creating this connection</p></dd>
 		</dl>
 		
 	</div>
@@ -722,7 +738,7 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-07-16)</span><br />
+						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-07-31)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 963)</a>.</span></p>
 						
