@@ -34,7 +34,6 @@ extern char REGISTRAR[];
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 @property (weak, nonatomic) IBOutlet UITextField *sipUriText;
 @property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
-//@property (weak, nonatomic) IBOutlet UIButton *answerButton;
 @end
 
 @implementation ViewController
@@ -56,18 +55,12 @@ extern char REGISTRAR[];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
-    //self.connection = nil;
-
-    //TabBarController * tabBarController = (TabBarController *)self.tabBarController;
-    // add a reference of RCDevice to our tab controller so that Settings controller can utilize it
-    //tabBarController.viewController = self;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
                                            action:@selector(hideKeyBoard)];
     
     [self.view addGestureRecognizer:tapGesture];
-    [self prepareSounds];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
     //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
@@ -108,94 +101,11 @@ extern char REGISTRAR[];
     [self.sipMessageText endEditing:false];
 }
 
-/**/
 - (IBAction)dialPressed:(id)sender
 {
-    //[self performSegueWithIdentifier:@"invoke-call-controller" sender:self];
-    // start the call
-    /*
-    CallViewController *callViewController =
-    [[CallViewController alloc] initWithDevice:self.device andParams:[NSDictionary dictionaryWithObject:self.sipUriText.text
-                                                                                                 forKey:@"username"]];
-    //videoCallViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:callViewController
-                       animated:YES
-                     completion:nil];
-     */
-
-    
-    //[self.parameters setObject:self.sipUriText.text forKey:@"username"];
-    
-    // TODO: open the call view
-    /*
-    // call the other party
-    if (self.connection) {
-        NSLog(@"Connection already ongoing");
-        return;
-    }
-    self.connection = [self.device connect:self.parameters delegate:self];
-    // hide keyboard
-    [self.sipUriText endEditing:false];
-     */
 }
 
-/*
-- (IBAction)answerPressed:(id)sender
-{
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
 
-    if (self.pendingIncomingConnection) {
-        [self.pendingIncomingConnection accept];
-        self.connection = self.pendingIncomingConnection;
-    }
-}
-
-- (IBAction)declinePressed:(id)sender
-{
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-    
-    if (self.pendingIncomingConnection) {
-        // reject the pending RCConnection
-        [self.pendingIncomingConnection reject];
-        self.pendingIncomingConnection = nil;
-    }
-}
-
-- (IBAction)hangUpPressed:(id)sender
-{
-    [self disconnect];
-}
-
-- (IBAction)cancelPressed:(id)sender
-{
-    if (self.connection) {
-        [self.connection disconnect];
-        self.connection = nil;
-        self.pendingIncomingConnection = nil;
-    }
-}
-
-- (void)disconnect
-{
-    if (self.connection) {
-        [self.connection disconnect];
-        
-        self.connection = nil;
-        self.pendingIncomingConnection = nil;
-    }
-}
- */
-- (IBAction)registerPressed:(id)sender
-{
-}
-
- 
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized && !self.isRegistered) {
@@ -217,7 +127,6 @@ extern char REGISTRAR[];
 
 - (void)unregister:(NSNotification *)notification
 {
-    //[self disconnect];
     [self.device unlisten];
     self.isRegistered = NO;
 }
@@ -243,16 +152,13 @@ extern char REGISTRAR[];
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
-    [self.messagePlayer play];
     [self prependToDialog:message sender:[params objectForKey:@"from"]];
 }
 
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
-    // TODO: open call view
-    //[self.ringingPlayer play];
-    //self.pendingIncomingConnection = connection;
+    // Open call view
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
     callViewController.delegate = self;
@@ -267,7 +173,6 @@ extern char REGISTRAR[];
     [self presentViewController:callViewController
                        animated:YES
                      completion:nil];
-    
 }
 
 // not implemented yet
@@ -280,8 +185,7 @@ extern char REGISTRAR[];
 - (void)prependToDialog:(NSString*)msg sender:(NSString*)sender
 {
     if ([self.sipDialogText.text isEqualToString:@""]) {
-        self.sipDialogText.text = [NSString stringWithFormat:@"%@", msg];
-        //self.sipDialogText.text = [self.sipDialogText.text stringByAppendingString: //stringWithString:updatedDialog];
+        self.sipDialogText.text = [NSString stringWithFormat:@"%@: %@", sender, msg];
     }
     else {
         NSString* updatedDialog = [NSString stringWithFormat:@"%@\n%@: %@", self.sipDialogText.text, sender, msg];
@@ -292,22 +196,6 @@ extern char REGISTRAR[];
     if (self.sipDialogText.text.length > 0 ) {
         NSRange bottom = NSMakeRange(self.sipDialogText.text.length - 1, 1);
         [self.sipDialogText scrollRangeToVisible:bottom];
-    }
-}
-
-- (void)prepareSounds
-{
-    // message
-    NSString * filename = @"message.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    NSString * file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    NSError *error;
-    self.messagePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-    if (!self.messagePlayer) {
-        NSLog(@"Error: %@", [error description]);
-        return;
     }
 }
 

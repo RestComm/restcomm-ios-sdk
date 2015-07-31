@@ -396,15 +396,23 @@ ssize_t pipeToSofia(const char * msg, int fd)
         if ([key isEqualToString:@"aor"]) {
             cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:key]];
             [self pipeToSofia:cmd];
-            
+            // save key/value to local params dictionary for later use
+            [self.params setObject:[params objectForKey:key] forKey:key];
         }
         else if ([key isEqualToString:@"registrar"]) {
             cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
             [self pipeToSofia:cmd];
+            // save key/value to local params dictionary for later use
+            [self.params setObject:[params objectForKey:key] forKey:key];
         }
         else if ([key isEqualToString:@"password"]) {
             [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
         }
+    }
+    // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
+    if (params == nil) {
+        cmd = [NSString stringWithFormat:@"r %@", [self.params objectForKey:@"registrar"]];
+        [self pipeToSofia:cmd];
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
     return true;

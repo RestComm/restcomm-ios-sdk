@@ -21,7 +21,6 @@
  */
 
 #import "AppDelegate.h"
-#import "TabBarController.h"
 
 @implementation AppDelegate
 

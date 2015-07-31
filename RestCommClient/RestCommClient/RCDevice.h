@@ -60,9 +60,9 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  */
 @interface RCDevice : NSObject<SipManagerDeviceDelegate, NSURLConnectionDelegate>
 /**
- *  @abstract Device state (**Not Implemented yet**)
+ *  @abstract Device state
  */
-@property (nonatomic, readonly) RCDeviceState state;
+@property (nonatomic) RCDeviceState state;
 
 /**
  *  @abstract Device capabilities (**Not Implemented yet**)
@@ -75,12 +75,12 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 @property (nonatomic, assign) id<RCDeviceDelegate> delegate;
 
 /**
- *  @abstract Is sound for incoming connections enabled (**Not Implemented yet**)
+ *  @abstract Is sound for incoming connections enabled
  */
 @property (nonatomic) BOOL incomingSoundEnabled;
 
 /**
- *  @abstract Is sound for outgoing connections enabled (**Not Implemented yet**)
+ *  @abstract Is sound for outgoing connections enabled
  */
 @property (nonatomic) BOOL outgoingSoundEnabled;
 
@@ -100,12 +100,12 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate;
 
 /**
- *  @abstract Start listening for incoming connections (**Not Implemented yet** -RCDevice is configured to listen once it is instantiated)
+ *  @abstract Start listening for incoming connections (RCDevice is configured to listen once it is instantiated)
  */
 - (void)listen;
 
 /**
- *  @abstract Stop listening for incoming connections (**Not Implemented yet**)
+ *  @abstract Stop listening for incoming connections
  */
 - (void)unlisten;
 
@@ -135,7 +135,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
 
 /**
- *  @abstract Disconnect all connections (**Not implemented yet**)
+ *  @abstract Disconnect all connections
  */
 - (void)disconnectAll;
 

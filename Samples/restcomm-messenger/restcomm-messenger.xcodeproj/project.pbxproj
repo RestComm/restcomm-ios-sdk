@@ -23,13 +23,17 @@
 
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
-		AE3B4A5B1B208ECA00F302A5 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3B4A5A1B208ECA00F302A5 /* libRestCommClient.a */; };
 		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
+		AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
+		AE5AA1961B6BB03200854004 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5AA1951B6BB03200854004 /* libRestCommClient.a */; };
+		AE5AA1A11B6BBB3500854004 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA19E1B6BBB3500854004 /* calling.mp3 */; };
+		AE5AA1A21B6BBB3500854004 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA19F1B6BBB3500854004 /* message.mp3 */; };
+		AE5AA1A31B6BBB3500854004 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1A01B6BBB3500854004 /* ringing.mp3 */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
@@ -49,8 +53,7 @@
 		AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */; };
 		AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */; };
 		AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */; };
-		AE96D8D71B664633008FAC51 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8D61B664633008FAC51 /* CallViewController.m */; };
-		AE96D8E61B66630A008FAC51 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */; };
+		AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
@@ -60,18 +63,15 @@
 		AED0B0661A0976F8008A6057 /* restcomm-messengerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */; };
 		AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0691A097764008A6057 /* AppDelegate.m */; };
 		AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06A1A097764008A6057 /* Main_iPad.storyboard */; };
-		AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */; };
+		AED0B0801A097764008A6057 /* Main_Universal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06C1A097764008A6057 /* Main_Universal.storyboard */; };
 		AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06E1A097764008A6057 /* InfoPlist.strings */; };
 		AED0B0821A097764008A6057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0701A097764008A6057 /* Images.xcassets */; };
 		AED0B0831A097764008A6057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0711A097764008A6057 /* main.m */; };
 		AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0751A097764008A6057 /* SettingsViewController.mm */; };
-		AED0B0861A097764008A6057 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0771A097764008A6057 /* calling.mp3 */; };
-		AED0B0871A097764008A6057 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0781A097764008A6057 /* message.mp3 */; };
-		AED0B0881A097764008A6057 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0791A097764008A6057 /* ringing.mp3 */; };
-		AED0B0891A097764008A6057 /* TabBarController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07B1A097764008A6057 /* TabBarController.mm */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
+		AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,12 +86,17 @@
 
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
-		AE3B4A5A1B208ECA00F302A5 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
+		AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
+		AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		AE5AA1951B6BB03200854004 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AE5AA19E1B6BBB3500854004 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
+		AE5AA19F1B6BBB3500854004 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
+		AE5AA1A01B6BBB3500854004 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
 		AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -113,10 +118,8 @@
 		AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-320x568@2x.png"; sourceTree = "<group>"; };
 		AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024.png"; sourceTree = "<group>"; };
 		AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024@2x.png"; sourceTree = "<group>"; };
-		AE96D8D51B664633008FAC51 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
-		AE96D8D61B664633008FAC51 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
-		AE96D8E41B66630A008FAC51 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsNavigationController.h; sourceTree = "<group>"; };
-		AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsNavigationController.m; sourceTree = "<group>"; };
+		AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsNavigationController.h; sourceTree = "<group>"; };
+		AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsNavigationController.m; sourceTree = "<group>"; };
 		AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		AEC39ADC1A5ADFF200B155E4 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -132,7 +135,7 @@
 		AED0B0681A097764008A6057 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AED0B0691A097764008A6057 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		AED0B06B1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		AED0B06D1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		AED0B06D1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_Universal.storyboard; sourceTree = "<group>"; };
 		AED0B06F1A097764008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0701A097764008A6057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AED0B0711A097764008A6057 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -140,14 +143,11 @@
 		AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "restcomm-messenger-Prefix.pch"; sourceTree = "<group>"; };
 		AED0B0741A097764008A6057 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		AED0B0751A097764008A6057 /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
-		AED0B0771A097764008A6057 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
-		AED0B0781A097764008A6057 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
-		AED0B0791A097764008A6057 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
-		AED0B07A1A097764008A6057 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
-		AED0B07B1A097764008A6057 /* TabBarController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TabBarController.mm; sourceTree = "<group>"; };
 		AED0B07C1A097764008A6057 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		AED0B07D1A097764008A6057 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
+		AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
+		AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE3B4A5B1B208ECA00F302A5 /* libRestCommClient.a in Frameworks */,
+				AE5AA1961B6BB03200854004 /* libRestCommClient.a in Frameworks */,
 				AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
 				AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */,
@@ -190,6 +190,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE5AA1971B6BB44000854004 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				AE5AA19E1B6BBB3500854004 /* calling.mp3 */,
+				AE5AA19F1B6BBB3500854004 /* message.mp3 */,
+				AE5AA1A01B6BBB3500854004 /* ringing.mp3 */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
@@ -213,7 +223,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE3B4A5A1B208ECA00F302A5 /* libRestCommClient.a */,
+				AE5AA1951B6BB03200854004 /* libRestCommClient.a */,
 				AECDB8A31B0DFB9900563107 /* libRestCommClient.a */,
 				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
@@ -288,11 +298,12 @@
 		AED0B0671A097764008A6057 /* restcomm-messenger */ = {
 			isa = PBXGroup;
 			children = (
+				AE5AA1971B6BB44000854004 /* sounds */,
 				AE9520861B0B268C00E947D8 /* img */,
 				AED0B0681A097764008A6057 /* AppDelegate.h */,
 				AED0B0691A097764008A6057 /* AppDelegate.m */,
 				AED0B06A1A097764008A6057 /* Main_iPad.storyboard */,
-				AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */,
+				AED0B06C1A097764008A6057 /* Main_Universal.storyboard */,
 				AED0B06E1A097764008A6057 /* InfoPlist.strings */,
 				AED0B0701A097764008A6057 /* Images.xcassets */,
 				AED0B0711A097764008A6057 /* main.m */,
@@ -300,27 +311,16 @@
 				AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */,
 				AED0B0741A097764008A6057 /* SettingsViewController.h */,
 				AED0B0751A097764008A6057 /* SettingsViewController.mm */,
-				AED0B0761A097764008A6057 /* sounds */,
-				AED0B07A1A097764008A6057 /* TabBarController.h */,
-				AED0B07B1A097764008A6057 /* TabBarController.mm */,
 				AED0B07C1A097764008A6057 /* ViewController.h */,
 				AED0B07D1A097764008A6057 /* ViewController.mm */,
-				AE96D8E41B66630A008FAC51 /* SettingsNavigationController.h */,
-				AE96D8E51B66630A008FAC51 /* SettingsNavigationController.m */,
-				AE96D8D51B664633008FAC51 /* CallViewController.h */,
-				AE96D8D61B664633008FAC51 /* CallViewController.m */,
+				AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */,
+				AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */,
+				AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */,
+				AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */,
+				AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */,
+				AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */,
 			);
 			path = "restcomm-messenger";
-			sourceTree = "<group>";
-		};
-		AED0B0761A097764008A6057 /* sounds */ = {
-			isa = PBXGroup;
-			children = (
-				AED0B0771A097764008A6057 /* calling.mp3 */,
-				AED0B0781A097764008A6057 /* message.mp3 */,
-				AED0B0791A097764008A6057 /* ringing.mp3 */,
-			);
-			path = sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,24 +403,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */,
+				AED0B0801A097764008A6057 /* Main_Universal.storyboard in Resources */,
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */,
-				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
 				AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */,
 				AE9520A41B0B2C4D00E947D8 /* splash-320x480@2x.png in Resources */,
 				AED0B0821A097764008A6057 /* Images.xcassets in Resources */,
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
+				AE5AA1A21B6BBB3500854004 /* message.mp3 in Resources */,
 				AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */,
+				AE5AA1A11B6BBB3500854004 /* calling.mp3 in Resources */,
 				AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */,
-				AED0B0871A097764008A6057 /* message.mp3 in Resources */,
 				AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
 				AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */,
+				AE5AA1A31B6BBB3500854004 /* ringing.mp3 in Resources */,
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
-				AED0B0881A097764008A6057 /* ringing.mp3 in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -469,13 +469,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE96D8D71B664633008FAC51 /* CallViewController.m in Sources */,
-				AE96D8E61B66630A008FAC51 /* SettingsNavigationController.m in Sources */,
 				AED0B0831A097764008A6057 /* main.m in Sources */,
+				AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */,
+				AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
 				AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */,
-				AED0B0891A097764008A6057 /* TabBarController.mm in Sources */,
+				AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,12 +514,12 @@
 			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
-		AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */ = {
+		AED0B06C1A097764008A6057 /* Main_Universal.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				AED0B06D1A097764008A6057 /* Base */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main_Universal.storyboard;
 			sourceTree = "<group>";
 		};
 		AED0B06E1A097764008A6057 /* InfoPlist.strings */ = {
@@ -627,7 +627,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -646,6 +645,7 @@
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
+					"/Users/Antonis/Documents/restcomm-ios-sdk/dependencies/packages/RestCommClientLib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -663,7 +663,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -682,6 +681,7 @@
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
+					"/Users/Antonis/Documents/restcomm-ios-sdk/dependencies/packages/RestCommClientLib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-messenger";

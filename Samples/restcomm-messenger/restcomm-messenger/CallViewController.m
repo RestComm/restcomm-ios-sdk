@@ -20,18 +20,10 @@
  *
  */
 
-//#include <unistd.h>
-
 #import "CallViewController.h"
 #import "RestCommClient.h"
 
-//#import "TabBarController.h"
-
 @interface CallViewController ()
-//@property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
-//@property (weak, nonatomic) IBOutlet UITextField *sipUriText;
-//@property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
-//@property (weak, nonatomic) IBOutlet UIButton *answerButton;
 @property (weak, nonatomic) IBOutlet UIButton *declineButton;
 @property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 @property ARDVideoCallView *videoCallView;
@@ -41,33 +33,14 @@
 
 @implementation CallViewController
 
-/*
-- (instancetype)initWithDevice:(RCDevice*)device andParams:(NSMutableDictionary *)params
-{
-    if (self = [super init]) {
-        self.device = device;
-        self.parameters = params;
-    }
-    return self;
-}
- */
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self prepareSounds];
     self.muteSwitch.enabled = false;
-    //self.muteSwitch.isOn = false;
-
-    //self.connection = nil;
-    //self.pendingIncomingConnection = nil;
     
-    //self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:CGRectZero];
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
     self.videoCallView.delegate = self;
-    //self.view = self.videoCallView;
-    // decline button is the first subview, so let's place video underneath it
     [self.view insertSubview:self.videoCallView belowSubview:self.declineButton];
 }
 
@@ -82,12 +55,11 @@
         }
         
         self.connection = [self.device connect:self.parameters delegate:self];
+        if (self.connection == nil) {
+            [self.presentingViewController dismissViewControllerAnimated:YES
+                                                              completion:nil];
+        }
     }
-    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
-        [self.ringingPlayer play];
-    }
-    
-    //[self.view insertSubview:self.videoCallView aboveSubview:self.view];
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,11 +80,6 @@
 
 - (void)answer:(BOOL)allowVideo
 {
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-    
     if (self.pendingIncomingConnection) {
         if (allowVideo) {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
@@ -128,11 +95,6 @@
 
 - (IBAction)declinePressed:(id)sender
 {
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-    
     if (self.pendingIncomingConnection) {
         // reject the pending RCConnection
         [self.pendingIncomingConnection reject];
@@ -214,10 +176,6 @@
 - (void)connectionDidCancel:(RCConnection*)connection
 {
     NSLog(@"connectionDidCancel");
-    if (self.ringingPlayer.isPlaying) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
     
     if (self.pendingIncomingConnection) {
         self.pendingIncomingConnection = nil;
@@ -264,7 +222,6 @@
     if (!self.remoteVideoTrack) {
         self.remoteVideoTrack = remoteVideoTrack;
         [self.remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
-        //self.videoCallView.statusLabel.hidden = YES;
     }
 }
 
@@ -282,50 +239,6 @@
     else {
         self.connection.muted = false;
     }
-}
-
-- (void)prepareSounds
-{
-    // message
-    NSString * filename; // = @"message.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    NSString * file;  // = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                      //                                ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    NSError *error;
-    /*
-    self.messagePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-    if (!self.messagePlayer) {
-        NSLog(@"Error: %@", [error description]);
-        return;
-    }
-     */
-    
-    // ringing
-    filename = @"ringing.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                           ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    self.ringingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-    if (!self.ringingPlayer) {
-        NSLog(@"Error: %@", [error description]);
-        return;
-    }
-    self.ringingPlayer.numberOfLoops = -1; // repeat forever
-
-    // calling
-    filename = @"calling.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                           ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    self.callingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-    if (!self.callingPlayer) {
-        NSLog(@"Error: %@", [error description]);
-        return;
-    }
-    self.callingPlayer.numberOfLoops = -1; // repeat forever
 }
 
 - (BOOL)shouldAutorotate

@@ -21,23 +21,18 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>   // sounds
 #import "ARDVideoCallView.h"
 #import "RestCommClient.h"
 
 @protocol CallDelegate;
 
 @interface CallViewController : UIViewController<RCConnectionDelegate, ARDVideoCallViewDelegate>
-//- (id)initWithDevice:(RCDevice*)device andParams:(NSDictionary *)params;
 // owner is ViewController
 @property (weak) RCDevice * device;
 @property (nonatomic,retain) RCConnection* connection;
 @property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property (weak) id<CallDelegate> delegate;
 @property NSMutableDictionary * parameters;
-//@property AVAudioPlayer * messagePlayer;
-@property AVAudioPlayer * ringingPlayer;
-@property AVAudioPlayer * callingPlayer;
 @end
 
 @protocol CallDelegate <NSObject>

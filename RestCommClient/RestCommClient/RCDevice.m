@@ -24,6 +24,7 @@
 #import "RCConnection.h"
 #import "RCConnectionDelegate.h"
 #import "SipManager.h"
+#import <AVFoundation/AVFoundation.h>   // sounds
 
 @interface RCDevice ()
 // private stuff
@@ -32,8 +33,10 @@
 // make it read-write internally
 @property (nonatomic, readwrite) NSDictionary* capabilities;
 @property SipManager * sipManager;
+// notice that owner of the connection is the App, not us
+@property RCConnection * currentConnection;
+@property AVAudioPlayer * messagePlayer;
 @end
-
 
 
 @implementation RCDevice
@@ -71,7 +74,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         self.incomingSoundEnabled = YES;
         self.outgoingSoundEnabled = YES;
         self.disconnectSoundEnabled = NO;
+        self.currentConnection = nil;
+        // readonly, so no setter
+        _state = RCDeviceStateOffline;
         
+        [self prepareSounds];
         [self populateCapabilitiesFromToken:capabilityToken];
         
         // initialize, register and set delegate
@@ -81,6 +88,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                                  @"1234", @"password", nil];
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:params];
         [self.sipManager eventLoop];
+        _state = RCDeviceStateReady;
     }
     
     return self;
@@ -89,28 +97,43 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)listen
 {
     NSLog(@"[RCDevice listen]");
+    [self.sipManager updateParams:nil];
+    _state = RCDeviceStateReady;
+    [self.delegate deviceDidStartListeningForIncomingConnections:self];
 }
 
 - (void)unlisten
 {
     NSLog(@"[RCDevice unlisten]");
     [self.sipManager unregister:nil];
+    _state = RCDeviceStateOffline;
+    [self.delegate device:self didStopListeningForIncomingConnections:nil];
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
 {
     NSLog(@"[RCDevice updateCapabilityToken]");
-    
 }
 
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
     NSLog(@"[RCDevice connect]");
-    RCConnection* connection = [[RCConnection alloc] initWithDelegate:delegate];
-    self.sipManager.connectionDelegate = connection;
-    connection.sipManager = self.sipManager;
-    connection.incoming = false;
-    connection.state = RCConnectionStatePending;
+    if (self.state != RCDeviceStateReady) {
+        if (self.state == RCDeviceStateBusy) {
+            NSLog(@"Error connecting: RCDevice is busy");
+        }
+        else if (self.state == RCDeviceStateOffline) {
+            NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
+        }
+        return nil;
+    }
+    
+    self.currentConnection = [[RCConnection alloc] initWithDelegate:delegate andDevice:(RCDevice*)self];
+    self.sipManager.connectionDelegate = self.currentConnection;
+    self.currentConnection.sipManager = self.sipManager;
+    self.currentConnection.incoming = false;
+    self.currentConnection.state = RCConnectionStatePending;
+    _state = RCDeviceStateBusy;
     BOOL videoAllowed = NO;
     if ([parameters objectForKey:@"video-enabled"]) {
         videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
@@ -118,46 +141,92 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     // make a call to whoever parameters designate
     [self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed];
 
-    return connection;
+    return self.currentConnection;
 }
 
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
 {
+    if (self.state == RCDeviceStateOffline) {
+        NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
+        return;
+    }
+
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
     [self.sipManager message:message to:[parameters objectForKey:@"username"]];
+}
+
+
+- (void)setOutgoingSoundEnabled:(BOOL)outgoingSoundEnabled
+{
+    _outgoingSoundEnabled = outgoingSoundEnabled;
+}
+
+- (void)setIncomingSoundEnabled:(BOOL)incomingSoundEnabled
+{
+    _incomingSoundEnabled = incomingSoundEnabled;
+}
+
+- (void)setDisconnectSoundEnabled:(BOOL)disconnectSoundEnabled
+{
+    _disconnectSoundEnabled = disconnectSoundEnabled;
 }
 
 - (void)disconnectAll
 {
     NSLog(@"[RCDevice disconnectAll]");
+    [self.currentConnection disconnect];
+    _state = RCDeviceStateReady;
 }
 
 #pragma mark SipManager Delegate methods
 - (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message from:(NSString*)from
 {
+    if (self.incomingSoundEnabled == true) {
+        [self.messagePlayer play];
+    }
     [self.delegate device:self didReceiveIncomingMessage:message withParams:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
 }
 
 - (void)callArrived:(SipManager *)sipManager
 {
-    RCConnection * connection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate];
-    self.sipManager.connectionDelegate = connection;
-    connection.sipManager = self.sipManager;
-    connection.incoming = true;
-    connection.state = RCConnectionStateConnecting;
+    self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
+    self.sipManager.connectionDelegate = self.currentConnection;
+    self.currentConnection.sipManager = self.sipManager;
+    self.currentConnection.incoming = true;
+    self.currentConnection.state = RCConnectionStateConnecting;
+    _state = RCDeviceStateBusy;
+    [self.currentConnection incomingRinging];
     
     // TODO: passing nil on the connection for now
-    [self.delegate device:self didReceiveIncomingConnection:connection];
+    [self.delegate device:self didReceiveIncomingConnection:self.currentConnection];
 }
 
 - (void)signallingInitialized:(SipManager *)sipManager
 {
     [self.delegate deviceDidInitializeSignaling:self];
+    //[self.delegate deviceDidStartListeningForIncomingConnections:self];
 }
 
 - (void) updateParams:(NSDictionary*)params
 {
     [self.sipManager updateParams:params];
+}
+
+- (void)prepareSounds
+{
+    // message
+    NSString * filename = @"message.mp3";
+    // we are assuming the extension will always be the last 3 letters of the filename
+    NSString * file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                                                      ofType:[filename substringFromIndex:[filename length] - 3]];
+    if (file != nil) {
+        NSError *error;
+        self.messagePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
+        if (!self.messagePlayer) {
+            NSLog(@"Error: %@", [error description]);
+            return;
+        }
+    }
 }
 
 // TODO: leave this around because at some point we might add REST functionality on the client

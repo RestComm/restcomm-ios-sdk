@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 
 #import "RCConnectionDelegate.h"
-
+#import "RCDevice.h"
 
 /** @file RCConnection.h */
 
@@ -96,13 +96,14 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 
 
 /**
- *  @abstract Initialize a new RCConnection object
+ *  @abstract Initialize a new RCConnection object (Important: not to be used by the Application; this is for internal use)
  *
  *  @param delegate Delegate of RCConnection that will be receiving RCConnection events (see RCConnectionDelegate)
+ *  @param device RCDevice creating this connection
  *
  *  @return Newly initialized object
  */
-- (id)initWithDelegate:(id<RCConnectionDelegate>)delegate;
+- (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device;
 
 /**
  *  @abstract Accept an incoming connection that is ringing. The connection state changes to 'RCConnectionStateConnected'
@@ -132,6 +133,9 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  *  @param digits A string of digits that will be sent
  */
 - (void)sendDigits:(NSString*)digits;
+
+// internal
+- (void)incomingRinging;
 
 // avoid reference cycle
 @property (weak) SipManager * sipManager;

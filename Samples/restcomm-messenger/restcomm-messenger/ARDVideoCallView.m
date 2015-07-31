@@ -30,8 +30,8 @@
 #import <AVFoundation/AVFoundation.h>
 //#import "UIImage+ARDUtilities.h"
 
-static CGFloat const kHangupButtonPadding = 16;
-static CGFloat const kHangupButtonSize = 48;
+//static CGFloat const kHangupButtonPadding = 16;
+//static CGFloat const kHangupButtonSize = 48;
 static CGFloat const kLocalVideoViewWidth = 90;
 static CGFloat const kLocalVideoViewHeight = 120;
 static CGFloat const kLocalVideoViewPadding = 8;

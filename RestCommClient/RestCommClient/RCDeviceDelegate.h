@@ -42,7 +42,7 @@
 
 @optional
 /**
- *  @abstract RCDevice started listening for incoming connections (**Not Implemented yet**)
+ *  @abstract RCDevice started listening for incoming connections
  *
  *  @param device Device of interest
  */

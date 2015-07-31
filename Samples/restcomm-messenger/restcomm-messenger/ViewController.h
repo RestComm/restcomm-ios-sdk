@@ -21,21 +21,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>   // sounds
 
 #import "CallViewController.h"
 #import "RestCommClient.h"
 
 @interface ViewController : UIViewController<RCDeviceDelegate, CallDelegate>
-//- (void)connect;
-//- (void)disconnect;
 
 @property (nonatomic,retain) RCDevice* device;
-//@property (nonatomic,retain) RCConnection* connection;
-//@property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property NSMutableDictionary * parameters;
-@property AVAudioPlayer * messagePlayer;
-//@property AVAudioPlayer * ringingPlayer;
 @property BOOL isInitialized;
 @property BOOL isRegistered;
 @end
