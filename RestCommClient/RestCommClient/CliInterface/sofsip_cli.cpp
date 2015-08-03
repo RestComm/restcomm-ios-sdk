@@ -114,7 +114,8 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 
 static cli_t *global_cli_p = NULL;
 
-int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
+int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
+                const char * aor, const char * registrar)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -147,7 +148,12 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd)
   /* step: parse command line arguments and initialize app event loop */
   res = sofsip_init(cli, ac, av);
   assert(res == 0);
-
+  
+  cli->cli_conf[0].ssc_aor = aor;
+  cli->cli_conf[0].ssc_registrar = registrar;
+  cli->cli_conf[0].ssc_proxy = registrar;
+  cli->cli_conf[0].ssc_register = true;
+    
   /* step: create ssc signaling and media subsystem instance */
   cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
 

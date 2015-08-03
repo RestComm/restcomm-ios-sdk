@@ -1402,13 +1402,17 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
         DEBUG_PRINTF("\tSubject: %s\n", subject->g_value);
     ssc_print_payload(ssc, sip->sip_payload);
     
-    if (from && from->a_url->url_user) {
-        username = from->a_url->url_user;
-    }
+    //if (from && from->a_url->url_user) {
+    //    username = from->a_url->url_user;
+    //}
+    
+    char url[1000];
+    snprintf(url, sizeof(url), URL_PRINT_FORMAT, URL_PRINT_ARGS(from->a_url));
     
     // notify the client application of the message
     // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
     setSofiaReply(INCOMING_MSG, "");
+    username = url;
     username += "|";  // character that won't show in the username
     username += sip->sip_payload->pl_data;
     strcpy(sofiaReply.text, username.c_str());

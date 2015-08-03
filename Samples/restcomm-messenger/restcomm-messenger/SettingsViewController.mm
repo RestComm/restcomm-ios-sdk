@@ -65,9 +65,12 @@ char REGISTRAR[] = "192.168.2.32:5080";
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backPressed)];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
-    self.navigationItem.leftBarButtonItem = backButton;
+    // Latest:
+    //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
+    //self.navigationItem.leftBarButtonItem = backButton;
+    
+    
+    
     /*
     TabBarController * tabBarController = (TabBarController*)self.tabBarController;
     // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
@@ -82,7 +85,7 @@ char REGISTRAR[] = "192.168.2.32:5080";
 
 - (IBAction)backPressed
 {
-    [self dismissViewControllerAnimated:YES completion:nil]; // ios 6
+    //[self dismissViewControllerAnimated:YES completion:nil]; // ios 6
 
 }
 
@@ -116,8 +119,8 @@ char REGISTRAR[] = "192.168.2.32:5080";
     }
 
     if (update) {
-        SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
-        [settingsNavigationController.device updateParams:params];
+        //SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
+        [self.device updateParams:params];
     }
      /**/
 }

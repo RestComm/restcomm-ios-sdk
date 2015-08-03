@@ -90,7 +90,17 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 @property (nonatomic) BOOL disconnectSoundEnabled;
 
 /**
- *  Initialize a new RCDevice object
+ *  Initialize a new RCDevice object with parameters
+ *
+ *  @param parameters      Parameters
+ *  @param delegate        Delegate of RCDevice
+ *
+ *  @return Newly initialized object
+ */
+- (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate;
+
+/**
+ *  Initialize a new RCDevice object with capability token
  *
  *  @param capabilityToken Capability Token
  *  @param delegate        Delegate of RCDevice

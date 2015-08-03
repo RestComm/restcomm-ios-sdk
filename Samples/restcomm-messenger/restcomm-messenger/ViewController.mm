@@ -25,7 +25,9 @@
 #import "ViewController.h"
 #import "RestCommClient.h"
 #import "SettingsNavigationController.h"
+#import "SettingsViewController.h"
 #import "CallViewController.h"
+#import "MessageViewController.h"
 
 extern char AOR[];
 extern char REGISTRAR[];
@@ -49,12 +51,17 @@ extern char REGISTRAR[];
     self.isInitialized = NO;
 
     // TODO: capabilityTokens aren't handled yet
-    NSString* capabilityToken = @"";
+    //NSString* capabilityToken = @"";
     
-    self.parameters = [[NSMutableDictionary alloc] init];
+    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSString stringWithUTF8String:AOR], @"aor",
+                       @"1234", @"password",
+                       nil];
+
+    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s", REGISTRAR] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
+    //self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -63,7 +70,7 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    //self.sipUriText.text = @"sip:alice@54.225.212.193:5080";
     self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
@@ -122,7 +129,7 @@ extern char REGISTRAR[];
     
     // update our parms
     [self.device updateParams:self.parameters];
-    self.isRegistered = YES;
+    //self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
@@ -145,14 +152,33 @@ extern char REGISTRAR[];
 
 - (void)deviceDidInitializeSignaling:(RCDevice *)device
 {
-    [self register];
+    //[self register];
     self.isInitialized = YES;
+    self.isRegistered = YES;
 }
 
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
-    [self prependToDialog:message sender:[params objectForKey:@"from"]];
+    // Open message view if not already opened
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    if (![self.navigationController.visibleViewController isKindOfClass:[MessageViewController class]]) {
+        MessageViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+        //messageViewController.delegate = self;
+        messageViewController.device = self.device;
+        messageViewController.parameters = [[NSMutableDictionary alloc] init];
+        [messageViewController.parameters setObject:message forKey:@"message-text"];
+        [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
+        [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
+        
+        messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController pushViewController:messageViewController animated:YES];
+    }
+    else {
+        // message view already opened, just append
+        MessageViewController * messageViewController = (MessageViewController*)self.navigationController.visibleViewController;
+        [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
+    }
 }
 
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
@@ -227,8 +253,16 @@ extern char REGISTRAR[];
         }
     }
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
-        SettingsNavigationController * settingsNavigationController = [segue destinationViewController];
-        settingsNavigationController.device = self.device;
+        SettingsViewController * settingsViewController = [segue destinationViewController];
+        settingsViewController.device = self.device;
+    }
+    if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
+        MessageViewController *callViewController = [segue destinationViewController];
+        //callViewController.delegate = self;
+        callViewController.device = self.device;
+        callViewController.parameters = [[NSMutableDictionary alloc] init];
+        [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
+        //[callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
 }
 

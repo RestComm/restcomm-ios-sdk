@@ -63,9 +63,39 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     //[self.capabilities setValue:expiration forKey:@"expiration"];
 }
 
+- (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate
+{
+    self = [super init];
+    if (self) {
+        self.delegate = delegate;
+        self.capabilities = nil;
+        self.incomingSoundEnabled = YES;
+        self.outgoingSoundEnabled = YES;
+        self.disconnectSoundEnabled = NO;
+        self.currentConnection = nil;
+        // readonly, so no setter
+        _state = RCDeviceStateOffline;
+        
+        [self prepareSounds];
+        
+        // initialize, register and set delegate
+        // TODO: fix this
+        //NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
+        //                         @"sip:192.168.2.32:5080", @"registrar",
+        //                         @"1234", @"password", nil];
+        self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
+        [self.sipManager eventLoop];
+        _state = RCDeviceStateReady;
+    }
+    
+    return self;
+}
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate
 {
+    [self populateCapabilitiesFromToken:capabilityToken];
+    return [self initWithParams:self.capabilities delegate:delegate];
+    /*
     //NSLog(@"[RCDevice initWithCapabilityToken]");
     self = [super init];
     if (self) {
@@ -92,6 +122,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
     
     return self;
+     */
 }
 
 - (void)listen

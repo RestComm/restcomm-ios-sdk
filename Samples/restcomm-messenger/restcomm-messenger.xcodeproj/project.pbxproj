@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
+		AE2198E81B6FDE6300BAF132 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2198E71B6FDE6300BAF132 /* libRestCommClient.a */; };
 		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
 		AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -30,10 +31,10 @@
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
-		AE5AA1961B6BB03200854004 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5AA1951B6BB03200854004 /* libRestCommClient.a */; };
-		AE5AA1A11B6BBB3500854004 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA19E1B6BBB3500854004 /* calling.mp3 */; };
-		AE5AA1A21B6BBB3500854004 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA19F1B6BBB3500854004 /* message.mp3 */; };
-		AE5AA1A31B6BBB3500854004 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1A01B6BBB3500854004 /* ringing.mp3 */; };
+		AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE59B24D1B6F6F46006CC699 /* MessageViewController.m */; };
+		AE5AA1B31B6BBBCE00854004 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B01B6BBBCE00854004 /* calling.mp3 */; };
+		AE5AA1B41B6BBBCE00854004 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B11B6BBBCE00854004 /* message.mp3 */; };
+		AE5AA1B51B6BBBCE00854004 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B21B6BBBCE00854004 /* ringing.mp3 */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
@@ -86,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
+		AE2198E71B6FDE6300BAF132 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
@@ -93,10 +95,11 @@
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		AE5AA1951B6BB03200854004 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
-		AE5AA19E1B6BBB3500854004 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
-		AE5AA19F1B6BBB3500854004 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
-		AE5AA1A01B6BBB3500854004 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
+		AE59B24C1B6F6F46006CC699 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		AE59B24D1B6F6F46006CC699 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		AE5AA1B01B6BBBCE00854004 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
+		AE5AA1B11B6BBBCE00854004 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
+		AE5AA1B21B6BBBCE00854004 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
 		AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -155,7 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE5AA1961B6BB03200854004 /* libRestCommClient.a in Frameworks */,
+				AE2198E81B6FDE6300BAF132 /* libRestCommClient.a in Frameworks */,
 				AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
 				AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */,
@@ -190,12 +193,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AE5AA1971B6BB44000854004 /* sounds */ = {
+		AE5AA1AF1B6BBBCE00854004 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
-				AE5AA19E1B6BBB3500854004 /* calling.mp3 */,
-				AE5AA19F1B6BBB3500854004 /* message.mp3 */,
-				AE5AA1A01B6BBB3500854004 /* ringing.mp3 */,
+				AE5AA1B01B6BBBCE00854004 /* calling.mp3 */,
+				AE5AA1B11B6BBBCE00854004 /* message.mp3 */,
+				AE5AA1B21B6BBBCE00854004 /* ringing.mp3 */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -223,7 +226,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE5AA1951B6BB03200854004 /* libRestCommClient.a */,
+				AE2198E71B6FDE6300BAF132 /* libRestCommClient.a */,
 				AECDB8A31B0DFB9900563107 /* libRestCommClient.a */,
 				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
@@ -298,7 +301,7 @@
 		AED0B0671A097764008A6057 /* restcomm-messenger */ = {
 			isa = PBXGroup;
 			children = (
-				AE5AA1971B6BB44000854004 /* sounds */,
+				AE5AA1AF1B6BBBCE00854004 /* sounds */,
 				AE9520861B0B268C00E947D8 /* img */,
 				AED0B0681A097764008A6057 /* AppDelegate.h */,
 				AED0B0691A097764008A6057 /* AppDelegate.m */,
@@ -319,6 +322,8 @@
 				AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */,
 				AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */,
 				AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */,
+				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
+				AE59B24D1B6F6F46006CC699 /* MessageViewController.m */,
 			);
 			path = "restcomm-messenger";
 			sourceTree = "<group>";
@@ -411,14 +416,14 @@
 				AE9520A41B0B2C4D00E947D8 /* splash-320x480@2x.png in Resources */,
 				AED0B0821A097764008A6057 /* Images.xcassets in Resources */,
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
-				AE5AA1A21B6BBB3500854004 /* message.mp3 in Resources */,
+				AE5AA1B41B6BBBCE00854004 /* message.mp3 in Resources */,
 				AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */,
-				AE5AA1A11B6BBB3500854004 /* calling.mp3 in Resources */,
+				AE5AA1B31B6BBBCE00854004 /* calling.mp3 in Resources */,
 				AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */,
 				AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
 				AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */,
-				AE5AA1A31B6BBB3500854004 /* ringing.mp3 in Resources */,
+				AE5AA1B51B6BBBCE00854004 /* ringing.mp3 in Resources */,
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
@@ -475,6 +480,7 @@
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
 				AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */,
+				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,
 				AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
