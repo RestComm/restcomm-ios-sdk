@@ -60,7 +60,6 @@ extern char REGISTRAR[];
     [self.parameters setObject:[NSString stringWithFormat:@"sip:%s", REGISTRAR] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
-    //self.device = [[RCDevice alloc] initWithCapabilityToken:capabilityToken delegate:self];
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
@@ -123,10 +122,7 @@ extern char REGISTRAR[];
 - (void)register
 {
     // try to register when coming up with the existing settings
-    [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
-    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s", REGISTRAR] forKey:@"registrar"];
-    [self.parameters setObject:@"1234" forKey:@"password"];
-    
+
     // update our parms
     [self.device updateParams:self.parameters];
     //self.isRegistered = YES;

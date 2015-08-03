@@ -38,6 +38,7 @@
 
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"sip:bob@telestax.com", @"aor",
+                       @"1234", @"password",
                        nil];
 
     // CHANGEME: set the IP address of your RestComm instance in the URI below
@@ -45,7 +46,8 @@
     [self.parameters setObject:@"sip:192.168.2.32:5080" forKey:@"registrar"];
 
     // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithCapabilityToken:@"" delegate:self];
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
+
     self.connection = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
