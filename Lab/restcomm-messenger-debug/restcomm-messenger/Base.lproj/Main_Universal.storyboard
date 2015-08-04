@@ -131,12 +131,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9E-e9-jtc">
-                                <rect key="frame" x="16" y="72" width="568" height="470"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3gF-qi-F3O">
                                 <rect key="frame" x="16" y="550" width="506" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -155,16 +149,22 @@
                                     <action selector="sendPressed:" destination="Teq-0A-fdV" eventType="touchUpInside" id="Kn2-pm-HFB"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9E-e9-jtc">
+                                <rect key="frame" x="16" y="72" width="568" height="463"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TnH-Oe-xyO" firstAttribute="top" secondItem="vHc-y5-dQr" secondAttribute="bottom" constant="21" id="8tl-sL-NR7"/>
+                            <constraint firstItem="TnH-Oe-xyO" firstAttribute="top" secondItem="O9E-e9-jtc" secondAttribute="bottom" constant="65" id="ECb-nA-UDj"/>
                             <constraint firstItem="O9E-e9-jtc" firstAttribute="top" secondItem="8h7-2f-vNX" secondAttribute="bottom" constant="8" id="F0A-P3-OTE"/>
                             <constraint firstItem="vHc-y5-dQr" firstAttribute="leading" secondItem="3gF-qi-F3O" secondAttribute="trailing" constant="8" id="G5p-SK-4e7"/>
                             <constraint firstItem="vHc-y5-dQr" firstAttribute="trailing" secondItem="82P-AZ-Dww" secondAttribute="trailingMargin" id="aOA-o7-fe5"/>
                             <constraint firstItem="O9E-e9-jtc" firstAttribute="top" secondItem="8h7-2f-vNX" secondAttribute="bottom" id="bDU-bP-oj3"/>
                             <constraint firstItem="TnH-Oe-xyO" firstAttribute="top" secondItem="3gF-qi-F3O" secondAttribute="bottom" constant="20" id="dZI-NA-tt9"/>
-                            <constraint firstItem="3gF-qi-F3O" firstAttribute="top" secondItem="O9E-e9-jtc" secondAttribute="bottom" constant="8" id="eQg-cX-Xf5"/>
                             <constraint firstItem="3gF-qi-F3O" firstAttribute="centerY" secondItem="vHc-y5-dQr" secondAttribute="centerY" constant="1" id="gOK-DO-nAm"/>
                             <constraint firstItem="O9E-e9-jtc" firstAttribute="trailing" secondItem="82P-AZ-Dww" secondAttribute="trailingMargin" id="hTs-Wv-x3n"/>
                             <constraint firstItem="O9E-e9-jtc" firstAttribute="leading" secondItem="82P-AZ-Dww" secondAttribute="leadingMargin" id="iUR-pN-KYN"/>

@@ -151,9 +151,9 @@ int read_pipe[2];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
         // delay execution of my block for 1 seconds.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self.deviceDelegate signallingInitialized:self];
-        });
+        //});
     }
     
     return 0;
@@ -170,18 +170,25 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     SipManager * sipManager = (__bridge id) info;
     struct SofiaReply reply;
     
-    // TODO: what if message is truncated?
-    int size = 0;
+    ssize_t size = 0;
     char buf[65536] = "";
     if ((size = read(fd, &buf, sizeof(buf))) == -1) {
         perror("read from pipe in App");
         exit(EXIT_FAILURE);
     }
     else {
-        //NSLog(@"@@@ App << Sofia: serialized: %s", buf);
-        reply.Deserialize(buf);
-        //NSLog(@"\n@@@@@@@@@ App << Sofia: %d, %s", reply.rc, reply.text.c_str());
-        [sipManager handleSofiaInput:&reply fd:fd];
+        string incomingMsg(buf, size);
+        //printf("\n######### Receiving from Sofia, res: %lu buf: %s\n", size, buf);
+        while (1) {
+            // remember, Deserialize() will return the remaining commands after it parses the first, if applicable
+            incomingMsg = reply.Deserialize(incomingMsg);
+            //NSLog(@"\n@@@@@@@@@ App << Sofia: %d, %s", reply.rc, reply.text.c_str());
+            [sipManager handleSofiaInput:&reply fd:fd];
+            
+            if (incomingMsg == "") {
+                break;
+            }
+        }
     }
     
     CFFileDescriptorInvalidate(fdref);
@@ -269,9 +276,9 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         exit(EXIT_FAILURE);
     }
     
-    // initialize gstreamer stuff
-    //gst_ios_init();
-    //std::map<string, string> params = new map<
+    // add 'listener' to the input pipe *before* we initialize Sofia, so that we guarantee that
+    // no Sofia event can be missed
+    [self addFdSourceToRunLoop:read_pipe[0]];
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -279,8 +286,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
                     [[self.params objectForKey:@"registrar"] UTF8String]);
     });
-    
-    [self addFdSourceToRunLoop:read_pipe[0]];
     
     return true;
 }

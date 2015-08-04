@@ -209,14 +209,47 @@ struct SofiaReply {
          
         
         return os.str();
-        //string serialized = os.str();
-        //char * result = new char[serialized.size()];
-        //return result;
     }
-    
-    void Deserialize(const char * buffer)
+
+    // Deserialize one or more command strings.
+    // if there are more than one commands in the incoming message, Deserialize() will return
+    // the remaining commands after it parses the first. If not it will return empty string
+    string Deserialize(const string serialized)
     {
-        string serialized = buffer;
+        std::size_t found = serialized.find_first_of('$');
+        if (found != std::string::npos) {
+            DeserializeSingle(serialized.substr(0, found + 1));
+        }
+        else {
+            return "";
+        }
+        
+        string remaining = serialized.substr(found + 1, string::npos);
+        return remaining;
+        /*
+        istringstream is(serialized);
+        string token;
+        
+        std::getline(is, token, '$');
+        // re-add the token
+        token += '$';
+        DeserializeSingle(token);
+
+        // try to get more commands
+        while (std::getline(is, token)) {
+            remaining += token;
+        }
+        if (!is.eof()) {
+            return token;
+        }
+         */
+        
+        //return "";
+    }
+
+    // deserialize a single command string
+    void DeserializeSingle(const string serialized)
+    {
         istringstream is(serialized);
         string token;
         char delim = ' ';
@@ -240,10 +273,12 @@ struct SofiaReply {
         }
     }
     
-    int Send(const int fd) {
+    ssize_t Send(const int fd) {
         std::string serialized = Serialize();
         //char * result = new char[serialized.size()];
-        return write(fd, serialized.c_str(), serialized.size());
+        ssize_t status = write(fd, serialized.c_str(), serialized.size());
+        //printf("\n######### Sending to App, res: %lu buf: %s\n", status, serialized.c_str());
+        return status;
     }
 };
 
@@ -267,10 +302,12 @@ enum SipMsgEnum {
 };
 
 //SofiaReply();
+/*
 void setSofiaReply(const int rc, const char * text);
 void setSofiaReplyPtr(const int rc, void * ptr);
 struct SofiaReply * getSofiaReply(void);
 static ssize_t sendSofiaReply(const int fd, const struct SofiaReply * sofiaReply);
+ */
 
 
 
