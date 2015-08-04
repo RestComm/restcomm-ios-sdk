@@ -109,7 +109,7 @@ int read_pipe[2];
     else if (reply->rc == ANSWER_PRESSED) {
         // the incoming message has first the address of the Sofia operation (until the first space)
         // and then the SDP, let's parse them into separate strings
-        NSString * string = [NSString stringWithUTF8String:reply->text];
+        NSString * string = [NSString stringWithUTF8String:reply->text.c_str()];
         NSRange range = [string rangeOfString:@" "];
         NSString * address = [string substringToIndex:range.location];
         NSString * sdp = [string substringFromIndex:range.location + 1];
@@ -124,10 +124,10 @@ int read_pipe[2];
     else if (reply->rc == OUTGOING_ESTABLISHED) {
         [self.connectionDelegate outgoingEstablished:self];
         // call is established, send the SDP over to WebRTC
-        [self.media processSignalingMessage:reply->text type:kARDSignalingMessageTypeAnswer];
+        [self.media processSignalingMessage:reply->text.c_str() type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_MSG) {
-        NSString* whole = [NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding];
+        NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
         NSString* username = [whole componentsSeparatedByString:@"|"][0];
         NSString* msg = [whole componentsSeparatedByString:@"|"][1];
         [self.deviceDelegate messageArrived:self withData:msg from:username];
@@ -141,7 +141,7 @@ int read_pipe[2];
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
         self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:[NSString stringWithCString:reply->text encoding:NSUTF8StringEncoding]
+        [self.media connect:[NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding]
                         sdp:nil isInitiator:YES withVideo:self.videoAllowed];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
@@ -171,11 +171,16 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     struct SofiaReply reply;
     
     // TODO: what if message is truncated?
-    if (read(fd, &reply, sizeof(reply)) == -1) {
+    int size = 0;
+    char buf[65536] = "";
+    if ((size = read(fd, &buf, sizeof(buf))) == -1) {
         perror("read from pipe in App");
         exit(EXIT_FAILURE);
     }
     else {
+        //NSLog(@"@@@ App << Sofia: serialized: %s", buf);
+        reply.Deserialize(buf);
+        //NSLog(@"\n@@@@@@@@@ App << Sofia: %d, %s", reply.rc, reply.text.c_str());
         [sipManager handleSofiaInput:&reply fd:fd];
     }
     

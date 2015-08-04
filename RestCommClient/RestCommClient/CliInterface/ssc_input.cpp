@@ -139,6 +139,7 @@ void ssc_input_read_char(int input_fd)
           //buf[n] = 0;
           tmpbuf = strdup((const char*)token);
           if (ssc_input_handler_f) {
+              //printf("\n@@@@@@@@@ App >> Sofia: %s\n", tmpbuf);
               ssc_input_handler_f(tmpbuf);
           }
           ssc_input_refresh();

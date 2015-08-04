@@ -472,7 +472,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
-            /*
+            
             for (NSString * key in candidates) {
                 for (NSString * candidate in [candidates objectForKey:key]) {
                     RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
@@ -481,7 +481,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
                     [_peerConnection addICECandidate:iceCandidate];
                 }
             }
-             */
             
             break;
         }

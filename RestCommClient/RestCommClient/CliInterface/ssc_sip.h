@@ -57,6 +57,10 @@ typedef struct ssc_conf_s ssc_conf_t;
 
 #include <iostream>
 #include <list>
+#include <sstream>
+#include <string>
+
+using namespace std;
 
 typedef void (*ssc_exit_cb)(void);
 typedef void (*ssc_event_cb)(ssc_t *ssc, nua_event_t event, void *context);
@@ -171,8 +175,76 @@ void ssc_print_payload(ssc_t *ssc, sip_payload_t const *pl);
 void ssc_print_settings(ssc_t *ssc);
 
 struct SofiaReply {
+    //int size;
     int rc;
-    char text[65535];
+    std::string text;
+    //char text[65535];
+
+    SofiaReply()
+    {
+        this->rc = 0;
+        this->text = "";
+    }
+    
+    SofiaReply(const int rc, const char * text)
+    {
+        this->rc = rc;
+        this->text = text;
+        //strncpy(sofiaReply.text, text, sizeof(sofiaReply.text) - 1);
+        //sofiaReply.text[sizeof(sofiaReply.text) - 1] = 0;
+    }
+    
+    std::string Serialize()
+    {
+        ostringstream os;
+        // serialize rc and text
+        os << this->rc << " " << this->text << "$";
+        /*
+         os << this->rc;
+         if (!this->text.empty()) {
+            os << " " << this->text;
+         }
+         os << "$";
+         */
+         
+        
+        return os.str();
+        //string serialized = os.str();
+        //char * result = new char[serialized.size()];
+        //return result;
+    }
+    
+    void Deserialize(const char * buffer)
+    {
+        string serialized = buffer;
+        istringstream is(serialized);
+        string token;
+        char delim = ' ';
+        
+        int index = 0;
+        while (std::getline(is, token, delim)) {
+            //std::cout << token << '\n';
+            if (index == 0) {
+                // need to convert string -> int
+                istringstream isSingle(token);
+                isSingle >> this->rc;
+                delim = '$';
+            }
+            else if (index == 1) {
+                this->text = token;
+                //istringstream isSingle(token);
+                //std::getline(is, this->text, delim);
+                //isSingle >> this->text;
+            }
+            index++;
+        }
+    }
+    
+    int Send(const int fd) {
+        std::string serialized = Serialize();
+        //char * result = new char[serialized.size()];
+        return write(fd, serialized.c_str(), serialized.size());
+    }
 };
 
 //extern SofiaReply;

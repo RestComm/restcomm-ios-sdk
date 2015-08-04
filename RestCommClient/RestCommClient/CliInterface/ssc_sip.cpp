@@ -188,7 +188,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     if (conf->ssc_contact)
         contact = conf->ssc_contact;
     else
-        contact = "sip:*:5090;transport=udp";
+        contact = "sip:*:5090;transport=tcp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
@@ -239,8 +239,10 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     su_free(home, userdomain);
     
     // Notify application that singnalling is initialized
-    setSofiaReply(SIGNALLING_INITIALIZED, "");
-    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    SofiaReply reply(SIGNALLING_INITIALIZED, "");
+    reply.Send(ssc->ssc_output_fd);
+    //setSofiaReply(SIGNALLING_INITIALIZED, "");
+    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     
     return ssc;
 }
@@ -344,8 +346,11 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
     }
     
     // notify the client application that they should provide credentials
-    setSofiaReply(REPLY_AUTH, "auth");
-    sendSofiaReply(self->ssc_output_fd, &sofiaReply);
+    SofiaReply reply(REPLY_AUTH, "auth");
+    reply.Send(self->ssc_output_fd);
+
+    //setSofiaReply(REPLY_AUTH, "auth");
+    //sendSofiaReply(self->ssc_output_fd, &sofiaReply);
 }
 
 
@@ -679,8 +684,10 @@ void ssc_invite(ssc_t *ssc, const char *destination)
         
         char value_str[32] = "";
         sprintf(value_str, "%p", op);
-        setSofiaReply(WEBRTC_SDP_REQUEST, value_str);
-        sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        SofiaReply reply(WEBRTC_SDP_REQUEST, value_str);
+        reply.Send(ssc->ssc_output_fd);
+        //setSofiaReply(WEBRTC_SDP_REQUEST, value_str);
+        //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     }
 }
 
@@ -756,19 +763,25 @@ void ssc_r_invite(int status, char const *phrase,
 
         if (status == 486 || status == 600 || status == 603) {
             // notify the client application that we are ringing
-            setSofiaReply(OUTGOING_DECLINED, "");
-            sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+            SofiaReply reply(OUTGOING_DECLINED, "");
+            reply.Send(ssc->ssc_output_fd);
+            //setSofiaReply(OUTGOING_DECLINED, "");
+            //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
         }
     }
     if (status == 180) {
         // notify the client application that we are ringing
-        setSofiaReply(OUTGOING_RINGING, "");
-        sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        SofiaReply reply(OUTGOING_RINGING, "");
+        reply.Send(ssc->ssc_output_fd);
+        //setSofiaReply(OUTGOING_RINGING, "");
+        //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
     }
     if (status == 200) {
         // notify the client application that we are established
-        setSofiaReply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
-        sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        SofiaReply reply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
+        reply.Send(ssc->ssc_output_fd);
+        //setSofiaReply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
+        //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
         
         // TODO: remove when done debugging
         //nua_get_hparams(nh, TAG_ANY(), TAG_NULL());
@@ -868,8 +881,10 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
                 strncpy(stored_sdp, sip->sip_payload->pl_data, 65535);
 
                 // notify the client application that they should answer
-                setSofiaReply(INCOMING_CALL, "");
-                sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+                SofiaReply reply(INCOMING_CALL, "");
+                reply.Send(ssc->ssc_output_fd);
+                //setSofiaReply(INCOMING_CALL, "");
+                //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
 
                 // TODO: remove when done debugging
                 //nua_get_hparams(nua_default(nua), TAG_ANY(), TAG_NULL());
@@ -1031,8 +1046,10 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
               sprintf(value_str, "%p %s", op, stored_sdp);
 
               // notify the client application that they should answer
-              setSofiaReply(ANSWER_PRESSED, value_str);
-              sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+              SofiaReply reply(ANSWER_PRESSED, value_str);
+              reply.Send(ssc->ssc_output_fd);
+              //setSofiaReply(ANSWER_PRESSED, value_str);
+              //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
               strncpy(stored_sdp, "", 65535);
             }
 
@@ -1233,8 +1250,10 @@ void ssc_r_bye(int status, char const *phrase,
     if (status < 200)
         return;
 
-    setSofiaReply(OUTGOING_BYE_RESPONSE, "");
-    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    SofiaReply reply(OUTGOING_BYE_RESPONSE, "");
+    reply.Send(ssc->ssc_output_fd);
+    //setSofiaReply(OUTGOING_BYE_RESPONSE, "");
+    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
 }
 
 /**
@@ -1249,8 +1268,10 @@ void ssc_i_bye(nua_t *nua, ssc_t *ssc,
     
     DEBUG_PRINTF("%s: BYE received\n", ssc->ssc_name);
 
-    setSofiaReply(INCOMING_BYE, "");
-    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    SofiaReply reply(INCOMING_BYE, "");
+    reply.Send(ssc->ssc_output_fd);
+    //setSofiaReply(INCOMING_BYE, "");
+    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
 }
 
 /**
@@ -1288,8 +1309,10 @@ void ssc_i_cancel(nua_t *nua, ssc_t *ssc,
     
     DEBUG_PRINTF("%s: CANCEL received\n", ssc->ssc_name);
     
-    setSofiaReply(INCOMING_CANCELLED, "");
-    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    SofiaReply reply(INCOMING_CANCELLED, "");
+    reply.Send(ssc->ssc_output_fd);
+    //setSofiaReply(INCOMING_CANCELLED, "");
+    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
 }
 
 void ssc_zap(ssc_t *ssc, char *which)
@@ -1410,13 +1433,16 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
     snprintf(url, sizeof(url), URL_PRINT_FORMAT, URL_PRINT_ARGS(from->a_url));
     
     // notify the client application of the message
-    // TODO: this is pretty bad practice, as no bounds checking is done and handling should reside in constructor
-    setSofiaReply(INCOMING_MSG, "");
     username = url;
     username += "|";  // character that won't show in the username
     username += sip->sip_payload->pl_data;
-    strcpy(sofiaReply.text, username.c_str());
-    sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+    
+    SofiaReply reply(INCOMING_MSG, username.c_str());
+    reply.Send(ssc->ssc_output_fd);
+    //setSofiaReply(INCOMING_MSG, "");
+    //strcpy(sofiaReply.text, username.c_str());
+    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+
     
     if (op == NULL)
         op = ssc_oper_create_with_handle(ssc, SIP_METHOD_MESSAGE, nh, from);
@@ -2097,6 +2123,7 @@ void ssc_shutdown(ssc_t *ssc)
     nua_shutdown(ssc->ssc_nua);
 }
 
+/*
 // reply sent back to the iOS App via pipe
 void setSofiaReply(const int rc, const char * text)
 {
@@ -2118,8 +2145,11 @@ struct SofiaReply * getSofiaReply(void)
     return &sofiaReply;
 }
 
+
 ssize_t sendSofiaReply(const int fd, const struct SofiaReply * sofiaReply)
 {
     //char buf[100] = "auth";
-    return write(fd, sofiaReply, sizeof(*sofiaReply));
+    int size = sizeof(*sofiaReply);
+    return write(fd, sofiaReply, size);
 }
+*/
