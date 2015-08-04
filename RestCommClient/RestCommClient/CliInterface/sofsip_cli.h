@@ -23,6 +23,7 @@
 #ifndef HAVE_SOFSIP_CLI_J
 #define HAVE_SOFSIP_CLI_J
 
-int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd);
+int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
+                const char * aor, const char * registrar);
 
 #endif

@@ -25,6 +25,8 @@
 
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
+#include <iostream>
+#include <map>
 //#include "gst_ios_init.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -264,11 +266,13 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // initialize gstreamer stuff
     //gst_ios_init();
+    //std::map<string, string> params = new map<
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // communicate with sip sofia via the pipe
-        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1]);
+        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
+                    [[self.params objectForKey:@"registrar"] UTF8String]);
     });
     
     [self addFdSourceToRunLoop:read_pipe[0]];

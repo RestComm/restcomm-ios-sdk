@@ -10,6 +10,4 @@
 #import "RestCommClient.h"
 
 @interface SettingsNavigationController : UINavigationController
-// owner is ViewController
-@property (weak) RCDevice * device;
 @end
