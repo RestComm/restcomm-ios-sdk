@@ -18,62 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
-                                           initWithTarget:self
-                                           action:@selector(hideKeyBoard)];
-    
-    [self.view addGestureRecognizer:tapGesture];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
-}
-
-// Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    [UIView beginAnimations: @"anim" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration:0.0f];
-    self.view.frame = CGRectOffset(self.view.frame, 0, -kbSize.height);
-    [UIView commitAnimations];
-    /*
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    scrollView.contentInset = contentInsets;
-    scrollView.scrollIndicatorInsets = contentInsets;
-    
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your app might not need or want this behavior.
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
-        [self.scrollView scrollRectToVisible:activeField.frame animated:YES];
-    }
-     */
-}
-
-// Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    [UIView beginAnimations: @"anim" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration:0.0f];
-    self.view.frame = CGRectOffset(self.view.frame, 0, kbSize.height);
-    [UIView commitAnimations];
-
-    //UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    //scrollView.contentInset = contentInsets;
-    //scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -99,9 +43,6 @@
 // ---------- UI events
 - (IBAction)sendPressed:(id)sender
 {
-    //[self.parameters setObject:[self.parameters objectForKey:@"message-target"]
-    //                    forKey:@"username"];
-    
     // send an instant message using RCDevice
     [self.device sendMessage:self.sipMessageText.text
                           to:[NSDictionary dictionaryWithObject:[self.parameters objectForKey:@"username"] forKey:@"username"]];
@@ -156,14 +97,5 @@
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
