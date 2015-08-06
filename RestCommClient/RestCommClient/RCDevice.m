@@ -78,12 +78,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         [self prepareSounds];
         
-        // initialize, register and set delegate
-        // TODO: fix this
-        //NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
-        //                         @"sip:192.168.2.32:5080", @"registrar",
-        //                         @"1234", @"password", nil];
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
+
+        // start signalling eventLoop (i.e. Sofia)
         [self.sipManager eventLoop];
         _state = RCDeviceStateReady;
     }
@@ -93,36 +90,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate
 {
+    NSLog(@"[RCDevice initWithCapabilityToken:delegate:] is not supported yet; using default configuration values. To do your own configuration please use [RCDevice initWithParams:delegate:]");
     [self populateCapabilitiesFromToken:capabilityToken];
-    return [self initWithParams:self.capabilities delegate:delegate];
-    /*
-    //NSLog(@"[RCDevice initWithCapabilityToken]");
-    self = [super init];
-    if (self) {
-        self.delegate = delegate;
-        self.capabilities = nil;
-        self.incomingSoundEnabled = YES;
-        self.outgoingSoundEnabled = YES;
-        self.disconnectSoundEnabled = NO;
-        self.currentConnection = nil;
-        // readonly, so no setter
-        _state = RCDeviceStateOffline;
-        
-        [self prepareSounds];
-        [self populateCapabilitiesFromToken:capabilityToken];
-        
-        // initialize, register and set delegate
-        // TODO: fix this
-        NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
-                                 @"sip:192.168.2.32:5080", @"registrar",
-                                 @"1234", @"password", nil];
-        self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:params];
-        [self.sipManager eventLoop];
-        _state = RCDeviceStateReady;
-    }
-    
-    return self;
-     */
+
+    NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
+                             @"sip:54.225.212.193:5080", @"registrar",
+                             @"1234", @"password", nil];
+
+    return [self initWithParams:params delegate:delegate];
 }
 
 - (void)listen

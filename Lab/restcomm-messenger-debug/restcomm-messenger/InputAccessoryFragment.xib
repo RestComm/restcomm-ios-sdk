@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageViewController">
+            <connections>
+                <outlet property="sipMessageText" destination="d0Q-dl-OSd" id="jbz-nl-zFo"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxc-ut-6aL">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <items>
+                        <barButtonItem style="plain" id="eid-AB-P2R">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="d0Q-dl-OSd">
+                                <rect key="frame" x="16" y="7" width="242" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5Mj-gY-5vm"/>
+                        <barButtonItem style="plain" id="yJG-O2-pQ3">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="27Y-sJ-Xbe">
+                                <rect key="frame" x="538" y="7" width="36" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Send">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendMessagePressed:" destination="-1" eventType="touchUpInside" id="lpS-wc-J3B"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="pxc-ut-6aL" secondAttribute="trailing" id="1L9-tO-hYY"/>
+                <constraint firstItem="pxc-ut-6aL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1au-qO-BIQ"/>
+                <constraint firstAttribute="trailing" secondItem="pxc-ut-6aL" secondAttribute="trailing" id="4O7-1R-OeR"/>
+                <constraint firstItem="pxc-ut-6aL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="56z-RB-FLl"/>
+                <constraint firstAttribute="bottom" secondItem="pxc-ut-6aL" secondAttribute="bottom" id="EtP-wb-G8P"/>
+                <constraint firstItem="pxc-ut-6aL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HBp-ZN-T98"/>
+                <constraint firstAttribute="bottom" secondItem="pxc-ut-6aL" secondAttribute="bottom" id="KuS-EC-8gH"/>
+                <constraint firstAttribute="trailing" secondItem="pxc-ut-6aL" secondAttribute="trailing" id="OZi-VL-wvV"/>
+                <constraint firstAttribute="bottom" secondItem="pxc-ut-6aL" secondAttribute="bottom" id="SFG-Ft-WPT"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="1L9-tO-hYY"/>
+                    <exclude reference="1au-qO-BIQ"/>
+                    <exclude reference="EtP-wb-G8P"/>
+                    <exclude reference="HBp-ZN-T98"/>
+                    <exclude reference="OZi-VL-wvV"/>
+                    <exclude reference="SFG-Ft-WPT"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

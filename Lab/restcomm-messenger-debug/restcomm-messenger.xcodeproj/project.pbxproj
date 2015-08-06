@@ -60,6 +60,8 @@
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
+		AED08BF81B73529B0036A9BE /* InputAccessoryFragment.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED08BF71B73529B0036A9BE /* InputAccessoryFragment.xib */; };
+		AED08BFE1B73538A0036A9BE /* InputAccessoryProxyView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-messengerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */; };
 		AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0691A097764008A6057 /* AppDelegate.m */; };
@@ -153,6 +155,9 @@
 		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AED08BF71B73529B0036A9BE /* InputAccessoryFragment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputAccessoryFragment.xib; sourceTree = "<group>"; };
+		AED08BFC1B73538A0036A9BE /* InputAccessoryProxyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputAccessoryProxyView.h; sourceTree = "<group>"; };
+		AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputAccessoryProxyView.m; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-messengerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messengerTests-Info.plist"; sourceTree = "<group>"; };
 		AED0B0631A0976F8008A6057 /* restcomm-messengerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-messengerTests.m"; sourceTree = "<group>"; };
@@ -335,6 +340,7 @@
 				AE9520861B0B268C00E947D8 /* img */,
 				AED0B0681A097764008A6057 /* AppDelegate.h */,
 				AED0B0691A097764008A6057 /* AppDelegate.m */,
+				AED08BF71B73529B0036A9BE /* InputAccessoryFragment.xib */,
 				AED0B06A1A097764008A6057 /* Main_iPad.storyboard */,
 				AED0B06C1A097764008A6057 /* Main_Universal.storyboard */,
 				AED0B06E1A097764008A6057 /* InfoPlist.strings */,
@@ -352,6 +358,8 @@
 				AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */,
 				AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */,
 				AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */,
+				AED08BFC1B73538A0036A9BE /* InputAccessoryProxyView.h */,
+				AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */,
 				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
 				AE59B24D1B6F6F46006CC699 /* MessageViewController.m */,
 			);
@@ -481,6 +489,7 @@
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
+				AED08BF81B73529B0036A9BE /* InputAccessoryFragment.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +541,7 @@
 				AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */,
 				AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
+				AED08BFE1B73538A0036A9BE /* InputAccessoryProxyView.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
 				AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */,
 				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,

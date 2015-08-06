@@ -69,8 +69,8 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
-    //self.sipUriText.text = @"sip:1235@192.168.2.32:5080";
+    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
