@@ -106,14 +106,20 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     if (self.state == RCConnectionStateConnecting) {
         if (!self.isIncoming) {
             // for outgoing calls in state connecting (i.e. ringing), treat disconnect as cancel
+            NSLog(@"[RCConnection disconnect:cancel]");
+
             [self.sipManager cancel];
         }
         else {
             // for incoming calls in state connecting (i.e. ringing), treat disconnect as decline
+            NSLog(@"[RCConnection disconnect:decline]");
+
             [self.sipManager decline];
         }
     }
     else if (self.state == RCConnectionStateConnected) {
+        NSLog(@"[RCConnection disconnect:bye]");
+
         [self.sipManager bye];
     }
     self.state = RCConnectionStateDisconnected;
@@ -136,6 +142,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)outgoingRinging:(SipManager *)sipManager
 {
+        NSLog(@"[RCConnection outgoingRinging]");
     if (self.device.outgoingSoundEnabled == true) {
         [self.callingPlayer play];
     }
@@ -145,6 +152,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)outgoingEstablished:(SipManager *)sipManager
 {
+    NSLog(@"[RCConnection outgoingEstablished]");
     if ([self.callingPlayer isPlaying]) {
         [self.callingPlayer stop];
         self.callingPlayer.currentTime = 0.0;
@@ -156,6 +164,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)outgoingDeclined:(SipManager *)sipManager
 {
+    NSLog(@"[RCConnection outgoingDeclined]");
+
     if ([self.callingPlayer isPlaying]) {
         [self.callingPlayer stop];
         self.callingPlayer.currentTime = 0.0;
@@ -167,18 +177,24 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)incomingBye:(SipManager *)sipManager
 {
+    NSLog(@"[RCConnection incomingBye]");
+    
     if ([self.ringingPlayer isPlaying]) {
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
-
+    
+    //if (self.state != RCConnectionStateDisconnected) {
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidDisconnect:self];
     self.device.state = RCDeviceStateReady;
+    //}
 }
 
 - (void)incomingCancelled:(SipManager *)sipManager
 {
+    NSLog(@"[RCConnection incomingCancelled]");
+
     if ([self.ringingPlayer isPlaying]) {
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;

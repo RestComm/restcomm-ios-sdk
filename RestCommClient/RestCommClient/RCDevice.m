@@ -24,6 +24,7 @@
 #import "RCConnection.h"
 #import "RCConnectionDelegate.h"
 #import "SipManager.h"
+#import "Reachability.h"
 #import <AVFoundation/AVFoundation.h>   // sounds
 
 @interface RCDevice ()
@@ -36,6 +37,12 @@
 // notice that owner of the connection is the App, not us
 @property RCConnection * currentConnection;
 @property AVAudioPlayer * messagePlayer;
+
+// reachability
+@property Reachability* internetReachable;
+@property Reachability* hostReachable;
+@property BOOL internetActive;
+@property BOOL hostActive;
 @end
 
 
@@ -77,6 +84,19 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _state = RCDeviceStateOffline;
         
         [self prepareSounds];
+
+        // reachability
+        self.internetActive = NO;
+        self.hostActive = NO;
+        
+        // check for internet connection
+        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+        // Reachability stuff
+        //_internetReachable = [Reachability reachabilityForInternetConnection];
+        //[_internetReachable startNotifier];
+        // check if a pathway to a random host exists
+        //_hostReachable = [Reachability reachabilityWithHostName:@"www.google.com"];
+        //[_hostReachable startNotifier];
         
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
 
@@ -114,6 +134,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.sipManager unregister:nil];
     _state = RCDeviceStateOffline;
     [self.delegate device:self didStopListeningForIncomingConnections:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
@@ -234,6 +255,65 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
     }
 }
+
+/*
+- (void) checkNetworkStatus:(NSNotification *)notice
+{
+    // called after network status changes
+    NetworkStatus internetStatus = [_internetReachable currentReachabilityStatus];
+    switch (internetStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down.");
+            self.internetActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WIFI.");
+            self.internetActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via WWAN.");
+            self.internetActive = YES;
+            
+            break;
+        }
+    }
+    
+    NetworkStatus hostStatus = [_hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            self.hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            self.hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            self.hostActive = YES;
+            
+            break;
+        }
+    }
+}
+ */
+
 
 // TODO: leave this around because at some point we might add REST functionality on the client
 /*

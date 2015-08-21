@@ -69,8 +69,8 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
-    self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
@@ -124,11 +124,6 @@ extern char REGISTRAR[];
 
 - (void)register
 {
-    // try to register when coming up with the existing settings
-    [self.parameters setObject:[NSString stringWithUTF8String:AOR] forKey:@"aor"];
-    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s", REGISTRAR] forKey:@"registrar"];
-    [self.parameters setObject:@"1234" forKey:@"password"];
-    
     // update our parms
     [self.device updateParams:self.parameters];
     self.isRegistered = YES;
