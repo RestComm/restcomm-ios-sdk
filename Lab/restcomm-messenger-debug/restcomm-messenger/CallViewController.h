@@ -26,7 +26,7 @@
 
 @protocol CallDelegate;
 
-@interface CallViewController : UIViewController<RCConnectionDelegate, ARDVideoCallViewDelegate>
+@interface CallViewController : UIViewController<RCConnectionDelegate>
 // owner is ViewController
 @property (weak) RCDevice * device;
 @property (nonatomic,retain) RCConnection* connection;

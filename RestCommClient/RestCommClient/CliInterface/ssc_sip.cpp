@@ -768,6 +768,12 @@ void ssc_r_invite(int status, char const *phrase,
             //setSofiaReply(OUTGOING_DECLINED, "");
             //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
         }
+        if (status == 487) {
+            // notify the client application that we got a response to our CANCEL
+            SofiaReply reply(OUTGOING_CANCELLED, "");
+            reply.Send(ssc->ssc_output_fd);
+        }
+        
     }
     if (status == 180) {
         // notify the client application that we are ringing
@@ -1494,7 +1500,7 @@ void ssc_i_info(nua_t *nua, ssc_t *ssc,
     
     from = sip->sip_from;
     to = sip->sip_to;
-    subject = sip->sip_subject;
+    //subject = sip->sip_subject;
     
     assert(from && to);
     
@@ -1554,7 +1560,7 @@ void ssc_i_refer(nua_t *nua, ssc_t *ssc,
     sip_from_t const *from;
     sip_to_t const *to;
     sip_refer_to_t const *refer_to;
-    ssc_oper_t *op2;
+    //ssc_oper_t *op2;
     char *refer_to_str;
     
     assert(sip);
@@ -1575,7 +1581,7 @@ void ssc_i_refer(nua_t *nua, ssc_t *ssc,
     
     if(refer_to->r_url->url_type == url_sip) {
         refer_to_str = sip_header_as_string(ssc->ssc_home, (sip_header_t*)refer_to);
-        op2 = ssc_oper_create(ssc, SIP_METHOD_INVITE, refer_to_str,
+        ssc_oper_create(ssc, SIP_METHOD_INVITE, refer_to_str,
                               NUTAG_NOTIFY_REFER(nh), TAG_END());
         su_free(ssc->ssc_home, refer_to_str);
     }

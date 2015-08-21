@@ -30,12 +30,14 @@
 #import "RTCEAGLVideoView.h"
 
 @class ARDVideoCallView;
+/*
 @protocol ARDVideoCallViewDelegate <NSObject>
 
 // Called when the hangup button is pressed.
 - (void)videoCallViewDidHangup:(ARDVideoCallView *)view;
 
 @end
+ */
 
 // Video call view that shows local and remote video, provides a label to
 // display status, and also a hangup button.
@@ -44,6 +46,6 @@
 //@property(nonatomic, readonly) UILabel *statusLabel;
 @property(nonatomic, readonly) RTCEAGLVideoView *localVideoView;
 @property(nonatomic, readonly) RTCEAGLVideoView *remoteVideoView;
-@property(nonatomic, weak) id<ARDVideoCallViewDelegate> delegate;
+//@property(nonatomic, weak) id<ARDVideoCallViewDelegate> delegate;
 
 @end

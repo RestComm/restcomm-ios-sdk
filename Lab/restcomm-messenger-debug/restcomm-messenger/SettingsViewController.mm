@@ -64,25 +64,14 @@ char REGISTRAR[] = "54.225.212.193:5080";
     self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
 }
 
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;
-    
-    
-    
-    /*
-    TabBarController * tabBarController = (TabBarController*)self.tabBarController;
-    // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
-    if (tabBarController.viewController.connection.state == RCConnectionStateConnected) {
-        self.muteSwitch.enabled = true;
-    }
-    else {
-        self.muteSwitch.enabled = false;
-    }
-     */
 }
+ */
 
 - (IBAction)backPressed
 {

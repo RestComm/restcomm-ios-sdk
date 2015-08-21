@@ -32,6 +32,7 @@
 @property RCDevice * device;
 @property AVAudioPlayer * ringingPlayer;
 @property AVAudioPlayer * callingPlayer;
+@property BOOL cancelPending;
 @end
 
 @implementation RCConnection
@@ -49,10 +50,13 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        NSLog(@"[RCConnection setting delegate: %p]", self.delegate);
+        NSLog(@"[RCConnection init, self: %p]", self);
         self.sipManager = nil;
         self.state = RCConnectionStateDisconnected;
         self.device = device;
         muted = NO;
+        self.cancelPending = NO;
         
         [self prepareSounds];
     }
@@ -106,22 +110,31 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     if (self.state == RCConnectionStateConnecting) {
         if (!self.isIncoming) {
             // for outgoing calls in state connecting (i.e. ringing), treat disconnect as cancel
-            NSLog(@"[RCConnection disconnect:cancel]");
+            //NSLog(@"[RCConnection disconnect:cancel]");
 
             [self.sipManager cancel];
         }
         else {
             // for incoming calls in state connecting (i.e. ringing), treat disconnect as decline
-            NSLog(@"[RCConnection disconnect:decline]");
+            //NSLog(@"[RCConnection disconnect:decline]");
 
             [self.sipManager decline];
         }
     }
     else if (self.state == RCConnectionStateConnected) {
-        NSLog(@"[RCConnection disconnect:bye]");
+        //NSLog(@"[RCConnection disconnect:bye]");
 
         [self.sipManager bye];
     }
+    else if (self.state == RCConnectionStatePending) {
+        // SIP doesn't support canceling before receiving provisional response (i.e. 180 Ringing, etc).
+        // Let's mark for cancelation once we get that response
+        if (!self.isIncoming) {
+            //NSLog(@"[RCConnection disconnect:cancelPending]");
+            self.cancelPending = YES;
+        }
+    }
+    
     self.state = RCConnectionStateDisconnected;
     self.device.state = RCDeviceStateReady;
     if ([self.callingPlayer isPlaying]) {
@@ -142,7 +155,13 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)outgoingRinging:(SipManager *)sipManager
 {
-        NSLog(@"[RCConnection outgoingRinging]");
+    NSLog(@"[RCConnection outgoingRinging]");
+    if (self.cancelPending) {
+        //NSLog(@"[RCConnection outgoingRinging:canceling]");
+        [self.sipManager cancel];
+        return;
+    }
+    
     if (self.device.outgoingSoundEnabled == true) {
         [self.callingPlayer play];
     }
@@ -153,13 +172,33 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (void)outgoingEstablished:(SipManager *)sipManager
 {
     NSLog(@"[RCConnection outgoingEstablished]");
+
     if ([self.callingPlayer isPlaying]) {
         [self.callingPlayer stop];
         self.callingPlayer.currentTime = 0.0;
     }
     
+    if (self.cancelPending) {
+        // if the cancel when we got the ringing didn't make it on time
+        // then we will have received a 200 OK established. In that case
+        // we need to terminate the call with a BYE
+        //NSLog(@"[RCConnection outgoingEstablished:bye]");
+        [self.sipManager bye];
+        self.cancelPending = NO;
+        return;
+    }
+    
     [self setState:RCConnectionStateConnected];
     [self.delegate connectionDidConnect:self];
+}
+
+// we got an 487 Cancelled to our outgoing invite
+- (void)outgoingCancelled:(SipManager *)sipManager
+{
+    NSLog(@"[RCConnection outgoingCancelled]");
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidDisconnect:self];
+    self.device.state = RCDeviceStateReady;
 }
 
 - (void)outgoingDeclined:(SipManager *)sipManager
@@ -175,15 +214,16 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self.device.state = RCDeviceStateReady;
 }
 
-- (void)incomingBye:(SipManager *)sipManager
+- (void)bye:(SipManager *)sipManager
 {
-    NSLog(@"[RCConnection incomingBye]");
+    NSLog(@"[RCConnection bye]");
     
     if ([self.ringingPlayer isPlaying]) {
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
     
+    //NSLog(@"[RCConnection self: %p]", self);
     //if (self.state != RCConnectionStateDisconnected) {
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidDisconnect:self];

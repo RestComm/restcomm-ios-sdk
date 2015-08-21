@@ -135,6 +135,9 @@ int read_pipe[2];
     else if (reply->rc == INCOMING_CANCELLED) {
         [self.connectionDelegate incomingCancelled:self];
     }
+    else if (reply->rc == OUTGOING_CANCELLED) {
+        [self.connectionDelegate outgoingCancelled:self];
+    }
     else if (reply->rc == OUTGOING_DECLINED) {
         [self.connectionDelegate outgoingDeclined:self];
     }
@@ -147,7 +150,7 @@ int read_pipe[2];
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
         self.media = nil;
-        [self.connectionDelegate incomingBye:self];
+        [self.connectionDelegate bye:self];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
         // delay execution of my block for 1 seconds.

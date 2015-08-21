@@ -48,7 +48,7 @@ static CGFloat const kLocalVideoViewPadding = 8;
 //@synthesize statusLabel = _statusLabel;
 @synthesize localVideoView = _localVideoView;
 @synthesize remoteVideoView = _remoteVideoView;
-@synthesize delegate = _delegate;
+//@synthesize delegate = _delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -141,8 +141,10 @@ static CGFloat const kLocalVideoViewPadding = 8;
 
 #pragma mark - Private
 
+/*
 - (void)onHangup:(id)sender {
   [_delegate videoCallViewDidHangup:self];
 }
+ */
 
 @end

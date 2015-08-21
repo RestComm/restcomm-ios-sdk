@@ -87,7 +87,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 /**
  *  @abstract Delegate that will be receiving RCConnection events described at RCConnectionDelegate
  */
-@property (nonatomic, assign) id<RCConnectionDelegate> delegate;
+@property (weak) id<RCConnectionDelegate> delegate;
 
 /**
  *  @abstract Is connection currently muted? If a connection is muted the remote party cannot hear the local party

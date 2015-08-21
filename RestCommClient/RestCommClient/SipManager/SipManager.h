@@ -61,8 +61,11 @@
 @protocol SipManagerConnectionDelegate <NSObject>
 - (void)outgoingRinging:(SipManager *)sipManager;
 - (void)outgoingEstablished:(SipManager *)sipManager;
-- (void)incomingBye:(SipManager *)sipManager;
+// received BYE; either a response to an outgoing bye, or an incoming BYE
+- (void)bye:(SipManager *)sipManager;
 - (void)incomingCancelled:(SipManager *)sipManager;
+// we got an 487 Cancelled to our outgoing invite
+- (void)outgoingCancelled:(SipManager *)sipManager;
 - (void)outgoingDeclined:(SipManager *)sipManager;
 - (void)sipManager:(SipManager *)sipManager receivedLocalVideo:(RTCVideoTrack *)localView;
 - (void)sipManager:(SipManager *)sipManager receivedRemoteVideo:(RTCVideoTrack *)remoteView;
