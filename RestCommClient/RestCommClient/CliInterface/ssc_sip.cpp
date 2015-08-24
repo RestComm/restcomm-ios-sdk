@@ -211,6 +211,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = conf->ssc_contact;
     else
         contact = "sip:*:5090;transport=tcp";
+        //contact = "sip:*:5090;transport=tcp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
