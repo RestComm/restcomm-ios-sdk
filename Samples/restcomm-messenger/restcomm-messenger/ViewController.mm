@@ -69,8 +69,8 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    //self.sipUriText.text = @"sip:alice@54.225.212.193:5080";
-    self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
+    self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
+    //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@54.225.212.193:5080";
 #endif
@@ -115,17 +115,18 @@ extern char REGISTRAR[];
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized && !self.isRegistered) {
+        if (self.device.state == RCDeviceStateOffline) {
+            [self.device listen];
+        }
         [self register];
     }
 }
 
 - (void)register
 {
-    // try to register when coming up with the existing settings
-
     // update our parms
     [self.device updateParams:self.parameters];
-    //self.isRegistered = YES;
+    self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
@@ -254,11 +255,9 @@ extern char REGISTRAR[];
     }
     if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
         MessageViewController *callViewController = [segue destinationViewController];
-        //callViewController.delegate = self;
         callViewController.device = self.device;
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
-        //[callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
 }
 

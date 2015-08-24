@@ -40,7 +40,7 @@
     self.muteSwitch.enabled = false;
     
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
-    self.videoCallView.delegate = self;
+    //self.videoCallView.delegate = self;
     [self.view insertSubview:self.videoCallView belowSubview:self.declineButton];
 }
 
@@ -113,10 +113,6 @@
 {
     if (self.connection) {
         [self.connection disconnect];
-        self.connection = nil;
-        self.pendingIncomingConnection = nil;
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:nil];
     }
 }
 
@@ -124,11 +120,6 @@
 {
     if (self.connection) {
         [self.connection disconnect];
-        
-        self.connection = nil;
-        self.pendingIncomingConnection = nil;
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:nil];
     }
     [self stopVideoRendering];
 }
@@ -148,10 +139,12 @@
 }
 
 // ---------- Video View delegate methods:
+/*
 - (void)videoCallViewDidHangup:(ARDVideoCallView *)view
 {
     [self disconnect];
 }
+ */
 
 // ---------- Delegate methods for RC Connection
 // not implemented yet
