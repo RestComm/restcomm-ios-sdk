@@ -542,7 +542,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#echo $CONFIGURATION > /tmp/3.txt\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    sh $SRCROOT/../../RestCommClient/RestCommClient/TestFairy/upload-dsym.sh -d c575c3a7f55080be2f02589818a5c091ca0950da\nfi\n";
+			shellScript = "#echo $CONFIGURATION > /tmp/3.txt\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    sh $SRCROOT/restcomm-messenger/TestFairy/upload-dsym.sh -d c575c3a7f55080be2f02589818a5c091ca0950da\n#sh $SRCROOT/../../RestCommClient/RestCommClient/TestFairy/upload-dsym.sh -d c575c3a7f55080be2f02589818a5c091ca0950da\nfi\n";
 		};
 		AED9718819E98B77000F7A8E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
