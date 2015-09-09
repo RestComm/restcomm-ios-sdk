@@ -25,7 +25,7 @@
 
 char AOR[] = "sip:bob@telestax.com";
 // elastic
-char REGISTRAR[] = "54.225.212.193:5080";
+char REGISTRAR[] = "23.23.228.238:5080";
 //char REGISTRAR[] = "192.168.2.32:5080";
 
 

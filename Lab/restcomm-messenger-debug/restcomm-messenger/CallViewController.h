@@ -36,5 +36,5 @@
 @end
 
 @protocol CallDelegate <NSObject>
-- (void)callViewController:(CallViewController *)callViewController didSendStatus:(NSString *)status;
+//- (void)callViewController:(CallViewController *)callViewController didSendStatus:(NSString *)status;
 @end

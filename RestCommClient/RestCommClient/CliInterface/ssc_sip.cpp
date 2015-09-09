@@ -211,7 +211,6 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = conf->ssc_contact;
     else
         contact = "sip:*:5090;transport=tcp";
-        //contact = "sip:*:5090;transport=tcp";
     
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
@@ -1791,6 +1790,16 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     char *address;
     ssc_oper_t *op;
     
+    // update proxy as well
+    if (ssc->ssc_nua) {
+        nua_set_params(ssc->ssc_nua,
+                       TAG_IF(registrar,
+                              NUTAG_PROXY(registrar)),
+                       TAG_IF(registrar,
+                              NUTAG_REGISTRAR(registrar)),
+                       TAG_NULL());
+    }
+    
     if (!registrar && (op = ssc_oper_find_by_method(ssc, sip_method_register))) {
         DEBUG_PRINTF("%s: REGISTER %s - updating existing registration\n", ssc->ssc_name, op->op_ident);
         nua_register(op->op_handle, TAG_NULL());
@@ -1806,7 +1815,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
                      NUTAG_M_FEATURES("expires=3600"),
                      TAG_NULL());
     }
-    
+
     su_free(ssc->ssc_home, address);
 }
 
