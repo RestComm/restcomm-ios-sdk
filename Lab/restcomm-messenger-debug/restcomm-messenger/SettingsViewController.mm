@@ -33,6 +33,7 @@ char REGISTRAR[] = "23.23.228.238:5080";
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
 @property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *passwordText;
 @end
 
 @implementation SettingsViewController
@@ -64,14 +65,17 @@ char REGISTRAR[] = "23.23.228.238:5080";
     self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
 }
 
-/*
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.aorText.text = [[self.device getParams] objectForKey:@"aor"];
+    NSString * fullRegistrar = [[self.device getParams] objectForKey:@"registrar"];
+    NSRange range = [fullRegistrar rangeOfString:@":"];
+    self.registrarText.text = [fullRegistrar substringFromIndex:range.location + 1];
+    self.passwordText.text = [[self.device getParams] objectForKey:@"password"];
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;
 }
- */
 
 - (IBAction)backPressed
 {
@@ -105,6 +109,10 @@ char REGISTRAR[] = "23.23.228.238:5080";
     }
     if (![self.registrarText.text isEqualToString:@""]) {
         [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
+        update = true;
+    }
+    if (![self.passwordText.text isEqualToString:@""]) {
+        [params setObject:self.passwordText.text forKey:@"password"];
         update = true;
     }
 

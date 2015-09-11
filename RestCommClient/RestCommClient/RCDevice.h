@@ -127,6 +127,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
 
 /**
+ *  @abstract Retrieve parameters
+ *
+ *  @return RCDevice parameters
+ */
+- (NSDictionary*)getParams;
+
+/**
  *  @abstract Create an outgoing connection to an endpoint
  *
  *  @param parameters Connections such as the endpoint we want to connect to

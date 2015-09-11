@@ -146,6 +146,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     NSLog(@"[RCDevice updateCapabilityToken]");
 }
 
+- (NSDictionary*)getParams
+{
+    return [self.sipManager params];
+}
+
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
     NSLog(@"[RCDevice connect]");
