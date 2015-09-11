@@ -95,6 +95,7 @@
 /* Begin PBXFileReference section */
 		AE03DEDD1A98E4D2000280E4 /* cli_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cli_common.h; sourceTree = "<group>"; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE4B58A41BA2A2DD0052D80B /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaWebRTC.h; sourceTree = "<group>"; };
 		AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaWebRTC.m; sourceTree = "<group>"; };
 		AE5821E21A8B968500578A7B /* ARDCEODTURNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDCEODTURNClient.h; sourceTree = "<group>"; };
@@ -546,6 +547,7 @@
 				AE5821D51A8AB12F00578A7B /* Media */,
 				AEA6C4A119DB412A00BD2455 /* CliInterface */,
 				AEA6C4AE19DB412A00BD2455 /* SipManager */,
+				AE4B58A41BA2A2DD0052D80B /* common.h */,
 				AEC1221419728C850035B864 /* RestCommClient.h */,
 				AEC1221619728C850035B864 /* RestCommClient.m */,
 				AEC12235197295A10035B864 /* RCConnection.h */,

@@ -76,6 +76,7 @@
 #include "ssc_media_simple.h"
 #include "ssc_sip.h"
 #include "ssc_oper.h"
+#include "common.h"
 
 /* Globals
  * ------------------- */
@@ -238,6 +239,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               NUTAG_MEDIA_ENABLE(0),
                               // doesn't seem to work
                               //NUTAG_DETECT_NETWORK_UPDATES(NUA_NW_DETECT_TRY_FULL),
+                              SIPTAG_USER_AGENT_STR(SIP_USER_AGENT),
                               TAG_NULL());
     
     if (conf->ssc_register)
