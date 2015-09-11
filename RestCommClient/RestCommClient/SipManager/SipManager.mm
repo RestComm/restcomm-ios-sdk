@@ -288,6 +288,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         // communicate with sip sofia via the pipe
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
                     [[self.params objectForKey:@"registrar"] UTF8String]);
+        NSLog(@"Stopped eventLoop");
     });
     
     return true;
@@ -392,6 +393,14 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (bool)bye
 {
     NSString* cmd = [NSString stringWithFormat:@"b"];
+    [self pipeToSofia:cmd];
+    
+    return true;
+}
+
+- (bool)shutdown
+{
+    NSString* cmd = [NSString stringWithFormat:@"q"];
     [self pipeToSofia:cmd];
     
     return true;

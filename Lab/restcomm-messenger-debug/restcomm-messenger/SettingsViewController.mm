@@ -23,7 +23,7 @@
 #import "SettingsViewController.h"
 #import "SettingsNavigationController.h"
 
-char AOR[] = "sip:bob@telestax.com";
+char AOR[] = "sip:antonis-2@telestax.com";
 // elastic
 char REGISTRAR[] = "23.23.228.238:5080";
 //char REGISTRAR[] = "192.168.2.32:5080";

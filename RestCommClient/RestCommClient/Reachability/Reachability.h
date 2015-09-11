@@ -98,7 +98,7 @@ extern NSString *kReachabilityChangedNotification;
 /*!
  * Network status updates
  */
-- (void) checkNetworkStatus:(NSNotification *)notice;
+//- (void) checkNetworkStatus:(NSNotification *)notice;
 
 @end
 

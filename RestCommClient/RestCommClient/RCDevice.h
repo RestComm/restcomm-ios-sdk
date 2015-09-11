@@ -155,5 +155,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param params Dictionary of key/value pairs of the parameters that will be updated
  */
 - (void) updateParams:(NSDictionary*)params;
+
+// DEBUG:
+-(void)startSofia;
+-(void)stopSofia;
+
 @end
 

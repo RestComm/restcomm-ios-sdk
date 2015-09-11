@@ -69,7 +69,7 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
+    self.sipUriText.text = @"sip:antonis@23.23.228.238:5080";
     //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
@@ -125,13 +125,15 @@ extern char REGISTRAR[];
 - (void)register
 {
     // update our parms
-    [self.device updateParams:self.parameters];
+    [self.device startSofia];
+    //[self.device updateParams:self.parameters];
     self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
 {
-    [self.device unlisten];
+    [self.device stopSofia];
+    //[self.device unlisten];
     self.isRegistered = NO;
 }
 
@@ -259,6 +261,16 @@ extern char REGISTRAR[];
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
+}
+
+- (IBAction)start:(id)sender
+{
+    [self.device startSofia];
+}
+
+- (IBAction)stop:(id)sender
+{
+    [self.device stopSofia];
 }
 
 @end

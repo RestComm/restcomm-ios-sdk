@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8fi-3Q-1Di">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8fi-3Q-1Di">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -531,11 +531,30 @@
                                     <segue destination="kNj-gv-SSQ" kind="presentation" identifier="invoke-call-controller" modalTransitionStyle="crossDissolve" id="V96-Uz-nqL"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TpX-Ao-DiV">
+                                <rect key="frame" x="20" y="401" width="33" height="30"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="start:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="cNZ-0c-5fJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3VG-ug-RY4">
+                                <rect key="frame" x="20" y="438" width="33" height="30"/>
+                                <state key="normal" title="Stop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stop:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zcI-0b-Gng"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="RAE-FK-SYy" firstAttribute="top" secondItem="MjU-SZ-ei9" secondAttribute="bottom" constant="11" id="1Rz-g6-AFU"/>
                             <constraint firstItem="RAE-FK-SYy" firstAttribute="top" secondItem="MjU-SZ-ei9" secondAttribute="bottom" constant="8" id="2xP-h0-ZgE"/>
+                            <constraint firstItem="3VG-ug-RY4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="4" id="5TH-Uw-Law"/>
                             <constraint firstItem="hAE-j0-VRw" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="4" id="5rF-Ee-Yap"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="4" id="8hz-GM-4EB"/>
                             <constraint firstItem="MjU-SZ-ei9" firstAttribute="top" secondItem="hAE-j0-VRw" secondAttribute="bottom" constant="8" id="9JN-e4-ypR"/>
@@ -562,7 +581,9 @@
                             <constraint firstItem="MjU-SZ-ei9" firstAttribute="top" secondItem="hAE-j0-VRw" secondAttribute="bottom" constant="8" id="Zgs-cL-RIx"/>
                             <constraint firstItem="MjU-SZ-ei9" firstAttribute="leading" secondItem="hAE-j0-VRw" secondAttribute="leading" id="Zo5-zg-jBa"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="leading" secondItem="MjU-SZ-ei9" secondAttribute="trailing" constant="14" id="Zx7-F9-QxW"/>
+                            <constraint firstItem="TpX-Ao-DiV" firstAttribute="top" secondItem="RAE-FK-SYy" secondAttribute="bottom" constant="201" id="aCh-Ch-0QA"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="dgq-VN-Wgo"/>
+                            <constraint firstItem="3VG-ug-RY4" firstAttribute="top" secondItem="TpX-Ao-DiV" secondAttribute="bottom" constant="7" id="e5h-tO-dm0"/>
                             <constraint firstItem="dAl-lN-hMK" firstAttribute="top" secondItem="RAE-FK-SYy" secondAttribute="bottom" constant="23" id="eCI-mp-tpv"/>
                             <constraint firstItem="dAl-lN-hMK" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="4" id="ehR-xk-evd"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="firstBaseline" secondItem="MjU-SZ-ei9" secondAttribute="baseline" id="gr1-SS-ZM0"/>
@@ -571,6 +592,7 @@
                             <constraint firstItem="erB-03-wsH" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="nLc-dt-GMv"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="leading" secondItem="MjU-SZ-ei9" secondAttribute="trailing" constant="14" id="nRL-5Y-uyY"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="trailing" secondItem="RAE-FK-SYy" secondAttribute="trailing" id="qaQ-2D-xRb"/>
+                            <constraint firstItem="TpX-Ao-DiV" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="4" id="tQ9-oq-8QO"/>
                             <constraint firstItem="MjU-SZ-ei9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="48" id="xec-fE-b0E"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="48" id="zOa-5l-cHN"/>
                             <constraint firstItem="erB-03-wsH" firstAttribute="top" secondItem="hAE-j0-VRw" secondAttribute="bottom" constant="8" id="zxU-DP-BCy"/>

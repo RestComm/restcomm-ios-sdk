@@ -41,7 +41,7 @@
 // reachability
 @property Reachability* internetReachable;
 @property Reachability* hostReachable;
-@property BOOL internetActive;
+@property NetworkStatus reachabilityStatus;
 @property BOOL hostActive;
 @end
 
@@ -86,17 +86,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self prepareSounds];
 
         // reachability
-        self.internetActive = NO;
+        self.reachabilityStatus = NotReachable;
         self.hostActive = NO;
-        
         // check for internet connection
-        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-        // Reachability stuff
-        //_internetReachable = [Reachability reachabilityForInternetConnection];
-        //[_internetReachable startNotifier];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+        // internet connection
+        _internetReachable = [Reachability reachabilityForInternetConnection];
+        [_internetReachable startNotifier];
         // check if a pathway to a random host exists
-        //_hostReachable = [Reachability reachabilityWithHostName:@"www.google.com"];
-        //[_hostReachable startNotifier];
+        _hostReachable = [Reachability reachabilityWithHostName:@"www.google.com"];
+        [_hostReachable startNotifier];
+        self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
 
@@ -114,17 +114,22 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self populateCapabilitiesFromToken:capabilityToken];
 
     NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
-                             @"sip:54.225.212.193:5080", @"registrar",
+                             @"sip:23.23.228.238:5080", @"registrar",
                              @"1234", @"password", nil];
 
     return [self initWithParams:params delegate:delegate];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)listen
 {
     NSLog(@"[RCDevice listen]");
     [self.sipManager updateParams:nil];
-    _state = RCDeviceStateReady;
+    //_state = RCDeviceStateReady;
     [self.delegate deviceDidStartListeningForIncomingConnections:self];
 }
 
@@ -132,9 +137,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     NSLog(@"[RCDevice unlisten]");
     [self.sipManager unregister:nil];
-    _state = RCDeviceStateOffline;
+    //_state = RCDeviceStateOffline;
     [self.delegate device:self didStopListeningForIncomingConnections:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
@@ -256,36 +260,41 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
 }
 
-/*
-- (void) checkNetworkStatus:(NSNotification *)notice
+// called after network status changes
+- (void)checkNetworkStatus:(NSNotification *)notice
 {
-    // called after network status changes
-    NetworkStatus internetStatus = [_internetReachable currentReachabilityStatus];
-    switch (internetStatus)
-    {
-        case NotReachable:
-        {
-            NSLog(@"The internet is down.");
-            self.internetActive = NO;
-            
-            break;
-        }
-        case ReachableViaWiFi:
-        {
-            NSLog(@"The internet is working via WIFI.");
-            self.internetActive = YES;
-            
-            break;
-        }
-        case ReachableViaWWAN:
-        {
-            NSLog(@"The internet is working via WWAN.");
-            self.internetActive = YES;
-            
-            break;
+    NetworkStatus newStatus = [_internetReachable currentReachabilityStatus];
+    NSLog(@"#### Reachability update: %d", (int)newStatus);
+    
+    if (newStatus == NotReachable && self.state != RCDeviceStateOffline) {
+        NSLog(@"#### Reachability action; no connectivity");
+        [self.sipManager shutdown];
+        _state = RCDeviceStateOffline;
+        self.reachabilityStatus = newStatus;
+        return;
+    }
+    
+    if ((self.reachabilityStatus == ReachableViaWiFi && newStatus == ReachableViaWWAN) ||
+        (self.reachabilityStatus == ReachableViaWWAN && newStatus == ReachableViaWiFi)) {
+        if (self.state != RCDeviceStateOffline) {
+            NSLog(@"#### Reachability action; switch between wifi and mobile");
+            // TODO: this is bound to fail is shutdown is asynchronous, but let's keep it around for now
+            [self.sipManager shutdown];
+            [self.sipManager eventLoop];
+            self.reachabilityStatus = newStatus;
+            return;
         }
     }
     
+    if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
+        self.state == RCDeviceStateOffline) {
+        NSLog(@"#### Reachability action; wifi/mobile available");
+        [self.sipManager eventLoop];
+        self.reachabilityStatus = newStatus;
+        self.state = RCDeviceStateReady;
+    }
+    
+    /*
     NetworkStatus hostStatus = [_hostReachable currentReachabilityStatus];
     switch (hostStatus)
     {
@@ -311,9 +320,21 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             break;
         }
     }
+     */
 }
- */
 
+
+-(void)startSofia
+{
+    [self.sipManager eventLoop];
+    //_state = RCDeviceStateReady;
+}
+
+-(void)stopSofia
+{
+    [self.sipManager shutdown];
+    //_state = RCDeviceStateOffline;
+}
 
 // TODO: leave this around because at some point we might add REST functionality on the client
 /*

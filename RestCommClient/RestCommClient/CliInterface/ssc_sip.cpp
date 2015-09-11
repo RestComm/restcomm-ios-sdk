@@ -236,6 +236,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               SOATAG_AF(SOA_AF_IP4_IP6),
                               // When using webrtc media disable SOA engine for SDP handling
                               NUTAG_MEDIA_ENABLE(0),
+                              // doesn't seem to work
+                              //NUTAG_DETECT_NETWORK_UPDATES(NUA_NW_DETECT_TRY_FULL),
                               TAG_NULL());
     
     if (conf->ssc_register)
@@ -526,7 +528,12 @@ static void priv_callback(nua_event_t event,
         case nua_i_error:
             ssc_i_error(nua, ssc, nh, op, status, phrase, tags);
             break;
-            
+        /* doesn't seem to work
+        case nua_i_network_changed:
+            DEBUG_PRINTF("%s: Network changed event: '%s' (%d): %03d %s\n",
+                         ssc->ssc_name, nua_event_name(event), event, status, phrase);
+            break;
+         */
         case nua_i_active:
         case nua_i_ack:
         case nua_i_terminated:
@@ -2035,6 +2042,15 @@ void ssc_r_shutdown(int status, char const *phrase,
                     tagi_t tags[])
 {
     DEBUG_PRINTF("%s: nua_shutdown: %03d %s\n", ssc->ssc_name, status, phrase);
+    static int attempt = 0;
+
+    if (status == 101) {
+        // shut down in progress
+        if (attempt > 3) {
+            nua_destroy(nua);
+        }
+        attempt++;
+    }
     
     if (status < 200)
         return;
