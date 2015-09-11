@@ -22,13 +22,24 @@
 
 #import "CallViewController.h"
 #import "RestCommClient.h"
+#import "Utilities.h"
 
 @interface CallViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *declineButton;
-@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *hangupButton;
+@property (weak, nonatomic) IBOutlet UIButton *videoButton;
+@property (weak, nonatomic) IBOutlet UIButton *audioButton;
+@property (weak, nonatomic) IBOutlet UIButton *muteVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *muteAudioButton;
+//@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
+// who we are calling/get called from
+@property (weak, nonatomic) IBOutlet UILabel *callLabel;
+// signaling/media status to inform the user how call setup goes (like Android toasts)
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+
 @property ARDVideoCallView *videoCallView;
 @property RTCVideoTrack *remoteVideoTrack;
 @property RTCVideoTrack *localVideoTrack;
+@property BOOL isAudioMuted, isVideoMuted;
 @end
 
 @implementation CallViewController
@@ -37,14 +48,33 @@
 {
     [super viewDidLoad];
     
-    self.muteSwitch.enabled = false;
+    //self.muteSwitch.enabled = false;
+    self.isVideoMuted = NO;
+    self.isAudioMuted = NO;
     
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
+    self.videoCallView.hidden = YES;
     //self.videoCallView.delegate = self;
-    [self.view insertSubview:self.videoCallView belowSubview:self.declineButton];
+    [self.view insertSubview:self.videoCallView belowSubview:self.hangupButton];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.muteAudioButton.hidden = YES;
+    self.muteVideoButton.hidden = YES;
+    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
+        self.videoButton.hidden = YES;
+        self.audioButton.hidden = YES;
+    }
+    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
+        self.videoButton.hidden = NO;
+        self.audioButton.hidden = NO;
+    }
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
@@ -53,12 +83,20 @@
             NSLog(@"Connection already ongoing");
             return;
         }
+        NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+        self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
+        self.statusLabel.text = @"Initiating Call...";
         
         self.connection = [self.device connect:self.parameters delegate:self];
         if (self.connection == nil) {
             [self.presentingViewController dismissViewControllerAnimated:YES
                                                               completion:nil];
         }
+    }
+    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
+        NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+        self.callLabel.text = [NSString stringWithFormat:@"Call from %@", username];
+        self.statusLabel.text = @"Call received";
     }
 }
 
@@ -81,6 +119,7 @@
 - (void)answer:(BOOL)allowVideo
 {
     if (self.pendingIncomingConnection) {
+        self.statusLabel.text = @"Answering Call...";
         if (allowVideo) {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
                                                                                forKey:@"video-enabled"]];
@@ -93,6 +132,7 @@
     }
 }
 
+/*
 - (IBAction)declinePressed:(id)sender
 {
     if (self.pendingIncomingConnection) {
@@ -103,12 +143,31 @@
                                                           completion:nil];
     }
 }
+ */
 
 - (IBAction)hangUpPressed:(id)sender
 {
-    [self disconnect];
+    if (self.pendingIncomingConnection) {
+        // incomind ringing
+        self.statusLabel.text = @"Rejecting Call...";
+        [self.pendingIncomingConnection reject];
+        self.pendingIncomingConnection = nil;
+    }
+    else {
+        if (self.connection) {
+            self.statusLabel.text = @"Disconnecting Call...";
+            [self.connection disconnect];
+            self.connection = nil;
+            self.pendingIncomingConnection = nil;
+            [self stopVideoRendering];
+        }
+        else {
+            NSLog(@"Error: not connected/connecting/pending");
+        }
+    }
 }
 
+/*
 - (IBAction)cancelPressed:(id)sender
 {
     if (self.connection) {
@@ -123,6 +182,7 @@
     }
     [self stopVideoRendering];
 }
+ */
 
 - (void)stopVideoRendering
 {
@@ -158,12 +218,21 @@
 - (void)connectionDidStartConnecting:(RCConnection*)connection
 {
     NSLog(@"connectionDidStartConnecting");
+    self.statusLabel.text = @"Did start connecting";
 }
 
 - (void)connectionDidConnect:(RCConnection*)connection
 {
     NSLog(@"connectionDidConnect");
-    self.muteSwitch.enabled = true;
+    self.statusLabel.text = @"Connected";
+    // hide video/audio buttons
+    self.videoButton.hidden = YES;
+    self.audioButton.hidden = YES;
+    
+    // show mute video/audio buttons
+    self.muteAudioButton.hidden = NO;
+    self.muteVideoButton.hidden = NO;
+
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
@@ -171,6 +240,7 @@
     NSLog(@"connectionDidCancel");
     
     if (self.pendingIncomingConnection) {
+        self.statusLabel.text = @"Remote party Cancelled";
         self.pendingIncomingConnection = nil;
         self.connection = nil;
         [self stopVideoRendering];
@@ -183,9 +253,14 @@
 - (void)connectionDidDisconnect:(RCConnection*)connection
 {
     NSLog(@"connectionDidDisconnect");
+    self.statusLabel.text = @"Disconnected";
     self.connection = nil;
     self.pendingIncomingConnection = nil;
     [self stopVideoRendering];
+
+    // hide mute video/audio buttons
+    self.muteAudioButton.hidden = YES;
+    self.muteVideoButton.hidden = YES;
 
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
@@ -194,6 +269,8 @@
 - (void)connectionDidGetDeclined:(RCConnection*)connection
 {
     NSLog(@"connectionDidGetDeclined");
+    self.statusLabel.text = @"Got Declined";
+
     self.connection = nil;
     self.pendingIncomingConnection = nil;
     [self stopVideoRendering];
@@ -205,6 +282,7 @@
 - (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack
 {
     if (!self.localVideoTrack) {
+        self.statusLabel.text = @"Received local video";
         self.localVideoTrack = localVideoTrack;
         [self.localVideoTrack addRenderer:self.videoCallView.localVideoView];
     }
@@ -213,26 +291,51 @@
 - (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoTrack
 {
     if (!self.remoteVideoTrack) {
+        self.statusLabel.text = @"Received remote video";
         self.remoteVideoTrack = remoteVideoTrack;
         [self.remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
+        self.videoCallView.hidden = NO;
     }
 }
 
-- (IBAction)toggleMute:(id)sender
+- (IBAction)toggleMuteAudio:(id)sender
 {
     // if we aren't in connected state it doesn't make any sense to mute
     if (self.connection.state != RCConnectionStateConnected) {
         return;
     }
     
-    UISwitch * muteSwitch = sender;
-    if (muteSwitch.isOn) {
+    if (!self.isAudioMuted) {
         self.connection.muted = true;
+        self.isAudioMuted = YES;
+        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-muted-23x28.png"] forState:UIControlStateNormal];
     }
     else {
         self.connection.muted = false;
+        self.isAudioMuted = NO;
+        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-active-23x28.png"] forState:UIControlStateNormal];
     }
 }
+
+- (IBAction)toggleMuteVideo:(id)sender
+{
+    // if we aren't in connected state it doesn't make any sense to mute
+    if (self.connection.state != RCConnectionStateConnected) {
+        return;
+    }
+    
+    if (!self.isVideoMuted) {
+        self.connection.videoMuted = true;
+        self.isVideoMuted = YES;
+        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-muted-30x22.png"] forState:UIControlStateNormal];
+    }
+    else {
+        self.connection.videoMuted = false;
+        self.isVideoMuted = NO;
+        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-active-30x22.png"] forState:UIControlStateNormal];
+    }
+}
+
 
 - (BOOL)shouldAutorotate
 {

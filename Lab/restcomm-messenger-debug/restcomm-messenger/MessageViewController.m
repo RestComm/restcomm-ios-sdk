@@ -22,6 +22,7 @@
 
 #import "MessageViewController.h"
 #import "InputAccessoryProxyView.h"
+#import "Utilities.h"
 
 @interface MessageViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *buttonPlaceholder;
@@ -91,6 +92,8 @@
 // helpers
 - (void)appendToDialog:(NSString*)msg sender:(NSString*)sender
 {
+    NSString *username = [Utilities usernameFromUri:sender];
+    /*
     // simplify the sender sip uri
     NSString* schemaUsername = nil;
     NSString* username = nil;
@@ -103,6 +106,7 @@
     else {
         username = sender;
     }
+     */
     
     if ([self.sipDialogText.text isEqualToString:@""]) {
         self.sipDialogText.text = [NSString stringWithFormat:@"%@: %@\n", username, msg];

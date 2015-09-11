@@ -48,6 +48,7 @@ int read_pipe[2];
 
 @implementation SipManager
 @synthesize muted;
+@synthesize videoMuted;
 // add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
 //static void addFdSourceToRunLoop(int fd)
 - (void) addFdSourceToRunLoop:(int)fd
@@ -458,5 +459,21 @@ ssize_t pipeToSofia(const char * msg, int fd)
         [self.media unmute];
     }
 }
+
+- (BOOL)getVideoMuted {
+    return self.videoMuted;
+}
+
+- (void)setVideoMuted:(BOOL)isMuted {
+    videoMuted = isMuted;
+    // TODO: need to initialize WebRTC as soon as SipManager comes up
+    if (videoMuted == YES) {
+        [self.media muteVideo];
+    }
+    else {
+        [self.media unmuteVideo];
+    }
+}
+
 
 @end

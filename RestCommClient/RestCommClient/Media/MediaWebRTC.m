@@ -316,6 +316,20 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     [track setEnabled:YES];
 }
 
+- (void)muteVideo
+{
+    NSArray * streams = _peerConnection.localStreams;
+    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
+    [track setEnabled:NO];
+}
+
+- (void)unmuteVideo
+{
+    NSArray * streams = _peerConnection.localStreams;
+    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
+    [track setEnabled:YES];
+}
+
 #pragma mark - Helpers
 // from candidateless sdp stored at self.sdp and candidates stored at array, we construct a full sdp
 - (NSString*)outgoingUpdateSdpWithCandidates:(NSArray *)array

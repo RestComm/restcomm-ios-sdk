@@ -94,6 +94,11 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  */
 @property (nonatomic, getter = isMuted) BOOL muted;
 
+/**
+ *  @abstract Is connection's video currently muted? If a connection's video is muted the remote party cannot see the local party
+ */
+@property (nonatomic, getter = isVideoMuted) BOOL videoMuted;
+
 
 /**
  *  @abstract Initialize a new RCConnection object (Important: not to be used by the Application; this is for internal use)

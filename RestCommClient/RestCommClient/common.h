@@ -10,4 +10,5 @@
 #define RestCommClient_common_h
 
 #define SIP_USER_AGENT "TelScale Restcomm iOS Client 1.0.0 BETA3"
+
 #endif

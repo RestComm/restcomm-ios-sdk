@@ -79,6 +79,9 @@ typedef enum {
 - (void)processSignalingMessage:(const char *)message type:(int)type;
 - (void)mute;
 - (void)unmute;
+- (void)muteVideo;
+- (void)unmuteVideo;
+
 
 // our delegate is SIP Manager
 @property (weak) id<MediaDelegate> mediaDelegate;

@@ -48,7 +48,7 @@
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;
 @property MediaWebRTC * media;
 @property NSMutableDictionary* params;
-@property (nonatomic) BOOL muted;
+@property (nonatomic) BOOL muted, videoMuted;
 @property BOOL videoAllowed;
 @end
 
