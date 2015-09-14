@@ -140,9 +140,13 @@ int read_pipe[2];
         [self.connectionDelegate incomingCancelled:self];
     }
     else if (reply->rc == OUTGOING_CANCELLED) {
+        [self.media disconnect];
+        self.media = nil;
         [self.connectionDelegate outgoingCancelled:self];
     }
     else if (reply->rc == OUTGOING_DECLINED) {
+        [self.media disconnect];
+        self.media = nil;
         [self.connectionDelegate outgoingDeclined:self];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
