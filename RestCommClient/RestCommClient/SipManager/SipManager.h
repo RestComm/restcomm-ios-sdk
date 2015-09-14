@@ -40,7 +40,7 @@
 - (bool)authenticate:(NSString*)string;
 - (bool)cancel;
 - (bool)bye;
-- (bool)shutdown;
+- (bool)shutdown:(BOOL)restart;
 - (bool)cli:(NSString*)cmd;
 - (bool)updateParams:(NSDictionary*)params;
 

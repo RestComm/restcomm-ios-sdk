@@ -68,6 +68,7 @@ typedef su_wait_t cli_input_t;
  */
 #define SOFSIP_USE_GLIB_EVENT_LOOP 1
 
+bool restartSignalling = false;
 // let's reference nua & nta module global log facilities to be able to update their levels
 extern su_log_t nua_log[];
 extern su_log_t nta_log[];
@@ -134,49 +135,60 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
   cli->cli_input_fd = input_fd;
   cli->cli_output_fd = output_fd;
 
-  /* step: initialize sofia su OS abstraction layer */
-  su_init();
-  su_home_init(cli->cli_home);
-
-  /* step: create a su event loop and connect it mainloop */
-  sofsip_mainloop_create(cli);
-  assert(cli->cli_root);
-
-  /* Disable threading by command line switch? */
-  su_root_threading(cli->cli_root, 0);
-
-  /* step: parse command line arguments and initialize app event loop */
-  res = sofsip_init(cli, ac, av);
-  assert(res == 0);
-  
-  cli->cli_conf[0].ssc_aor = aor;
-  cli->cli_conf[0].ssc_registrar = registrar;
-  cli->cli_conf[0].ssc_proxy = registrar;
-  cli->cli_conf[0].ssc_register = true;
-    
-  /* step: create ssc signaling and media subsystem instance */
-  cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
-
-  if (res != -1 && cli->cli_ssc) {
-
-    cli->cli_ssc->ssc_exit_cb = sofsip_shutdown_cb;
-    cli->cli_ssc->ssc_auth_req_cb = sofsip_auth_req_cb;
-    cli->cli_ssc->ssc_event_cb = sofsip_event_cb;
-  
-    ssc_input_install_handler(SOFSIP_PROMPT, sofsip_handle_input_cb);
-
-    /* enter the main loop */
-    sofsip_mainloop_run(cli);
-
-    ssc_destroy(cli->cli_ssc), cli->cli_ssc = NULL;
-  }
-  
-  sofsip_deinit(cli);
-  ssc_input_clear_history();
-
-  sofsip_mainloop_destroy(cli);
-  su_home_deinit(cli->cli_home);
-  su_deinit();
+  while (1) {
+        /* step: initialize sofia su OS abstraction layer */
+        su_init();
+        su_home_init(cli->cli_home);
+        
+        /* step: create a su event loop and connect it mainloop */
+        sofsip_mainloop_create(cli);
+        assert(cli->cli_root);
+        
+        /* Disable threading by command line switch? */
+        su_root_threading(cli->cli_root, 0);
+        
+        /* step: parse command line arguments and initialize app event loop */
+        res = sofsip_init(cli, ac, av);
+        assert(res == 0);
+        
+        cli->cli_conf[0].ssc_aor = aor;
+        cli->cli_conf[0].ssc_registrar = registrar;
+        cli->cli_conf[0].ssc_proxy = registrar;
+        cli->cli_conf[0].ssc_register = true;
+        
+        /* step: create ssc signaling and media subsystem instance */
+        cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
+        
+        if (res != -1 && cli->cli_ssc) {
+            
+            cli->cli_ssc->ssc_exit_cb = sofsip_shutdown_cb;
+            cli->cli_ssc->ssc_auth_req_cb = sofsip_auth_req_cb;
+            cli->cli_ssc->ssc_event_cb = sofsip_event_cb;
+            
+            ssc_input_install_handler(SOFSIP_PROMPT, sofsip_handle_input_cb);
+            
+            /* enter the main loop */
+            sofsip_mainloop_run(cli);
+            
+            ssc_destroy(cli->cli_ssc), cli->cli_ssc = NULL;
+        }
+        
+        sofsip_deinit(cli);
+        ssc_input_clear_history();
+        
+        sofsip_mainloop_destroy(cli);
+        su_home_deinit(cli->cli_home);
+        su_deinit();
+      
+      if (!restartSignalling) {
+          fprintf(stderr, "Shutting down signalling\n");
+          break;
+      }
+      else {
+          fprintf(stderr, "Restarting signalling after shutdown\n");
+          restartSignalling = false;
+      }
+    }
 
   return 0;
 }
@@ -466,7 +478,11 @@ static void sofsip_handle_input_cb(char *input)
   }
   else if (match("q") || match("x") || match("exit")) {
     ssc_shutdown(cli->cli_ssc);
-  } 
+  }
+  else if (match("qr")) {
+      restartSignalling = true;
+      ssc_shutdown(cli->cli_ssc);
+  }
   else if (command[strcspn(command, " \t\n\r=")] == '=') {
     /* Test assignment: foo=bar  */
     if ((rest = strchr(command, '='))) {

@@ -46,6 +46,11 @@
 int write_pipe[2];
 int read_pipe[2];
 
+@interface SipManager ()
+@property BOOL restartSignalling;
+@property NSLock * restartSignallingLock;
+@end
+
 @implementation SipManager
 @synthesize muted;
 @synthesize videoMuted;
@@ -242,6 +247,10 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
         [RTCPeerConnectionFactory initializeSSL];
+        // do we want to restart Sofia facilities when shutting down (i.e. after shutdown is successful)
+        //self.restartSignalling = NO;
+        //self.restartSignallingLock = [[NSLock alloc] init];
+
         //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
@@ -293,10 +302,25 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // communicate with sip sofia via the pipe
-        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                    [[self.params objectForKey:@"registrar"] UTF8String]);
-        NSLog(@"Stopped eventLoop");
+        //while (1) {
+            // communicate with sip sofia via the pipe
+            sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
+                        [[self.params objectForKey:@"registrar"] UTF8String]);
+            NSLog(@"Stopped eventLoop");
+            /*
+            [_restartSignallingLock lock];
+            if (!self.restartSignalling) {
+                [_restartSignallingLock unlock];
+                break;
+            }
+            else {
+                NSLog(@"Restarting eventLoop");
+                self.restartSignalling = NO;
+            }
+            [_restartSignallingLock unlock];
+            */
+        //}
+        
     });
     
     return true;
@@ -406,11 +430,20 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)shutdown
+- (bool)shutdown:(BOOL)restart
 {
     NSString* cmd = [NSString stringWithFormat:@"q"];
+    if (restart == YES) {
+        cmd = @"qr";
+    }
     [self pipeToSofia:cmd];
-    
+
+    /*
+    [_restartSignallingLock lock];
+    self.restartSignalling = restart;
+    [_restartSignallingLock unlock];
+     */
+
     return true;
 }
 

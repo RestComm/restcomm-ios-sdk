@@ -273,7 +273,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if (newStatus == NotReachable && self.state != RCDeviceStateOffline) {
         NSLog(@"#### Reachability action; no connectivity");
-        [self.sipManager shutdown];
+        [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
         return;
@@ -284,8 +284,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         if (self.state != RCDeviceStateOffline) {
             NSLog(@"#### Reachability action; switch between wifi and mobile");
             // TODO: this is bound to fail is shutdown is asynchronous, but let's keep it around for now
-            [self.sipManager shutdown];
-            [self.sipManager eventLoop];
+            [self.sipManager shutdown:YES];
+            //[self.sipManager eventLoop];
             self.reachabilityStatus = newStatus;
             return;
         }
@@ -337,7 +337,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 -(void)stopSofia
 {
-    [self.sipManager shutdown];
+    [self.sipManager shutdown:NO];
     //_state = RCDeviceStateOffline;
 }
 
