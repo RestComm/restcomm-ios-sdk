@@ -127,6 +127,9 @@ int read_pipe[2];
         // call is established, send the SDP over to WebRTC
         [self.media processSignalingMessage:reply->text.c_str() type:kARDSignalingMessageTypeAnswer];
     }
+    else if (reply->rc == INCOMING_ESTABLISHED) {
+        [self.connectionDelegate incomingEstablished:self];
+    }
     else if (reply->rc == INCOMING_MSG) {
         NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
         NSString* username = [whole componentsSeparatedByString:@"|"][0];

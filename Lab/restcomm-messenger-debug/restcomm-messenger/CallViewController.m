@@ -129,6 +129,7 @@
                                                                                forKey:@"video-enabled"]];
         }
         self.connection = self.pendingIncomingConnection;
+        self.pendingIncomingConnection = nil;
     }
 }
 

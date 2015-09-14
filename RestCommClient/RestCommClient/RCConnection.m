@@ -193,6 +193,14 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self.delegate connectionDidConnect:self];
 }
 
+- (void)incomingEstablished:(SipManager *)sipManager
+{
+    NSLog(@"[RCConnection incomingEstablished]");
+    
+    //[self setState:RCConnectionStateConnected];
+    [self.delegate connectionDidConnect:self];
+}
+
 // we got an 487 Cancelled to our outgoing invite
 - (void)outgoingCancelled:(SipManager *)sipManager
 {

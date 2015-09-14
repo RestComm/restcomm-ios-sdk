@@ -712,6 +712,7 @@ void ssc_invite(ssc_t *ssc, const char *destination)
         
         //op->op_callstate |= opc_pending;
         op->op_callstate = (op_callstate_t)(op->op_callstate | opc_pending);
+        op->is_outgoing = true;
         
         char value_str[32] = "";
         sprintf(value_str, "%p", op);
@@ -817,12 +818,6 @@ void ssc_r_invite(int status, char const *phrase,
         // notify the client application that we are established
         SofiaReply reply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
         reply.Send(ssc->ssc_output_fd);
-        //setSofiaReply(OUTGOING_ESTABLISHED, sip->sip_payload->pl_data);
-        //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-        
-        // TODO: remove when done debugging
-        //nua_get_hparams(nh, TAG_ANY(), TAG_NULL());
-        //nua_get_params(nua, TAG_ANY(), TAG_NULL());
     }
     
 }
@@ -890,9 +885,11 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
     
     if (op) {
         op->op_callstate = (op_callstate_t)(op->op_callstate | opc_recv);
+        op->is_outgoing = false;
     }
     else if ((op = ssc_oper_create_with_handle(ssc, SIP_METHOD_INVITE, nh, from))) {
         op->op_callstate = opc_recv;
+        op->is_outgoing = false;
     }
     else {
         nua_respond(nh, SIP_500_INTERNAL_SERVER_ERROR, TAG_END());
@@ -1185,6 +1182,10 @@ void ssc_i_state(int status, char const *phrase,
     }
     
     switch ((enum nua_callstate)ss_state) {
+            
+        case nua_callstate_calling:
+            // mark outgoing
+            break;
         case nua_callstate_received:
             /* In auto-alert mode, we don't need to call nua_respond(), see NUTAG_AUTOALERT() */
             /* nua_respond(nh, SIP_180_RINGING, TAG_END()); */
@@ -1212,6 +1213,11 @@ void ssc_i_state(int status, char const *phrase,
                        ssc->ssc_name, op->op_ident, nua_callstate_name((enum nua_callstate)ss_state),
                        cli_active(audio), cli_active(video), cli_active(chat));
                 op->op_prev_state = ss_state;
+                
+                if (!op->is_outgoing) {
+                   SofiaReply reply(INCOMING_ESTABLISHED, "");
+                   reply.Send(ssc->ssc_output_fd);
+                }
             }
             
             /* SDP O/A note:

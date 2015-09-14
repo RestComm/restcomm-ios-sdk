@@ -61,6 +61,7 @@
 
 @protocol SipManagerConnectionDelegate <NSObject>
 - (void)outgoingRinging:(SipManager *)sipManager;
+- (void)incomingEstablished:(SipManager *)sipManager;
 - (void)outgoingEstablished:(SipManager *)sipManager;
 // received BYE; either a response to an outgoing bye, or an incoming BYE
 - (void)bye:(SipManager *)sipManager;
