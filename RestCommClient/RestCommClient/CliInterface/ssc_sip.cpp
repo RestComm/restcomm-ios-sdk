@@ -256,6 +256,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               NUTAG_CERTIFICATE_DIR(conf->ssc_certdir)),
                        TAG_NULL());
         //nua_get_params(ssc->ssc_nua, TAG_ANY(), TAG_NULL());
+        SofiaReply reply(SIGNALLING_INITIALIZED, "");
+        reply.Send(ssc->ssc_output_fd);
     }
     else {
         ssc_destroy(ssc);
@@ -263,13 +265,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     }
     
     su_free(home, userdomain);
-    
-    // Notify application that singnalling is initialized
-    SofiaReply reply(SIGNALLING_INITIALIZED, "");
-    reply.Send(ssc->ssc_output_fd);
-    //setSofiaReply(SIGNALLING_INITIALIZED, "");
-    //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-    
+
     return ssc;
 }
 
@@ -2054,8 +2050,10 @@ void ssc_r_shutdown(int status, char const *phrase,
 
     if (status == 101) {
         // shut down in progress
-        if (attempt > 3) {
-            nua_destroy(nua);
+        if (attempt >= 3) {
+            DEBUG_PRINTF("Sofia failed to shutdown gracefull after 3 attempts: breaking out of loop\n");
+            //nua_destroy(nua);
+            su_root_break(ssc->ssc_root);
         }
         attempt++;
     }
