@@ -166,6 +166,8 @@
             NSLog(@"Error: not connected/connecting/pending");
         }
     }
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
 }
 
 /*
