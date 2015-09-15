@@ -277,7 +277,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eR0-ZP-EpQ">
-                                <rect key="frame" x="30" y="535" width="30" height="22"/>
+                                <rect key="frame" x="20" y="520" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eR0-ZP-EpQ" secondAttribute="height" multiplier="10:11" id="GZk-8N-j73"/>
                                 </constraints>
@@ -322,7 +322,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mkT-Ed-gcY">
-                                <rect key="frame" x="544" y="532" width="23" height="28"/>
+                                <rect key="frame" x="530" y="520" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="mkT-Ed-gcY" secondAttribute="height" multiplier="10:11" id="QBQ-wK-9iB"/>
                                 </constraints>
@@ -358,7 +358,7 @@
                                 <variation key="widthClass=regular" constant="184"/>
                             </constraint>
                             <constraint firstAttribute="centerX" secondItem="Hwt-xT-UGU" secondAttribute="centerX" id="IZi-Jh-Plh"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="mkT-Ed-gcY" secondAttribute="trailing" constant="17" id="Ibk-9H-evC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mkT-Ed-gcY" secondAttribute="trailing" constant="4" id="Ibk-9H-evC"/>
                             <constraint firstItem="Rv1-rQ-AKD" firstAttribute="trailing" secondItem="21Y-Pw-wBB" secondAttribute="trailingMargin" id="Lco-Kg-q1C"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="Nyi-ak-3Ea" secondAttribute="bottom" constant="20" id="MTN-Nb-SR0"/>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="4" id="NXO-HX-EpL"/>
@@ -366,12 +366,12 @@
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="SYM-OS-Mgf" secondAttribute="bottom" constant="30" id="P4e-qV-5Pn"/>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="PJX-AP-egU"/>
                             <constraint firstItem="Nyi-ak-3Ea" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="RGO-IJ-WCQ"/>
-                            <constraint firstItem="eR0-ZP-EpQ" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="14" id="THw-uY-fkR"/>
+                            <constraint firstItem="eR0-ZP-EpQ" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="4" id="THw-uY-fkR"/>
                             <constraint firstItem="Hwt-xT-UGU" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="Ul7-dh-BHK"/>
-                            <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="mkT-Ed-gcY" secondAttribute="bottom" constant="40" id="acr-7V-5Or"/>
+                            <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="mkT-Ed-gcY" secondAttribute="bottom" constant="30" id="acr-7V-5Or"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="eR0-ZP-EpQ" secondAttribute="bottom" constant="102" id="c8G-Mn-xDz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Rv1-rQ-AKD" secondAttribute="trailing" constant="15" id="cJ4-ZO-bUf"/>
-                            <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="eR0-ZP-EpQ" secondAttribute="bottom" constant="43" id="dyj-8n-6oG"/>
+                            <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="eR0-ZP-EpQ" secondAttribute="bottom" constant="30" id="dyj-8n-6oG"/>
                             <constraint firstItem="eR0-ZP-EpQ" firstAttribute="top" secondItem="4jx-Fg-Snj" secondAttribute="bottom" constant="445" id="eVK-P0-Ee5"/>
                             <constraint firstItem="Rv1-rQ-AKD" firstAttribute="trailing" secondItem="21Y-Pw-wBB" secondAttribute="trailingMargin" id="eze-WZ-wSG"/>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="15" id="hmi-LA-vCj"/>
@@ -407,11 +407,11 @@
                                 <exclude reference="j0P-eM-A8T"/>
                                 <exclude reference="xIf-Zr-WVm"/>
                                 <exclude reference="yfz-SQ-C0M"/>
-                                <exclude reference="69w-wc-47A"/>
-                                <exclude reference="yfV-g3-6LF"/>
                                 <exclude reference="Lco-Kg-q1C"/>
                                 <exclude reference="cJ4-ZO-bUf"/>
                                 <exclude reference="eze-WZ-wSG"/>
+                                <exclude reference="69w-wc-47A"/>
+                                <exclude reference="yfV-g3-6LF"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -714,9 +714,9 @@
     <resources>
         <image name="answer-audio-50x50.png" width="50" height="50"/>
         <image name="answer-video-50x50.png" width="50" height="50"/>
-        <image name="audio-active-23x28.png" width="23" height="28"/>
+        <image name="audio-active-23x28.png" width="50" height="50"/>
         <image name="hangup-73x73.png" width="73" height="73"/>
-        <image name="video-active-30x22.png" width="30" height="22"/>
+        <image name="video-active-30x22.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="V96-Uz-nqL"/>
