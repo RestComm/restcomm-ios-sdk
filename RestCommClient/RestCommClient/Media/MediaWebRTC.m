@@ -304,30 +304,65 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 
 - (void)mute
 {
-    NSArray * streams = _peerConnection.localStreams;
-    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
-    [track setEnabled:NO];
+    if (_peerConnection.localStreams) {
+        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
+            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
+                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
+                [track setEnabled:NO];
+            }
+        }
+    }
+
+    //NSArray * streams = _peerConnection.localStreams;
+    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
+    //[track setEnabled:NO];
 }
 
 - (void)unmute
 {
-    NSArray * streams = _peerConnection.localStreams;
-    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
-    [track setEnabled:YES];
+    if (_peerConnection.localStreams) {
+        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
+            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
+                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
+                [track setEnabled:YES];
+            }
+        }
+    }
+
+    //NSArray * streams = _peerConnection.localStreams;
+    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
+    //[track setEnabled:YES];
 }
 
 - (void)muteVideo
 {
-    NSArray * streams = _peerConnection.localStreams;
-    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
-    [track setEnabled:NO];
+    if (_peerConnection.localStreams) {
+        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
+            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
+                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
+                [track setEnabled:NO];
+            }
+        }
+    }
+    //_peerConnection.localStreams objectAtI
+    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
+    //[track setEnabled:NO];
 }
 
 - (void)unmuteVideo
 {
-    NSArray * streams = _peerConnection.localStreams;
-    RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
-    [track setEnabled:YES];
+    if (_peerConnection.localStreams) {
+        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
+            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
+                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
+                [track setEnabled:YES];
+            }
+        }
+    }
+
+    //NSArray * streams = _peerConnection.localStreams;
+    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
+    //[track setEnabled:YES];
 }
 
 #pragma mark - Helpers
