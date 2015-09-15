@@ -62,6 +62,7 @@
 #import "RTCVideoCapturer.h"
 #import "RTCVideoTrack.h"
 #import "RTCSessionDescription.h"
+#import "RestCommClient.h"
 
 @implementation MediaWebRTC
 
@@ -76,7 +77,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 //static NSInteger kARDAppClientErrorUnknown = -1;
 //static NSInteger kARDAppClientErrorRoomFull = -2;
 //static NSInteger kARDAppClientErrorCreateSDP = -3;
-static NSInteger kARDAppClientErrorSetSDP = -4;
+//static NSInteger kARDAppClientErrorSetSDP = -4;
 //static NSInteger kARDAppClientErrorInvalidClient = -5;
 //static NSInteger kARDAppClientErrorInvalidRoom = -6;
 
@@ -90,8 +91,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         _isInitiator = YES;
         self.sofia_handle = nil;
         self.videoAllowed = NO;
-        // in AppRTCDemo this happens in didFinishLaunching
-        //[RTCPeerConnectionFactory initializeSSL];
     }
     return self;
 }
@@ -112,7 +111,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         _isInitiator = YES;
     }
     self.videoAllowed = videoAllowed;
-    //NSLog(@"#################### [MediaWebRTC connect] called");
     if (sofia_handle) {
         self.sofia_handle = sofia_handle;
     }
@@ -210,15 +208,10 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         [self sendOffer];
     } else {
         [self processSignalingMessage:[sdp UTF8String] type:kARDSignalingMessageTypeOffer];
-        // old code
-        //[self waitForAnswer];
     }
 }
 
 - (RTCMediaConstraints *)defaultPeerConnectionConstraints {
-    //if (self.defaultPeerConnectionConstraints) {
-    //    return self.defaultPeerConnectionConstraints;
-    //}
     NSArray *optionalConstraints = @[[[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]];
     RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
                                                                              optionalConstraints:optionalConstraints];
@@ -232,21 +225,12 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
-    // TODO: if we want to only work with audio, here's one place to update
-    /*
-    NSMutableArray * mandatoryConstraints = [NSMutableArray arrayWithObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
-    if (self.videoAllowed) {
-        [mandatoryConstraints addObject:[[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"true"]];
-    }
-    */
-    /**/
     NSString * video = @"false";
     if (self.videoAllowed) {
         video = @"true";
     }
     NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
                                       [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:video]];
-    /**/
     RTCMediaConstraints* constraints =
     [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
                                           optionalConstraints:nil];
@@ -294,7 +278,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         }
         
         [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:localVideoTrack];
-        //[_delegate appClient:self didReceiveLocalVideoTrack:localVideoTrack];
 #endif
     }
     [localStream addAudioTrack:[_factory audioTrackWithID:@"ARDAMSa0"]];
@@ -312,10 +295,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             }
         }
     }
-
-    //NSArray * streams = _peerConnection.localStreams;
-    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
-    //[track setEnabled:NO];
 }
 
 - (void)unmute
@@ -328,10 +307,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             }
         }
     }
-
-    //NSArray * streams = _peerConnection.localStreams;
-    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] audioTracks] objectAtIndex:0];
-    //[track setEnabled:YES];
 }
 
 - (void)muteVideo
@@ -344,9 +319,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             }
         }
     }
-    //_peerConnection.localStreams objectAtI
-    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
-    //[track setEnabled:NO];
 }
 
 - (void)unmuteVideo
@@ -359,10 +331,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             }
         }
     }
-
-    //NSArray * streams = _peerConnection.localStreams;
-    //RTCMediaStreamTrack * track = [[[streams objectAtIndex:0] videoTracks] objectAtIndex:0];
-    //[track setEnabled:YES];
 }
 
 #pragma mark - Helpers
@@ -402,12 +370,9 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     
     NSTextCheckingResult* match = [regex firstMatchInString:searchedString options:0 range:searchedRange];
     int matchIndex = 0;
-    //NSString * temp = [searchedString substringWithRange:[match range]];
-    //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
     if (matchIndex == 0) {
         [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
                                                                                                              @"$0",audioCandidates]];
-        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1st: %@", searchedString);
     }
     
     // search again since the searchedString has been altered
@@ -415,11 +380,8 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     if ([matches count] == 2) {
         // count of 2 means we also have video. If we don't we shouldn't do anything
         NSTextCheckingResult* match = [matches objectAtIndex:1];
-        //NSString * temp = [searchedString substringWithRange:[match range]];
-        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 0: %@", temp);
         [regex replaceMatchesInString:searchedString options:0 range:[match range] withTemplate:[NSString stringWithFormat:@"%@%@",
                                                                                                  @"$0", videoCandidates]];
-        //NSLog(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 2st: %@", searchedString);
     }
     
     // important: the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
@@ -477,7 +439,7 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 // temporary: until the MMS issue is fixed, try to workaround it by appending the missing part
 - (void)workaroundTruncation:(NSMutableString*)sdp
 {
-    NSString *pattern = @"cnam$"; //  (?:www\\.)?((?!-)[a-zA-Z0-9-]{2,63}(?<!-))\\.?((?:[a-zA-Z0-9]{2,})?(?:\\.[a-zA-Z0-9]{2,})?)";
+    NSString *pattern = @"cnam$";
     NSError  *error = nil;
 
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
@@ -489,13 +451,12 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
     NSParameterAssert(_peerConnection);
     switch (type) {
         case kARDSignalingMessageTypeOffer: {
-            // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+            // 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             //[self workaroundTruncation:msg];
             NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"offer"
                                                                                          sdp:msg];
-            //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
             for (NSString * key in candidates) {
@@ -512,13 +473,12 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 
         }
         case kARDSignalingMessageTypeAnswer: {
-            // TODO: 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+            // 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             [self workaroundTruncation:msg];
             NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
             RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
                                                                                          sdp:msg];
-            //NSLog(@"SDP answer: %@", description.description);
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
             
@@ -533,23 +493,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             
             break;
         }
-        case kARDSignalingMessageTypeCandidate: {
-            // TODO: set values properly: @"audio", 0, received candidate
-            /*
-            RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:@"audio"
-                                                                           index:0
-                                                                             sdp:[NSString stringWithUTF8String:message]];
-            [_peerConnection addICECandidate:iceCandidate];
-             */
-            break;
-        }
-        /*
-        case kARDSignalingMessageTypeBye:
-            // Other client disconnected.
-            // disconnect.
-            [self disconnect];
-            break;
-         */
     }
 }
 
@@ -567,7 +510,6 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         if (stream.videoTracks.count) {
             RTCVideoTrack *videoTrack = stream.videoTracks[0];
             [self.mediaDelegate mediaController:self didReceiveRemoteVideoTrack:videoTrack];
-            //[self.mediaDelegate appClient:self didReceiveRemoteVideoTrack:videoTrack];
         }
     });
 }
@@ -583,28 +525,27 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
     NSLog(@"ICE state changed: %d", newState);
     dispatch_async(dispatch_get_main_queue(), ^{
-        // TODO: notify our delegate
-        //[_delegate appClient:self didChangeConnectionState:newState];
+        if (newState == RTCICEConnectionFailed) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey: @"iceConnectionChanged: ICE connection failed",
+                                       };
+            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                           code:ERROR_WEBRTC_ICE
+                                                       userInfo:userInfo];
+            [self.mediaDelegate mediaController:self didError:sdpError];
+        }
     });
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     NSLog(@"ICE gathering state changed: %d", newState);
     if (newState == RTCICEGatheringComplete) {
-        //NSLog(@"#################### [MediaWebRTC iceGatheringChanged] SDP ready");
         [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
     }
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
-    //NSLog(@"gotICECandidate");
-    //candidate.sdp;
     [_iceCandidates addObject:candidate];
-    /*
-    if ([_iceCandidates count] == 1) {
-        [self.mediaDelegate sdpReady:self withData:[self updateSdpWithCandidates:_iceCandidates]];
-    }
-    */
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
         //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
@@ -626,15 +567,14 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
         if (error) {
             NSLog(@"Failed to create session description. Error: %@", error);
             [self disconnect];
-            /*
+
             NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey: @"Failed to create session description.",
+                                       NSLocalizedDescriptionKey: @"didCreateSessionDescription: Failed to create session description",
                                        };
-            NSError *sdpError = [[NSError alloc] initWithDomain:kARDAppClientErrorDomain
-                                                           code:kARDAppClientErrorCreateSDP
+            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                           code:ERROR_WEBRTC_SDP
                                                        userInfo:userInfo];
-            [_delegate appClient:self didError:sdpError];
-             */
+            [self.mediaDelegate mediaController:self didError:sdpError];
             return;
         }
         [_peerConnection setLocalDescriptionWithDelegate:self
@@ -656,13 +596,13 @@ static NSInteger kARDAppClientErrorSetSDP = -4;
             NSLog(@"Failed to set session description. Error: %@", error);
             [self disconnect];
             NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey: @"Failed to set session description.",
+                                       NSLocalizedDescriptionKey: @"didSetSessionDescriptionWithError: Failed to set session description",
                                        };
-            NSError *sdpError =[[NSError alloc] initWithDomain:kARDAppClientErrorDomain
-                                                          code:kARDAppClientErrorSetSDP
+            NSError *sdpError =[[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                          code:ERROR_WEBRTC_SDP
                                                       userInfo:userInfo];
-            // TODO: notify our delegate
-            //[_delegate appClient:self didError:sdpError];
+
+            [self.mediaDelegate mediaController:self didError:sdpError];
             return;
         }
         

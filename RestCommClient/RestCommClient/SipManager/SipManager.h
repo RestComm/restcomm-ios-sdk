@@ -53,24 +53,25 @@
 @end
 
 @protocol SipManagerDeviceDelegate <NSObject>
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message from:(NSString*)from;
+- (void)sipManager:(SipManager *)sipManager didReceiveMessageWithData:(NSString *)message from:(NSString*)from;
 // 'ringing' for incoming connections
-- (void)callArrived:(SipManager *)sipManager;
-- (void)signallingInitialized:(SipManager *)sipManager;
+- (void)sipManagerDidReceiveCall:(SipManager *)sipManager;
+- (void)sipManagerDidInitializedSignalling:(SipManager *)sipManager;
 @end
 
 @protocol SipManagerConnectionDelegate <NSObject>
-- (void)outgoingRinging:(SipManager *)sipManager;
-- (void)incomingEstablished:(SipManager *)sipManager;
-- (void)outgoingEstablished:(SipManager *)sipManager;
-// received BYE; either a response to an outgoing bye, or an incoming BYE
-- (void)bye:(SipManager *)sipManager;
-- (void)incomingCancelled:(SipManager *)sipManager;
+- (void)sipManagerDidReceiveOutgoingRinging:(SipManager*)sipManager;
+- (void)sipManagerDidReceiveOutgoingEstablished:(SipManager*)sipManager;
+- (void)sipManagerDidReceiveIncomingEstablished:(SipManager*)sipManager;
 // we got an 487 Cancelled to our outgoing invite
-- (void)outgoingCancelled:(SipManager *)sipManager;
-- (void)outgoingDeclined:(SipManager *)sipManager;
-- (void)sipManager:(SipManager *)sipManager receivedLocalVideo:(RTCVideoTrack *)localView;
-- (void)sipManager:(SipManager *)sipManager receivedRemoteVideo:(RTCVideoTrack *)remoteView;
-//- (void)incomingRinging:(SipManager *)sipManager;
-//- (void)incomingEstablished:(SipManager *)sipManager;
+- (void)sipManagerDidReceiveOutgoingCancelled:(SipManager*)sipManager;
+- (void)sipManagerDidReceiveOutgoingDeclined:(SipManager*)sipManager;
+// received BYE; either a response to an outgoing bye, or an incoming BYE
+- (void)sipManagerDidReceiveBye:(SipManager*)sipManager;
+- (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;
+- (void)sipManager:(SipManager*)sipManager didReceiveLocalVideo:(RTCVideoTrack *)localView;
+- (void)sipManager:(SipManager*)sipManager didReceiveRemoteVideo:(RTCVideoTrack *)remoteView;
+- (void)sipManager:(SipManager*)sipManager didMediaError:(NSError *)error;
+- (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error;
+
 @end

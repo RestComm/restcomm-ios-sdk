@@ -154,122 +154,12 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     
 }
 
-- (void)outgoingRinging:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection outgoingRinging]");
-    if (self.cancelPending) {
-        //NSLog(@"[RCConnection outgoingRinging:canceling]");
-        [self.sipManager cancel];
-        return;
-    }
-    
-    if (self.device.outgoingSoundEnabled == true) {
-        [self.callingPlayer play];
-    }
-    [self setState:RCConnectionStateConnecting];
-    [self.delegate connectionDidStartConnecting:self];
-}
-
-- (void)outgoingEstablished:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection outgoingEstablished]");
-
-    if ([self.callingPlayer isPlaying]) {
-        [self.callingPlayer stop];
-        self.callingPlayer.currentTime = 0.0;
-    }
-    
-    if (self.cancelPending) {
-        // if the cancel when we got the ringing didn't make it on time
-        // then we will have received a 200 OK established. In that case
-        // we need to terminate the call with a BYE
-        //NSLog(@"[RCConnection outgoingEstablished:bye]");
-        [self.sipManager bye];
-        self.cancelPending = NO;
-        return;
-    }
-    
-    [self setState:RCConnectionStateConnected];
-    [self.delegate connectionDidConnect:self];
-}
-
-- (void)incomingEstablished:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection incomingEstablished]");
-    
-    //[self setState:RCConnectionStateConnected];
-    [self.delegate connectionDidConnect:self];
-}
-
-// we got an 487 Cancelled to our outgoing invite
-- (void)outgoingCancelled:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection outgoingCancelled]");
-    self.state = RCConnectionStateDisconnected;
-    [self.delegate connectionDidDisconnect:self];
-    self.device.state = RCDeviceStateReady;
-}
-
-- (void)outgoingDeclined:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection outgoingDeclined]");
-
-    if ([self.callingPlayer isPlaying]) {
-        [self.callingPlayer stop];
-        self.callingPlayer.currentTime = 0.0;
-    }
-    self.state = RCConnectionStateDisconnected;
-    [self.delegate connectionDidGetDeclined:self];
-    self.device.state = RCDeviceStateReady;
-}
-
-- (void)bye:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection bye]");
-    
-    if ([self.ringingPlayer isPlaying]) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-    
-    //NSLog(@"[RCConnection self: %p]", self);
-    //if (self.state != RCConnectionStateDisconnected) {
-    self.state = RCConnectionStateDisconnected;
-    [self.delegate connectionDidDisconnect:self];
-    self.device.state = RCDeviceStateReady;
-    //}
-}
-
-- (void)incomingCancelled:(SipManager *)sipManager
-{
-    NSLog(@"[RCConnection incomingCancelled]");
-
-    if ([self.ringingPlayer isPlaying]) {
-        [self.ringingPlayer stop];
-        self.ringingPlayer.currentTime = 0.0;
-    }
-
-    self.state = RCConnectionStateDisconnected;
-    [self.delegate connectionDidCancel:self];
-    self.device.state = RCDeviceStateReady;
-}
-
-- (void)sipManager:(SipManager *)sipManager receivedLocalVideo:(RTCVideoTrack *)localView
-{
-    [self.delegate connection:self didReceiveLocalVideo:localView];
-}
-
-- (void)sipManager:(SipManager *)sipManager receivedRemoteVideo:(RTCVideoTrack *)remoteView
-{
-    [self.delegate connection:self didReceiveRemoteVideo:remoteView];
-}
-
 - (void)setMuted:(BOOL)isMuted
 {
     // avoid endless loop
     muted = isMuted;
     [self.sipManager setMuted:isMuted];
-
+    
 }
 
 - (void)setVideoMuted:(BOOL)isMuted
@@ -294,6 +184,130 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     }
 }
 
+#pragma mark SipManager Delegate methods
+- (void)sipManagerDidReceiveOutgoingRinging:(SipManager*)sipManager
+{
+    NSLog(@"[RCConnection outgoingRinging]");
+    if (self.cancelPending) {
+        //NSLog(@"[RCConnection outgoingRinging:canceling]");
+        [self.sipManager cancel];
+        return;
+    }
+    
+    if (self.device.outgoingSoundEnabled == true) {
+        [self.callingPlayer play];
+    }
+    [self setState:RCConnectionStateConnecting];
+    [self.delegate connectionDidStartConnecting:self];
+}
+
+- (void)sipManagerDidReceiveOutgoingEstablished:(SipManager*)sipManager
+{
+    NSLog(@"[RCConnection outgoingEstablished]");
+
+    if ([self.callingPlayer isPlaying]) {
+        [self.callingPlayer stop];
+        self.callingPlayer.currentTime = 0.0;
+    }
+    
+    if (self.cancelPending) {
+        // if the cancel when we got the ringing didn't make it on time
+        // then we will have received a 200 OK established. In that case
+        // we need to terminate the call with a BYE
+        //NSLog(@"[RCConnection outgoingEstablished:bye]");
+        [self.sipManager bye];
+        self.cancelPending = NO;
+        return;
+    }
+    
+    [self setState:RCConnectionStateConnected];
+    [self.delegate connectionDidConnect:self];
+}
+
+- (void)sipManagerDidReceiveIncomingEstablished:(SipManager*)sipManager
+{
+    NSLog(@"[RCConnection incomingEstablished]");
+    
+    //[self setState:RCConnectionStateConnected];
+    [self.delegate connectionDidConnect:self];
+}
+
+// we got an 487 Cancelled to our outgoing invite
+- (void)sipManagerDidReceiveOutgoingCancelled:(SipManager*)sipManager;
+{
+    NSLog(@"[RCConnection outgoingCancelled]");
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidDisconnect:self];
+    self.device.state = RCDeviceStateReady;
+}
+
+- (void)sipManagerDidReceiveOutgoingDeclined:(SipManager*)sipManager;
+{
+    NSLog(@"[RCConnection outgoingDeclined]");
+
+    if ([self.callingPlayer isPlaying]) {
+        [self.callingPlayer stop];
+        self.callingPlayer.currentTime = 0.0;
+    }
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidGetDeclined:self];
+    self.device.state = RCDeviceStateReady;
+}
+
+- (void)sipManagerDidReceiveBye:(SipManager*)sipManager;
+{
+    NSLog(@"[RCConnection bye]");
+    
+    if ([self.ringingPlayer isPlaying]) {
+        [self.ringingPlayer stop];
+        self.ringingPlayer.currentTime = 0.0;
+    }
+    
+    //NSLog(@"[RCConnection self: %p]", self);
+    //if (self.state != RCConnectionStateDisconnected) {
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidDisconnect:self];
+    self.device.state = RCDeviceStateReady;
+    //}
+}
+
+- (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;
+{
+    NSLog(@"[RCConnection incomingCancelled]");
+
+    if ([self.ringingPlayer isPlaying]) {
+        [self.ringingPlayer stop];
+        self.ringingPlayer.currentTime = 0.0;
+    }
+
+    self.state = RCConnectionStateDisconnected;
+    [self.delegate connectionDidCancel:self];
+    self.device.state = RCDeviceStateReady;
+}
+
+- (void)sipManager:(SipManager*)sipManager didReceiveLocalVideo:(RTCVideoTrack *)localView;
+{
+    [self.delegate connection:self didReceiveLocalVideo:localView];
+}
+
+- (void)sipManager:(SipManager*)sipManager didReceiveRemoteVideo:(RTCVideoTrack *)remoteView;
+{
+    [self.delegate connection:self didReceiveRemoteVideo:remoteView];
+}
+
+- (void)sipManager:(SipManager*)sipManager didMediaError:(NSError *)error
+{
+    [self disconnect];
+    [self.delegate connection:self didFailWithError:error];
+}
+
+- (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
+{
+    [self disconnect];
+    [self.delegate connection:self didFailWithError:error];
+}
+
+#pragma mark Helpers
 - (void)prepareSounds
 {
     // ringing

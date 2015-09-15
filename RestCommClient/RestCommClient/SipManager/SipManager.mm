@@ -33,6 +33,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RTCPeerConnectionFactory.h"
 
+#import "RestCommClient.h"
 #import "SipManager.h"
 
 /* TODOs:
@@ -67,7 +68,7 @@ int read_pipe[2];
 }
 
 #pragma mark - RTCSessionDescriptionDelegate WebRTC <-> Sofia communication: MediaDelegate protocol
-- (void)mediaController:(MediaWebRTC *)media didCreateSdp:(NSString *)sdpString isInitiator:(BOOL)initiator
+- (void)mediaController:(MediaWebRTC *)mediaController didCreateSdp:(NSString *)sdpString isInitiator:(BOOL)initiator
 {
     if (initiator) {
         [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
@@ -77,17 +78,22 @@ int read_pipe[2];
     }
 }
 
+- (void)mediaController:(MediaWebRTC *)mediaController didError:(NSError *)error
+{
+    [self.connectionDelegate sipManager:self didMediaError:error];
+}
+
 // TODO: webrtc module has come up with a local video track, we need to render it inside a UIView and return that
 // view back to RCConnection. That way the application doesn't need to know about RTCVideoTracks, which are
 // webrtc implementation details
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveLocalVideoTrack:(RTCVideoTrack *)videoTrack
 {
-    [self.connectionDelegate sipManager:self receivedLocalVideo:videoTrack];
+    [self.connectionDelegate sipManager:self didReceiveLocalVideo:videoTrack];
 }
 
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveRemoteVideoTrack:(RTCVideoTrack *)videoTrack
 {
-    [self.connectionDelegate sipManager:self receivedRemoteVideo:videoTrack];
+    [self.connectionDelegate sipManager:self didReceiveRemoteVideo:videoTrack];
 }
 
 /*
@@ -110,7 +116,7 @@ int read_pipe[2];
         // we have an incoming call, we need to ring
         
         // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
-        [self.deviceDelegate callArrived:self];
+        [self.deviceDelegate sipManagerDidReceiveCall:self];
     }
     else if (reply->rc == ANSWER_PRESSED) {
         // the incoming message has first the address of the Sofia operation (until the first space)
@@ -125,34 +131,50 @@ int read_pipe[2];
     }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
-        [self.connectionDelegate outgoingRinging:self];
+        [self.connectionDelegate sipManagerDidReceiveOutgoingRinging:self];
     }
     else if (reply->rc == OUTGOING_ESTABLISHED) {
-        [self.connectionDelegate outgoingEstablished:self];
+        [self.connectionDelegate sipManagerDidReceiveOutgoingEstablished:self];
         // call is established, send the SDP over to WebRTC
         [self.media processSignalingMessage:reply->text.c_str() type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_ESTABLISHED) {
-        [self.connectionDelegate incomingEstablished:self];
+        [self.connectionDelegate sipManagerDidReceiveIncomingEstablished:self];
     }
     else if (reply->rc == INCOMING_MSG) {
         NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
         NSString* username = [whole componentsSeparatedByString:@"|"][0];
         NSString* msg = [whole componentsSeparatedByString:@"|"][1];
-        [self.deviceDelegate messageArrived:self withData:msg from:username];
+        [self.deviceDelegate sipManager:self didReceiveMessageWithData:msg from:username];
     }
     else if (reply->rc == INCOMING_CANCELLED) {
-        [self.connectionDelegate incomingCancelled:self];
+        [self.connectionDelegate sipManagerDidReceiveIncomingCancelled:self];
     }
     else if (reply->rc == OUTGOING_CANCELLED) {
         [self.media disconnect];
         self.media = nil;
-        [self.connectionDelegate outgoingCancelled:self];
+        [self.connectionDelegate sipManagerDidReceiveOutgoingCancelled:self];
     }
     else if (reply->rc == OUTGOING_DECLINED) {
         [self.media disconnect];
         self.media = nil;
-        [self.connectionDelegate outgoingDeclined:self];
+        [self.connectionDelegate sipManagerDidReceiveOutgoingDeclined:self];
+    }
+    else if (reply->rc == INVITE_ERROR) {
+        [self.media disconnect];
+        self.media = nil;
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                       code:ERROR_SIGNALLING
+                                                   userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
+
+        [self.connectionDelegate sipManager:self didSignallingError:error];
+    }
+    else if (reply->rc == MESSAGE_ERROR) {
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                    code:ERROR_SIGNALLING
+                                                userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
+        
+        [self.connectionDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
@@ -163,12 +185,12 @@ int read_pipe[2];
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
         self.media = nil;
-        [self.connectionDelegate bye:self];
+        [self.connectionDelegate sipManagerDidReceiveBye:self];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
         // delay execution of my block for 1 seconds.
         //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self.deviceDelegate signallingInitialized:self];
+            [self.deviceDelegate sipManagerDidInitializedSignalling:self];
         //});
     }
     

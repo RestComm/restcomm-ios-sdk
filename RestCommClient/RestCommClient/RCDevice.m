@@ -214,8 +214,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     _state = RCDeviceStateReady;
 }
 
+- (void) updateParams:(NSDictionary*)params
+{
+    [self.sipManager updateParams:params];
+}
+
 #pragma mark SipManager Delegate methods
-- (void)messageArrived:(SipManager *)sipManager withData:(NSString *)message from:(NSString*)from
+- (void)sipManager:(SipManager *)sipManager didReceiveMessageWithData:(NSString *)message from:(NSString *)from
 {
     if (self.incomingSoundEnabled == true) {
         [self.messagePlayer play];
@@ -223,7 +228,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.delegate device:self didReceiveIncomingMessage:message withParams:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
 }
 
-- (void)callArrived:(SipManager *)sipManager
+- (void)sipManagerDidReceiveCall:(SipManager *)sipManager
 {
     self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
     self.sipManager.connectionDelegate = self.currentConnection;
@@ -237,17 +242,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.delegate device:self didReceiveIncomingConnection:self.currentConnection];
 }
 
-- (void)signallingInitialized:(SipManager *)sipManager
+- (void)sipManagerDidInitializedSignalling:(SipManager *)sipManager
 {
     [self.delegate deviceDidInitializeSignaling:self];
     //[self.delegate deviceDidStartListeningForIncomingConnections:self];
 }
 
-- (void) updateParams:(NSDictionary*)params
-{
-    [self.sipManager updateParams:params];
-}
-
+#pragma mark Helpers
 - (void)prepareSounds
 {
     // message

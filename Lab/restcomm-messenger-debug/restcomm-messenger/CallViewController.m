@@ -40,6 +40,7 @@
 @property RTCVideoTrack *remoteVideoTrack;
 @property RTCVideoTrack *localVideoTrack;
 @property BOOL isAudioMuted, isVideoMuted;
+@property BOOL pendingError;
 @end
 
 @implementation CallViewController
@@ -48,6 +49,7 @@
 {
     [super viewDidLoad];
     
+    self.pendingError = NO;
     //self.muteSwitch.enabled = false;
     self.isVideoMuted = NO;
     self.isAudioMuted = NO;
@@ -210,10 +212,19 @@
  */
 
 // ---------- Delegate methods for RC Connection
-// not implemented yet
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error
 {
+    NSLog(@"connection didFailWithError");
+    self.pendingError = YES;
+    self.connection = nil;
+    self.pendingIncomingConnection = nil;
     
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCConnection Error"
+                                                    message:[[error userInfo] objectForKey:NSLocalizedDescriptionKey]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 // optional
@@ -265,8 +276,15 @@
     self.muteAudioButton.hidden = YES;
     self.muteVideoButton.hidden = YES;
 
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+    if (!self.pendingError) {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:nil];
+    }
+    /*
+    else {
+        self.pendingError = NO;
+    }
+     */
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection
@@ -339,6 +357,12 @@
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    self.pendingError = NO;
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
 
 - (BOOL)shouldAutorotate
 {

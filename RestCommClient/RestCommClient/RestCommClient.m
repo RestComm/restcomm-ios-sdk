@@ -21,3 +21,32 @@
  */
 
 #import "RestCommClient.h"
+
+@implementation RestCommClient
+
++ (id)sharedRestCommClient {
+    static RestCommClient *sharedRestCommClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedRestCommClient = [[self alloc] init];
+    });
+    return sharedRestCommClient;
+}
+
+- (id)init {
+    if (self = [super init]) {
+        self.errorDomain = @"RestcommClient-iOS-SDK";
+        self.errors = @{
+                        @(ERROR_SIGNALLING) : @"Signalling error",
+                        @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
+                        @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
+                        };
+    }
+    return self;
+}
+
+- (void)dealloc {
+    // Should never be called, but just here for clarity really.
+}
+
+@end

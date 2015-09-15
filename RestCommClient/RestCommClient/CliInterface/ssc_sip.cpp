@@ -786,19 +786,26 @@ void ssc_r_invite(int status, char const *phrase,
     
     if (status >= 300) {
         op->op_callstate = (op_callstate_t)(op->op_callstate & ~opc_sent);
-        if (status == 401 || status == 407)
+        if (status == 401 || status == 407) {
             ssc_store_pending_auth(ssc, op, sip, tags);
-
-        if (status == 486 || status == 600 || status == 603) {
+        }
+        else if (status == 486 || status == 600 || status == 603) {
             // notify the client application that we are ringing
             SofiaReply reply(OUTGOING_DECLINED, "");
             reply.Send(ssc->ssc_output_fd);
-            //setSofiaReply(OUTGOING_DECLINED, "");
-            //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
         }
-        if (status == 487) {
+        else if (status == 487) {
             // notify the client application that we got a response to our CANCEL
             SofiaReply reply(OUTGOING_CANCELLED, "");
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else if (status == 404) {
+            // not found
+            SofiaReply reply(INVITE_ERROR, "Called party not found");
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else {
+            SofiaReply reply(INVITE_ERROR, "Generic INVITE error");
             reply.Send(ssc->ssc_output_fd);
         }
         
@@ -1431,11 +1438,23 @@ void ssc_r_message(int status, char const *phrase,
 {
     DEBUG_PRINTF("%s: MESSAGE: %d %s\n", ssc->ssc_name, status, phrase);
     
-    if (status < 200)
+    if (status < 200) {
         return;
-    
-    if (status == 401 || status == 407)
+    }
+    else if (status == 200) {
+        return;
+    }
+    else if (status == 401 || status == 407) {
         ssc_store_pending_auth(ssc, op, sip, tags);
+    }
+    else if (status == 404) {
+        SofiaReply reply(MESSAGE_ERROR, "Receiving party not found");
+        reply.Send(ssc->ssc_output_fd);
+    }
+    else {
+        SofiaReply reply(MESSAGE_ERROR, "Generic MESSAGE error");
+        reply.Send(ssc->ssc_output_fd);
+    }
 }
 
 void ssc_i_message(nua_t *nua, ssc_t *ssc,

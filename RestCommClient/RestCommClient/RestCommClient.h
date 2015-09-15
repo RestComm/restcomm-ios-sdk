@@ -25,3 +25,20 @@
 #import "RCDevice.h"
 #import "RCDeviceDelegate.h"
 #import "RCPresenceEvent.h"
+
+#import <Foundation/Foundation.h>
+
+@interface RestCommClient : NSObject
+
+typedef enum {
+    ERROR_WEBRTC_SDP,
+    ERROR_WEBRTC_ICE,
+    ERROR_SIGNALLING,
+} errorCodes;
+
+@property NSString * errorDomain;
+@property NSDictionary * errors;
+
++ (id)sharedRestCommClient;
+
+@end
