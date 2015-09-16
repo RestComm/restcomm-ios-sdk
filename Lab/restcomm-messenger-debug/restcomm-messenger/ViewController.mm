@@ -25,7 +25,7 @@
 #import "ViewController.h"
 #import "RestCommClient.h"
 #import "SettingsNavigationController.h"
-#import "SettingsViewController.h"
+#import "SettingsTableViewController.h"
 #import "CallViewController.h"
 #import "MessageViewController.h"
 
@@ -252,8 +252,8 @@ extern char REGISTRAR[];
         }
     }
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
-        SettingsViewController * settingsViewController = [segue destinationViewController];
-        settingsViewController.device = self.device;
+        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
+        settingsTableViewController.device = self.device;
     }
     if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
         MessageViewController *callViewController = [segue destinationViewController];

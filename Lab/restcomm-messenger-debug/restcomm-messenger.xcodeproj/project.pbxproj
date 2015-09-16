@@ -23,6 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
+		AE3F71ED1BA9D0F3006B06E7 /* SipSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */; };
+		AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */; };
+		AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */; };
 		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
 		AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -81,7 +84,6 @@
 		AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06E1A097764008A6057 /* InfoPlist.strings */; };
 		AED0B0821A097764008A6057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0701A097764008A6057 /* Images.xcassets */; };
 		AED0B0831A097764008A6057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0711A097764008A6057 /* main.m */; };
-		AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0751A097764008A6057 /* SettingsViewController.mm */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
@@ -121,6 +123,12 @@
 
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
+		AE3F71EB1BA9D0F3006B06E7 /* SipSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipSettingsTableViewController.h; sourceTree = "<group>"; };
+		AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipSettingsTableViewController.m; sourceTree = "<group>"; };
+		AE3F71EE1BA9D10B006B06E7 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		AE3F71F11BA9D123006B06E7 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
+		AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
@@ -193,8 +201,6 @@
 		AED0B0711A097764008A6057 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messenger-Info.plist"; sourceTree = "<group>"; };
 		AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "restcomm-messenger-Prefix.pch"; sourceTree = "<group>"; };
-		AED0B0741A097764008A6057 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		AED0B0751A097764008A6057 /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
 		AED0B07C1A097764008A6057 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		AED0B07D1A097764008A6057 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
@@ -394,8 +400,6 @@
 				AED0B0711A097764008A6057 /* main.m */,
 				AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */,
 				AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */,
-				AED0B0741A097764008A6057 /* SettingsViewController.h */,
-				AED0B0751A097764008A6057 /* SettingsViewController.mm */,
 				AED0B07C1A097764008A6057 /* ViewController.h */,
 				AED0B07D1A097764008A6057 /* ViewController.mm */,
 				AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */,
@@ -408,6 +412,12 @@
 				AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */,
 				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
 				AE59B24D1B6F6F46006CC699 /* MessageViewController.m */,
+				AE3F71EB1BA9D0F3006B06E7 /* SipSettingsTableViewController.h */,
+				AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */,
+				AE3F71EE1BA9D10B006B06E7 /* SettingsTableViewController.h */,
+				AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */,
+				AE3F71F11BA9D123006B06E7 /* AboutTableViewController.h */,
+				AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */,
 			);
 			path = "restcomm-messenger";
 			sourceTree = "<group>";
@@ -605,14 +615,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE3F71ED1BA9D0F3006B06E7 /* SipSettingsTableViewController.m in Sources */,
 				AED0B0831A097764008A6057 /* main.m in Sources */,
 				AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */,
 				AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED08BFE1B73538A0036A9BE /* InputAccessoryProxyView.m in Sources */,
 				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
-				AED0B0851A097764008A6057 /* SettingsViewController.mm in Sources */,
+				AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */,
 				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,
+				AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */,
 				AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

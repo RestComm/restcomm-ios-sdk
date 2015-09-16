@@ -19,8 +19,7 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
-
-#import "SettingsViewController.h"
+#import "SipSettingsTableViewController.h"
 #import "SettingsNavigationController.h"
 
 char AOR[] = "sip:antonis-2@telestax.com";
@@ -29,23 +28,14 @@ char REGISTRAR[] = "23.23.228.238:5080";
 //char REGISTRAR[] = "192.168.2.32:5080";
 
 
-@interface SettingsViewController ()
+@interface SipSettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
-@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
+//@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *passwordText;
 @end
 
-@implementation SettingsViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@implementation SipSettingsTableViewController
 
 - (void)viewDidLoad
 {
@@ -59,7 +49,7 @@ char REGISTRAR[] = "23.23.228.238:5080";
                                            action:@selector(hideKeyBoard)];
     
     [self.view addGestureRecognizer:tapGesture];
-
+    
     // set some defaults when in debug to avoid typing
     self.aorText.text = [NSString stringWithUTF8String:AOR];
     self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
@@ -77,10 +67,19 @@ char REGISTRAR[] = "23.23.228.238:5080";
     //self.navigationItem.leftBarButtonItem = backButton;
 }
 
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound) {
+        // back button was pressed.  We know this is true because self is no longer
+        // in the navigation stack.
+        [self update];
+    }
+    [super viewWillDisappear:animated];
+}
+
 - (IBAction)backPressed
 {
     //[self dismissViewControllerAnimated:YES completion:nil]; // ios 6
-
+    [self update];
 }
 
 - (void)hideKeyBoard
@@ -96,7 +95,7 @@ char REGISTRAR[] = "23.23.228.238:5080";
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)updatePressed:(id)sender
+- (void)update
 {
     /**/
     //TabBarController * tabBarController = (TabBarController*)self.tabBarController;
@@ -115,34 +114,12 @@ char REGISTRAR[] = "23.23.228.238:5080";
         [params setObject:self.passwordText.text forKey:@"password"];
         update = true;
     }
-
+    
     if (update) {
         //SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
         [self.device updateParams:params];
     }
-     /**/
-}
-
-- (IBAction)toggleMute:(id)sender
-{
-    // TODO: mute is no longer applicable to 'Settings' it will just belong to Call view
-    /*
-    TabBarController * tabBarController = (TabBarController*)self.tabBarController;
-    RCConnection * connection = tabBarController.viewController.connection;
-
-    // if we aren't in connected state it doesn't make any sense to mute
-    if (connection.state != RCConnectionStateConnected) {
-        return;
-    }
-    
-    UISwitch * muteSwitch = sender;
-    if (muteSwitch.isOn) {
-        connection.muted = true;
-    }
-    else {
-        connection.muted = false;
-    }
-     */
+    /**/
 }
 
 - (BOOL)shouldAutorotate

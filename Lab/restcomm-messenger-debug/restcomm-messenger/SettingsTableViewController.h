@@ -19,11 +19,10 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
-
 #import <UIKit/UIKit.h>
 #import "RestCommClient.h"
 
-@interface SettingsViewController : UIViewController
+@interface SettingsTableViewController : UITableViewController
 // owner is ViewController
 @property (weak) RCDevice * device;
 @end
