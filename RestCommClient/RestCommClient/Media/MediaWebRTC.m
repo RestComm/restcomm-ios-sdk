@@ -64,6 +64,9 @@
 #import "RTCSessionDescription.h"
 #import "RestCommClient.h"
 
+#import "common.h"
+#import "Utilities.h"
+
 @implementation MediaWebRTC
 
 // TODO: update these properly
@@ -83,6 +86,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate
 {
+    RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
     if (self) {
         self.mediaDelegate = mediaDelegate;
@@ -96,6 +100,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)dealloc {
+    RCLogNotice("[MediaWebRTC dealloc]");
     [self disconnect];
 }
 
@@ -104,6 +109,11 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 // sdp is used for incoming calls; nil in outgoing
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed
 {
+    RCLogNotice("[MediaWebRTC connect: %s \nsdp:%s \nisInitiator:%s \nwithVideo:%s]",
+                [sofia_handle UTF8String],
+                [sdp UTF8String],
+                (initiator) ? "true" : "false",
+                (videoAllowed) ? "true" : "false");
     if (!initiator) {
         _isInitiator = NO;
     }
@@ -142,6 +152,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)disconnect {
+    RCLogNotice("[MediaWebRTC disconnect]");
     if (_state == kARDAppClientStateDisconnected) {
         return;
     }
@@ -174,6 +185,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (void) terminate
 {
+    RCLogNotice("[MediaWebRTC terminate]");
     //[RTCPeerConnectionFactory deinitializeSSL];
 }
 
@@ -243,6 +255,8 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (RTCMediaStream *)createLocalMediaStream
 {
+    RCLogNotice("[MediaWebRTC createLocalMediaStream]");
+
     RTCMediaStream* localStream = [_factory mediaStreamWithLabel:@"ARDAMS"];
 
     if (self.videoAllowed) {
@@ -498,12 +512,12 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 #pragma mark - RTCPeerConnectionDelegate
 - (void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged {
-    NSLog(@"Signaling state changed: %d", stateChanged);
+    RCLogNotice("[MediaWebRTC signalingStateChanged:%d]", stateChanged);
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection addedStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"Received %lu video tracks and %lu audio tracks",
+        RCLogNotice("[MediaWebRTC addedStream] Received %lu video tracks and %lu audio tracks",
               (unsigned long)stream.videoTracks.count,
               (unsigned long)stream.audioTracks.count);
         
@@ -515,36 +529,40 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection removedStream:(RTCMediaStream *)stream {
-    NSLog(@"Stream was removed.");
+    RCLogNotice("[MediaWebRTC removedStream]");
 }
 
 - (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection {
+    RCLogNotice("[MediaWebRTC peerConnectionOnRenegotiationNeeded]");
     //NSLog(@"WARNING: Renegotiation needed but unimplemented.");
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
-    NSLog(@"ICE state changed: %d", newState);
     dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC iceConnectionChanged:%d]", newState);
         if (newState == RTCICEConnectionFailed) {
+
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"iceConnectionChanged: ICE connection failed",
                                        };
             NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
                                                            code:ERROR_WEBRTC_ICE
                                                        userInfo:userInfo];
+            RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[Utilities stringifyDictionary:userInfo] UTF8String]);
             [self.mediaDelegate mediaController:self didError:sdpError];
         }
     });
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
-    NSLog(@"ICE gathering state changed: %d", newState);
+    RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
     if (newState == RTCICEGatheringComplete) {
         [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
     }
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
+    RCLogNotice("[MediaWebRTC gotICECandidate:%s]", [[candidate sdp] UTF8String]);
     [_iceCandidates addObject:candidate];
     /*
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -556,7 +574,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)peerConnection:(RTCPeerConnection*)peerConnection didOpenDataChannel:(RTCDataChannel*)dataChannel {
-    NSLog(@"Opened data channel");
+    RCLogNotice("[MediaWebRTC didOpenDataChannel]");
 }
 
 #pragma mark - RTCSessionDescriptionDelegate
@@ -564,8 +582,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
                  error:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC didCreateSessionDescription]");
         if (error) {
-            NSLog(@"Failed to create session description. Error: %@", error);
+            RCLogError("[MediaWebRTC didCreateSessionDescription] Failed to create session description. Error: %s", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
             [self disconnect];
 
             NSDictionary *userInfo = @{
@@ -592,8 +611,10 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didSetSessionDescriptionWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogError("[MediaWebRTC didSetSessionDescriptionWithError]");
         if (error) {
-            NSLog(@"Failed to set session description. Error: %@", error);
+            RCLogError("[MediaWebRTC didSetSessionDescriptionWithError] Failed to set session description. Error: %s", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+
             [self disconnect];
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"didSetSessionDescriptionWithError: Failed to set session description",

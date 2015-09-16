@@ -47,7 +47,7 @@
 #include <assert.h>
 #include <signal.h>
 
-#include "cli_common.h"
+#include "common.h"
 
 typedef struct cli_s cli_t;
 
@@ -225,7 +225,7 @@ static void sofsip_signal_handler(int signo)
 
 static void sofsip_help(cli_t *cli)
 {
-  DEBUG_PRINTF("Synopsis:\n"
+  RCLogDebug("Synopsis:\n"
 	 "\taddr <my-sip-address-uri> (set public address)\n"
 	 "\tb (bye)\n"
 	 "\tc (cancel)\n"
@@ -331,7 +331,7 @@ static int sofsip_handle_input(cli_t *cli, su_wait_t *w, void *p)
 
 static void sofsip_handle_input_cb(char *input)
 {
-  //DEBUG_PRINTF("==== INPUT: %s", input);
+  //RCLogDebug("==== INPUT: %s", input);
   char *rest, *command = input;
   cli_t *cli = global_cli_p;
   int n = command ? (int)strlen(command) : 0;
@@ -421,7 +421,7 @@ static void sofsip_handle_input_cb(char *input)
             dest = token;
             break;
         }
-        DEBUG_PRINTF("%s\n", token);
+        RCLogDebug("%s\n", token);
        pos++;
     }
     if (match("m") || match("message")) {
@@ -495,7 +495,7 @@ static void sofsip_handle_input_cb(char *input)
     sofsip_help(cli);
   }
   else {
-    DEBUG_PRINTF("Unknown command. Type \"help\" for help\n");
+    RCLogDebug("Unknown command. Type \"help\" for help\n");
   }
 
   ssc_input_set_prompt(SOFSIP_PROMPT);
@@ -504,8 +504,7 @@ static void sofsip_handle_input_cb(char *input)
 
 static void sofsip_auth_req_cb (ssc_t *ssc, const ssc_auth_item_t *authitem, void *pointer)
 {
-  DEBUG_PRINTF("Please authenticate '%s' with the 'k' command (e.g. 'k password', or 'k [method:realm:username:]password')\n", 
-	 authitem->ssc_scheme);
+  //RCLogDebug("Please authenticate '%s' with the 'k' command (e.g. 'k password', or 'k [method:realm:username:]password')\n", authitem->ssc_scheme);
 }
 
 static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer)

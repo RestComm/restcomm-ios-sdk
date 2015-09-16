@@ -25,6 +25,9 @@
 #import "RCConnection.h"
 #import "SipManager.h"
 #import "RTCVideoTrack.h"
+#import "Utilities.h"
+
+#include "common.h"
 
 @interface RCConnection ()
 // private methods
@@ -48,11 +51,13 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
 {
+    RCLogNotice("[RCConnection initWithDelegate]");
+
     self = [super init];
     if (self) {
         self.delegate = delegate;
-        NSLog(@"[RCConnection setting delegate: %p]", self.delegate);
-        NSLog(@"[RCConnection init, self: %p]", self);
+        //NSLog(@"[RCConnection setting delegate: %p]", self.delegate);
+        //NSLog(@"[RCConnection init, self: %p]", self);
         self.sipManager = nil;
         self.state = RCConnectionStateDisconnected;
         self.device = device;
@@ -67,8 +72,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)accept:(NSDictionary*)parameters
 {
-    NSLog(@"[RCConnection accept]");
-
+    RCLogNotice("[RCConnection accept: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
+    
     if (self.isIncoming && self.state == RCConnectionStateConnecting) {
         BOOL videoAllowed = NO;
         if ([parameters objectForKey:@"video-enabled"]) {
@@ -87,13 +92,12 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)ignore
 {
-    NSLog(@"[RCConnection ignore]");
-   
+    RCLogNotice("[RCConnection ignore]");
 }
 
 - (void)reject
 {
-    NSLog(@"[RCConnection reject]");
+    RCLogNotice("[RCConnection reject]");
     if (self.isIncoming && self.state == RCConnectionStateConnecting) {
         [self.sipManager decline];
         self.device.state = RCDeviceStateReady;
@@ -107,7 +111,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)disconnect
 {
-    NSLog(@"[RCConnection disconnect]");
+    RCLogNotice("[RCConnection disconnect]");
     if (self.state == RCConnectionStateConnecting) {
         if (!self.isIncoming) {
             // for outgoing calls in state connecting (i.e. ringing), treat disconnect as cancel
@@ -150,12 +154,13 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sendDigits:(NSString*)digits
 {
-    NSLog(@"[RCConnection sendDigits]");
+    RCLogNotice("[RCConnection sendDigits]");
     
 }
 
 - (void)setMuted:(BOOL)isMuted
 {
+    RCLogNotice("[RCConnection setMuted]");
     // avoid endless loop
     muted = isMuted;
     [self.sipManager setMuted:isMuted];
@@ -164,6 +169,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)setVideoMuted:(BOOL)isMuted
 {
+    RCLogNotice("[RCConnection setVideoMuted]");
     // avoid endless loop
     videoMuted = isMuted;
     [self.sipManager setVideoMuted:isMuted];
@@ -187,7 +193,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 #pragma mark SipManager Delegate methods
 - (void)sipManagerDidReceiveOutgoingRinging:(SipManager*)sipManager
 {
-    NSLog(@"[RCConnection outgoingRinging]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveOutgoingRinging]");
     if (self.cancelPending) {
         //NSLog(@"[RCConnection outgoingRinging:canceling]");
         [self.sipManager cancel];
@@ -203,7 +209,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManagerDidReceiveOutgoingEstablished:(SipManager*)sipManager
 {
-    NSLog(@"[RCConnection outgoingEstablished]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveOutgoingEstablished]");
 
     if ([self.callingPlayer isPlaying]) {
         [self.callingPlayer stop];
@@ -226,7 +232,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManagerDidReceiveIncomingEstablished:(SipManager*)sipManager
 {
-    NSLog(@"[RCConnection incomingEstablished]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveIncomingEstablished]");
     
     //[self setState:RCConnectionStateConnected];
     [self.delegate connectionDidConnect:self];
@@ -235,7 +241,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 // we got an 487 Cancelled to our outgoing invite
 - (void)sipManagerDidReceiveOutgoingCancelled:(SipManager*)sipManager;
 {
-    NSLog(@"[RCConnection outgoingCancelled]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveOutgoingCancelled]");
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidDisconnect:self];
     self.device.state = RCDeviceStateReady;
@@ -243,7 +249,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManagerDidReceiveOutgoingDeclined:(SipManager*)sipManager;
 {
-    NSLog(@"[RCConnection outgoingDeclined]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveOutgoingDeclined]");
 
     if ([self.callingPlayer isPlaying]) {
         [self.callingPlayer stop];
@@ -256,7 +262,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManagerDidReceiveBye:(SipManager*)sipManager;
 {
-    NSLog(@"[RCConnection bye]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveBye]");
     
     if ([self.ringingPlayer isPlaying]) {
         [self.ringingPlayer stop];
@@ -273,7 +279,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;
 {
-    NSLog(@"[RCConnection incomingCancelled]");
+    RCLogNotice("[RCConnection sipManagerDidReceiveIncomingCancelled]");
 
     if ([self.ringingPlayer isPlaying]) {
         [self.ringingPlayer stop];
@@ -287,22 +293,26 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManager:(SipManager*)sipManager didReceiveLocalVideo:(RTCVideoTrack *)localView;
 {
+    RCLogNotice("[RCConnection didReceiveLocalVideo]");
     [self.delegate connection:self didReceiveLocalVideo:localView];
 }
 
 - (void)sipManager:(SipManager*)sipManager didReceiveRemoteVideo:(RTCVideoTrack *)remoteView;
 {
+    RCLogNotice("[RCConnection didReceiveRemoteVideo]");
     [self.delegate connection:self didReceiveRemoteVideo:remoteView];
 }
 
 - (void)sipManager:(SipManager*)sipManager didMediaError:(NSError *)error
 {
+    RCLogNotice("[RCConnection didMediaError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
     [self disconnect];
     [self.delegate connection:self didFailWithError:error];
 }
 
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
+    RCLogNotice("[RCConnection didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
     [self disconnect];
     [self.delegate connection:self didFailWithError:error];
 }

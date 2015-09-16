@@ -27,6 +27,9 @@
 #import "Reachability.h"
 #import <AVFoundation/AVFoundation.h>   // sounds
 
+#include "common.h"
+#include "Utilities.h"
+
 @interface RCDevice ()
 // private stuff
 // TODO: move this to separate module
@@ -84,6 +87,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _state = RCDeviceStateOffline;
         
         [self prepareSounds];
+        
+        // init logging only once
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            initializeLogging();
+        });
+        RCLogNotice("[RCDevice initWithParams]");
 
         // reachability
         self.reachabilityStatus = NotReachable;
@@ -110,7 +120,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate
 {
-    NSLog(@"[RCDevice initWithCapabilityToken:delegate:] is not supported yet; using default configuration values. To do your own configuration please use [RCDevice initWithParams:delegate:]");
+    RCLogNotice("[RCDevice initWithCapabilityToken:delegate:] is not supported yet; using default configuration values. To do your own configuration please use [RCDevice initWithParams:delegate:]");
+    
     [self populateCapabilitiesFromToken:capabilityToken];
 
     NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
@@ -127,7 +138,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)listen
 {
-    NSLog(@"[RCDevice listen]");
+    RCLogNotice("[RCDevice listen]");
     [self.sipManager updateParams:nil];
     //_state = RCDeviceStateReady;
     [self.delegate deviceDidStartListeningForIncomingConnections:self];
@@ -135,7 +146,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)unlisten
 {
-    NSLog(@"[RCDevice unlisten]");
+    RCLogNotice("[RCDevice unlisten]");
     [self.sipManager unregister:nil];
     //_state = RCDeviceStateOffline;
     [self.delegate device:self didStopListeningForIncomingConnections:nil];
@@ -143,7 +154,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
 {
-    NSLog(@"[RCDevice updateCapabilityToken]");
+    RCLogNotice("[RCDevice updateCapabilityToken]");
 }
 
 - (NSDictionary*)getParams
@@ -153,7 +164,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
-    NSLog(@"[RCDevice connect]");
+    RCLogNotice("[RCDevice connect: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (self.state != RCDeviceStateReady) {
         if (self.state == RCDeviceStateBusy) {
             NSLog(@"Error connecting: RCDevice is busy");
@@ -182,6 +193,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
 {
+    RCLogNotice("[RCDevice message: %s\nto: %s]", [message UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (self.state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         return;
@@ -194,34 +206,39 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)setOutgoingSoundEnabled:(BOOL)outgoingSoundEnabled
 {
+    RCLogNotice("[RCDevice setOutgoingSoundEnabled");
     _outgoingSoundEnabled = outgoingSoundEnabled;
 }
 
 - (void)setIncomingSoundEnabled:(BOOL)incomingSoundEnabled
 {
+    RCLogNotice("[RCDevice setIncomingSoundEnabled");
     _incomingSoundEnabled = incomingSoundEnabled;
 }
 
 - (void)setDisconnectSoundEnabled:(BOOL)disconnectSoundEnabled
 {
+    RCLogNotice("[RCDevice setDisconnectSoundEnabled");
     _disconnectSoundEnabled = disconnectSoundEnabled;
 }
 
 - (void)disconnectAll
 {
-    NSLog(@"[RCDevice disconnectAll]");
+    RCLogNotice("[RCDevice disconnectAll]");
     [self.currentConnection disconnect];
     _state = RCDeviceStateReady;
 }
 
 - (void) updateParams:(NSDictionary*)params
 {
+    RCLogNotice("[RCDevice updateParams]");
     [self.sipManager updateParams:params];
 }
 
 #pragma mark SipManager Delegate methods
 - (void)sipManager:(SipManager *)sipManager didReceiveMessageWithData:(NSString *)message from:(NSString *)from
 {
+    RCLogNotice("[RCDevice didReceiveMessageWithData: %s\nfrom: %s]", [message UTF8String], [from UTF8String]);
     if (self.incomingSoundEnabled == true) {
         [self.messagePlayer play];
     }
@@ -230,6 +247,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)sipManagerDidReceiveCall:(SipManager *)sipManager
 {
+    RCLogNotice("[RCDevice sipManagerDidReceiveCall]");
     self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
     self.sipManager.connectionDelegate = self.currentConnection;
     self.currentConnection.sipManager = self.sipManager;
@@ -244,8 +262,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)sipManagerDidInitializedSignalling:(SipManager *)sipManager
 {
+    RCLogNotice("[RCDevice sipManagerDidInitializedSignalling]");
+
     [self.delegate deviceDidInitializeSignaling:self];
-    //[self.delegate deviceDidStartListeningForIncomingConnections:self];
+    [self.delegate deviceDidStartListeningForIncomingConnections:self];
+}
+
+- (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
+{
+    RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
 }
 
 #pragma mark Helpers
@@ -270,10 +295,10 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)checkNetworkStatus:(NSNotification *)notice
 {
     NetworkStatus newStatus = [_internetReachable currentReachabilityStatus];
-    NSLog(@"#### Reachability update: %d", (int)newStatus);
+    RCLogNotice("[RCDevice checkNetworkStatus] Reachability update: %d", (int)newStatus);
     
     if (newStatus == NotReachable && self.state != RCDeviceStateOffline) {
-        NSLog(@"#### Reachability action; no connectivity");
+        RCLogNotice("[RCDevice checkNetworkStatus] action: no connectivity");
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
@@ -283,7 +308,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     if ((self.reachabilityStatus == ReachableViaWiFi && newStatus == ReachableViaWWAN) ||
         (self.reachabilityStatus == ReachableViaWWAN && newStatus == ReachableViaWiFi)) {
         if (self.state != RCDeviceStateOffline) {
-            NSLog(@"#### Reachability action; switch between wifi and mobile");
+            RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             // TODO: this is bound to fail is shutdown is asynchronous, but let's keep it around for now
             [self.sipManager shutdown:YES];
             //[self.sipManager eventLoop];
@@ -294,7 +319,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
         self.state == RCDeviceStateOffline) {
-        NSLog(@"#### Reachability action; wifi/mobile available");
+        RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
         [self.sipManager eventLoop];
         self.reachabilityStatus = newStatus;
         self.state = RCDeviceStateReady;

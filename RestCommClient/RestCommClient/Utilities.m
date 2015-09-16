@@ -7,8 +7,10 @@
 //
 
 #import "Utilities.h"
+#import "common.h"
 
 @implementation Utilities
+
 + (NSString*)usernameFromUri:(NSString*)uri
 {
     NSString* schemaUsername = nil;
@@ -23,6 +25,20 @@
         username = uri;
     }
     return username;
+}
+
++ (NSString*)stringifyDictionary:(NSDictionary*)dictionary
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    if (error) {
+        RCLogError("[Utilities stringifyDictionary] Error");
+        return @"";
+    }
+
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 @end

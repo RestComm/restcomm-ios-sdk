@@ -10,4 +10,5 @@
 
 @interface Utilities : NSObject
 + (NSString*)usernameFromUri:(NSString*)uri;
++ (NSString*)stringifyDictionary:(NSDictionary*)dictionary;
 @end

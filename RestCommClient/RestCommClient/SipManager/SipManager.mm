@@ -174,7 +174,7 @@ int read_pipe[2];
                                                     code:ERROR_SIGNALLING
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
         
-        [self.connectionDelegate sipManager:self didSignallingError:error];
+        [self.deviceDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC

@@ -52,7 +52,7 @@
 #endif
 
 #include "ssc_input.h"
-#include "cli_common.h"
+#include "common.h"
 #include <unistd.h>
 
 #if RL_READLINE_VERSION > 0x0400
@@ -187,7 +187,7 @@ void ssc_input_refresh(void)
   rl_reset_line_state();
   rl_redisplay();
 #else
-  DEBUG_PRINTF("%s", ssc_input_prompt); 
+  //RCLogDebug("%s", ssc_input_prompt);
   fflush(stdout);
 #endif
 }

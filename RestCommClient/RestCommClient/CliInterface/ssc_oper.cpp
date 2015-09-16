@@ -57,7 +57,7 @@
 
 #include "ssc_sip.h"
 #include "ssc_oper.h"
-#include "cli_common.h"
+#include "common.h"
 
 /**
  * Creates a new operation object and stores it the list of
@@ -86,18 +86,18 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
     to = sip_to_make(ssc->ssc_home, address);
 
     if (to == NULL) {
-      DEBUG_PRINTF("%s: %s: invalid address: %s\n", ssc->ssc_name, name, address);
+      RCLogDebug("%s: %s: invalid address: %s\n", ssc->ssc_name, name, address);
       return NULL;
     }
 
     /* Try to make sense out of the URL */
     if (url_sanitize(to->a_url) < 0) {
-      DEBUG_PRINTF("%s: %s: invalid address\n", ssc->ssc_name, name);
+      RCLogDebug("%s: %s: invalid address\n", ssc->ssc_name, name);
       return NULL;
     }
 
     if (!(op = (ssc_oper_t*)su_zalloc(ssc->ssc_home, sizeof(*op)))) {
-      DEBUG_PRINTF("%s: %s: cannot create handle\n", ssc->ssc_name, name);
+      RCLogDebug("%s: %s: cannot create handle\n", ssc->ssc_name, name);
       return NULL;
     }
 
@@ -140,9 +140,9 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
 
   if (!op) {
     if (address)
-      DEBUG_PRINTF("%s: %s: invalid destination\n", ssc->ssc_name, name);
+      RCLogDebug("%s: %s: invalid destination\n", ssc->ssc_name, name);
     else
-      DEBUG_PRINTF("%s: %s: no destination\n", ssc->ssc_name, name);
+      RCLogDebug("%s: %s: no destination\n", ssc->ssc_name, name);
     return NULL;
   }
 
@@ -174,7 +174,7 @@ ssc_oper_t *ssc_oper_create_with_handle(ssc_t *ssc,
     op->op_ssc = ssc;
   }
   else {
-    DEBUG_PRINTF("%s: cannot create operation object for %s\n", 
+    RCLogDebug("%s: cannot create operation object for %s\n", 
 	   ssc->ssc_name, name);
   }
 

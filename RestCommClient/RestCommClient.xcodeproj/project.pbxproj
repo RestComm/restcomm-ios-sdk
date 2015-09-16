@@ -37,6 +37,7 @@
 		AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223B197295EA0035B864 /* RCConnectionDelegate.h */; };
 		AE04E5961B0B724900F9F8A3 /* RCDeviceDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223E197295F90035B864 /* RCDeviceDelegate.h */; };
 		AE04E5971B0B724900F9F8A3 /* RCPresenceEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12241197296110035B864 /* RCPresenceEvent.h */; };
+		AE3F71E71BA86896006B06E7 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71E61BA86896006B06E7 /* common.m */; };
 		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
 		AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */; };
 		AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E61A8B98A700578A7B /* ARDUtilities.m */; };
@@ -96,6 +97,7 @@
 /* Begin PBXFileReference section */
 		AE03DEDD1A98E4D2000280E4 /* cli_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cli_common.h; sourceTree = "<group>"; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE3F71E61BA86896006B06E7 /* common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
 		AE4B58A41BA2A2DD0052D80B /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		AE5821DB1A8AB2A100578A7B /* MediaWebRTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaWebRTC.h; sourceTree = "<group>"; };
 		AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaWebRTC.m; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 				AEA6C4A119DB412A00BD2455 /* CliInterface */,
 				AEA6C4AE19DB412A00BD2455 /* SipManager */,
 				AE4B58A41BA2A2DD0052D80B /* common.h */,
+				AE3F71E61BA86896006B06E7 /* common.m */,
 				AEC1221419728C850035B864 /* RestCommClient.h */,
 				AEC1221619728C850035B864 /* RestCommClient.m */,
 				AEC12235197295A10035B864 /* RCConnection.h */,
@@ -719,6 +722,7 @@
 				AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */,
 				AE934CFA1BA2CC0A007635A3 /* Utilities.m in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
+				AE3F71E71BA86896006B06E7 /* common.m in Sources */,
 				AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */,
 				AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,

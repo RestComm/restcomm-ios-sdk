@@ -23,10 +23,5 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#define DEBUG_SOFIA 1
-
-//#define HAVE_MEDIA_WEBRTC_IMPL 1
-#define DEBUG_PRINTF(...) \
-do { if (DEBUG_SOFIA) fprintf(stderr, __VA_ARGS__); } while (0)
 
 #endif
