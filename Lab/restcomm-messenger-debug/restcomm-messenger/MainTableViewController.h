@@ -21,7 +21,13 @@
  */
 
 #import <UIKit/UIKit.h>
+
 #import "RestCommClient.h"
 
-@interface SettingsNavigationController : UINavigationController
+@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate>
+
+@property (nonatomic,retain) RCDevice* device;
+@property NSMutableDictionary * parameters;
+@property BOOL isInitialized;
+@property BOOL isRegistered;
 @end

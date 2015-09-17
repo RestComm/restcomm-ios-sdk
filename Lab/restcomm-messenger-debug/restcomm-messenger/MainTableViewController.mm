@@ -20,101 +20,86 @@
  *
  */
 
-#include <unistd.h>
+//#include <unistd.h>
 
 #import "ViewController.h"
-#import "RestCommClient.h"
-#import "SettingsNavigationController.h"
+#import "MainNavigationController.h"
 #import "SettingsTableViewController.h"
 #import "CallViewController.h"
 #import "MessageViewController.h"
+#import "MainTableViewController.h"
+#import "ContactDetailsTableViewController.h"
+#import "ContactUpdateTableViewController.h"
+
+#import "RestCommClient.h"
 #import "Utils.h"
 
-//extern char AOR[];
-//extern char REGISTRAR[];
+@interface MainTableViewController ()
 
-@interface ViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
-@property (weak, nonatomic) IBOutlet UITextField *sipUriText;
-@property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
 @end
 
-@implementation ViewController
+@implementation MainTableViewController
 
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-
-    // auto correct off for SIP uri
-    self.sipUriText.autocorrectionType = UITextAutocorrectionTypeNo;
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.isRegistered = NO;
     self.isInitialized = NO;
-
+    
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-                       @"1234", @"password",
+                       [Utils sipPassword], @"password",
                        nil];
-
+    
     [self.parameters setObject:[NSString stringWithFormat:@"sip:%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
+    /*
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
                                            action:@selector(hideKeyBoard)];
-    
     [self.view addGestureRecognizer:tapGesture];
+     */
+    
+/*
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    NSArray * contact = [Utils contactForIndex:0];
-    self.sipUriText.text = [contact objectAtIndex:1];
+    //NSArray * contact = [Utils contactForIndex:0];
+    //self.sipUriText.text = [contact objectAtIndex:1];
     //self.sipUriText.text = @"sip:antonis@23.23.228.238:5080";
     //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
 #endif
-
+*/
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
-- (void)hideKeyBoard
-{
-    // resign both to be sure
-    [self.sipMessageText resignFirstResponder];
-    [self.sipUriText resignFirstResponder];
-}
-
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)hideKeyBoard
+{
+    // resign both to be sure
+    //[self.sipMessageText resignFirstResponder];
+    //[self.sipUriText resignFirstResponder];
+}
+
 // ---------- UI events
-- (IBAction)sendPressed:(id)sender
-{
-    [self.parameters setObject:self.sipUriText.text forKey:@"username"];
-    
-    // send an instant message using RCDevice
-    [self.device sendMessage:self.sipMessageText.text to:self.parameters];
-    
-    [self prependToDialog:self.sipMessageText.text sender:@"Me"];
-    self.sipMessageText.text = @"";
-    
-    // hide keyboard
-    [self.sipMessageText endEditing:false];
-}
-
-- (IBAction)dialPressed:(id)sender
-{
-}
-
-
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized && !self.isRegistered) {
@@ -195,8 +180,9 @@
     callViewController.pendingIncomingConnection.delegate = callViewController;
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
-
+    // TODO: change this once I implement the incoming call caller id
+    [callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
+    
     callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:callViewController
                        animated:YES
@@ -209,24 +195,6 @@
     
 }
 
-// helpers
-- (void)prependToDialog:(NSString*)msg sender:(NSString*)sender
-{
-    if ([self.sipDialogText.text isEqualToString:@""]) {
-        self.sipDialogText.text = [NSString stringWithFormat:@"%@: %@", sender, msg];
-    }
-    else {
-        NSString* updatedDialog = [NSString stringWithFormat:@"%@\n%@: %@", self.sipDialogText.text, sender, msg];
-        self.sipDialogText.text = [NSString stringWithString:updatedDialog];
-    }
-    
-    // after appending scroll down too
-    if (self.sipDialogText.text.length > 0 ) {
-        NSRange bottom = NSMakeRange(self.sipDialogText.text.length - 1, 1);
-        [self.sipDialogText scrollRangeToVisible:bottom];
-    }
-}
-
 - (BOOL)shouldAutorotate
 {
     return YES;
@@ -235,35 +203,6 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-}
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"invoke-call-controller"] || [segue.identifier isEqualToString:@"invoke-video-call-controller"]) {
-        CallViewController *callViewController = [segue destinationViewController];
-        callViewController.delegate = self;
-        callViewController.device = self.device;
-        callViewController.parameters = [[NSMutableDictionary alloc] init];
-        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-        [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
-        
-        if ([segue.identifier isEqualToString:@"invoke-call-controller"]) {
-            [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
-        }
-        else {
-            [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
-        }
-    }
-    if ([segue.identifier isEqualToString:@"invoke-settings"]) {
-        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
-        settingsTableViewController.device = self.device;
-    }
-    if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
-        MessageViewController *callViewController = [segue destinationViewController];
-        callViewController.device = self.device;
-        callViewController.parameters = [[NSMutableDictionary alloc] init];
-        [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
-    }
 }
 
 - (IBAction)start:(id)sender
@@ -275,5 +214,126 @@
 {
     [self.device stopSofia];
 }
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"invoke-settings"]) {
+        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
+        settingsTableViewController.device = self.device;
+    }
+}
+
+#pragma mark - Table view data source
+
+/* No need to implement, we only have one section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 0;
+}
+ */
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    return [Utils contactCount];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
+    
+    // Configure the cell...
+    NSArray * contact = [Utils contactForIndex:indexPath.row];
+    cell.textLabel.text = [contact objectAtIndex:0];
+    cell.detailTextLabel.text = [contact objectAtIndex:1];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    /*
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    BATTrailsViewController *trailsController = [[BATTrailsViewController alloc] initWithStyle:UITableViewStylePlain];
+    trailsController.selectedRegion = [regions objectAtIndex:indexPath.row];
+    [[self navigationController] pushViewController:trailsController animated:YES];
+     */
+    
+    // retrieve info for the selected contact
+    NSArray * contact = [Utils contactForIndex:indexPath.row];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+
+    // setup call view controller
+    //CallViewController *callViewController = [[CallViewController alloc] init];
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
+    [callViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    
+    [self presentViewController:callViewController animated:YES completion:nil];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    // retrieve info for the selected contact
+    NSArray * contact = [Utils contactForIndex:indexPath.row];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    
+    ContactDetailsTableViewController *contactDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"contact-details-controller"];
+    //contactDetailsViewController.delegate = self;
+    contactDetailsViewController.device = self.device;
+    contactDetailsViewController.alias = [contact objectAtIndex:0];
+    contactDetailsViewController.sipUri = [contact objectAtIndex:1];
+
+    [[self navigationController] pushViewController:contactDetailsViewController animated:YES];
+}
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

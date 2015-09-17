@@ -253,6 +253,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     self.currentConnection.sipManager = self.sipManager;
     self.currentConnection.incoming = true;
     self.currentConnection.state = RCConnectionStateConnecting;
+    //self.currentConnection.parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"", @"", nil];
     _state = RCDeviceStateBusy;
     [self.currentConnection incomingRinging];
     

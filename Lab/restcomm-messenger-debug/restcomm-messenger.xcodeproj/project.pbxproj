@@ -26,6 +26,10 @@
 		AE3F71ED1BA9D0F3006B06E7 /* SipSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */; };
 		AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */; };
 		AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */; };
+		AE4747531BAAC551008DE3DE /* MainTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE4747521BAAC551008DE3DE /* MainTableViewController.mm */; };
+		AE4747561BAACC19008DE3DE /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4747551BAACC19008DE3DE /* Utils.m */; };
+		AE47475C1BAB0E10008DE3DE /* ContactDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */; };
+		AE47475F1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */; };
 		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
 		AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -64,7 +68,7 @@
 		AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */; };
 		AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */; };
 		AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */; };
-		AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */; };
+		AE96D8E01B665978008FAC51 /* MainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE96D8DF1B665978008FAC51 /* MainNavigationController.m */; };
 		AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */; };
 		AEB09A431B1DB29400016DB6 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB09A3E1B1DB24F00016DB6 /* libRestCommClient.a */; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -84,7 +88,6 @@
 		AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06E1A097764008A6057 /* InfoPlist.strings */; };
 		AED0B0821A097764008A6057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0701A097764008A6057 /* Images.xcassets */; };
 		AED0B0831A097764008A6057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0711A097764008A6057 /* main.m */; };
-		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
 		AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */; };
@@ -129,6 +132,14 @@
 		AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		AE3F71F11BA9D123006B06E7 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
+		AE4747511BAAC551008DE3DE /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
+		AE4747521BAAC551008DE3DE /* MainTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainTableViewController.mm; sourceTree = "<group>"; };
+		AE4747541BAACC19008DE3DE /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		AE4747551BAACC19008DE3DE /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		AE47475A1BAB0E10008DE3DE /* ContactDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsTableViewController.h; sourceTree = "<group>"; };
+		AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsTableViewController.m; sourceTree = "<group>"; };
+		AE47475D1BAB0E2F008DE3DE /* ContactUpdateTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUpdateTableViewController.h; sourceTree = "<group>"; };
+		AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUpdateTableViewController.m; sourceTree = "<group>"; };
 		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
@@ -170,8 +181,8 @@
 		AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-320x568@2x.png"; sourceTree = "<group>"; };
 		AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024.png"; sourceTree = "<group>"; };
 		AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024@2x.png"; sourceTree = "<group>"; };
-		AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsNavigationController.h; sourceTree = "<group>"; };
-		AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsNavigationController.m; sourceTree = "<group>"; };
+		AE96D8DE1B665978008FAC51 /* MainNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainNavigationController.h; sourceTree = "<group>"; };
+		AE96D8DF1B665978008FAC51 /* MainNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainNavigationController.m; sourceTree = "<group>"; };
 		AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AEB09A361B1DB24F00016DB6 /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
 		AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -201,8 +212,6 @@
 		AED0B0711A097764008A6057 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-messenger-Info.plist"; sourceTree = "<group>"; };
 		AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "restcomm-messenger-Prefix.pch"; sourceTree = "<group>"; };
-		AED0B07C1A097764008A6057 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		AED0B07D1A097764008A6057 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
 		AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
@@ -400,14 +409,12 @@
 				AED0B0711A097764008A6057 /* main.m */,
 				AED0B0721A097764008A6057 /* restcomm-messenger-Info.plist */,
 				AED0B0731A097764008A6057 /* restcomm-messenger-Prefix.pch */,
-				AED0B07C1A097764008A6057 /* ViewController.h */,
-				AED0B07D1A097764008A6057 /* ViewController.mm */,
 				AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */,
 				AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */,
 				AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */,
 				AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */,
-				AE96D8DE1B665978008FAC51 /* SettingsNavigationController.h */,
-				AE96D8DF1B665978008FAC51 /* SettingsNavigationController.m */,
+				AE96D8DE1B665978008FAC51 /* MainNavigationController.h */,
+				AE96D8DF1B665978008FAC51 /* MainNavigationController.m */,
 				AED08BFC1B73538A0036A9BE /* InputAccessoryProxyView.h */,
 				AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */,
 				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
@@ -418,6 +425,14 @@
 				AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */,
 				AE3F71F11BA9D123006B06E7 /* AboutTableViewController.h */,
 				AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */,
+				AE4747511BAAC551008DE3DE /* MainTableViewController.h */,
+				AE4747521BAAC551008DE3DE /* MainTableViewController.mm */,
+				AE4747541BAACC19008DE3DE /* Utils.h */,
+				AE4747551BAACC19008DE3DE /* Utils.m */,
+				AE47475A1BAB0E10008DE3DE /* ContactDetailsTableViewController.h */,
+				AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */,
+				AE47475D1BAB0E2F008DE3DE /* ContactUpdateTableViewController.h */,
+				AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */,
 			);
 			path = "restcomm-messenger";
 			sourceTree = "<group>";
@@ -616,16 +631,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE3F71ED1BA9D0F3006B06E7 /* SipSettingsTableViewController.m in Sources */,
+				AE47475F1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m in Sources */,
 				AED0B0831A097764008A6057 /* main.m in Sources */,
+				AE47475C1BAB0E10008DE3DE /* ContactDetailsTableViewController.m in Sources */,
 				AEFE1D6C1B6295EF00E2FF51 /* CallViewController.m in Sources */,
+				AE4747561BAACC19008DE3DE /* Utils.m in Sources */,
 				AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED08BFE1B73538A0036A9BE /* InputAccessoryProxyView.m in Sources */,
-				AED0B08A1A097764008A6057 /* ViewController.mm in Sources */,
 				AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */,
+				AE4747531BAAC551008DE3DE /* MainTableViewController.mm in Sources */,
 				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,
 				AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */,
-				AE96D8E01B665978008FAC51 /* SettingsNavigationController.m in Sources */,
+				AE96D8E01B665978008FAC51 /* MainNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

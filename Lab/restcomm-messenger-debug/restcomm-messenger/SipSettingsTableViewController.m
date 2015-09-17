@@ -20,11 +20,12 @@
  *
  */
 #import "SipSettingsTableViewController.h"
-#import "SettingsNavigationController.h"
+#import "MainNavigationController.h"
+#import "Utils.h"
 
-char AOR[] = "sip:antonis-2@telestax.com";
+//char AOR[] = "sip:antonis-2@telestax.com";
 // elastic
-char REGISTRAR[] = "23.23.228.238:5080";
+//char REGISTRAR[] = "23.23.228.238:5080";
 //char REGISTRAR[] = "192.168.2.32:5080";
 
 
@@ -51,8 +52,8 @@ char REGISTRAR[] = "23.23.228.238:5080";
     [self.view addGestureRecognizer:tapGesture];
     
     // set some defaults when in debug to avoid typing
-    self.aorText.text = [NSString stringWithUTF8String:AOR];
-    self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
+    //self.aorText.text = [NSString stringWithUTF8String:AOR];
+    //self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
 }
 
 - (void)viewWillAppear:(BOOL)animated

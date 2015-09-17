@@ -80,7 +80,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 @property (nonatomic, getter=isIncoming) BOOL incoming;
 
 /**
- *  @abstract Connection parameters (**Not Implemented yet**)
+ *  @abstract Connection parameters
  */
 @property (nonatomic, readonly) NSDictionary* parameters;
 
