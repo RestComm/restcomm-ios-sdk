@@ -11,8 +11,10 @@
 @interface Utils : NSObject
 + (void) setupUserDefaults;
 + (NSArray*)contactForIndex:(int)index;
++ (int)indexForContact:(NSString*)alias;
 + (int)contactCount;
 + (void)addContact:(NSArray*)contact;
++ (void)updateContactWithAlias:(NSString*)contact sipUri:(NSString*)sipUri;
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;

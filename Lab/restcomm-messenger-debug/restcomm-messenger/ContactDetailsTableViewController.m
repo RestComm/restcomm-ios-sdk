@@ -38,6 +38,11 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
     UINavigationController *contactUpdateNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"contact-update-nav-controller"];
+    ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
+    contactUpdateViewController.contactEditType = CONTACT_EDIT_TYPE_MODIFICATION;
+    contactUpdateViewController.alias = self.alias;
+    contactUpdateViewController.sipUri = self.sipUri;
+    contactUpdateViewController.delegate = self;
     
     [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
     /*
@@ -140,7 +145,7 @@
         if (indexPath.row == 1) {
             [self audioCallPressed];
         }
-        if (indexPath.row == 0) {
+        if (indexPath.row == 2) {
             [self messagePressed];
         }
     }
@@ -152,6 +157,20 @@
     // our rows aren't editable
     return NO;
 }
+
+- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
+          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    self.sipUri = sipUri;
+    self.sipUriLbl.text = sipUri;
+    self.alias = alias;
+    self.aliaslLbl.text = alias;
+    
+    // notify main screen that we updated, so that contact table is updated as well
+    [self.delegate contactDetailsViewController:self
+                      didUpdateContactWithAlias:alias sipUri:sipUri];
+}
+
 
 /*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

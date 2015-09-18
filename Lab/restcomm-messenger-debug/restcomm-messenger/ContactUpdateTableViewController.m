@@ -7,8 +7,11 @@
 //
 
 #import "ContactUpdateTableViewController.h"
+#import "Utils.h"
 
 @interface ContactUpdateTableViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *aliasTxt;
+@property (weak, nonatomic) IBOutlet UITextField *sipUriTxt;
 
 @end
 
@@ -24,9 +27,40 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
+        self.aliasTxt.text = self.alias;
+        self.sipUriTxt.text = self.sipUri;
+        self.aliasTxt.userInteractionEnabled = NO;
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)cancelPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)donePressed:(id)sender
+{
+    if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
+        [Utils updateContactWithAlias:self.aliasTxt.text sipUri:self.sipUriTxt.text];
+    }
+    else {
+        if (![self.aliasTxt.text isEqualToString:@""] && ![self.sipUriTxt.text isEqualToString:@""]) {
+            [Utils addContact:[NSArray arrayWithObjects:self.aliasTxt.text, self.sipUriTxt.text, nil]];
+        }
+    }
+    [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
+                                        sipUri:self.sipUriTxt.text];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -50,7 +84,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
     // Configure the cell...
-    
+ 
     return cell;
 }
 */

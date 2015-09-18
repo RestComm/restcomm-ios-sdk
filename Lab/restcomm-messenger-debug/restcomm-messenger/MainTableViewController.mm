@@ -224,7 +224,29 @@
         SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
         settingsTableViewController.device = self.device;
     }
+    
+    if ([segue.identifier isEqualToString:@"invoke-create-contact"]) {
+        UINavigationController *contactUpdateNavigationController = [segue destinationViewController];
+        ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
+        contactUpdateViewController.delegate = self;
+    }
+    
 }
+
+- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
+          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
+           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:alias] inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 #pragma mark - Table view data source
 
@@ -253,13 +275,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    BATTrailsViewController *trailsController = [[BATTrailsViewController alloc] initWithStyle:UITableViewStylePlain];
-    trailsController.selectedRegion = [regions objectAtIndex:indexPath.row];
-    [[self navigationController] pushViewController:trailsController animated:YES];
-     */
-    
     // retrieve info for the selected contact
     NSArray * contact = [Utils contactForIndex:indexPath.row];
     
@@ -289,6 +304,7 @@
     ContactDetailsTableViewController *contactDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"contact-details-controller"];
     //contactDetailsViewController.delegate = self;
     contactDetailsViewController.device = self.device;
+    contactDetailsViewController.delegate = self;
     contactDetailsViewController.alias = [contact objectAtIndex:0];
     contactDetailsViewController.sipUri = [contact objectAtIndex:1];
 

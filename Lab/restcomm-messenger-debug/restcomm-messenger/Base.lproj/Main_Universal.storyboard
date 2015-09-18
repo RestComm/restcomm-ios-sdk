@@ -765,9 +765,21 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="eON-pQ-SUM">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="gzt-mh-p7N"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="7LE-IT-bfV"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="gzt-mh-p7N">
+                            <connections>
+                                <action selector="cancelPressed:" destination="Pkp-h3-aC4" id="Hoo-Gz-SnA"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="7LE-IT-bfV">
+                            <connections>
+                                <action selector="donePressed:" destination="Pkp-h3-aC4" id="Iwp-vP-cbB"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="aliasTxt" destination="2Rm-bG-H76" id="LTZ-TC-Xo2"/>
+                        <outlet property="sipUriTxt" destination="gt6-sz-6BL" id="pCp-ws-sOd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xvI-Oc-v48" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -821,7 +833,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="54Q-fL-meP" kind="presentation" id="5jc-AM-qTt"/>
+                                            <segue destination="54Q-fL-meP" kind="presentation" identifier="invoke-create-contact" id="5jc-AM-qTt"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIA-Sl-pfR">

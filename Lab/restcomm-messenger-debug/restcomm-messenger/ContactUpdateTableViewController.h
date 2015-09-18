@@ -10,6 +10,23 @@
 
 #import "RestCommClient.h"
 
+@protocol ContactUpdateDelegate;
+
 @interface ContactUpdateTableViewController : UITableViewController
+
+typedef enum {
+    CONTACT_EDIT_TYPE_CREATION,
+    CONTACT_EDIT_TYPE_MODIFICATION,
+} ContactEditType;
+
 @property (weak) RCDevice * device;
+@property NSString * alias;
+@property NSString * sipUri;
+@property ContactEditType contactEditType;
+@property (weak) id<ContactUpdateDelegate> delegate;
+@end
+
+@protocol ContactUpdateDelegate <NSObject>
+- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
+          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri;
 @end

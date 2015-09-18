@@ -23,8 +23,10 @@
 #import <UIKit/UIKit.h>
 
 #import "RestCommClient.h"
+#import "ContactUpdateTableViewController.h"
+#import "ContactDetailsTableViewController.h"
 
-@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate>
+@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate, ContactUpdateDelegate, ContactDetailsDelegate>
 
 @property (nonatomic,retain) RCDevice* device;
 @property NSMutableDictionary * parameters;

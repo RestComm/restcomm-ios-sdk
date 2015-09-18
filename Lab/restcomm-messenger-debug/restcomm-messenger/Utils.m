@@ -43,6 +43,21 @@
     return nil;
 }
 
++ (int)indexForContact:(NSString*)alias
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
+    
+    for (int i = 0; i < [contacts count]; i++) {
+        NSArray * contact = [contacts objectAtIndex:i];
+        if ([[contact objectAtIndex:0] isEqualToString:alias]) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 + (NSString*)sipIdentification
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -102,6 +117,33 @@
     
     [mutable addObject:contact];
     
+    // update user defaults
+    [appDefaults setObject:mutable forKey:@"contacts"];
+}
+
++ (void)updateContactWithAlias:(NSString*)alias sipUri:(NSString*)sipUri
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray * mutable = nil;
+    if ([appDefaults arrayForKey:@"contacts"]) {
+        // exists; get a mutable copy
+        mutable = [[appDefaults arrayForKey:@"contacts"] mutableCopy];
+    }
+    else {
+        // should never happen
+        return;
+    }
+    
+    for (int i = 0; i < [mutable count]; i++) {
+        NSArray * contact = [mutable objectAtIndex:i];
+        if ([[contact objectAtIndex:0] isEqualToString:alias]) {
+            NSMutableArray * mutableContact = [contact mutableCopy];
+            [mutableContact replaceObjectAtIndex:1 withObject:sipUri];
+            [mutable replaceObjectAtIndex:i withObject:mutableContact];
+        }
+    }
+
     // update user defaults
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
