@@ -43,6 +43,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
+    self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     

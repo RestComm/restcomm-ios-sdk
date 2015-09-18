@@ -9,15 +9,22 @@
 #import "ContactDetailsTableViewController.h"
 #import "CallViewController.h"
 #import "MessageViewController.h"
+#import "ContactUpdateTableViewController.h"
 
 @interface ContactDetailsTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *sipUriLbl;
+@property (weak, nonatomic) IBOutlet UILabel *aliaslLbl;
 @end
 
 @implementation ContactDetailsTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
+    //self.navigationItem.rightBarButtonItem = [self editButtonItem];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonSelected:)];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -26,24 +33,26 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (IBAction)audioCallPressed:(id)sender
+- (void) editButtonSelected:(id)sender
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
+    UINavigationController *contactUpdateNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"contact-update-nav-controller"];
     
-    // setup call view controller
-    callViewController.delegate = self;
-    callViewController.device = self.device;
-    callViewController.parameters = [[NSMutableDictionary alloc] init];
-    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:self.alias forKey:@"alias"];
-    [callViewController.parameters setObject:self.sipUri forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
+    /*
+    if (self.tableView.editing) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonSelected:)];
+        [self.tableView setEditing:NO animated:YES];
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonSelected:)];
+        [self.tableView setEditing:YES animated:YES];
+    }
+     */
     
-    [self presentViewController:callViewController animated:NO completion:nil];
 }
 
-- (IBAction)videoCallPressed:(id)sender
+- (void)audioCallPressed
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
@@ -60,7 +69,25 @@
     [self presentViewController:callViewController animated:YES completion:nil];
 }
 
-- (IBAction)messagePressed:(id)sender
+
+- (void)videoCallPressed
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    
+    // setup call view controller
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:self.alias forKey:@"alias"];
+    [callViewController.parameters setObject:self.sipUri forKey:@"username"];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    
+    [self presentViewController:callViewController animated:YES completion:nil];
+}
+
+- (void)messagePressed
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     MessageViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
@@ -77,6 +104,7 @@
 {
     [super viewWillAppear:animated];
     self.sipUriLbl.text = self.sipUri;
+    self.aliaslLbl.text = self.alias;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,6 +113,7 @@
 }
 
 #pragma mark - Table view data source
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName;
@@ -98,6 +127,30 @@
             break;
     }
     return sectionName;
+}
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            [self videoCallPressed];
+        }
+        if (indexPath.row == 1) {
+            [self audioCallPressed];
+        }
+        if (indexPath.row == 0) {
+            [self messagePressed];
+        }
+    }
+}
+
+// UITableView asks us if each of the rows are editable
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // our rows aren't editable
+    return NO;
 }
 
 /*
