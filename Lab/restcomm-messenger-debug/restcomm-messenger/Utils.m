@@ -106,6 +106,25 @@
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
 
++ (void)updateSipIdentification:(NSString*)sipIdentification
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:sipIdentification forKey:@"sip-identification"];
+}
+
++ (void)updateSipPassword:(NSString*)sipPassword
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:sipPassword forKey:@"sip-password"];
+}
+
++ (void)updateSipRegistrar:(NSString*)sipRegistrar
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:sipRegistrar forKey:@"sip-registrar"];
+}
+
+
 /*
 + (void) setGenericType:(NSString*)type forLevel:(NSNumber*)level withValue:(NSNumber*)value updateType:(NSString*)updateType
 {

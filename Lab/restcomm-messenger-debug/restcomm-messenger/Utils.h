@@ -16,4 +16,7 @@
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;
++ (void)updateSipIdentification:(NSString*)sipIdentification;
++ (void)updateSipPassword:(NSString*)sipPassword;
++ (void)updateSipRegistrar:(NSString*)sipRegistrar;
 @end

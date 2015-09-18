@@ -105,14 +105,17 @@
     bool update = false;
     if (![self.aorText.text isEqualToString:@""]) {
         [params setObject:self.aorText.text forKey:@"aor"];
+        [Utils updateSipIdentification:self.aorText.text];
         update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
         [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
+        [Utils updateSipRegistrar:self.registrarText.text];
         update = true;
     }
     if (![self.passwordText.text isEqualToString:@""]) {
         [params setObject:self.passwordText.text forKey:@"password"];
+        [Utils updateSipPassword:self.passwordText.text];
         update = true;
     }
     
