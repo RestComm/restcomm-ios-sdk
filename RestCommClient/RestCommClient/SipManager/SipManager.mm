@@ -489,8 +489,27 @@ ssize_t pipeToSofia(const char * msg, int fd)
             [self.params setObject:[params objectForKey:key] forKey:key];
         }
         else if ([key isEqualToString:@"registrar"]) {
-            cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
-            [self pipeToSofia:cmd];
+            if ([[params objectForKey:key] isEqualToString:@""]) {
+                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                    // user requested unregister by passing empty string and previously was registered
+                    cmd = [NSString stringWithFormat:@"u"];
+                    [self pipeToSofia:cmd];
+                }
+            }
+            else {
+                // user requested register
+                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                    // wasn't previously registraless
+                    if (![[params objectForKey:key] isEqualToString:[self.params objectForKey:key]]) {
+                        // user was previously registered and used a different registrar: need to unregister first
+                        cmd = [NSString stringWithFormat:@"u"];  //, %@" [params objectForKey:key]];
+                        [self pipeToSofia:cmd];
+                    }
+
+                }
+                cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
+                [self pipeToSofia:cmd];
+            }
             // save key/value to local params dictionary for later use
             [self.params setObject:[params objectForKey:key] forKey:key];
         }

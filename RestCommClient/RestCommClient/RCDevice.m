@@ -310,7 +310,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         (self.reachabilityStatus == ReachableViaWWAN && newStatus == ReachableViaWiFi)) {
         if (self.state != RCDeviceStateOffline) {
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
-            // TODO: this is bound to fail is shutdown is asynchronous, but let's keep it around for now
             [self.sipManager shutdown:YES];
             //[self.sipManager eventLoop];
             self.reachabilityStatus = newStatus;

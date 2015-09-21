@@ -60,8 +60,13 @@
 {
     self.aorText.text = [[self.device getParams] objectForKey:@"aor"];
     NSString * fullRegistrar = [[self.device getParams] objectForKey:@"registrar"];
-    NSRange range = [fullRegistrar rangeOfString:@":"];
-    self.registrarText.text = [fullRegistrar substringFromIndex:range.location + 1];
+    if (![fullRegistrar isEqualToString:@""]) {
+        NSRange range = [fullRegistrar rangeOfString:@":"];
+        self.registrarText.text = [fullRegistrar substringFromIndex:range.location + 1];
+    }
+    else {
+        self.registrarText.text = @"";
+    }
     self.passwordText.text = [[self.device getParams] objectForKey:@"password"];
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
@@ -102,11 +107,14 @@
     //TabBarController * tabBarController = (TabBarController*)self.tabBarController;
     //this.device = tabBarController.viewController.device;
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
-    bool update = false;
+    // always update registrar to make sure registraless is handled properly
+    bool update = true;
+    [params setObject:@"" forKey:@"registrar"];
+    [Utils updateSipRegistrar:self.registrarText.text];
     if (![self.aorText.text isEqualToString:@""]) {
         [params setObject:self.aorText.text forKey:@"aor"];
         [Utils updateSipIdentification:self.aorText.text];
-        update = true;
+        //update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
         [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
@@ -116,9 +124,9 @@
     if (![self.passwordText.text isEqualToString:@""]) {
         [params setObject:self.passwordText.text forKey:@"password"];
         [Utils updateSipPassword:self.passwordText.text];
-        update = true;
+        //update = true;
     }
-    
+        
     if (update) {
         //SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
         [self.device updateParams:params];

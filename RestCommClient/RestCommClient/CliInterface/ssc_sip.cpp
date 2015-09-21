@@ -242,7 +242,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_NULL());
     
     if (conf->ssc_register)
-        ssc_register(ssc, NULL);
+        ssc_register(ssc, conf->ssc_registrar);
     
     if (ssc->ssc_nua) {
         nua_set_params(ssc->ssc_nua,
@@ -1810,15 +1810,29 @@ void ssc_register(ssc_t *ssc, const char *registrar)
 {
     char *address;
     ssc_oper_t *op;
+    bool registrarless = false;
     
     // update proxy as well
     if (ssc->ssc_nua) {
-        nua_set_params(ssc->ssc_nua,
-                       TAG_IF(registrar,
-                              NUTAG_PROXY(registrar)),
-                       TAG_IF(registrar,
-                              NUTAG_REGISTRAR(registrar)),
-                       TAG_NULL());
+        if (registrar && strcmp(registrar, "")) {
+            nua_set_params(ssc->ssc_nua,
+                           TAG_IF(registrar,
+                                  NUTAG_PROXY(registrar)),
+                           TAG_IF(registrar,
+                                  NUTAG_REGISTRAR(registrar)),
+                           TAG_NULL());
+        }
+        else {
+            nua_set_params(ssc->ssc_nua,
+                           NUTAG_PROXY(NULL),
+                           NUTAG_REGISTRAR(NULL),
+                           TAG_NULL());
+            registrarless = true;
+        }
+    }
+    
+    if (registrarless) {
+        return;
     }
     
     if (!registrar && (op = ssc_oper_find_by_method(ssc, sip_method_register))) {
@@ -1876,6 +1890,14 @@ void ssc_unregister(ssc_t *ssc, const char *registrar)
 {
     ssc_oper_t *op;
     
+    // update proxy as well
+    if (ssc->ssc_nua) {
+        nua_set_params(ssc->ssc_nua,
+                       NUTAG_PROXY(NULL),
+                       NUTAG_REGISTRAR(NULL),
+                       TAG_NULL());
+    }
+
     if (!registrar && (op = ssc_oper_find_by_method(ssc, sip_method_register))) {
         RCLogDebug("un-REGISTER %s", op->op_ident);
         nua_unregister(op->op_handle, TAG_NULL());
