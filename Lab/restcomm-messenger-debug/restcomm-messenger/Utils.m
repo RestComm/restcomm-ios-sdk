@@ -121,6 +121,26 @@
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
 
++ (void)removeContactAtIndex:(int)index
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray * mutable = nil;
+    if ([appDefaults arrayForKey:@"contacts"]) {
+        // exists; get a mutable copy
+        mutable = [[appDefaults arrayForKey:@"contacts"] mutableCopy];
+    }
+    else {
+        // should never happen
+        return;
+    }
+    
+    [mutable removeObjectAtIndex:index];
+    
+    // update user defaults
+    [appDefaults setObject:mutable forKey:@"contacts"];
+}
+
 + (void)updateContactWithAlias:(NSString*)alias sipUri:(NSString*)sipUri
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];

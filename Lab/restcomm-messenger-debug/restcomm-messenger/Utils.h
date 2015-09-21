@@ -14,6 +14,7 @@
 + (int)indexForContact:(NSString*)alias;
 + (int)contactCount;
 + (void)addContact:(NSArray*)contact;
++ (void)removeContactAtIndex:(int)index;
 + (void)updateContactWithAlias:(NSString*)contact sipUri:(NSString*)sipUri;
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;

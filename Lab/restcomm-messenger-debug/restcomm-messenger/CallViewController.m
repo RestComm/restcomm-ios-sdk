@@ -329,12 +329,12 @@
     if (!self.isAudioMuted) {
         self.connection.muted = true;
         self.isAudioMuted = YES;
-        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-muted-23x28.png"] forState:UIControlStateNormal];
+        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-muted-50x50.png"] forState:UIControlStateNormal];
     }
     else {
         self.connection.muted = false;
         self.isAudioMuted = NO;
-        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-active-23x28.png"] forState:UIControlStateNormal];
+        [self.muteAudioButton setImage:[UIImage imageNamed:@"audio-active-50x50.png"] forState:UIControlStateNormal];
     }
 }
 
@@ -348,12 +348,12 @@
     if (!self.isVideoMuted) {
         self.connection.videoMuted = true;
         self.isVideoMuted = YES;
-        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-muted-30x22.png"] forState:UIControlStateNormal];
+        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-muted-50x50.png"] forState:UIControlStateNormal];
     }
     else {
         self.connection.videoMuted = false;
         self.isVideoMuted = NO;
-        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-active-30x22.png"] forState:UIControlStateNormal];
+        [self.muteVideoButton setImage:[UIImage imageNamed:@"video-active-50x50.png"] forState:UIControlStateNormal];
     }
 }
 
