@@ -146,10 +146,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Send an instant message to a an endpoint
  *
- *  @param message  Message text
- *  @param receiver Message receiver
+ *  @param parameters  Message parameters. Keys are: 'message' for content, 
+ *                     'username' for recepient, 'sip-headers' for optional custom SIP headers
  */
-- (void)sendMessage:(NSString*)message to:(NSDictionary*)receiver;
+- (void)sendMessage:(NSDictionary*)parameters;
 
 /**
  *  @abstract Disconnect all connections

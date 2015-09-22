@@ -194,21 +194,22 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
     };
     // make a call to whoever parameters designate
-    [self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed];
+    [self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed customHeaders:[parameters objectForKey:@"sip-headers"]];
 
     return self.currentConnection;
 }
 
-- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
+//- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
+- (void)sendMessage:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCDevice message: %s\nto: %s]", [message UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCDevice message: %s\nto: %s]", [[parameters objectForKey:@"message"] UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (self.state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         return;
     }
 
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
-    [self.sipManager message:message to:[parameters objectForKey:@"username"]];
+    [self.sipManager message:[parameters objectForKey:@"message"] to:[parameters objectForKey:@"username"] customHeaders:[parameters objectForKey:@"sip-headers"]];
 }
 
 

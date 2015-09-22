@@ -35,6 +35,7 @@
 
 #import "RestCommClient.h"
 #import "SipManager.h"
+#import "Utilities.h"
 
 /* TODOs:
  * - There's no way you can stop a call before it is established (i.e. while it is ringing)
@@ -394,18 +395,41 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)message:(NSString*)msg to:(NSString*)recipient;
+- (bool)message:(NSString*)msg to:(NSString*)recipient customHeaders:(NSDictionary*)headers
 {
-    NSString* cmd = [NSString stringWithFormat:@"m %@ %@", recipient, msg];
+    NSDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:recipient, @"destination",
+                           msg, @"message", nil];
+    if (headers) {
+        NSMutableString *serializedHeaders = [NSMutableString string];
+        for (NSString* key in [headers allKeys]){
+            [serializedHeaders appendFormat:@"%@:%@", key, [headers objectForKey:key]];
+            [serializedHeaders appendString:@"\r\n"];
+        }
+        [args setValue:serializedHeaders forKey:@"sip-headers"];
+    }
+    
+    NSString* cmd = [NSString stringWithFormat:@"m %@", [Utilities stringifyDictionary:args]];
     [self pipeToSofia:cmd];
     
     return true;
 }
 
-- (bool)invite:(NSString*)recipient withVideo:(BOOL)video
+- (bool)invite:(NSString*)recipient withVideo:(BOOL)video customHeaders:(NSDictionary*)headers
 {
     self.videoAllowed = video;
-    NSString* cmd = [NSString stringWithFormat:@"i %@", recipient];
+    NSString* cmd = nil;
+    if (headers) {
+        NSMutableString *serializedHeaders = [NSMutableString string];
+        for (NSString* key in [headers allKeys]){
+            [serializedHeaders appendFormat:@"%@:%@", key, [headers objectForKey:key]];
+            [serializedHeaders appendString:@"\r\n"];
+        }
+        
+        cmd = [NSString stringWithFormat:@"i %@ %@", recipient, serializedHeaders];
+    }
+    else {
+        cmd = [NSString stringWithFormat:@"i %@", recipient];
+    }
     [self pipeToSofia:cmd];
     
     return true;

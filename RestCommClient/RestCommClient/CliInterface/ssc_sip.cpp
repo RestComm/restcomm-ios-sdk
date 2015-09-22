@@ -676,7 +676,7 @@ void ssc_list(ssc_t *ssc)
  * @param ssc context pointer
  * @param destination SIP URI
  */
-void ssc_invite(ssc_t *ssc, const char *destination)
+void ssc_invite(ssc_t *ssc, const char *destination, const char *headers)
 {
     ssc_oper_t *op;
     
@@ -700,6 +700,7 @@ void ssc_invite(ssc_t *ssc, const char *destination)
         //op->op_callstate |= opc_pending;
         op->op_callstate = (op_callstate_t)(op->op_callstate | opc_pending);
         op->is_outgoing = true;
+        op->custom_headers = su_strdup(ssc->ssc_home, headers);
         
         char value_str[32] = "";
         sprintf(value_str, "%p", op);
@@ -970,7 +971,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
                 // (see nua_create, NUTAG_MEDIA_ENABLE(0)) and use the webrtc string directy with
                 // SIPTAG_PAYLOAD_STR() and SIPTAG_CONTENT_TYPE_STR()
                 nua_invite(op->op_handle,
-                           //SOATAG_USER_SDP_STR(l_sdp),
+                           TAG_IF(op->custom_headers, SIPTAG_HEADER_STR(op->custom_headers)),
                            SIPTAG_PAYLOAD_STR(l_sdp.c_str()),
                            SIPTAG_CONTENT_TYPE_STR("application/sdp"),
                            SOATAG_RTP_SORT(SOA_RTP_SORT_REMOTE),
@@ -1409,7 +1410,7 @@ void ssc_r_options(int status, char const *phrase,
         ssc_store_pending_auth(ssc, op, sip, tags);
 }
 
-void ssc_message(ssc_t *ssc, const char *destination, const char *msg)
+void ssc_message(ssc_t *ssc, const char *destination, const char *msg, const char * headers)
 {
     ssc_oper_t *op = ssc_oper_create(ssc, SIP_METHOD_MESSAGE, destination,
                                      TAG_END());
@@ -1419,6 +1420,7 @@ void ssc_message(ssc_t *ssc, const char *destination, const char *msg)
         RCLogDebug("%s: sending message to %s", ssc->ssc_name, op->op_ident);
         
         nua_message(op->op_handle,
+                    TAG_IF(headers, SIPTAG_HEADER_STR(headers)),
                     SIPTAG_CONTENT_TYPE_STR("text/plain"),
                     SIPTAG_PAYLOAD_STR(msg),
                     TAG_END());

@@ -148,7 +148,7 @@ void ssc_bye(ssc_t *ssc);
 void ssc_cancel(ssc_t *ssc);
 void ssc_hold(ssc_t *ssc, char *destination, int hold);
 void ssc_info(ssc_t *ssc, const char *destination, const char *msg);
-void ssc_invite(ssc_t *ssc, const char *destination);
+void ssc_invite(ssc_t *ssc, const char *destination, const char *headers);
 //#if HAVE_MEDIA_WEBRTC_IMPL
 void ssc_webrtc_sdp(void* op_context, char *sdp);
 void ssc_webrtc_sdp_called(void* op_context, char *sdp);
@@ -156,7 +156,7 @@ void ssc_webrtc_sdp_called(void* op_context, char *sdp);
 void ssc_list(ssc_t *ssc);
 void ssc_media_describe(ssc_t *ssc, char *rest);
 void ssc_media_event(ssc_t *ssc, char *rest);
-void ssc_message(ssc_t *ssc, const char *destination, const char *msg);
+void ssc_message(ssc_t *ssc, const char *destination, const char *msg, const char * headers);
 void ssc_options(ssc_t *ssc, char *destination);
 void ssc_refer(ssc_t *ssc, const char *destination, const char *to_address);
 void ssc_register(ssc_t *ssc, const char *registrar);

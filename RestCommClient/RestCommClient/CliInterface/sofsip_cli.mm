@@ -48,6 +48,7 @@
 #include <signal.h>
 
 #include "common.h"
+#import "Utilities.h"
 
 typedef struct cli_s cli_t;
 
@@ -393,7 +394,18 @@ static void sofsip_handle_input_cb(char *input)
     sofsip_help(cli);
   }
   else if (match("i") || match("invite")) {
-    ssc_invite(cli->cli_ssc, rest);
+      // 'rest' contains the destination and the message, delimited by a whitespace
+      char * token, * dest = NULL;
+      int pos = 0;
+      while ((token = strsep(&rest, " ")) != NULL) {
+          if (pos == 0) {
+              dest = token;
+              break;
+          }
+          RCLogDebug("%s\n", token);
+          pos++;
+      }
+      ssc_invite(cli->cli_ssc, dest, rest);
   }
   else if (match("info")) {
     ssc_input_set_prompt("Enter INFO message> ");
@@ -412,7 +424,20 @@ static void sofsip_handle_input_cb(char *input)
   else if (match("l") || match("list")) {
     ssc_list(cli->cli_ssc);
   }
-  else if (match("m") || match("message") || match("webrtc-sdp") || match("webrtc-sdp-called")) {
+  else if (match("m") || match("message")) {
+      NSError * error;
+      NSString * string = [NSString stringWithUTF8String:rest];
+      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+      
+      if ([args objectForKey:@"sip-headers"]){
+          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"message"] UTF8String], [[args objectForKey:@"sip-headers"] UTF8String]);
+      }
+      else {
+          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
+      }
+  }
+  else if (match("webrtc-sdp") || match("webrtc-sdp-called")) {
     // 'rest' contains the destination and the message, delimited by a whitespace
     char * token, * dest = NULL;
     int pos = 0;
@@ -423,9 +448,6 @@ static void sofsip_handle_input_cb(char *input)
         }
         RCLogDebug("%s\n", token);
        pos++;
-    }
-    if (match("m") || match("message")) {
-       ssc_message(cli->cli_ssc, dest, rest);
     }
     if (match("webrtc-sdp")) {
        void * op_context = NULL;

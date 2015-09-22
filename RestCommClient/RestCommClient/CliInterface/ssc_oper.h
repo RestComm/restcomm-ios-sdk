@@ -85,6 +85,7 @@ struct ssc_oper_s {
   
   ssc_t        *op_ssc;         /**< backpointer to owner */
   bool         is_outgoing;      // for calls, if outgoing true, else false
+  char         *custom_headers;
   /** How this handle was used initially */
   sip_method_t  op_method;	/**< REGISTER, INVITE, MESSAGE, or SUBSCRIBE */
   char const   *op_method_name;

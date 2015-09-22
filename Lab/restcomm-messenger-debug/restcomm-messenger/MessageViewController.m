@@ -79,9 +79,15 @@
 // ---------- UI events
 - (IBAction)sendMessagePressed:(id)sender
 {
+    NSMutableDictionary * parms = [NSMutableDictionary dictionaryWithObjectsAndKeys:[self.parameters objectForKey:@"username"], @"username",
+                                   self.sipMessageText.text, @"message", nil];
+
+    // SIP custom headers: uncomment this to use SIP custom headers
+    //[parms setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
+    //                    forKey:@"sip-headers"];
+
     // send an instant message using RCDevice
-    [self.device sendMessage:self.sipMessageText.text
-                          to:[NSDictionary dictionaryWithObject:[self.parameters objectForKey:@"username"] forKey:@"username"]];
+    [self.device sendMessage:parms];
     
     [self appendToDialog:self.sipMessageText.text sender:@"Me"];
     self.sipMessageText.text = @"";

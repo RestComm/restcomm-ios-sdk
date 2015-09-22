@@ -33,8 +33,8 @@
 - (bool)eventLoop;
 - (bool)register:(NSString*)registrar;
 - (bool)unregister:(NSString*)registrar;
-- (bool)message:(NSString*)msg to:(NSString*)recipient;
-- (bool)invite:(NSString*)recipient withVideo:(BOOL)video;
+- (bool)message:(NSString*)msg to:(NSString*)recipient customHeaders:(NSDictionary*)headers;
+- (bool)invite:(NSString*)recipient withVideo:(BOOL)video customHeaders:(NSDictionary*)headers;
 - (bool)answerWithVideo:(BOOL)video;
 - (bool)decline;
 - (bool)authenticate:(NSString*)string;

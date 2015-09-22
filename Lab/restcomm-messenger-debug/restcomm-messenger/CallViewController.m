@@ -100,7 +100,9 @@
         NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
         self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
         self.statusLabel.text = @"Initiating Call...";
-        
+        // SIP custom headers: uncomment this to use SIP custom headers
+        //[self.parameters setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
+        //                    forKey:@"sip-headers"];
         self.connection = [self.device connect:self.parameters delegate:self];
         if (self.connection == nil) {
             [self.presentingViewController dismissViewControllerAnimated:YES

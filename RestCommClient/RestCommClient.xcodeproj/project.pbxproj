@@ -45,7 +45,7 @@
 		AE7880141B738F7F00205C26 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7880131B738F7F00205C26 /* Reachability.m */; };
 		AE934CFA1BA2CC0A007635A3 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE934CF91BA2CC0A007635A3 /* Utilities.m */; };
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */; };
-		AEA6C4B219DB412A00BD2455 /* sofsip_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */; };
+		AEA6C4B219DB412A00BD2455 /* sofsip_cli.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.mm */; };
 		AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */; };
 		AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */; };
 		AEA6C4B619DB412A00BD2455 /* ssc_sip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.cpp */; };
@@ -227,7 +227,7 @@
 		AEA6C49E19DB411100BD2455 /* notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
 		AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdp_utils.cpp; sourceTree = "<group>"; };
 		AEA6C4A319DB412A00BD2455 /* sdp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdp_utils.h; sourceTree = "<group>"; };
-		AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sofsip_cli.cpp; sourceTree = "<group>"; };
+		AEA6C4A419DB412A00BD2455 /* sofsip_cli.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = sofsip_cli.mm; sourceTree = "<group>"; };
 		AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sofsip_cli.h; sourceTree = "<group>"; };
 		AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_input.cpp; sourceTree = "<group>"; };
 		AEA6C4A719DB412A00BD2455 /* ssc_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_input.h; sourceTree = "<group>"; };
@@ -487,7 +487,7 @@
 			children = (
 				AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */,
 				AEA6C4A319DB412A00BD2455 /* sdp_utils.h */,
-				AEA6C4A419DB412A00BD2455 /* sofsip_cli.cpp */,
+				AEA6C4A419DB412A00BD2455 /* sofsip_cli.mm */,
 				AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */,
 				AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */,
 				AEA6C4A719DB412A00BD2455 /* ssc_input.h */,
@@ -726,7 +726,7 @@
 				AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */,
 				AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
-				AEA6C4B219DB412A00BD2455 /* sofsip_cli.cpp in Sources */,
+				AEA6C4B219DB412A00BD2455 /* sofsip_cli.mm in Sources */,
 				AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */,
 				AEC1223D197295EA0035B864 /* RCConnectionDelegate.m in Sources */,
 				AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */,
