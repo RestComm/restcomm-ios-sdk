@@ -43,19 +43,38 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
-    self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    UIColor *logoOrange = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
 
-    NSArray *buttons = [[NSArray alloc] initWithObjects:
-                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                      target:self
-                                                                      action:@selector(invokeCreateContact)],
-                        [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings-22x22.png"]
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(invokeSettings)],
-                        nil];
-    self.navigationItem.rightBarButtonItems = buttons;
+    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
+    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
+    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"inapp-icon-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                        style:UIBarButtonItemStylePlain
+                                                                       target:self
+                                                                       action:@selector(invokeSettings)];
+    self.navigationItem.leftBarButtonItem = restcommIconButton;
+    
+    //self.navigationItem.leftBarButtonItems = [[NSArray alloc] initWithObjects:restcommIconButton, editButton, nil];
+    
+    //self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    //[self.navigationItem.leftBarButtonItem setTintColor:logoOrange];
+    UIBarButtonItem * editButton = [self editButtonItem];
+    [editButton setTintColor:logoOrange];
+
+    UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                target:self
+                                                                                action:@selector(invokeCreateContact)];
+    [addButton setTintColor:logoOrange];
+    
+    /*
+    UIBarButtonItem * settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings-22x22.png"]
+                                                                        style:UIBarButtonItemStylePlain
+                                                                       target:self
+                                                                       action:@selector(invokeSettings)];
+    [settingsButton setTintColor:logoOrange];
+     */
+
+    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
+    //[self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithRed:235.0 green:91.0 blue:41.0 alpha:1.0]];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -226,6 +245,10 @@
 - (IBAction)stop:(id)sender
 {
     [self.device stopSofia];
+}
+
+- (void)invokeRestcomm
+{
 }
 
 - (void)invokeSettings

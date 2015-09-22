@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *videoButton;
 @property (weak, nonatomic) IBOutlet UIButton *audioButton;
 @property (weak, nonatomic) IBOutlet UIButton *muteVideoButton;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *muteAudioButton;
 //@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 // who we are calling/get called from
@@ -41,6 +42,8 @@
 @property RTCVideoTrack *localVideoTrack;
 @property BOOL isAudioMuted, isVideoMuted;
 @property BOOL pendingError;
+@property NSTimer *durationTimer;
+@property int secondsElapsed;
 @end
 
 @implementation CallViewController
@@ -56,6 +59,8 @@
     
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
     self.videoCallView.hidden = YES;
+    self.durationLabel.hidden = YES;
+    
     //self.videoCallView.delegate = self;
     [self.view insertSubview:self.videoCallView belowSubview:self.hangupButton];
 }
@@ -75,6 +80,13 @@
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (self.durationTimer && [self.durationTimer isValid]) {
+        [self.durationTimer invalidate];
+    }
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -247,6 +259,12 @@
     self.muteAudioButton.hidden = NO;
     self.muteVideoButton.hidden = NO;
 
+    self.durationLabel.hidden = NO;
+    self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                             target:self
+                                                           selector:@selector(timerAction)
+                                                           userInfo:nil
+                                                            repeats:YES];
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
@@ -280,6 +298,11 @@
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:nil];
     }
+    
+    if (self.durationTimer && [self.durationTimer isValid]) {
+        [self.durationTimer invalidate];
+    }
+
     /*
     else {
         self.pendingError = NO;
@@ -362,6 +385,13 @@
     self.pendingError = NO;
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
+}
+
+- (void)timerAction
+{
+    self.secondsElapsed++;
+    self.durationLabel.text = [NSString stringWithFormat:@"%01d:%02d", (self.secondsElapsed % 3600) / 60,
+                  (self.secondsElapsed % 3600) % 60];
 }
 
 - (BOOL)shouldAutorotate

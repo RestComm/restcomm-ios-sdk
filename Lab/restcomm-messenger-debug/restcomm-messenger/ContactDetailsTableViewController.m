@@ -14,6 +14,7 @@
 @interface ContactDetailsTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *sipUriLbl;
 @property (weak, nonatomic) IBOutlet UILabel *aliaslLbl;
+@property (weak, nonatomic) IBOutlet UIImageView *videoCallImage;
 @end
 
 @implementation ContactDetailsTableViewController
@@ -21,6 +22,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
+    self.videoCallImage.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
     // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
     //self.navigationItem.rightBarButtonItem = [self editButtonItem];
 

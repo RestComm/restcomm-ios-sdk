@@ -41,6 +41,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
+
     // turn auto-correct in text fields; doesn't help with SIP uris
     self.aorText.autocorrectionType = UITextAutocorrectionTypeNo;
     self.registrarText.autocorrectionType = UITextAutocorrectionTypeNo;

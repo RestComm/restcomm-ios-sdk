@@ -59,6 +59,12 @@
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
+		AE6AC3391BB15E3000EFB4A2 /* inapp-icon-22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC3371BB15E3000EFB4A2 /* inapp-icon-22x22.png */; settings = {ASSET_TAGS = (); }; };
+		AE6AC33A1BB15E3000EFB4A2 /* inapp-icon-22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC3381BB15E3000EFB4A2 /* inapp-icon-22x22@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE6AC3401BB1685300EFB4A2 /* inapp-icon-40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC33E1BB1685300EFB4A2 /* inapp-icon-40x40.png */; settings = {ASSET_TAGS = (); }; };
+		AE6AC3411BB1685300EFB4A2 /* inapp-icon-40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC33F1BB1685300EFB4A2 /* inapp-icon-40x40@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE6AC3441BB168B900EFB4A2 /* inapp-icon-30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC3421BB168B900EFB4A2 /* inapp-icon-30x30.png */; settings = {ASSET_TAGS = (); }; };
+		AE6AC3451BB168B900EFB4A2 /* inapp-icon-30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE6AC3431BB168B900EFB4A2 /* inapp-icon-30x30@2x.png */; settings = {ASSET_TAGS = (); }; };
 		AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7880091B738E3300205C26 /* SystemConfiguration.framework */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -198,6 +204,12 @@
 		AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AE6AC3371BB15E3000EFB4A2 /* inapp-icon-22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-22x22.png"; sourceTree = "<group>"; };
+		AE6AC3381BB15E3000EFB4A2 /* inapp-icon-22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-22x22@2x.png"; sourceTree = "<group>"; };
+		AE6AC33E1BB1685300EFB4A2 /* inapp-icon-40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-40x40.png"; sourceTree = "<group>"; };
+		AE6AC33F1BB1685300EFB4A2 /* inapp-icon-40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-40x40@2x.png"; sourceTree = "<group>"; };
+		AE6AC3421BB168B900EFB4A2 /* inapp-icon-30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-30x30.png"; sourceTree = "<group>"; };
+		AE6AC3431BB168B900EFB4A2 /* inapp-icon-30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-30x30@2x.png"; sourceTree = "<group>"; };
 		AE7880091B738E3300205C26 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AE79D31619BC8DAD0023306C /* restcomm-messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D31919BC8DAD0023306C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -379,6 +391,12 @@
 		AE9520861B0B268C00E947D8 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AE6AC3421BB168B900EFB4A2 /* inapp-icon-30x30.png */,
+				AE6AC3431BB168B900EFB4A2 /* inapp-icon-30x30@2x.png */,
+				AE6AC33E1BB1685300EFB4A2 /* inapp-icon-40x40.png */,
+				AE6AC33F1BB1685300EFB4A2 /* inapp-icon-40x40@2x.png */,
+				AE6AC3371BB15E3000EFB4A2 /* inapp-icon-22x22.png */,
+				AE6AC3381BB15E3000EFB4A2 /* inapp-icon-22x22@2x.png */,
 				AE467A541BB0829A0072F7DD /* restcomm-logo-call-139x54.png */,
 				AE467A551BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png */,
 				AE467A501BB06AA60072F7DD /* settings-22x22.png */,
@@ -630,11 +648,13 @@
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AEE6565D1BAC851A005FD311 /* plus-sign-30x30@2x.png in Resources */,
 				AE467A4D1BAFFF760072F7DD /* audio-active-50x50@2x.png in Resources */,
+				AE6AC3411BB1685300EFB4A2 /* inapp-icon-40x40@2x.png in Resources */,
 				AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */,
 				AE467A441BAFFE120072F7DD /* video-muted-50x50@2x.png in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
 				AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */,
 				AE9520A41B0B2C4D00E947D8 /* splash-320x480@2x.png in Resources */,
+				AE6AC33A1BB15E3000EFB4A2 /* inapp-icon-22x22@2x.png in Resources */,
 				AED0B0821A097764008A6057 /* Images.xcassets in Resources */,
 				AE467A4F1BAFFF760072F7DD /* audio-muted-50x50@2x.png in Resources */,
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
@@ -644,19 +664,23 @@
 				AE934D2D1BA30926007635A3 /* answer-audio-50x50@2x.png in Resources */,
 				AEE6565F1BAC851A005FD311 /* settings-30x30@2x.png in Resources */,
 				AEE6564E1BAC27E0005FD311 /* audio-call-30x30@2x.png in Resources */,
+				AE6AC3451BB168B900EFB4A2 /* inapp-icon-30x30@2x.png in Resources */,
 				AE5AA1B41B6BBBCE00854004 /* message.mp3 in Resources */,
 				AEE656541BAC27E0005FD311 /* video-call-30x30@2x.png in Resources */,
 				AE467A401BAFFE120072F7DD /* hangup-73x73.png in Resources */,
 				AE934D2E1BA30926007635A3 /* answer-video-50x50@2x.png in Resources */,
 				AE467A4E1BAFFF760072F7DD /* audio-muted-50x50.png in Resources */,
 				AE934D311BA30926007635A3 /* hangup-73x73@2x.png in Resources */,
+				AE6AC3401BB1685300EFB4A2 /* inapp-icon-40x40.png in Resources */,
 				AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */,
 				AEE6565C1BAC851A005FD311 /* plus-sign-30x30.png in Resources */,
+				AE6AC3441BB168B900EFB4A2 /* inapp-icon-30x30.png in Resources */,
 				AEC59B111B872031007247AF /* upload-dsym.sh in Resources */,
 				AE467A411BAFFE120072F7DD /* video-active-50x50.png in Resources */,
 				AE467A431BAFFE120072F7DD /* video-muted-50x50.png in Resources */,
 				AEE656511BAC27E0005FD311 /* message-30x30.png in Resources */,
 				AE467A531BB06AA60072F7DD /* settings-22x22@2x.png in Resources */,
+				AE6AC3391BB15E3000EFB4A2 /* inapp-icon-22x22.png in Resources */,
 				AE467A3E1BAFFE120072F7DD /* answer-audio-50x50.png in Resources */,
 				AE934D2F1BA30926007635A3 /* audio-active-23x28@2x.png in Resources */,
 				AE467A571BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png in Resources */,

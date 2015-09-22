@@ -500,6 +500,15 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnZ-vG-bhF">
+                                <rect key="frame" x="250" y="300" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="VRJ-sd-GGs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mkT-Ed-gcY">
                                 <rect key="frame" x="530" y="520" width="50" height="50"/>
                                 <constraints>
@@ -547,9 +556,11 @@
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="SYM-OS-Mgf" secondAttribute="bottom" constant="30" id="P4e-qV-5Pn"/>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="PJX-AP-egU"/>
                             <constraint firstItem="Nyi-ak-3Ea" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="RGO-IJ-WCQ"/>
+                            <constraint firstItem="vnZ-vG-bhF" firstAttribute="top" secondItem="Hwt-xT-UGU" secondAttribute="bottom" constant="30" id="SgT-sy-cv6"/>
                             <constraint firstItem="eR0-ZP-EpQ" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="THw-uY-fkR"/>
                             <constraint firstItem="Hwt-xT-UGU" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="-4" id="Ul7-dh-BHK"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="mkT-Ed-gcY" secondAttribute="bottom" constant="30" id="acr-7V-5Or"/>
+                            <constraint firstItem="vnZ-vG-bhF" firstAttribute="centerX" secondItem="21Y-Pw-wBB" secondAttribute="centerX" id="bF9-kT-07S"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="eR0-ZP-EpQ" secondAttribute="bottom" constant="102" id="c8G-Mn-xDz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Rv1-rQ-AKD" secondAttribute="trailing" constant="15" id="cJ4-ZO-bUf"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="eR0-ZP-EpQ" secondAttribute="bottom" constant="30" id="dyj-8n-6oG"/>
@@ -605,6 +616,7 @@
                     <connections>
                         <outlet property="audioButton" destination="Rv1-rQ-AKD" id="ani-mK-jkQ"/>
                         <outlet property="callLabel" destination="QlZ-6w-8zb" id="LeU-kW-e7x"/>
+                        <outlet property="durationLabel" destination="vnZ-vG-bhF" id="Ip7-5O-WBH"/>
                         <outlet property="hangupButton" destination="Nyi-ak-3Ea" id="pjq-J0-ovo"/>
                         <outlet property="muteAudioButton" destination="mkT-Ed-gcY" id="GKF-5n-8SB"/>
                         <outlet property="muteVideoButton" destination="eR0-ZP-EpQ" id="qer-jF-6F2"/>
@@ -638,7 +650,7 @@
                                                     <rect key="frame" x="15" y="14" width="91" height="15"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.098039215690000001" green="0.30588235289999999" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kVg-2Q-IQ4">
@@ -649,6 +661,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -747,6 +760,7 @@
                     <connections>
                         <outlet property="aliaslLbl" destination="qtG-Fr-bUB" id="WoC-B7-DEL"/>
                         <outlet property="sipUriLbl" destination="kVg-2Q-IQ4" id="Wa2-ji-o6I"/>
+                        <outlet property="videoCallImage" destination="E7F-lR-1Ss" id="sJ8-Yi-yxY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8P8-c6-bmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -828,11 +842,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="eON-pQ-SUM">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="gzt-mh-p7N">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="cancelPressed:" destination="Pkp-h3-aC4" id="Hoo-Gz-SnA"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="7LE-IT-bfV">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="donePressed:" destination="Pkp-h3-aC4" id="Iwp-vP-cbB"/>
                             </connections>
@@ -855,6 +871,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.098039215690000001" green="0.30588235289999999" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="contact-reuse-identifier" textLabel="uvp-tB-gsx" detailTextLabel="Jof-J7-RbB" style="IBUITableViewCellStyleSubtitle" id="4x7-dm-MQy">
                                 <rect key="frame" x="0.0" y="86" width="600" height="44"/>
@@ -879,6 +896,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="tintColor" red="0.098039215686274508" green="0.30588235294117649" blue="0.5725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
