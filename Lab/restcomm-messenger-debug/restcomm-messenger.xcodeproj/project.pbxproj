@@ -37,6 +37,10 @@
 		AE467A4D1BAFFF760072F7DD /* audio-active-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A491BAFFF760072F7DD /* audio-active-50x50@2x.png */; settings = {ASSET_TAGS = (); }; };
 		AE467A4E1BAFFF760072F7DD /* audio-muted-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A4A1BAFFF760072F7DD /* audio-muted-50x50.png */; settings = {ASSET_TAGS = (); }; };
 		AE467A4F1BAFFF760072F7DD /* audio-muted-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A4B1BAFFF760072F7DD /* audio-muted-50x50@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE467A521BB06AA60072F7DD /* settings-22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A501BB06AA60072F7DD /* settings-22x22.png */; settings = {ASSET_TAGS = (); }; };
+		AE467A531BB06AA60072F7DD /* settings-22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A511BB06AA60072F7DD /* settings-22x22@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE467A561BB0829A0072F7DD /* restcomm-logo-call-139x54.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A541BB0829A0072F7DD /* restcomm-logo-call-139x54.png */; settings = {ASSET_TAGS = (); }; };
+		AE467A571BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE467A551BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png */; settings = {ASSET_TAGS = (); }; };
 		AE4747531BAAC551008DE3DE /* MainTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AE4747521BAAC551008DE3DE /* MainTableViewController.mm */; };
 		AE4747561BAACC19008DE3DE /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4747551BAACC19008DE3DE /* Utils.m */; };
 		AE47475C1BAB0E10008DE3DE /* ContactDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */; };
@@ -166,6 +170,10 @@
 		AE467A491BAFFF760072F7DD /* audio-active-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-active-50x50@2x.png"; sourceTree = "<group>"; };
 		AE467A4A1BAFFF760072F7DD /* audio-muted-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-muted-50x50.png"; sourceTree = "<group>"; };
 		AE467A4B1BAFFF760072F7DD /* audio-muted-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-muted-50x50@2x.png"; sourceTree = "<group>"; };
+		AE467A501BB06AA60072F7DD /* settings-22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-22x22.png"; sourceTree = "<group>"; };
+		AE467A511BB06AA60072F7DD /* settings-22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-22x22@2x.png"; sourceTree = "<group>"; };
+		AE467A541BB0829A0072F7DD /* restcomm-logo-call-139x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54.png"; sourceTree = "<group>"; };
+		AE467A551BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54@2x.png"; sourceTree = "<group>"; };
 		AE4747511BAAC551008DE3DE /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
 		AE4747521BAAC551008DE3DE /* MainTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainTableViewController.mm; sourceTree = "<group>"; };
 		AE4747541BAACC19008DE3DE /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
@@ -371,6 +379,10 @@
 		AE9520861B0B268C00E947D8 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AE467A541BB0829A0072F7DD /* restcomm-logo-call-139x54.png */,
+				AE467A551BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png */,
+				AE467A501BB06AA60072F7DD /* settings-22x22.png */,
+				AE467A511BB06AA60072F7DD /* settings-22x22@2x.png */,
 				AE467A481BAFFF760072F7DD /* audio-active-50x50.png */,
 				AE467A491BAFFF760072F7DD /* audio-active-50x50@2x.png */,
 				AE467A4A1BAFFF760072F7DD /* audio-muted-50x50.png */,
@@ -627,6 +639,7 @@
 				AE467A4F1BAFFF760072F7DD /* audio-muted-50x50@2x.png in Resources */,
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
 				AEE6564F1BAC27E0005FD311 /* message-2-30x30.png in Resources */,
+				AE467A561BB0829A0072F7DD /* restcomm-logo-call-139x54.png in Resources */,
 				AEE656531BAC27E0005FD311 /* video-call-30x30.png in Resources */,
 				AE934D2D1BA30926007635A3 /* answer-audio-50x50@2x.png in Resources */,
 				AEE6565F1BAC851A005FD311 /* settings-30x30@2x.png in Resources */,
@@ -643,13 +656,16 @@
 				AE467A411BAFFE120072F7DD /* video-active-50x50.png in Resources */,
 				AE467A431BAFFE120072F7DD /* video-muted-50x50.png in Resources */,
 				AEE656511BAC27E0005FD311 /* message-30x30.png in Resources */,
+				AE467A531BB06AA60072F7DD /* settings-22x22@2x.png in Resources */,
 				AE467A3E1BAFFE120072F7DD /* answer-audio-50x50.png in Resources */,
 				AE934D2F1BA30926007635A3 /* audio-active-23x28@2x.png in Resources */,
+				AE467A571BB0829A0072F7DD /* restcomm-logo-call-139x54@2x.png in Resources */,
 				AE5AA1B31B6BBBCE00854004 /* calling.mp3 in Resources */,
 				AEE6564D1BAC27E0005FD311 /* audio-call-30x30.png in Resources */,
 				AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */,
 				AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */,
 				AE467A4C1BAFFF760072F7DD /* audio-active-50x50.png in Resources */,
+				AE467A521BB06AA60072F7DD /* settings-22x22.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
 				AE934D351BA31707007635A3 /* video-muted-30x22@2x.png in Resources */,
 				AE467A3F1BAFFE120072F7DD /* answer-video-50x50.png in Resources */,
@@ -816,6 +832,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -862,6 +879,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

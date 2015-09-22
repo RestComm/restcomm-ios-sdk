@@ -51,14 +51,16 @@
 {
     if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
         [Utils updateContactWithAlias:self.aliasTxt.text sipUri:self.sipUriTxt.text];
+        [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
+                                            sipUri:self.sipUriTxt.text];
     }
     else {
         if (![self.aliasTxt.text isEqualToString:@""] && ![self.sipUriTxt.text isEqualToString:@""]) {
             [Utils addContact:[NSArray arrayWithObjects:self.aliasTxt.text, self.sipUriTxt.text, nil]];
+            [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
+                                                sipUri:self.sipUriTxt.text];
         }
     }
-    [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
-                                        sipUri:self.sipUriTxt.text];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -45,7 +45,17 @@
     
     // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
     self.navigationItem.leftBarButtonItem = [self editButtonItem];
-    
+
+    NSArray *buttons = [[NSArray alloc] initWithObjects:
+                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                      target:self
+                                                                      action:@selector(invokeCreateContact)],
+                        [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings-22x22.png"]
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(invokeSettings)],
+                        nil];
+    self.navigationItem.rightBarButtonItems = buttons;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -216,6 +226,29 @@
 - (IBAction)stop:(id)sender
 {
     [self.device stopSofia];
+}
+
+- (void)invokeSettings
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    SettingsTableViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"settings-view-controller"];
+    settingsViewController.device = self.device;
+    
+    [self.navigationController pushViewController:settingsViewController animated:YES];
+    
+}
+
+- (void)invokeCreateContact
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
+    UINavigationController *contactUpdateNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"contact-update-nav-controller"];
+    ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
+    contactUpdateViewController.contactEditType = CONTACT_EDIT_TYPE_CREATION;
+    contactUpdateViewController.delegate = self;
+    
+    [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
+    //[self.navigationController pushViewController:contactUpdateViewController animated:YES];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
