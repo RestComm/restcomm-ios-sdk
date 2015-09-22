@@ -110,6 +110,13 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  */
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device;
 
+// internal constructor
+- (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
+         andSipManager:(SipManager*)sipManager
+           andIncoming:(BOOL)incoming
+              andState:(RCConnectionState)state
+         andParameters:(NSDictionary*)parameters;
+
 /**
  *  @abstract Accept an incoming connection that is ringing. The connection state changes to 'RCConnectionStateConnected'
  *  @param parameters A dictionary with parameters for the accept. Currently supported parameters are 'video-enabled' to 

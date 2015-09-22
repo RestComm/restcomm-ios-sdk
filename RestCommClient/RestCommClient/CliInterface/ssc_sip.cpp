@@ -908,8 +908,11 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
 
                 strncpy(stored_sdp, sip->sip_payload->pl_data, 65535);
 
+                char url[1000];
+                snprintf(url, sizeof(url), URL_PRINT_FORMAT, URL_PRINT_ARGS(from->a_url));
+
                 // notify the client application that they should answer
-                SofiaReply reply(INCOMING_CALL, "");
+                SofiaReply reply(INCOMING_CALL, url);
                 reply.Send(ssc->ssc_output_fd);
                 //setSofiaReply(INCOMING_CALL, "");
                 //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);

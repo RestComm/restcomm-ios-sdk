@@ -116,7 +116,7 @@ int read_pipe[2];
         // we have an incoming call, we need to ring
         
         // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
-        [self.deviceDelegate sipManagerDidReceiveCall:self];
+        [self.deviceDelegate sipManagerDidReceiveCall:self from:[NSString stringWithUTF8String:reply->text.c_str()]];
     }
     else if (reply->rc == ANSWER_PRESSED) {
         // the incoming message has first the address of the Sofia operation (until the first space)

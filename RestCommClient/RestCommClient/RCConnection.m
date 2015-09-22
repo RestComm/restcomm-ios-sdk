@@ -50,7 +50,34 @@ NSString* const RCConnectionIncomingParameterAPIVersionKey = @"RCConnectionIncom
 NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncomingParameterCallSIDKey";
 
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
+         andSipManager:(SipManager*)sipManager
+           andIncoming:(BOOL)incoming
+              andState:(RCConnectionState)state
+         andParameters:(NSDictionary*)parameters
 {
+    RCLogNotice("[RCConnection initWithDelegate]");
+    
+    self = [super init];
+    if (self) {
+        self.delegate = delegate;
+        self.sipManager = self.sipManager;
+        self.incoming = incoming;
+        self.state = RCConnectionStateConnecting;
+        _parameters = parameters;
+        self.device = device;
+        muted = NO;
+        self.cancelPending = NO;
+        
+        [self prepareSounds];
+    }
+    return self;
+}
+
+- (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
+{
+    return [self initWithDelegate:delegate andDevice:device andSipManager:nil andIncoming:NO andState:RCConnectionStateDisconnected andParameters:nil];
+
+    /*
     RCLogNotice("[RCConnection initWithDelegate]");
 
     self = [super init];
@@ -67,6 +94,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self prepareSounds];
     }
     return self;
+     */
 }
 
 

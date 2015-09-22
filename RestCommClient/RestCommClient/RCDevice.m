@@ -174,12 +174,20 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
         return nil;
     }
-    
-    self.currentConnection = [[RCConnection alloc] initWithDelegate:delegate andDevice:(RCDevice*)self];
+    self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>)delegate
+                                                          andDevice:(RCDevice*)self
+                                                      andSipManager:self.sipManager
+                                                        andIncoming:false
+                                                           andState:RCConnectionStatePending
+                                                      andParameters:nil];
+
     self.sipManager.connectionDelegate = self.currentConnection;
+    /*
+    self.currentConnection = [[RCConnection alloc] initWithDelegate:delegate andDevice:(RCDevice*)self];
     self.currentConnection.sipManager = self.sipManager;
     self.currentConnection.incoming = false;
     self.currentConnection.state = RCConnectionStatePending;
+     */
     _state = RCDeviceStateBusy;
     BOOL videoAllowed = NO;
     if ([parameters objectForKey:@"video-enabled"]) {
@@ -245,15 +253,23 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.delegate device:self didReceiveIncomingMessage:message withParams:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
 }
 
-- (void)sipManagerDidReceiveCall:(SipManager *)sipManager
+- (void)sipManagerDidReceiveCall:(SipManager *)sipManager from:(NSString*)from
 {
     RCLogNotice("[RCDevice sipManagerDidReceiveCall]");
-    self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
+    //self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
+    self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>)self.delegate
+                                                          andDevice:(RCDevice*)self
+                                                      andSipManager:self.sipManager
+                                                        andIncoming:true
+                                                           andState:RCConnectionStateConnecting
+                                                      andParameters:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
+
     self.sipManager.connectionDelegate = self.currentConnection;
+     /*
     self.currentConnection.sipManager = self.sipManager;
     self.currentConnection.incoming = true;
     self.currentConnection.state = RCConnectionStateConnecting;
-    //self.currentConnection.parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"", @"", nil];
+    */
     _state = RCDeviceStateBusy;
     [self.currentConnection incomingRinging];
     

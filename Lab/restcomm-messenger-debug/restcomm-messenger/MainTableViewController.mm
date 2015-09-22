@@ -212,8 +212,10 @@
     callViewController.pendingIncomingConnection.delegate = callViewController;
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"] forKey:@"username"];
+    //NSString *username = [Utilities usernameFromUri:sender];
     // TODO: change this once I implement the incoming call caller id
-    [callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
+    //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
     
     callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:callViewController
