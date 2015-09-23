@@ -26,7 +26,7 @@
 #import "MainNavigationController.h"
 #import "SettingsTableViewController.h"
 #import "CallViewController.h"
-#import "MessageViewController.h"
+#import "MessageTableViewController.h"
 #import "MainTableViewController.h"
 #import "ContactDetailsTableViewController.h"
 #import "ContactUpdateTableViewController.h"
@@ -181,8 +181,8 @@
 {
     // Open message view if not already opened
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    if (![self.navigationController.visibleViewController isKindOfClass:[MessageViewController class]]) {
-        MessageViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+    if (![self.navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
+        MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
         //messageViewController.delegate = self;
         messageViewController.device = self.device;
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
@@ -195,7 +195,7 @@
     }
     else {
         // message view already opened, just append
-        MessageViewController * messageViewController = (MessageViewController*)self.navigationController.visibleViewController;
+        MessageTableViewController * messageViewController = (MessageTableViewController*)self.navigationController.visibleViewController;
         [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
     }
 }

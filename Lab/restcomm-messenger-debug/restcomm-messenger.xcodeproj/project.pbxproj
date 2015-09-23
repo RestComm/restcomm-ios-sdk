@@ -23,6 +23,15 @@
 
 /* Begin PBXBuildFile section */
 		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
+		AE3AD0141BB2B84500B09737 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD0131BB2B84500B09737 /* MessageTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		AE3AD01A1BB2C83800B09737 /* LocalMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD0191BB2C83800B09737 /* LocalMessageTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		AE3AD01D1BB2C85500B09737 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD01C1BB2C85500B09737 /* RemoteMessageTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0221BB2E27400B09737 /* inapp-grey-icon-30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD01E1BB2E27400B09737 /* inapp-grey-icon-30x30.png */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0231BB2E27400B09737 /* inapp-grey-icon-30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD01F1BB2E27400B09737 /* inapp-grey-icon-30x30@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0241BB2E27400B09737 /* message-local-square-43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD0201BB2E27400B09737 /* message-local-square-43x43.png */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0251BB2E27400B09737 /* message-local-square-43x43@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD0211BB2E27400B09737 /* message-local-square-43x43@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0281BB2E39100B09737 /* message-remote-square-43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD0261BB2E39100B09737 /* message-remote-square-43x43.png */; settings = {ASSET_TAGS = (); }; };
+		AE3AD0291BB2E39100B09737 /* message-remote-square-43x43@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE3AD0271BB2E39100B09737 /* message-remote-square-43x43@2x.png */; settings = {ASSET_TAGS = (); }; };
 		AE3F71ED1BA9D0F3006B06E7 /* SipSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */; };
 		AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71EF1BA9D10B006B06E7 /* SettingsTableViewController.m */; };
 		AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71F21BA9D123006B06E7 /* AboutTableViewController.m */; };
@@ -159,6 +168,18 @@
 
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
+		AE3AD0121BB2B84500B09737 /* MessageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewController.h; sourceTree = "<group>"; };
+		AE3AD0131BB2B84500B09737 /* MessageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewController.m; sourceTree = "<group>"; };
+		AE3AD0181BB2C83800B09737 /* LocalMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMessageTableViewCell.h; sourceTree = "<group>"; };
+		AE3AD0191BB2C83800B09737 /* LocalMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMessageTableViewCell.m; sourceTree = "<group>"; };
+		AE3AD01B1BB2C85500B09737 /* RemoteMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessageTableViewCell.h; sourceTree = "<group>"; };
+		AE3AD01C1BB2C85500B09737 /* RemoteMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMessageTableViewCell.m; sourceTree = "<group>"; };
+		AE3AD01E1BB2E27400B09737 /* inapp-grey-icon-30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-grey-icon-30x30.png"; sourceTree = "<group>"; };
+		AE3AD01F1BB2E27400B09737 /* inapp-grey-icon-30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-grey-icon-30x30@2x.png"; sourceTree = "<group>"; };
+		AE3AD0201BB2E27400B09737 /* message-local-square-43x43.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-local-square-43x43.png"; sourceTree = "<group>"; };
+		AE3AD0211BB2E27400B09737 /* message-local-square-43x43@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-local-square-43x43@2x.png"; sourceTree = "<group>"; };
+		AE3AD0261BB2E39100B09737 /* message-remote-square-43x43.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-remote-square-43x43.png"; sourceTree = "<group>"; };
+		AE3AD0271BB2E39100B09737 /* message-remote-square-43x43@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-remote-square-43x43@2x.png"; sourceTree = "<group>"; };
 		AE3F71EB1BA9D0F3006B06E7 /* SipSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipSettingsTableViewController.h; sourceTree = "<group>"; };
 		AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipSettingsTableViewController.m; sourceTree = "<group>"; };
 		AE3F71EE1BA9D10B006B06E7 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
@@ -391,6 +412,12 @@
 		AE9520861B0B268C00E947D8 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AE3AD0261BB2E39100B09737 /* message-remote-square-43x43.png */,
+				AE3AD0271BB2E39100B09737 /* message-remote-square-43x43@2x.png */,
+				AE3AD01E1BB2E27400B09737 /* inapp-grey-icon-30x30.png */,
+				AE3AD01F1BB2E27400B09737 /* inapp-grey-icon-30x30@2x.png */,
+				AE3AD0201BB2E27400B09737 /* message-local-square-43x43.png */,
+				AE3AD0211BB2E27400B09737 /* message-local-square-43x43@2x.png */,
 				AE6AC3421BB168B900EFB4A2 /* inapp-icon-30x30.png */,
 				AE6AC3431BB168B900EFB4A2 /* inapp-icon-30x30@2x.png */,
 				AE6AC33E1BB1685300EFB4A2 /* inapp-icon-40x40.png */,
@@ -518,6 +545,8 @@
 				AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */,
 				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
 				AE59B24D1B6F6F46006CC699 /* MessageViewController.m */,
+				AE3AD0121BB2B84500B09737 /* MessageTableViewController.h */,
+				AE3AD0131BB2B84500B09737 /* MessageTableViewController.m */,
 				AE3F71EB1BA9D0F3006B06E7 /* SipSettingsTableViewController.h */,
 				AE3F71EC1BA9D0F3006B06E7 /* SipSettingsTableViewController.m */,
 				AE3F71EE1BA9D10B006B06E7 /* SettingsTableViewController.h */,
@@ -532,6 +561,10 @@
 				AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */,
 				AE47475D1BAB0E2F008DE3DE /* ContactUpdateTableViewController.h */,
 				AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */,
+				AE3AD0181BB2C83800B09737 /* LocalMessageTableViewCell.h */,
+				AE3AD0191BB2C83800B09737 /* LocalMessageTableViewCell.m */,
+				AE3AD01B1BB2C85500B09737 /* RemoteMessageTableViewCell.h */,
+				AE3AD01C1BB2C85500B09737 /* RemoteMessageTableViewCell.m */,
 			);
 			path = "restcomm-messenger";
 			sourceTree = "<group>";
@@ -660,10 +693,13 @@
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
 				AEE6564F1BAC27E0005FD311 /* message-2-30x30.png in Resources */,
 				AE467A561BB0829A0072F7DD /* restcomm-logo-call-139x54.png in Resources */,
+				AE3AD0221BB2E27400B09737 /* inapp-grey-icon-30x30.png in Resources */,
 				AEE656531BAC27E0005FD311 /* video-call-30x30.png in Resources */,
+				AE3AD0291BB2E39100B09737 /* message-remote-square-43x43@2x.png in Resources */,
 				AE934D2D1BA30926007635A3 /* answer-audio-50x50@2x.png in Resources */,
 				AEE6565F1BAC851A005FD311 /* settings-30x30@2x.png in Resources */,
 				AEE6564E1BAC27E0005FD311 /* audio-call-30x30@2x.png in Resources */,
+				AE3AD0251BB2E27400B09737 /* message-local-square-43x43@2x.png in Resources */,
 				AE6AC3451BB168B900EFB4A2 /* inapp-icon-30x30@2x.png in Resources */,
 				AE5AA1B41B6BBBCE00854004 /* message.mp3 in Resources */,
 				AEE656541BAC27E0005FD311 /* video-call-30x30@2x.png in Resources */,
@@ -671,6 +707,7 @@
 				AE934D2E1BA30926007635A3 /* answer-video-50x50@2x.png in Resources */,
 				AE467A4E1BAFFF760072F7DD /* audio-muted-50x50.png in Resources */,
 				AE934D311BA30926007635A3 /* hangup-73x73@2x.png in Resources */,
+				AE3AD0241BB2E27400B09737 /* message-local-square-43x43.png in Resources */,
 				AE6AC3401BB1685300EFB4A2 /* inapp-icon-40x40.png in Resources */,
 				AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */,
 				AEE6565C1BAC851A005FD311 /* plus-sign-30x30.png in Resources */,
@@ -691,10 +728,12 @@
 				AE467A4C1BAFFF760072F7DD /* audio-active-50x50.png in Resources */,
 				AE467A521BB06AA60072F7DD /* settings-22x22.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
+				AE3AD0281BB2E39100B09737 /* message-remote-square-43x43.png in Resources */,
 				AE934D351BA31707007635A3 /* video-muted-30x22@2x.png in Resources */,
 				AE467A3F1BAFFE120072F7DD /* answer-video-50x50.png in Resources */,
 				AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */,
 				AE5AA1B51B6BBBCE00854004 /* ringing.mp3 in Resources */,
+				AE3AD0231BB2E27400B09737 /* inapp-grey-icon-30x30@2x.png in Resources */,
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE934D321BA30926007635A3 /* video-active-30x22@2x.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
@@ -771,9 +810,12 @@
 				AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */,
 				AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */,
 				AED08BFE1B73538A0036A9BE /* InputAccessoryProxyView.m in Sources */,
+				AE3AD01A1BB2C83800B09737 /* LocalMessageTableViewCell.m in Sources */,
 				AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */,
 				AE4747531BAAC551008DE3DE /* MainTableViewController.mm in Sources */,
+				AE3AD0141BB2B84500B09737 /* MessageTableViewController.m in Sources */,
 				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,
+				AE3AD01D1BB2C85500B09737 /* RemoteMessageTableViewCell.m in Sources */,
 				AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */,
 				AE96D8E01B665978008FAC51 /* MainNavigationController.m in Sources */,
 			);

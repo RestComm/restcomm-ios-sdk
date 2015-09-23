@@ -25,7 +25,7 @@
 #import "Utilities.h"
 
 @interface MessageViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *buttonPlaceholder;
+//@property (weak, nonatomic) IBOutlet UIButton *buttonPlaceholder;
 @property InputAccessoryProxyView * inputAccessoryProxyView;
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 @property (weak, nonatomic) IBOutlet UITextView *sipDialogText;

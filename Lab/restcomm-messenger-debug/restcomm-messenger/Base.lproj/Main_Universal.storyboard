@@ -300,7 +300,7 @@
         <!--Messages-->
         <scene sceneID="snS-rB-hFL">
             <objects>
-                <viewController storyboardIdentifier="message-controller" title="Messages" id="Teq-0A-fdV" customClass="MessageViewController" sceneMemberID="viewController">
+                <viewController title="Messages" id="Teq-0A-fdV" customClass="MessageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8h7-2f-vNX"/>
                         <viewControllerLayoutGuide type="bottom" id="TnH-Oe-xyO"/>
@@ -330,7 +330,153 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uXD-Kl-0ST" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1505" y="-750"/>
+            <point key="canvasLocation" x="2197" y="-742"/>
+        </scene>
+        <!--Message Table View Controller-->
+        <scene sceneID="6Ml-nB-Zwd">
+            <objects>
+                <tableViewController storyboardIdentifier="message-controller" id="Mtf-dj-gyy" customClass="MessageTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1F6-Ou-386">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="local-message-reuse-identifier" id="jOP-P1-fzb" customClass="LocalMessageTableViewCell">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jOP-P1-fzb" id="7ZO-BS-bra">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="message-local-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nla-3U-l1S">
+                                            <rect key="frame" x="557" y="0.0" width="43" height="43"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="43" id="Mki-1G-vg4"/>
+                                                <constraint firstAttribute="width" secondItem="Nla-3U-l1S" secondAttribute="height" multiplier="1:1" id="PnA-X0-TqK"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="Tzg-Ny-mO2"/>
+                                                <constraint firstAttribute="width" secondItem="Nla-3U-l1S" secondAttribute="height" multiplier="1:1" id="VdJ-hX-Ynf"/>
+                                                <constraint firstAttribute="height" constant="43" id="g1V-e3-DT6"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="PnA-X0-TqK"/>
+                                                    <exclude reference="Tzg-Ny-mO2"/>
+                                                    <exclude reference="VdJ-hX-Ynf"/>
+                                                    <exclude reference="g1V-e3-DT6"/>
+                                                </mask>
+                                            </variation>
+                                        </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" text="Test request" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dH1-DX-3yp">
+                                            <rect key="frame" x="0.0" y="0.0" width="558" height="43"/>
+                                            <color key="backgroundColor" red="0.99607843137254903" green="0.79607843137254897" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="mMf-i4-wkt"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Nla-3U-l1S" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-8" id="5z5-yo-GG2"/>
+                                        <constraint firstItem="dH1-DX-3yp" firstAttribute="leading" secondItem="7ZO-BS-bra" secondAttribute="leadingMargin" constant="-8" id="Any-wd-bZI"/>
+                                        <constraint firstItem="dH1-DX-3yp" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-8" id="EZM-Q2-mbh"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="dH1-DX-3yp" secondAttribute="bottom" constant="-8" id="Kfv-Pv-oM5"/>
+                                        <constraint firstItem="Nla-3U-l1S" firstAttribute="leading" secondItem="dH1-DX-3yp" secondAttribute="trailing" id="TjS-ou-i2x"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dH1-DX-3yp" secondAttribute="trailing" constant="34" id="Upq-Ww-shO"/>
+                                        <constraint firstAttribute="height" secondItem="dH1-DX-3yp" secondAttribute="height" id="asw-oj-Nnu"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Nla-3U-l1S" secondAttribute="trailing" constant="-8" id="bZD-YD-fMq"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Nla-3U-l1S" secondAttribute="bottom" constant="-8" id="lwt-ic-lxT"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="asw-oj-Nnu"/>
+                                            <exclude reference="5z5-yo-GG2"/>
+                                            <exclude reference="TjS-ou-i2x"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="senderImage" destination="Nla-3U-l1S" id="Tfe-pv-0ng"/>
+                                    <outlet property="senderText" destination="dH1-DX-3yp" id="mIW-3d-pkg"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="remote-message-reuse-identifier" id="Ctg-fG-4Nh" customClass="RemoteMessageTableViewCell">
+                                <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ctg-fG-4Nh" id="hkz-u2-whN">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="message-remote-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vol-Ft-W0g">
+                                            <rect key="frame" x="0.0" y="0.0" width="43" height="43"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="43" id="1Ie-mq-bSc"/>
+                                                <constraint firstAttribute="height" constant="43" id="OzQ-Br-MK6"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="OzQ-Br-MK6"/>
+                                                </mask>
+                                            </variation>
+                                        </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" text="Test response" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Y8n-v5-MT6">
+                                            <rect key="frame" x="42" y="0.0" width="558" height="43"/>
+                                            <color key="backgroundColor" red="0.91764705882352937" green="0.92549019607843142" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="43" id="Fvm-JT-c23"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="tra-S9-8ZW"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Fvm-JT-c23"/>
+                                                </mask>
+                                            </variation>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="leading" secondItem="Vol-Ft-W0g" secondAttribute="trailing" id="5ZX-Ww-suT"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Y8n-v5-MT6" secondAttribute="bottom" constant="-8" id="BMt-LF-Dhn"/>
+                                        <constraint firstItem="Vol-Ft-W0g" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="-8" id="DVx-uX-KGq"/>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="34" id="ElB-hI-uWc"/>
+                                        <constraint firstItem="Vol-Ft-W0g" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="-8" id="Fl9-xM-TaZ"/>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="34" id="GGc-0L-Aq9"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Vol-Ft-W0g" secondAttribute="bottom" constant="-8" id="L5Z-bh-WkA"/>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-8" id="L6d-8d-gWQ"/>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-8" id="e5s-Pq-vBe"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Y8n-v5-MT6" secondAttribute="trailing" constant="-8" id="geP-1I-Ibe"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Y8n-v5-MT6" secondAttribute="trailing" constant="-8" id="m0i-kT-xG1"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Y8n-v5-MT6" secondAttribute="bottom" constant="-8" id="udc-as-4pr"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Vol-Ft-W0g" secondAttribute="bottom" constant="-8" id="vkX-VL-esY"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="DVx-uX-KGq"/>
+                                            <exclude reference="L5Z-bh-WkA"/>
+                                            <exclude reference="5ZX-Ww-suT"/>
+                                            <exclude reference="BMt-LF-Dhn"/>
+                                            <exclude reference="ElB-hI-uWc"/>
+                                            <exclude reference="e5s-Pq-vBe"/>
+                                            <exclude reference="m0i-kT-xG1"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="senderImage" destination="Vol-Ft-W0g" id="rds-Kf-Kfy"/>
+                                    <outlet property="senderText" destination="Y8n-v5-MT6" id="Bdz-23-SRb"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Mtf-dj-gyy" id="eKq-vy-A5o"/>
+                            <outlet property="delegate" destination="Mtf-dj-gyy" id="N9r-4t-LBq"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AiP-Qk-34y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1506" y="-750"/>
         </scene>
         <!--Call View Controller-->
         <scene sceneID="3Ky-Er-AAq">
@@ -1181,6 +1327,8 @@
         <image name="audio-call-30x30.png" width="30" height="30"/>
         <image name="hangup-73x73.png" width="73" height="73"/>
         <image name="message-2-30x30.png" width="30" height="30"/>
+        <image name="message-local-square-43x43.png" width="43" height="43"/>
+        <image name="message-remote-square-43x43.png" width="43" height="43"/>
         <image name="restcomm-logo-call-139x54.png" width="139" height="54"/>
         <image name="video-active-50x50.png" width="50" height="50"/>
         <image name="video-call-30x30.png" width="30" height="30"/>

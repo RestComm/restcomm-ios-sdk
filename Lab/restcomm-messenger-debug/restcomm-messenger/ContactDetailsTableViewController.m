@@ -8,7 +8,7 @@
 
 #import "ContactDetailsTableViewController.h"
 #import "CallViewController.h"
-#import "MessageViewController.h"
+#import "MessageTableViewController.h"
 #import "ContactUpdateTableViewController.h"
 
 @interface ContactDetailsTableViewController ()
@@ -98,7 +98,7 @@
 - (void)messagePressed
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    MessageViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
 
     messageViewController.device = self.device;
     messageViewController.parameters = [[NSMutableDictionary alloc] init];

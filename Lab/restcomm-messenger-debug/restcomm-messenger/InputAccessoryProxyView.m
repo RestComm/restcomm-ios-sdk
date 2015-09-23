@@ -32,7 +32,7 @@
 
 @implementation InputAccessoryProxyView
 
-- (id)initWithFrame:(CGRect)rect viewController:(MessageViewController *)viewController;
+- (id)initWithFrame:(CGRect)rect viewController:(MessageTableViewController *)viewController;
 {
     self = [super initWithFrame:rect];
     self.viewController = viewController;
