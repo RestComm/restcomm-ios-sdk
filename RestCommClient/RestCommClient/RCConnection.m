@@ -60,7 +60,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self = [super init];
     if (self) {
         self.delegate = delegate;
-        self.sipManager = self.sipManager;
+        self.sipManager = sipManager;
         self.incoming = incoming;
         self.state = RCConnectionStateConnecting;
         _parameters = parameters;
