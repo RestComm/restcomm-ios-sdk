@@ -229,8 +229,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-vM-Jb6">
-                                                    <rect key="frame" x="269" y="11" width="69" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIP Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-vM-Jb6">
+                                                    <rect key="frame" x="257" y="11" width="93" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1008,7 +1008,7 @@
             </objects>
             <point key="canvasLocation" x="767" y="-750"/>
         </scene>
-        <!--Main Table View Controller-->
+        <!--Contacts-->
         <scene sceneID="h89-Id-fUC">
             <objects>
                 <tableViewController id="mGK-PW-hGH" customClass="MainTableViewController" sceneMemberID="viewController">
@@ -1049,9 +1049,7 @@
                             <outlet property="delegate" destination="mGK-PW-hGH" id="n6L-i6-9MS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="low-W0-NOI">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Contacts" id="low-W0-NOI"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5j-C5-UNe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

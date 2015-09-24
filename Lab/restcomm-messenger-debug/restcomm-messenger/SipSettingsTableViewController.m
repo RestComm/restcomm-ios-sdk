@@ -54,6 +54,8 @@
     
     [self.view addGestureRecognizer:tapGesture];
     
+    self.navigationItem.title = @"SIP Settings";
+    
     // set some defaults when in debug to avoid typing
     //self.aorText.text = [NSString stringWithUTF8String:AOR];
     //self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
