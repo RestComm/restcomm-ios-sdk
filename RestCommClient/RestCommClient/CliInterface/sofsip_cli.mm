@@ -155,8 +155,13 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
         cli->cli_conf[0].ssc_aor = aor;
         cli->cli_conf[0].ssc_registrar = registrar;
         cli->cli_conf[0].ssc_proxy = registrar;
-        cli->cli_conf[0].ssc_register = true;
-        
+        if (registrar != NULL) {
+          cli->cli_conf[0].ssc_register = true;
+        }
+        else {
+          cli->cli_conf[0].ssc_register = false;
+        }
+      
         /* step: create ssc signaling and media subsystem instance */
         cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
         

@@ -20,11 +20,13 @@
  *
  */
 
+#import "RestCommClient.h"
 #import "RCDevice.h"
 #import "RCConnection.h"
 #import "RCConnectionDelegate.h"
 #import "SipManager.h"
 #import "Reachability.h"
+#import "RCDeviceDelegate.h"
 #import <AVFoundation/AVFoundation.h>   // sounds
 
 #include "common.h"
@@ -110,9 +112,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
 
-        // start signalling eventLoop (i.e. Sofia)
-        [self.sipManager eventLoop];
-        _state = RCDeviceStateReady;
+        if (self.reachabilityStatus != NotReachable) {
+            if (![parameters objectForKey:@"registrar"]) {
+                // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
+                _state = RCDeviceStateReady;
+            }
+            // start signalling eventLoop (i.e. Sofia)
+            [self.sipManager eventLoop];
+        }
+
     }
     
     return self;
@@ -139,17 +147,21 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)listen
 {
     RCLogNotice("[RCDevice listen]");
-    [self.sipManager updateParams:nil];
-    //_state = RCDeviceStateReady;
-    [self.delegate deviceDidStartListeningForIncomingConnections:self];
+    if (self.state == RCDeviceStateReady) {
+        [self.sipManager updateParams:nil];
+        //_state = RCDeviceStateReady;
+        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+    }
 }
 
 - (void)unlisten
 {
     RCLogNotice("[RCDevice unlisten]");
-    [self.sipManager unregister:nil];
-    //_state = RCDeviceStateOffline;
-    [self.delegate device:self didStopListeningForIncomingConnections:nil];
+    if (self.state == RCDeviceStateReady) {
+        [self.sipManager unregister:nil];
+        //_state = RCDeviceStateOffline;
+        [self.delegate device:self didStopListeningForIncomingConnections:nil];
+    }
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
@@ -200,16 +212,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 }
 
 //- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
-- (void)sendMessage:(NSDictionary*)parameters
+- (BOOL)sendMessage:(NSDictionary*)parameters
 {
     RCLogNotice("[RCDevice message: %s\nto: %s]", [[parameters objectForKey:@"message"] UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (self.state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
-        return;
+        return NO;
     }
 
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
     [self.sipManager message:[parameters objectForKey:@"message"] to:[parameters objectForKey:@"username"] customHeaders:[parameters objectForKey:@"sip-headers"]];
+    return YES;
 }
 
 
@@ -234,14 +247,21 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)disconnectAll
 {
     RCLogNotice("[RCDevice disconnectAll]");
-    [self.currentConnection disconnect];
-    _state = RCDeviceStateReady;
+    if (self.state == RCDeviceStateBusy) {
+        [self.currentConnection disconnect];
+        _state = RCDeviceStateReady;
+    }
 }
 
-- (void) updateParams:(NSDictionary*)params
+- (BOOL) updateParams:(NSDictionary*)params
 {
     RCLogNotice("[RCDevice updateParams]");
-    [self.sipManager updateParams:params];
+
+    if (self.reachabilityStatus != NotReachable) {
+        [self.sipManager updateParams:params];
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark SipManager Delegate methods
@@ -289,6 +309,25 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+    if (error.code == ERROR_REGISTERING) {
+        [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        _state = RCDeviceStateOffline;
+    }
+}
+
+- (void)sipManagerDidRegisterSuccessfully:(SipManager *)sipManager
+{
+    _state = RCDeviceStateReady;
+    [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+}
+
+- (void)sipManagerWillUnregister:(SipManager *)sipManager
+{
+    // Note: there are times where unregister is triggered not by a direct application action
+    // (for example when updateParams() is called with a new registrar). In those cases we need
+    // to notify the application that we transition to offline
+    //_state = RCDeviceStateOffline;
+    //[self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
 }
 
 #pragma mark Helpers
@@ -320,6 +359,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
+        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
         return;
     }
     
@@ -339,7 +379,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
         [self.sipManager eventLoop];
         self.reachabilityStatus = newStatus;
-        self.state = RCDeviceStateReady;
+        if (![self.sipManager.params objectForKey:@"registrar"]) {
+            // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
+            _state = RCDeviceStateReady;
+            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+        }
     }
     
     /*
@@ -371,7 +415,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
      */
 }
 
-
+/* DEBUG
 -(void)startSofia
 {
     [self.sipManager eventLoop];
@@ -383,6 +427,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.sipManager shutdown:NO];
     //_state = RCDeviceStateOffline;
 }
+ */
 
 // TODO: leave this around because at some point we might add REST functionality on the client
 /*

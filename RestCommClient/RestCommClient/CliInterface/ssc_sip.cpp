@@ -1874,10 +1874,18 @@ void ssc_r_register(int status, char const *phrase,
     if (status == 401 || status == 407)
         ssc_store_pending_auth(ssc, op, sip, tags);
     else if (status >= 300) {
+        // Error
         ssc_oper_destroy(ssc, op);
+        SofiaReply reply(REGISTER_ERROR, phrase);
+        reply.Send(ssc->ssc_output_fd);
+
     }
     else if (status == 200) {
         RCLogDebug("Succesfully registered %s to network", ssc->ssc_address);
+        
+        SofiaReply reply(REGISTER_SUCCESS, phrase);
+        reply.Send(ssc->ssc_output_fd);
+
         if (ssc->ssc_registration_cb)
             ssc->ssc_registration_cb (ssc, 1, ssc->ssc_cb_context);
         // TODO: would be helpful to print the header, but the fact that this routine only works with streams, makes it difficult

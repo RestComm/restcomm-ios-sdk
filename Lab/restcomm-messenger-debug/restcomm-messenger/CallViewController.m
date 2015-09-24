@@ -114,8 +114,13 @@
         //                    forKey:@"sip-headers"];
         self.connection = [self.device connect:self.parameters delegate:self];
         if (self.connection == nil) {
-            [self.presentingViewController dismissViewControllerAnimated:YES
-                                                              completion:nil];
+            self.pendingError = YES;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
+                                                            message:@"Not connected"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
         }
     }
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {

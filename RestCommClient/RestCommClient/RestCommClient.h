@@ -34,6 +34,7 @@ typedef enum {
     ERROR_WEBRTC_SDP,
     ERROR_WEBRTC_ICE,
     ERROR_SIGNALLING,
+    ERROR_REGISTERING,
 } errorCodes;
 
 @property NSString * errorDomain;

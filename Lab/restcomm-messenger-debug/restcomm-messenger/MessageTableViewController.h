@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RestCommClient.h"
 
-@interface MessageTableViewController : UITableViewController
+@interface MessageTableViewController : UITableViewController<UIAlertViewDelegate>
 - (void)appendToDialog:(NSString*)msg sender:(NSString*)sender;
 
 @property (weak) RCDevice * device;

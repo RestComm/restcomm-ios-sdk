@@ -61,7 +61,6 @@
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
-		AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE59B24D1B6F6F46006CC699 /* MessageViewController.m */; };
 		AE5AA1B31B6BBBCE00854004 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B01B6BBBCE00854004 /* calling.mp3 */; };
 		AE5AA1B41B6BBBCE00854004 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B11B6BBBCE00854004 /* message.mp3 */; };
 		AE5AA1B51B6BBBCE00854004 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AE5AA1B21B6BBBCE00854004 /* ringing.mp3 */; };
@@ -216,8 +215,6 @@
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		AE59B24C1B6F6F46006CC699 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
-		AE59B24D1B6F6F46006CC699 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		AE5AA1B01B6BBBCE00854004 /* calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = calling.mp3; sourceTree = "<group>"; };
 		AE5AA1B11B6BBBCE00854004 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
 		AE5AA1B21B6BBBCE00854004 /* ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringing.mp3; sourceTree = "<group>"; };
@@ -543,8 +540,6 @@
 				AE96D8DF1B665978008FAC51 /* MainNavigationController.m */,
 				AED08BFC1B73538A0036A9BE /* InputAccessoryProxyView.h */,
 				AED08BFD1B73538A0036A9BE /* InputAccessoryProxyView.m */,
-				AE59B24C1B6F6F46006CC699 /* MessageViewController.h */,
-				AE59B24D1B6F6F46006CC699 /* MessageViewController.m */,
 				AE3AD0121BB2B84500B09737 /* MessageTableViewController.h */,
 				AE3AD0131BB2B84500B09737 /* MessageTableViewController.m */,
 				AE3F71EB1BA9D0F3006B06E7 /* SipSettingsTableViewController.h */,
@@ -814,7 +809,6 @@
 				AE3F71F31BA9D123006B06E7 /* AboutTableViewController.m in Sources */,
 				AE4747531BAAC551008DE3DE /* MainTableViewController.mm in Sources */,
 				AE3AD0141BB2B84500B09737 /* MessageTableViewController.m in Sources */,
-				AE59B24E1B6F6F46006CC699 /* MessageViewController.m in Sources */,
 				AE3AD01D1BB2C85500B09737 /* RemoteMessageTableViewCell.m in Sources */,
 				AE3F71F01BA9D10B006B06E7 /* SettingsTableViewController.m in Sources */,
 				AE96D8E01B665978008FAC51 /* MainNavigationController.m in Sources */,

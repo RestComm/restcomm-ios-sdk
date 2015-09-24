@@ -20,6 +20,7 @@
 @property int messageCount;
 // backing store for table
 @property NSMutableArray * messages;
+@property BOOL pendingError;
 @end
 
 @implementation MessageTableViewController
@@ -70,6 +71,17 @@
 {
     [super viewDidAppear:animated];
     
+    if (self.device.state == RCDeviceStateOffline) {
+        self.pendingError = YES;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice not Connected"
+                                                        message:@"No connectivity"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
     // we need that so that the accessory view shows up right away
     [self.inputAccessoryProxyView becomeFirstResponder];
     
@@ -101,7 +113,16 @@
     //                    forKey:@"sip-headers"];
     
     // send an instant message using RCDevice
-    [self.device sendMessage:parms];
+    if (![self.device sendMessage:parms]) {
+        //self.pendingError = YES;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
+                                                        message:@"Not connected"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
     
     [self appendToDialog:self.sipMessageText.text sender:@"Me"];
     self.sipMessageText.text = @"";
@@ -109,6 +130,14 @@
     [self.inputAccessoryProxyView becomeFirstResponder];
     // hide keyboard
     //[self.sipMessageText endEditing:false];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (self.pendingError) {
+        self.pendingError = NO;
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 // helpers

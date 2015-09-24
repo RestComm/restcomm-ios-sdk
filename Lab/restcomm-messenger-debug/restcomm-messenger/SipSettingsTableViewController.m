@@ -63,7 +63,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.aorText.text = [[self.device getParams] objectForKey:@"aor"];
+    self.aorText.text = [Utils sipIdentification]; //[[self.device getParams] objectForKey:@"aor"];
+    self.registrarText.text = [Utils sipRegistrar];
+    /*
     NSString * fullRegistrar = [[self.device getParams] objectForKey:@"registrar"];
     if (![fullRegistrar isEqualToString:@""]) {
         NSRange range = [fullRegistrar rangeOfString:@":"];
@@ -72,7 +74,8 @@
     else {
         self.registrarText.text = @"";
     }
-    self.passwordText.text = [[self.device getParams] objectForKey:@"password"];
+     */
+    self.passwordText.text = [Utils sipPassword]; //[[self.device getParams] objectForKey:@"password"];
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;
@@ -108,9 +111,6 @@
 
 - (void)update
 {
-    /**/
-    //TabBarController * tabBarController = (TabBarController*)self.tabBarController;
-    //this.device = tabBarController.viewController.device;
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     // always update registrar to make sure registraless is handled properly
     bool update = true;
@@ -123,8 +123,8 @@
     }
     if (![self.registrarText.text isEqualToString:@""]) {
         [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
-        [Utils updateSipRegistrar:self.registrarText.text];
-        update = true;
+        //[Utils updateSipRegistrar:self.registrarText.text];
+        //update = true;
     }
     if (![self.passwordText.text isEqualToString:@""]) {
         [params setObject:self.passwordText.text forKey:@"password"];
@@ -136,7 +136,6 @@
         //SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
         [self.device updateParams:params];
     }
-    /**/
 }
 
 - (BOOL)shouldAutorotate

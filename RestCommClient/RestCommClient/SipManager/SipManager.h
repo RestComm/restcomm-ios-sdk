@@ -56,6 +56,8 @@
 - (void)sipManager:(SipManager *)sipManager didReceiveMessageWithData:(NSString *)message from:(NSString*)from;
 // 'ringing' for incoming connections
 - (void)sipManagerDidReceiveCall:(SipManager *)sipManager from:(NSString*)from;
+- (void)sipManagerDidRegisterSuccessfully:(SipManager *)sipManager;
+- (void)sipManagerWillUnregister:(SipManager *)sipManager;
 - (void)sipManagerDidInitializedSignalling:(SipManager *)sipManager;
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error;
 @end

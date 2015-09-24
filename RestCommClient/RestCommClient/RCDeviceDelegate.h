@@ -22,9 +22,19 @@
 
 /** @file RCDeviceDelegate.h */
 
+#import "RCDevice.h"
+#import "Reachability/Reachability.h"
+
 @class RCDevice;
 @class RCConnection;
 @class RCPresenceEvent;
+
+// map RCConnectivityStatus enum with Reachability.h:NerworkStatus enum 1-1
+typedef enum : NSInteger {
+    RCConnectivityStatusNone = NotReachable,
+    RCConnectivityStatusWiFi = ReachableViaWiFi,
+    RCConnectivityStatusCellular = ReachableViaWWAN,
+} RCConnectivityStatus;
 
 /**
  *  RCDevice notifies its delegate for RCDevice related events defined in this delegate protocol
@@ -80,6 +90,14 @@
  *  @param device  Device of interest
  */
 - (void)deviceDidInitializeSignaling:(RCDevice *)device;
+
+/**
+ *  @abstract RCDevice received presence update (**Not implemented yet**)
+ *
+ *  @param device        Device of interest
+ *  @param presenceEvent Presence event
+ */
+- (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)deviceState;
 
 @end
 

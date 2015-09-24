@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "RCDeviceDelegate.h"
+//#import "RCDeviceDelegate.h"
 #import "RCConnectionDelegate.h"
 
 /** @file RCDevice.h */
@@ -46,6 +46,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 
 @class RCConnection;
 @protocol SipManagerDeviceDelegate;
+@protocol RCDeviceDelegate;
 
 /**
  *  RCDevice Represents an abstraction of a communications device able to make and receive calls, send and receive messages etc. Remember that
@@ -148,8 +149,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *
  *  @param parameters  Message parameters. Keys are: 'message' for content, 
  *                     'username' for recepient, 'sip-headers' for optional custom SIP headers
+ *
+ *  @return A boolean whether message was sent or not.
  */
-- (void)sendMessage:(NSDictionary*)parameters;
+- (BOOL)sendMessage:(NSDictionary*)parameters;
 
 /**
  *  @abstract Disconnect all connections
@@ -160,12 +163,15 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @abstract Update RCDevice parameters
  *
  *  @param params Dictionary of key/value pairs of the parameters that will be updated
+ *
+ *  @return If update of parameters was successful. Typical reason to fail is connectivity issues
  */
-- (void) updateParams:(NSDictionary*)params;
+- (BOOL) updateParams:(NSDictionary*)params;
 
-// DEBUG:
+/* DEBUG:
 -(void)startSofia;
 -(void)stopSofia;
+ */
 
 @end
 

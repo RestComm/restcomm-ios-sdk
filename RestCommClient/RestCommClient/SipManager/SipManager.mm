@@ -161,6 +161,16 @@ int read_pipe[2];
         self.media = nil;
         [self.connectionDelegate sipManagerDidReceiveOutgoingDeclined:self];
     }
+    else if (reply->rc == REGISTER_SUCCESS) {
+        [self.deviceDelegate sipManagerDidRegisterSuccessfully:self];
+    }
+    else if (reply->rc == REGISTER_ERROR) {
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+                                                    code:ERROR_REGISTERING
+                                                userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
+        
+        [self.deviceDelegate sipManager:self didSignallingError:error];
+    }
     else if (reply->rc == INVITE_ERROR) {
         [self.media disconnect];
         self.media = nil;
@@ -391,10 +401,14 @@ ssize_t pipeToSofia(const char * msg, int fd)
         cmd = [NSString stringWithFormat:@"u"];
     }
     [self pipeToSofia:cmd];
+    [self.deviceDelegate sipManagerWillUnregister:self];
     
     return true;
 }
 
+// Note: messages are the most complex structure to serialize so I had to use JSON to avoid issues.
+// That should be the case for all those, but I'm leaving them as they are for now cause at some point
+// the whole pipe communication channel will be removed
 - (bool)message:(NSString*)msg to:(NSString*)recipient customHeaders:(NSDictionary*)headers
 {
     NSDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:recipient, @"destination",
@@ -516,8 +530,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
             if ([[params objectForKey:key] isEqualToString:@""]) {
                 if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
                     // user requested unregister by passing empty string and previously was registered
-                    cmd = [NSString stringWithFormat:@"u"];
-                    [self pipeToSofia:cmd];
+                    [self unregister:nil];
+                    //cmd = [NSString stringWithFormat:@"u"];
+                    //[self pipeToSofia:cmd];
                 }
             }
             else {
@@ -526,10 +541,10 @@ ssize_t pipeToSofia(const char * msg, int fd)
                     // wasn't previously registraless
                     if (![[params objectForKey:key] isEqualToString:[self.params objectForKey:key]]) {
                         // user was previously registered and used a different registrar: need to unregister first
-                        cmd = [NSString stringWithFormat:@"u"];  //, %@" [params objectForKey:key]];
-                        [self pipeToSofia:cmd];
+                        [self unregister:nil];
+                        //cmd = [NSString stringWithFormat:@"u"];  //, %@" [params objectForKey:key]];
+                        //[self pipeToSofia:cmd];
                     }
-
                 }
                 cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
                 [self pipeToSofia:cmd];

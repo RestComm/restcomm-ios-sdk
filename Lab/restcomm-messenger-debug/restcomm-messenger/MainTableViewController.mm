@@ -44,37 +44,16 @@
     [super viewDidLoad];
     
     UIColor *logoOrange = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
-
-    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
-    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
-    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"inapp-icon-30x30.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                                                        style:UIBarButtonItemStylePlain
-                                                                       target:self
-                                                                       action:@selector(invokeSettings)];
-    self.navigationItem.leftBarButtonItem = restcommIconButton;
-    
-    //self.navigationItem.leftBarButtonItems = [[NSArray alloc] initWithObjects:restcommIconButton, editButton, nil];
-    
-    //self.navigationItem.leftBarButtonItem = [self editButtonItem];
-    //[self.navigationItem.leftBarButtonItem setTintColor:logoOrange];
     UIBarButtonItem * editButton = [self editButtonItem];
     [editButton setTintColor:logoOrange];
-
     UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                 target:self
                                                                                 action:@selector(invokeCreateContact)];
     [addButton setTintColor:logoOrange];
-    
-    /*
-    UIBarButtonItem * settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings-22x22.png"]
-                                                                        style:UIBarButtonItemStylePlain
-                                                                       target:self
-                                                                       action:@selector(invokeSettings)];
-    [settingsButton setTintColor:logoOrange];
-     */
+
 
     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
-    //[self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithRed:235.0 green:91.0 blue:41.0 alpha:1.0]];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -93,29 +72,27 @@
                        [Utils sipPassword], @"password",
                        nil];
     
-    [self.parameters setObject:[NSString stringWithFormat:@"sip:%@", [Utils sipRegistrar]] forKey:@"registrar"];
+    if (![[Utils sipRegistrar] isEqualToString:@""]) {
+        [self.parameters setObject:[NSString stringWithFormat:@"sip:%@", [Utils sipRegistrar]] forKey:@"registrar"];
+    }
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
-    /*
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
-                                           initWithTarget:self
-                                           action:@selector(hideKeyBoard)];
-    [self.view addGestureRecognizer:tapGesture];
-     */
+    // check if RCDevice managed to connect with restcomm and update restcomm status icon
+    NSString * imageName = @"inapp-icon-30x30.png";
+    if (self.device.state == RCDeviceStateOffline) {
+        imageName = @"inapp-grey-icon-30x30.png";
+    }
+    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
+    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
+    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                            style:UIBarButtonItemStylePlain
+                                                                           target:self
+                                                                           action:@selector(invokeSettings)];
+    self.navigationItem.leftBarButtonItem = restcommIconButton;
     
-/*
-#ifdef DEBUG
-    // set some defaults when in debug to avoid typing
-    //NSArray * contact = [Utils contactForIndex:0];
-    //self.sipUriText.text = [contact objectAtIndex:1];
-    //self.sipUriText.text = @"sip:antonis@23.23.228.238:5080";
-    //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
-#else
-    self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
-#endif
-*/
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
@@ -148,15 +125,15 @@
 - (void)register
 {
     // update our parms
-    [self.device startSofia];
-    //[self.device updateParams:self.parameters];
+    //[self.device startSofia];
+    [self.device updateParams:self.parameters];
     self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
 {
-    [self.device stopSofia];
-    //[self.device unlisten];
+    //[self.device stopSofia];
+    [self.device unlisten];
     self.isRegistered = NO;
 }
 
@@ -232,6 +209,41 @@
     
 }
 
+- (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)status
+{
+    NSString * imageName = @"inapp-icon-30x30.png";
+
+    NSString * text = nil;
+    if (status == RCConnectivityStatusNone) {
+        text = @"Lost connectivity";
+        imageName = @"inapp-grey-icon-30x30.png";
+    }
+    if (status == RCConnectivityStatusWiFi) {
+        text = @"Reestablished connectivity (Wifi)";
+    }
+    if (status == RCConnectivityStatusCellular) {
+        text = @"Reestablished connectivity (Cellular)";
+    }
+
+    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
+    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                            style:UIBarButtonItemStylePlain
+                                                                           target:self
+                                                                           action:@selector(invokeSettings)];
+    self.navigationItem.leftBarButtonItem = restcommIconButton;
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
+                                                    message:text
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+}
+
 - (BOOL)shouldAutorotate
 {
     return YES;
@@ -242,6 +254,7 @@
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
+/* DEBUG
 - (IBAction)start:(id)sender
 {
     [self.device startSofia];
@@ -251,6 +264,7 @@
 {
     [self.device stopSofia];
 }
+ */
 
 - (void)invokeRestcomm
 {

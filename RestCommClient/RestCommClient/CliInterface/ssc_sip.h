@@ -304,6 +304,8 @@ enum SipMsgEnum {
     CALLED_PARTY_NOT_FOUND,
     INVITE_ERROR,
     MESSAGE_ERROR,
+    REGISTER_ERROR,
+    REGISTER_SUCCESS,
 };
 
 //SofiaReply();
