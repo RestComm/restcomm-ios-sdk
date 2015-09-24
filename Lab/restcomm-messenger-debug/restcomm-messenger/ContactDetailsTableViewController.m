@@ -72,7 +72,7 @@
     [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:self.alias forKey:@"alias"];
     [callViewController.parameters setObject:self.sipUri forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
     
     [self presentViewController:callViewController animated:YES completion:nil];
 }

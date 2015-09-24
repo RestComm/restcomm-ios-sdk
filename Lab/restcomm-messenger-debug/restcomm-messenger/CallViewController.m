@@ -44,6 +44,7 @@
 @property BOOL pendingError;
 @property NSTimer *durationTimer;
 @property int secondsElapsed;
+@property BOOL isVideoCall;
 @end
 
 @implementation CallViewController
@@ -97,6 +98,14 @@
             NSLog(@"Connection already ongoing");
             return;
         }
+        
+        if ([[self.parameters objectForKey:@"video-enabled"] boolValue] == YES) {
+            self.isVideoCall = YES;
+        }
+        else {
+            self.isVideoCall = NO;
+        }
+        
         NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
         self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
         self.statusLabel.text = @"Initiating Call...";
@@ -124,11 +133,13 @@
 
 - (IBAction)answerPressed:(id)sender
 {
+    self.isVideoCall = NO;
     [self answer:NO];
 }
 
 - (IBAction)answerVideoPressed:(id)sender
 {
+    self.isVideoCall = YES;
     [self answer:YES];
 }
 
@@ -336,7 +347,7 @@
 
 - (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoTrack
 {
-    if (!self.remoteVideoTrack) {
+    if (self.isVideoCall && !self.remoteVideoTrack) {
         self.statusLabel.text = @"Received remote video";
         self.remoteVideoTrack = remoteVideoTrack;
         [self.remoteVideoTrack addRenderer:self.videoCallView.remoteVideoView];
