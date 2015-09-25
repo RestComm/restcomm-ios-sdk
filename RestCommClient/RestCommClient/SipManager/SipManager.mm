@@ -36,6 +36,7 @@
 #import "RestCommClient.h"
 #import "SipManager.h"
 #import "Utilities.h"
+#import "common.h"
 
 /* TODOs:
  * - There's no way you can stop a call before it is established (i.e. while it is ringing)
@@ -49,8 +50,8 @@ int write_pipe[2];
 int read_pipe[2];
 
 @interface SipManager ()
-@property BOOL restartSignalling;
-@property NSLock * restartSignallingLock;
+@property int signallingInstances;
+@property NSLock * signallingInstancesLock;
 @end
 
 @implementation SipManager
@@ -250,6 +251,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate
 {
+    RCLogNotice("[SipManager initWithDelegate]");
     self = [super init];
     if (self) {
         AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -271,6 +273,9 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         if (![session setActive:YES error:&error]) {
             NSLog(@"Error activating audio session");
         }
+        
+        _signallingInstances = 0;
+        _signallingInstancesLock = [[NSLock alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didSessionRouteChange:)
@@ -317,6 +322,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 }
 
 - (void)dealloc {
+    RCLogNotice("[SipManager dealloc]");
     [RTCPeerConnectionFactory deinitializeSSL];
     self.media = nil;
 }
@@ -324,6 +330,15 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 // initialize sofia
 - (bool)eventLoop
 {
+    RCLogNotice("[SipManager eventLoop]");
+    [_signallingInstancesLock lock];
+    if (_signallingInstances > 0) {
+        RCLogNotice("[SipManager eventLoop] another instance already running; bailing");
+        return false;
+    }
+    [_signallingInstancesLock unlock];
+
+
     if (pipe(write_pipe) == -1 || pipe(read_pipe) == -1) {
         perror("pipe");
         exit(EXIT_FAILURE);
@@ -335,25 +350,18 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        //while (1) {
-            // communicate with sip sofia via the pipe
-            sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                        [[self.params objectForKey:@"registrar"] UTF8String]);
-            NSLog(@"Stopped eventLoop");
-            /*
-            [_restartSignallingLock lock];
-            if (!self.restartSignalling) {
-                [_restartSignallingLock unlock];
-                break;
-            }
-            else {
-                NSLog(@"Restarting eventLoop");
-                self.restartSignalling = NO;
-            }
-            [_restartSignallingLock unlock];
-            */
-        //}
-        
+        [_signallingInstancesLock lock];
+        _signallingInstances++;
+        [_signallingInstancesLock unlock];
+
+        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
+                    [[self.params objectForKey:@"registrar"] UTF8String]);
+
+        [_signallingInstancesLock lock];
+        _signallingInstances--;
+        [_signallingInstancesLock unlock];
+
+        RCLogNotice("Stopped eventLoop");
     });
     
     return true;
