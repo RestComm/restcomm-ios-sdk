@@ -97,6 +97,9 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
      */
 }
 
+- (void)dealloc {
+    RCLogNotice("[RCConnection dealloc]");
+}
 
 - (void)accept:(NSDictionary*)parameters
 {

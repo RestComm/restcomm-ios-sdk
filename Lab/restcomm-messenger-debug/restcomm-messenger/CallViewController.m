@@ -248,6 +248,7 @@
     self.pendingError = YES;
     self.connection = nil;
     self.pendingIncomingConnection = nil;
+    [self stopVideoRendering];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCConnection Error"
                                                     message:[[error userInfo] objectForKey:NSLocalizedDescriptionKey]
@@ -343,7 +344,7 @@
 
 - (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack
 {
-    if (!self.localVideoTrack) {
+    if (self.isVideoCall && !self.localVideoTrack) {
         self.statusLabel.text = @"Received local video";
         self.localVideoTrack = localVideoTrack;
         [self.localVideoTrack addRenderer:self.videoCallView.localVideoView];

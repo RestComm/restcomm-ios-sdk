@@ -141,6 +141,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)dealloc
 {
+    RCLogNotice("[RCDevice dealloc]");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
