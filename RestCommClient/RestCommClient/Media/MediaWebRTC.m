@@ -611,7 +611,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didSetSessionDescriptionWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
-        RCLogError("[MediaWebRTC didSetSessionDescriptionWithError]");
+        RCLogNotice("[MediaWebRTC didSetSessionDescriptionWithError]");
         if (error) {
             RCLogError("[MediaWebRTC didSetSessionDescriptionWithError] Failed to set session description. Error: %s", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
 

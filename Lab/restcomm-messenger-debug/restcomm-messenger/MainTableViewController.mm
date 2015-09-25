@@ -36,7 +36,7 @@
 #import "Utils.h"
 
 @interface MainTableViewController ()
-
+@property RCConnectivityStatus previousConnectivityStatus;
 @end
 
 @implementation MainTableViewController
@@ -85,6 +85,7 @@
     if (self.device.state == RCDeviceStateOffline) {
         imageName = @"inapp-grey-icon-30x30.png";
     }
+    self.previousConnectivityStatus = RCConnectivityStatusWiFi;
     // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
     // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
     UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
@@ -234,12 +235,16 @@
                                                                            action:@selector(invokeSettings)];
     self.navigationItem.leftBarButtonItem = restcommIconButton;
 
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
-                                                    message:text
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+    if (status != self.previousConnectivityStatus) {
+        // only alert if we have a change of the connectivity state
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
+                                                        message:text
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        self.previousConnectivityStatus = status;
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

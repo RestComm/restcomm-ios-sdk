@@ -31,9 +31,9 @@
 
 // map RCConnectivityStatus enum with Reachability.h:NerworkStatus enum 1-1
 typedef enum : NSInteger {
-    RCConnectivityStatusNone = NotReachable,
-    RCConnectivityStatusWiFi = ReachableViaWiFi,
-    RCConnectivityStatusCellular = ReachableViaWWAN,
+    RCConnectivityStatusNone = NotReachable,  // no restcomm connectivity either we have no internet connectivity or couldn't register to restcomm (or both)
+    RCConnectivityStatusWiFi = ReachableViaWiFi,  // restcomm reachable and online via Wifi (or if in registrarless mode we don't register with restcomm; we just know that we have internet connectivity)
+    RCConnectivityStatusCellular = ReachableViaWWAN,  // restcomm reachable and online via cellular (same as above for registraless)
 } RCConnectivityStatus;
 
 /**

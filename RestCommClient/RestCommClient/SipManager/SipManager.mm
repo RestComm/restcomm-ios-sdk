@@ -351,17 +351,22 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_signallingInstancesLock lock];
-        _signallingInstances++;
-        [_signallingInstancesLock unlock];
+        if (_signallingInstances > 0) {
+            [_signallingInstancesLock unlock];
+        }
+        else {
+            _signallingInstances++;
+            [_signallingInstancesLock unlock];
+            
+            sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
+                        [[self.params objectForKey:@"registrar"] UTF8String]);
 
-        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                    [[self.params objectForKey:@"registrar"] UTF8String]);
+            [_signallingInstancesLock lock];
+            _signallingInstances--;
+            [_signallingInstancesLock unlock];
 
-        [_signallingInstancesLock lock];
-        _signallingInstances--;
-        [_signallingInstancesLock unlock];
-
-        RCLogNotice("Stopped eventLoop");
+            RCLogNotice("Stopped eventLoop");
+        }
     });
     
     return true;

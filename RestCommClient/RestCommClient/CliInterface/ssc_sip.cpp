@@ -218,6 +218,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               priv_callback, ssc,
                               TAG_IF(conf->ssc_aor,
                                      SIPTAG_FROM_STR(conf->ssc_aor)),
+                              // timeout timer
+                              //NTATAG_SIP_T1X64(4000),
                               TAG_IF(conf->ssc_proxy,
                                      NUTAG_PROXY(conf->ssc_proxy)),
                               TAG_IF(conf->ssc_registrar,
@@ -1879,6 +1881,7 @@ void ssc_r_register(int status, char const *phrase,
         // Error
         ssc_oper_destroy(ssc, op);
         if (pending_registration) {
+            RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
             SofiaReply reply(REGISTER_ERROR, phrase);
             reply.Send(ssc->ssc_output_fd);
         }
@@ -2102,7 +2105,7 @@ void ssc_r_shutdown(int status, char const *phrase,
     if (status == 101) {
         // shut down in progress
         if (attempt >= 3) {
-            RCLogDebug("Sofia failed to shutdown gracefull after 3 attempts: breaking out of loop");
+            RCLogDebug("Sofia failed to shutdown gracefully after 3 attempts: breaking out of loop");
             //nua_destroy(nua);
             su_root_break(ssc->ssc_root);
         }
