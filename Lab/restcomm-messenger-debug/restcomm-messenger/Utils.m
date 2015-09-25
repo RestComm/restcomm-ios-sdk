@@ -18,7 +18,7 @@
                                     @"sip-identification" : @"sip:bob@telestax.com",
                                     @"sip-password" : @"1234",
                                     @"sip-registrar" : @"23.23.228.238:5080",
-                                    @"contacts" :   // a dictionary of level stars (extended level number notation is the key)
+                                    @"contacts" :   // an array of contacts
                                     @[
                                         @[@"Alice", @"sip:alice@telestax.com:5080"],
                                         @[@"Bob", @"sip:bob@telestax.com:5080"],
@@ -26,9 +26,70 @@
                                         @[@"Conference App", @"sip:1311@telestax.com:5080"],
                                         @[@"Team Call", @"sip:+5126001502@telestax.com:5080"],
                                         ],
+                                    @"chat-history" :   // a dictionary of chat histories (key is remote party full sip URI)
+                                    @{
+                                        @"Alice" : @[
+                                                @{
+                                                    @"text" : @"Hello Alice",
+                                                    @"type" : @"local",
+                                                    },
+                                                @{
+                                                    @"text" : @"Hello",
+                                                    @"type" : @"remote",
+                                                    },
+                                                @{
+                                                    @"text" : @"What's up?",
+                                                    @"type" : @"local",
+                                                    },
+                                                ],
+                                        @"Bob" : @[
+                                                @{
+                                                    @"text" : @"Is Bob around?",
+                                                    @"type" : @"local",
+                                                    },
+                                                @{
+                                                    @"text" : @"Yes, I'm here",
+                                                    @"type" : @"remote",
+                                                    },
+                                                @{
+                                                    @"text" : @"Great",
+                                                    @"type" : @"local",
+                                                    },
+                                                ],
+                                        },
                                     };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
+}
+
++ (NSArray*)messagesForAlias:(NSString*)alias
+{
+    NSMutableArray *messages = [[NSMutableArray alloc] init];
+    
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    if ([appDefaults dictionaryForKey:@"chat-history"] && [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:alias]) {
+        return [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:alias];
+    }
+    return messages;
+}
+
++ (void)addMessageForAlias:(NSString*)alias text:(NSString*)text type:(NSString*)type
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray * aliasMessages = [[NSMutableArray alloc] init];
+    if (![appDefaults dictionaryForKey:@"chat-history"]) {
+        return;
+    }
+    
+    NSMutableDictionary * messages = [[appDefaults dictionaryForKey:@"chat-history"] mutableCopy];
+    if ([messages objectForKey:alias]) {
+        aliasMessages = [[messages objectForKey:alias] mutableCopy];
+    }
+    
+    [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
+    [messages setObject:aliasMessages forKey:alias];
+    
+    [appDefaults setObject:messages forKey:@"chat-history"];
 }
 
 + (NSArray*)contactForIndex:(int)index

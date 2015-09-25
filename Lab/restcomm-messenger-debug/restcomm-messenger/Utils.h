@@ -22,4 +22,7 @@
 + (void)updateSipIdentification:(NSString*)sipIdentification;
 + (void)updateSipPassword:(NSString*)sipPassword;
 + (void)updateSipRegistrar:(NSString*)sipRegistrar;
+// return messages in the format understood by MessageTableViewController
++ (NSArray*)messagesForAlias:(NSString*)alias;
++ (void)addMessageForAlias:(NSString*)alias text:(NSString*)text type:(NSString*)type;
 @end

@@ -81,6 +81,7 @@
  * ------------------- */
 static struct SofiaReply sofiaReply;
 char stored_sdp[65536] = "";
+static int pending_registration = false;
 
 /* Function prototypes
  * ------------------- */
@@ -1840,6 +1841,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
         return;
     }
     
+    pending_registration = true;
     if (!registrar && (op = ssc_oper_find_by_method(ssc, sip_method_register))) {
         RCLogDebug("REGISTER %s - updating existing registration", op->op_ident);
         nua_register(op->op_handle, TAG_NULL());
@@ -1876,13 +1878,15 @@ void ssc_r_register(int status, char const *phrase,
     else if (status >= 300) {
         // Error
         ssc_oper_destroy(ssc, op);
-        SofiaReply reply(REGISTER_ERROR, phrase);
-        reply.Send(ssc->ssc_output_fd);
+        if (pending_registration) {
+            SofiaReply reply(REGISTER_ERROR, phrase);
+            reply.Send(ssc->ssc_output_fd);
+        }
 
     }
     else if (status == 200) {
         RCLogDebug("Succesfully registered %s to network", ssc->ssc_address);
-        
+        pending_registration = false;
         SofiaReply reply(REGISTER_SUCCESS, phrase);
         reply.Send(ssc->ssc_output_fd);
 

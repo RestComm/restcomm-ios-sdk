@@ -32,6 +32,7 @@
 #import "ContactUpdateTableViewController.h"
 
 #import "RestCommClient.h"
+#import "Utilities.h"
 #import "Utils.h"
 
 @interface MainTableViewController ()
@@ -169,6 +170,7 @@
         [messageViewController.parameters setObject:message forKey:@"message-text"];
         [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
         [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
+        [messageViewController.parameters setObject:[Utilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
         
         messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController pushViewController:messageViewController animated:YES];

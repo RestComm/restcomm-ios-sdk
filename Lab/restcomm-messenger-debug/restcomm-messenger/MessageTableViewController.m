@@ -11,13 +11,14 @@
 #import "Utilities.h"
 #import "LocalMessageTableViewCell.h"
 #import "RemoteMessageTableViewCell.h"
+#import "Utils.h"
 
 @interface MessageTableViewController ()
 @property InputAccessoryProxyView * inputAccessoryProxyView;
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
 //@property (weak, nonatomic) IBOutlet UITextView *sipDialogText;
 // how many messages have been written in the table so far
-@property int messageCount;
+//@property int messageCount;
 // backing store for table
 @property NSMutableArray * messages;
 @property BOOL pendingError;
@@ -55,7 +56,8 @@
         self.navigationItem.title = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
     }
     
-    self.messageCount = 0;
+    self.messages = [[Utils messagesForAlias:[self.parameters objectForKey:@"alias"]] mutableCopy];
+    //self.messageCount = [self.messages count];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -65,6 +67,23 @@
 
 - (void)proxyViewPressed {
     [self.inputAccessoryProxyView becomeFirstResponder];
+}
+
+- (void)populateChatHistory
+{
+    /*
+    NSString *type = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"type"];
+    if ([type isEqualToString:@"local"]) {
+        LocalMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"local-message-reuse-identifier" forIndexPath:indexPath];
+        cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+     */
+
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -149,32 +168,17 @@
     if (![username isEqualToString:@"Me"]) {
         type = @"remote";
     }
-    // update the backing store
-    [self.messages insertObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]
-                        atIndex:self.messageCount++];
+    // update the backing store and NSUserDefaults
+    //[self.messages insertObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]
+    //                    atIndex:self.messageCount++];
+    [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
+    [Utils addMessageForAlias:[self.parameters objectForKey:@"alias"]
+                         text:msg
+                         type:type];
 
-    // TODO: trigger the new table row creation
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.messageCount - 1 inSection:0]]
+    // trigger the new table row creation
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]]
                           withRowAnimation:UITableViewRowAnimationAutomatic];
-
-    /*
-    if ([self.sipDialogText.text isEqualToString:@""]) {
-        self.sipDialogText.text = [NSString stringWithFormat:@"%@: %@\n", username, msg];
-    }
-    else {
-        NSString* updatedDialog = [NSString stringWithFormat:@"%@\n%@: %@\n", self.sipDialogText.text, username, msg];
-        self.sipDialogText.text = [NSString stringWithString:updatedDialog];
-    }
-    
-    // after appending scroll down too
-    if (self.sipDialogText.text.length > 0 ) {
-        NSRange bottom = NSMakeRange(self.sipDialogText.text.length - 1, 1);
-        // disable animation cause it messes experientce; we always start out at the beginning and get scrolled down all the way
-        [UIView setAnimationsEnabled:NO];
-        [self.sipDialogText scrollRangeToVisible:bottom];
-        [UIView setAnimationsEnabled:YES];
-    }
-     */
 }
 
 /*
