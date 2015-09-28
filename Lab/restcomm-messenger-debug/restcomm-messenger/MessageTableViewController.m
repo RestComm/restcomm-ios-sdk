@@ -170,6 +170,13 @@
         // check if the remote party already exists and if not add it
         int index = [Utils indexForContact:[self.parameters objectForKey:@"username"]];
         if (index == -1) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Updating Contacts"
+                                                            message:@"Sender not found in contacts; updating"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+
             // not existing
             [Utils addContact:[NSArray arrayWithObjects:username, sender, nil]];
             
