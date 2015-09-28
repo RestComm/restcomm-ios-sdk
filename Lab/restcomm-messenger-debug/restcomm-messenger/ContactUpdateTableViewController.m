@@ -41,7 +41,7 @@
     if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
         self.aliasTxt.text = self.alias;
         self.sipUriTxt.text = self.sipUri;
-        self.aliasTxt.userInteractionEnabled = NO;
+        self.sipUriTxt.userInteractionEnabled = NO;
     }
 }
 
@@ -58,7 +58,7 @@
 - (IBAction)donePressed:(id)sender
 {
     if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
-        [Utils updateContactWithAlias:self.aliasTxt.text sipUri:self.sipUriTxt.text];
+        [Utils updateContactWithSipUri:self.sipUriTxt.text alias:self.aliasTxt.text];
         [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
                                             sipUri:self.sipUriTxt.text];
     }

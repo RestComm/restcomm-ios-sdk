@@ -18,7 +18,7 @@
                                     @"sip-identification" : @"sip:bob@telestax.com",
                                     @"sip-password" : @"1234",
                                     @"sip-registrar" : @"23.23.228.238:5080",
-                                    @"contacts" :   // an array of contacts
+                                    @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
                                         @[@"Alice", @"sip:alice@telestax.com:5080"],
                                         @[@"Bob", @"sip:bob@telestax.com:5080"],
@@ -28,7 +28,7 @@
                                         ],
                                     @"chat-history" :   // a dictionary of chat histories (key is remote party full sip URI)
                                     @{
-                                        @"Alice" : @[
+                                        @"sip:alice@telestax.com:5080" : @[
                                                 @{
                                                     @"text" : @"Hello Alice",
                                                     @"type" : @"local",
@@ -42,7 +42,7 @@
                                                     @"type" : @"local",
                                                     },
                                                 ],
-                                        @"Bob" : @[
+                                        @"sip:bob@telestax.com:5080" : @[
                                                 @{
                                                     @"text" : @"Is Bob around?",
                                                     @"type" : @"local",
@@ -62,18 +62,18 @@
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
 }
 
-+ (NSArray*)messagesForAlias:(NSString*)alias
++ (NSArray*)messagesForSipUri:(NSString*)sipUri
 {
     NSMutableArray *messages = [[NSMutableArray alloc] init];
     
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    if ([appDefaults dictionaryForKey:@"chat-history"] && [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:alias]) {
-        return [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:alias];
+    if ([appDefaults dictionaryForKey:@"chat-history"] && [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri]) {
+        return [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri];
     }
     return messages;
 }
 
-+ (void)addMessageForAlias:(NSString*)alias text:(NSString*)text type:(NSString*)type
++ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray * aliasMessages = [[NSMutableArray alloc] init];
@@ -82,12 +82,12 @@
     }
     
     NSMutableDictionary * messages = [[appDefaults dictionaryForKey:@"chat-history"] mutableCopy];
-    if ([messages objectForKey:alias]) {
-        aliasMessages = [[messages objectForKey:alias] mutableCopy];
+    if ([messages objectForKey:sipUri]) {
+        aliasMessages = [[messages objectForKey:sipUri] mutableCopy];
     }
     
     [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
-    [messages setObject:aliasMessages forKey:alias];
+    [messages setObject:aliasMessages forKey:sipUri];
     
     [appDefaults setObject:messages forKey:@"chat-history"];
 }
@@ -104,6 +104,7 @@
     return nil;
 }
 
+/*
 + (int)indexForContact:(NSString*)alias
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -116,6 +117,22 @@
         }
     }
 
+    return -1;
+}
+ */
+
++ (int)indexForContact:(NSString*)sipUri
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
+    
+    for (int i = 0; i < [contacts count]; i++) {
+        NSArray * contact = [contacts objectAtIndex:i];
+        if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
+            return i;
+        }
+    }
+    
     return -1;
 }
 
@@ -202,7 +219,7 @@
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
 
-+ (void)updateContactWithAlias:(NSString*)alias sipUri:(NSString*)sipUri
++ (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     
@@ -218,9 +235,9 @@
     
     for (int i = 0; i < [mutable count]; i++) {
         NSArray * contact = [mutable objectAtIndex:i];
-        if ([[contact objectAtIndex:0] isEqualToString:alias]) {
+        if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
             NSMutableArray * mutableContact = [contact mutableCopy];
-            [mutableContact replaceObjectAtIndex:1 withObject:sipUri];
+            [mutableContact replaceObjectAtIndex:0 withObject:alias];
             [mutable replaceObjectAtIndex:i withObject:mutableContact];
         }
     }

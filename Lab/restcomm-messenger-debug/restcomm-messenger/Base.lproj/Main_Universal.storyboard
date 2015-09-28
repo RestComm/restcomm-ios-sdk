@@ -946,7 +946,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="SIP URI" footerTitle="For example: &quot;sip:alice@telestax.com&quot;" id="EwX-f7-I8o">
+                            <tableViewSection headerTitle="SIP URI" footerTitle="For example: &quot;sip:alice@telestax.com&quot;. Uniquely identifies the contact" id="EwX-f7-I8o">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BgX-a7-w0Y">
                                         <rect key="frame" x="0.0" y="225" width="600" height="44"/>

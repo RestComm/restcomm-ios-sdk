@@ -11,11 +11,13 @@
 @interface Utils : NSObject
 + (void) setupUserDefaults;
 + (NSArray*)contactForIndex:(int)index;
-+ (int)indexForContact:(NSString*)alias;
+//+ (int)indexForContact:(NSString*)alias;
+// if contact is not found returns -1
++ (int)indexForContact:(NSString*)sipUri;
 + (int)contactCount;
 + (void)addContact:(NSArray*)contact;
 + (void)removeContactAtIndex:(int)index;
-+ (void)updateContactWithAlias:(NSString*)contact sipUri:(NSString*)sipUri;
++ (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias;
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;
@@ -23,6 +25,6 @@
 + (void)updateSipPassword:(NSString*)sipPassword;
 + (void)updateSipRegistrar:(NSString*)sipRegistrar;
 // return messages in the format understood by MessageTableViewController
-+ (NSArray*)messagesForAlias:(NSString*)alias;
-+ (void)addMessageForAlias:(NSString*)alias text:(NSString*)text type:(NSString*)type;
++ (NSArray*)messagesForSipUri:(NSString*)sipUri;
++ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
 @end

@@ -56,7 +56,7 @@
         self.navigationItem.title = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
     }
     
-    self.messages = [[Utils messagesForAlias:[self.parameters objectForKey:@"alias"]] mutableCopy];
+    self.messages = [[Utils messagesForSipUri:[self.parameters objectForKey:@"username"]] mutableCopy];
     //self.messageCount = [self.messages count];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -167,12 +167,21 @@
     NSString * type = @"local";
     if (![username isEqualToString:@"Me"]) {
         type = @"remote";
+        // check if the remote party already exists and if not add it
+        int index = [Utils indexForContact:[self.parameters objectForKey:@"username"]];
+        if (index == -1) {
+            // not existing
+            [Utils addContact:[NSArray arrayWithObjects:username, sender, nil]];
+            
+            [self.delegate messageViewController:self didAddContactWithAlias:username
+                                          sipUri:sender];
+        }
     }
     // update the backing store and NSUserDefaults
     //[self.messages insertObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]
     //                    atIndex:self.messageCount++];
     [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
-    [Utils addMessageForAlias:[self.parameters objectForKey:@"alias"]
+    [Utils addMessageForSipUri:[self.parameters objectForKey:@"username"]
                          text:msg
                          type:type];
 

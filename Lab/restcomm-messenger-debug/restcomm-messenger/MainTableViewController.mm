@@ -167,6 +167,7 @@
         MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
         //messageViewController.delegate = self;
         messageViewController.device = self.device;
+        messageViewController.delegate = self;
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
         [messageViewController.parameters setObject:message forKey:@"message-text"];
         [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
@@ -325,10 +326,16 @@
 - (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
            didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:alias] inSection:0]]
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:sipUri] inSection:0]]
                           withRowAnimation:UITableViewRowAnimationNone];
 }
 
+- (void)messageViewController:(MessageTableViewController*)messageViewController
+       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
 
 #pragma mark - Table view data source
 
@@ -406,8 +413,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        //[self.tableView beginUpdates];
         [Utils removeContactAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //[self.tableView endUpdates];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Adding is handled in the separate screen
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
