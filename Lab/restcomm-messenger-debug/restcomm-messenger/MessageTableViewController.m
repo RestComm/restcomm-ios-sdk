@@ -35,7 +35,7 @@
     // allocate and insert proxy view. Important: the proxy view cannot be part of the view hierarchy in the storyboard/xib.
     // It needs to be added dynamically
     self.inputAccessoryProxyView = [[InputAccessoryProxyView alloc]initWithFrame:[UIScreen mainScreen].bounds viewController:self];
-    // see if thi will work (used to be below sipDialogText
+    // see if this will work (used to be below sipDialogText)
     [self.view insertSubview:self.inputAccessoryProxyView belowSubview:self.tableView];
     
     // setup table view so that it allows its cell's height to grow depending on the content's intrinsic size
@@ -83,7 +83,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -108,6 +108,11 @@
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-message"]) {
         [self appendToDialog:[self.parameters objectForKey:@"message-text"] sender:[self.parameters objectForKey:@"username"]];
     }
+    
+    // scroll down to the last message
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
+                          atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -184,17 +189,26 @@
                                           sipUri:sender];
         }
     }
+
+    //NSLog(@"Adding new message to data store");
     // update the backing store and NSUserDefaults
-    //[self.messages insertObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]
-    //                    atIndex:self.messageCount++];
     [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
     [Utils addMessageForSipUri:[self.parameters objectForKey:@"username"]
-                         text:msg
-                         type:type];
+                          text:msg
+                          type:type];
 
+    UITableViewRowAnimation animation = UITableViewRowAnimationRight;
+    if ([type isEqualToString:@"remote"]) {
+        animation = UITableViewRowAnimationLeft;
+    }
+    [self.tableView beginUpdates];
     // trigger the new table row creation
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                          withRowAnimation:animation];
+    [self.tableView endUpdates];
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
+                          atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 /*
@@ -214,18 +228,24 @@
  */
 
 #pragma mark - Table view data source
-/* No need to implement, we only have one section
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    //int count = [self.messages count];
+    //NSLog(@"numberOfSectionsInTableView: %d", count);
+    //return count;
+    return 1;
 }
- */
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // TODO: Return the number of rows in the section.
+    // Return the number of rows in the section.
     return [self.messages count];
+    // we are using a section per entry to introduce spacing
+    //NSLog(@"numberOfRowsInSection: %d, 1", section);
+    //return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //NSLog(@"cellForRowAtIndexPath, row: %d, section: %d", indexPath.row, indexPath.section);
     NSString *type = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"type"];
     if ([type isEqualToString:@"local"]) {
         LocalMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"local-message-reuse-identifier" forIndexPath:indexPath];
@@ -245,6 +265,22 @@
     //cell.detailTextLabel.text = [contact objectAtIndex:1];
     //UITextView * message = (UITextView*)
 }
+
+/*
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 8.0;
+}
+ */
+
+/*
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *v = [UIView new];
+    [v setBackgroundColor:[UIColor clearColor]];
+    return v;
+}
+ */
 
 /*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
