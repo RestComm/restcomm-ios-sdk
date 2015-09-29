@@ -789,10 +789,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = (
 					arm64,
-					armv7s,
 					armv7,
 					x86_64,
-					i386,
 				);
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -807,6 +805,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -835,7 +834,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 armv7 x86_64";
 			};
 			name = Debug;
 		};
@@ -845,10 +844,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = (
 					arm64,
-					armv7s,
 					armv7,
 					x86_64,
-					i386,
 				);
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -863,6 +860,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -877,9 +875,10 @@
 					"$SOURCE_ROOT/sofia-sip-1.12.11/include/sofia-sip-1.12",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 armv7 x86_64";
 			};
 			name = Release;
 		};
@@ -888,9 +887,7 @@
 			buildSettings = {
 				ARCHS = (
 					arm64,
-					armv7s,
 					armv7,
-					i386,
 					x86_64,
 				);
 				DSTROOT = /tmp/RestCommClient.dst;
@@ -911,7 +908,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 armv7 x86_64";
 			};
 			name = Debug;
 		};
@@ -920,9 +917,7 @@
 			buildSettings = {
 				ARCHS = (
 					arm64,
-					armv7s,
 					armv7,
-					i386,
 					x86_64,
 				);
 				DSTROOT = /tmp/RestCommClient.dst;
@@ -943,7 +938,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 armv7 x86_64";
 			};
 			name = Release;
 		};

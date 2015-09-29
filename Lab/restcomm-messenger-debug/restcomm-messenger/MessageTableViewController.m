@@ -109,9 +109,11 @@
         [self appendToDialog:[self.parameters objectForKey:@"message-text"] sender:[self.parameters objectForKey:@"username"]];
     }
     
-    // scroll down to the last message
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
-                          atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    if ([self.messages count] > 0) {
+        // scroll down to the last message
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
+                              atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
 
 }
 
@@ -207,8 +209,10 @@
                           withRowAnimation:animation];
     [self.tableView endUpdates];
     
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
-                          atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    if ([self.messages count] > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]
+                              atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
 }
 
 /*
