@@ -74,7 +74,6 @@ bool restartSignalling = false;
 extern su_log_t nua_log[];
 extern su_log_t nta_log[];
 
-
 //extern su_log_t iptsec_log[];
 extern su_log_t nea_log[];
 extern su_log_t nth_client_log[];

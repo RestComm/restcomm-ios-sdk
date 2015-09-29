@@ -21,10 +21,12 @@
  */
 
 #import "RestCommClient.h"
+#include "common.h"
+#include <asl.h>
 
 @implementation RestCommClient
 
-+ (id)sharedRestCommClient {
++ (id)sharedInstance {
     static RestCommClient *sharedRestCommClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -41,12 +43,49 @@
                         @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
                         @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
                         };
+        initializeLogging();
     }
     return self;
 }
 
 - (void)dealloc {
     // Should never be called, but just here for clarity really.
+}
+
+- (void) setLogLevel:(RCLogLevel)level
+{
+    int aslLevel = 0;
+    if (level == RC_LOG_EMERG) {
+        aslLevel = ASL_LEVEL_EMERG;
+    }
+    else if (level == RC_LOG_ALERT) {
+        aslLevel = ASL_LEVEL_ALERT;
+    }
+    else if (level == RC_LOG_CRIT) {
+        aslLevel = ASL_LEVEL_CRIT;
+    }
+    else if (level == RC_LOG_ERROR) {
+        aslLevel = ASL_LEVEL_ERR;
+    }
+    else if (level == RC_LOG_WARN) {
+        aslLevel = ASL_LEVEL_WARNING;
+    }
+    else if (level == RC_LOG_NOTICE) {
+        aslLevel = ASL_LEVEL_NOTICE;
+    }
+    else if (level == RC_LOG_INFO) {
+        aslLevel = ASL_LEVEL_INFO;
+    }
+    else if (level == RC_LOG_DEBUG) {
+        aslLevel = ASL_LEVEL_DEBUG;
+    }
+    
+    setLogLevel(aslLevel);
+}
+
+- (NSString*)getVersion
+{
+    return [NSString stringWithUTF8String:SIP_USER_AGENT];
 }
 
 @end

@@ -90,11 +90,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         [self prepareSounds];
         
-        // init logging only once
+        // init logging + set logging level
+        [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
+        /*
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             initializeLogging();
         });
+         */
+        
         RCLogNotice("[RCDevice initWithParams]");
 
         // reachability

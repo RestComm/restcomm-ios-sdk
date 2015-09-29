@@ -31,6 +31,17 @@
 @interface RestCommClient : NSObject
 
 typedef enum {
+    RC_LOG_EMERG,
+    RC_LOG_ALERT,
+    RC_LOG_CRIT,
+    RC_LOG_ERROR,
+    RC_LOG_WARN,
+    RC_LOG_NOTICE,
+    RC_LOG_INFO,
+    RC_LOG_DEBUG,
+} RCLogLevel;
+
+typedef enum {
     ERROR_WEBRTC_SDP,
     ERROR_WEBRTC_ICE,
     ERROR_SIGNALLING,
@@ -39,7 +50,10 @@ typedef enum {
 
 @property NSString * errorDomain;
 @property NSDictionary * errors;
+// Restcomm SDK version
+@property NSString * version;
 
-+ (id)sharedRestCommClient;
++ (id)sharedInstance;
+- (void) setLogLevel:(RCLogLevel)level;
 
 @end

@@ -40,6 +40,8 @@
 #endif
 
 ExternC void initializeLogging(void);
+ExternC void finalizeLogging(void);
+ExternC void setLogLevel(int level);
 
 #define RC_MAKE_LOG_FUNCTION_DECL(LEVEL, NAME) \
 ExternC void NAME (const char * filename, const int linenumber, const char *format, ...);

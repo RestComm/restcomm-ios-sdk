@@ -545,7 +545,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"iceConnectionChanged: ICE connection failed",
                                        };
-            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                            code:ERROR_WEBRTC_ICE
                                                        userInfo:userInfo];
             RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[Utilities stringifyDictionary:userInfo] UTF8String]);
@@ -590,7 +590,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"didCreateSessionDescription: Failed to create session description",
                                        };
-            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                            code:ERROR_WEBRTC_SDP
                                                        userInfo:userInfo];
             [self.mediaDelegate mediaController:self didError:sdpError];
@@ -619,7 +619,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey: @"didSetSessionDescriptionWithError: Failed to set session description",
                                        };
-            NSError *sdpError =[[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+            NSError *sdpError =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                           code:ERROR_WEBRTC_SDP
                                                       userInfo:userInfo];
 

@@ -166,7 +166,7 @@ int read_pipe[2];
         [self.deviceDelegate sipManagerDidRegisterSuccessfully:self];
     }
     else if (reply->rc == REGISTER_ERROR) {
-        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:ERROR_REGISTERING
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
         
@@ -175,14 +175,14 @@ int read_pipe[2];
     else if (reply->rc == INVITE_ERROR) {
         [self.media disconnect];
         self.media = nil;
-        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                        code:ERROR_SIGNALLING
                                                    userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
 
         [self.connectionDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == MESSAGE_ERROR) {
-        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedRestCommClient] errorDomain]
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:ERROR_SIGNALLING
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
         

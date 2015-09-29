@@ -22,16 +22,45 @@
 
 #include "common.h"
 #include <asl.h>
-
 #include <stdio.h>
 #include <unistd.h>
 
+// TODO: asl man page says that the best practice is to use separate client handle from each
+// thread for which you want logging. Currently we don't do that and I haven't seen any issues
+// Let's keep that in mind and revisit at some point in the future
+static bool loggingInitialized = false;
+static aslmsg msg = NULL;
+
 void initializeLogging(void)
 {
-    // add STDERR to ASL facilities
-    asl_add_log_file(NULL, STDERR_FILENO);
+    if (!loggingInitialized) {
+        // add STDERR (i.e. device console) to ASL facilities
+        asl_add_log_file(NULL, STDERR_FILENO);
+        // device log
+        asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
+        // device console
+        asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
+        loggingInitialized = true;
+        
+        // initialize and configure the message structure
+        msg = asl_new(ASL_TYPE_MSG);
+        // Important: without this asl messages never go to device log (only to console)
+        asl_set(msg, ASL_KEY_READ_UID, "-1");
+    }
 }
 
+void finalizeLogging(void)
+{
+    asl_free(msg);
+}
+
+void setLogLevel(int level)
+{
+    // device log
+    asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(level));
+    // device console
+    asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(level));
+}
 
 #define RC_MAKE_LOG_FUNCTION(LEVEL, NAME) \
 void NAME (const char * filename, const int linenumber, const char *format, ...) \
@@ -40,7 +69,7 @@ va_list args; \
 va_start(args, format); \
 char message[LOG_BUFFER_SIZE]; \
 vsnprintf(message, sizeof(message), format, args); \
-asl_log(NULL, NULL, (LEVEL), "(%s:%d) %s", filename, linenumber, message); \
+asl_log(NULL, msg, (LEVEL), "(%s:%d) %s", filename, linenumber, message); \
 va_end(args); \
 }
 
