@@ -3,6 +3,11 @@ RestComm Mobile - iOS SDK
 
 iOS Mobile SDK to easily integrate communication features (messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
 
+Latest Messenger .ipa
+=============================
+
+Here's the .ipa for the Messenger Restcomm Client SDK sample application: https://community.testfairy.com/join/KtR96PyJ
+
 Want to Contribute ? 
 ========
 [See our Contributors Guide](https://github.com/Mobicents/RestComm/wiki/Contribute-to-RestComm)
