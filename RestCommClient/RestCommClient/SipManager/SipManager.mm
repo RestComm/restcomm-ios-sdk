@@ -51,7 +51,7 @@ int read_pipe[2];
 
 @interface SipManager ()
 @property int signallingInstances;
-@property NSLock * signallingInstancesLock;
+@property NSRecursiveLock * signallingInstancesLock;
 @end
 
 @implementation SipManager
@@ -275,7 +275,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         }
         
         _signallingInstances = 0;
-        _signallingInstancesLock = [[NSLock alloc] init];
+        _signallingInstancesLock = [[NSRecursiveLock alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didSessionRouteChange:)
@@ -334,10 +334,13 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     [_signallingInstancesLock lock];
     if (_signallingInstances > 0) {
         RCLogNotice("[SipManager eventLoop] another instance already running; bailing");
+        [_signallingInstancesLock unlock];
         return false;
     }
-    [_signallingInstancesLock unlock];
-
+    else {
+        _signallingInstances++;
+        [_signallingInstancesLock unlock];
+    }
 
     if (pipe(write_pipe) == -1 || pipe(read_pipe) == -1) {
         perror("pipe");
@@ -350,23 +353,14 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
+                    [[self.params objectForKey:@"registrar"] UTF8String]);
+        
         [_signallingInstancesLock lock];
-        if (_signallingInstances > 0) {
-            [_signallingInstancesLock unlock];
-        }
-        else {
-            _signallingInstances++;
-            [_signallingInstancesLock unlock];
-            
-            sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                        [[self.params objectForKey:@"registrar"] UTF8String]);
-
-            [_signallingInstancesLock lock];
-            _signallingInstances--;
-            [_signallingInstancesLock unlock];
-
-            RCLogNotice("Stopped eventLoop");
-        }
+        _signallingInstances--;
+        [_signallingInstancesLock unlock];
+        
+        RCLogNotice("Stopped eventLoop");
     });
     
     return true;
