@@ -162,7 +162,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)unlisten
 {
     RCLogNotice("[RCDevice unlisten]");
-    if (self.state == RCDeviceStateReady) {
+    if (self.state != RCDeviceStateOffline) {
+        if (self.state == RCDeviceStateBusy) {
+            [self disconnectAll];
+        }
+
         [self.sipManager unregister:nil];
         //_state = RCDeviceStateOffline;
         [self.delegate device:self didStopListeningForIncomingConnections:nil];
