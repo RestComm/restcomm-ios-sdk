@@ -412,9 +412,9 @@ static void sofsip_handle_input_cb(char *input)
       ssc_invite(cli->cli_ssc, dest, rest);
   }
   else if (match("info")) {
-    ssc_input_set_prompt("Enter INFO message> ");
-    ssc_input_read_string(msgbuf, sizeof(msgbuf));
-    ssc_info(cli->cli_ssc, rest, msgbuf);
+    //ssc_input_set_prompt("Enter INFO message> ");
+    //ssc_input_read_string(msgbuf, sizeof(msgbuf));
+    ssc_info(cli->cli_ssc, rest);
   }
   else if (match("hold")) {
     ssc_hold(cli->cli_ssc, rest, 1);

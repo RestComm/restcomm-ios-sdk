@@ -147,7 +147,7 @@ void ssc_auth(ssc_t *ssc, const char *data);
 void ssc_bye(ssc_t *ssc);
 void ssc_cancel(ssc_t *ssc);
 void ssc_hold(ssc_t *ssc, char *destination, int hold);
-void ssc_info(ssc_t *ssc, const char *destination, const char *msg);
+void ssc_info(ssc_t *ssc, const char *msg);
 void ssc_invite(ssc_t *ssc, const char *destination, const char *headers);
 //#if HAVE_MEDIA_WEBRTC_IMPL
 void ssc_webrtc_sdp(void* op_context, char *sdp);

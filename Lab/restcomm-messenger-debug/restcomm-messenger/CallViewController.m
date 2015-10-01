@@ -23,12 +23,14 @@
 #import "CallViewController.h"
 #import "RestCommClient.h"
 #import "Utilities.h"
+#import "KeypadViewController.h"
 
 @interface CallViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *hangupButton;
 @property (weak, nonatomic) IBOutlet UIButton *videoButton;
 @property (weak, nonatomic) IBOutlet UIButton *audioButton;
 @property (weak, nonatomic) IBOutlet UIButton *muteVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *keypadButton;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *muteAudioButton;
 //@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
@@ -71,6 +73,10 @@
     [super viewWillAppear:animated];
     self.muteAudioButton.hidden = YES;
     self.muteVideoButton.hidden = YES;
+    if (!self.connection || self.connection.state != RCConnectionStateConnected) {
+        self.keypadButton.hidden = YES;
+    }
+    
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
         self.videoButton.hidden = YES;
         self.audioButton.hidden = YES;
@@ -84,9 +90,11 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    /*
     if (self.durationTimer && [self.durationTimer isValid]) {
         [self.durationTimer invalidate];
     }
+     */
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -151,6 +159,10 @@
 - (void)answer:(BOOL)allowVideo
 {
     if (self.pendingIncomingConnection) {
+        // hide video/audio buttons
+        self.videoButton.hidden = YES;
+        self.audioButton.hidden = YES;
+
         self.statusLabel.text = @"Answering Call...";
         if (allowVideo) {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
@@ -270,20 +282,18 @@
 {
     NSLog(@"connectionDidConnect");
     self.statusLabel.text = @"Connected";
-    // hide video/audio buttons
-    self.videoButton.hidden = YES;
-    self.audioButton.hidden = YES;
     
-    // show mute video/audio buttons
+    // show mute video/audio/keypad buttons
     self.muteAudioButton.hidden = NO;
     self.muteVideoButton.hidden = NO;
+    self.keypadButton.hidden = NO;
 
     self.durationLabel.hidden = NO;
     self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                              target:self
                                                            selector:@selector(timerAction)
                                                            userInfo:nil
-                                                            repeats:YES];
+                                                            repeats:NO];
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
@@ -314,8 +324,29 @@
     self.muteVideoButton.hidden = YES;
 
     if (!self.pendingError) {
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:nil];
+        // if we have presented the digits view controller need to dismiss both
+        if (self.presentedViewController) {
+            // change the value of invoke-view-type cause if we don't a new call will be made due to viewDidAppear
+            [self.parameters setValue:@"return-from-keypad" forKey:@"invoke-view-type"];
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                  completion:nil];
+                
+            }];
+        }
+        else {
+            [self.presentingViewController dismissViewControllerAnimated:YES
+                                                              completion:nil];
+        }
+    }
+    else {
+        // if we have presented the digits view controller need to dismiss both
+        if (self.presentedViewController) {
+            // change the value of invoke-view-type cause if we don't a new call will be made due to viewDidAppear
+            [self.parameters setValue:@"return-from-keypad" forKey:@"invoke-view-type"];
+
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
     }
     
     if (self.durationTimer && [self.durationTimer isValid]) {
@@ -411,7 +442,25 @@
     self.secondsElapsed++;
     self.durationLabel.text = [NSString stringWithFormat:@"%01d:%02d", (self.secondsElapsed % 3600) / 60,
                   (self.secondsElapsed % 3600) % 60];
+    
+    if (self.connection && self.connection.state == RCConnectionStateConnected) {
+        // not using repeating timer to avoid retain cycles
+        self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                              target:self
+                                                            selector:@selector(timerAction)
+                                                            userInfo:nil
+                                                             repeats:NO];
+    }
 }
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"invoke-keypad"]) {
+        KeypadViewController * keypadViewController = [segue destinationViewController];
+        keypadViewController.connection = self.connection;
+    }
+}
+
 
 - (BOOL)shouldAutorotate
 {

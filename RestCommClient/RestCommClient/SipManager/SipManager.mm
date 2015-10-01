@@ -497,6 +497,15 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
+- (bool)sendDtmfDigits:(NSString*)dtmf
+{
+    NSString* cmd = [NSString stringWithFormat:@"info Signal=%@\r\nDuration=100\r\n", dtmf];
+    [self pipeToSofia:cmd];
+    
+    return true;
+    
+}
+
 - (bool)shutdown:(BOOL)restart
 {
     NSString* cmd = [NSString stringWithFormat:@"q"];

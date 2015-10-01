@@ -28,6 +28,7 @@
 #import "Utilities.h"
 
 #include "common.h"
+#include "RestCommClient.h"
 
 @interface RCConnection ()
 // private methods
@@ -186,7 +187,15 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (void)sendDigits:(NSString*)digits
 {
     RCLogNotice("[RCConnection sendDigits]");
-    
+    if (self.state == RCConnectionStateConnected) {
+        [self.sipManager sendDtmfDigits:digits];
+    }
+    else {
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                       code:ERROR_SENDING_DIGITS
+                                                   userInfo:@{ NSLocalizedDescriptionKey: @"Error sending DTMF digits: Invalid RCConnection state" }];
+        [self.delegate connection:self didFailWithError:error];
+    }
 }
 
 - (void)setMuted:(BOOL)isMuted

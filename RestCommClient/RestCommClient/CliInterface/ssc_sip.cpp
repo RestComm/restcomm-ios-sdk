@@ -1507,7 +1507,7 @@ void ssc_i_message(nua_t *nua, ssc_t *ssc,
         nua_handle_destroy(nh);
 }
 
-void ssc_info(ssc_t *ssc, const char *destination, const char *msg)
+void ssc_info(ssc_t *ssc, const char *msg)
 {
     ssc_oper_t *op = ssc_oper_find_call(ssc);
     
@@ -1515,7 +1515,7 @@ void ssc_info(ssc_t *ssc, const char *destination, const char *msg)
         RCLogDebug("%s: sending INFO to %s", ssc->ssc_name, op->op_ident);
         
         nua_info(op->op_handle,
-                 SIPTAG_CONTENT_TYPE_STR("text/plain"),
+                 SIPTAG_CONTENT_TYPE_STR("application/dtmf-relay"),
                  SIPTAG_PAYLOAD_STR(msg),
                  TAG_END());
     }
