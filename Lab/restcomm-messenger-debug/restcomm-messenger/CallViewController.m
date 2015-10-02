@@ -71,9 +71,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.muteAudioButton.hidden = YES;
-    self.muteVideoButton.hidden = YES;
     if (!self.connection || self.connection.state != RCConnectionStateConnected) {
+        self.muteAudioButton.hidden = YES;
+        self.muteVideoButton.hidden = YES;
         self.keypadButton.hidden = YES;
     }
     

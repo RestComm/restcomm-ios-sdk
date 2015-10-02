@@ -128,8 +128,18 @@ int read_pipe[2];
         NSString * address = [string substringToIndex:range.location];
         NSString * sdp = [string substringFromIndex:range.location + 1];
 
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:address sdp:sdp isInitiator:NO withVideo:self.videoAllowed];
+        if (!self.media) {
+            self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+            [self.media connect:address sdp:sdp isInitiator:NO withVideo:self.videoAllowed];
+        }
+        else {
+            // report error
+            NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                        code:ERROR_WEBRTC_ALREADY_INITIALIZED
+                                                    userInfo:@{NSLocalizedDescriptionKey : @"Error: Could not initialize webrtc; already initialized"}];
+            
+            [self.connectionDelegate sipManager:self didSignallingError:error];
+        }
     }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
@@ -190,9 +200,19 @@ int read_pipe[2];
     }
     else if (reply->rc == WEBRTC_SDP_REQUEST) {
         // INVITE has been requested in Sofia, need to initialize WebRTC
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-        [self.media connect:[NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding]
-                        sdp:nil isInitiator:YES withVideo:self.videoAllowed];
+        if (!self.media) {
+            self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+            [self.media connect:[NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding]
+                            sdp:nil isInitiator:YES withVideo:self.videoAllowed];
+        }
+        else {
+            // report error
+            NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                        code:ERROR_WEBRTC_ALREADY_INITIALIZED
+                                                    userInfo:@{NSLocalizedDescriptionKey : @"Error: Could not initialize webrtc; already initialized"}];
+            
+            [self.connectionDelegate sipManager:self didSignallingError:error];
+        }
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         [self.media disconnect];
@@ -437,6 +457,11 @@ ssize_t pipeToSofia(const char * msg, int fd)
 
 - (bool)invite:(NSString*)recipient withVideo:(BOOL)video customHeaders:(NSDictionary*)headers
 {
+    if (self.media) {
+        // media already initialized, cannot continue
+        return false;
+    }
+    
     self.videoAllowed = video;
     NSString* cmd = nil;
     if (headers) {

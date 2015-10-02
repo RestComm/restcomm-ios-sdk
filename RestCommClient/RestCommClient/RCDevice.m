@@ -203,19 +203,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                                                       andParameters:nil];
 
     self.sipManager.connectionDelegate = self.currentConnection;
-    /*
-    self.currentConnection = [[RCConnection alloc] initWithDelegate:delegate andDevice:(RCDevice*)self];
-    self.currentConnection.sipManager = self.sipManager;
-    self.currentConnection.incoming = false;
-    self.currentConnection.state = RCConnectionStatePending;
-     */
     _state = RCDeviceStateBusy;
     BOOL videoAllowed = NO;
     if ([parameters objectForKey:@"video-enabled"]) {
         videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
     };
     // make a call to whoever parameters designate
-    [self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed customHeaders:[parameters objectForKey:@"sip-headers"]];
+    if (![self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed customHeaders:[parameters objectForKey:@"sip-headers"]]) {
+        return nil;
+    }
 
     return self.currentConnection;
 }
@@ -286,7 +282,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)sipManagerDidReceiveCall:(SipManager *)sipManager from:(NSString*)from
 {
     RCLogNotice("[RCDevice sipManagerDidReceiveCall]");
-    //self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>) self.delegate andDevice:(RCDevice*)self];
     self.currentConnection = [[RCConnection alloc] initWithDelegate:(id<RCConnectionDelegate>)self.delegate
                                                           andDevice:(RCDevice*)self
                                                       andSipManager:self.sipManager
@@ -295,11 +290,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                                                       andParameters:[NSDictionary dictionaryWithObject:from forKey:@"from"]];
 
     self.sipManager.connectionDelegate = self.currentConnection;
-     /*
-    self.currentConnection.sipManager = self.sipManager;
-    self.currentConnection.incoming = true;
-    self.currentConnection.state = RCConnectionStateConnecting;
-    */
     _state = RCDeviceStateBusy;
     [self.currentConnection incomingRinging];
     
