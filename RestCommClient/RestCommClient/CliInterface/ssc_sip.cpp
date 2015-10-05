@@ -1856,7 +1856,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
         RCLogDebug("REGISTER %s - registering address to network", op->op_ident);
         nua_register(op->op_handle,
                      TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
-                     NUTAG_M_FEATURES("expires=3600"),
+                     NUTAG_M_FEATURES("expires=100"),  // set to 100 so that it is sent around 40 - 70 secs (this is how sofia does it at nua_dialog_usage_set_refresh):w
                      TAG_NULL());
     }
 
