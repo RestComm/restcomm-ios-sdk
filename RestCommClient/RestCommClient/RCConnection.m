@@ -172,6 +172,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         }
     }
     
+    [self.sipManager disconnectMedia];
+
     self.state = RCConnectionStateDisconnected;
     self.device.state = RCDeviceStateReady;
     if ([self.callingPlayer isPlaying]) {

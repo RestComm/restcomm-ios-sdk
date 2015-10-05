@@ -101,7 +101,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 - (void)dealloc {
     RCLogNotice("[MediaWebRTC dealloc]");
-    [self disconnect];
+    //[self disconnect];
 }
 
 // entry point for WebRTC handling

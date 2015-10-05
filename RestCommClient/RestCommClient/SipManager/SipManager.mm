@@ -163,13 +163,17 @@ int read_pipe[2];
         [self.connectionDelegate sipManagerDidReceiveIncomingCancelled:self];
     }
     else if (reply->rc == OUTGOING_CANCELLED) {
-        [self.media disconnect];
-        self.media = nil;
+        if (self.media) {
+            [self.media disconnect];
+            self.media = nil;
+        }
         [self.connectionDelegate sipManagerDidReceiveOutgoingCancelled:self];
     }
     else if (reply->rc == OUTGOING_DECLINED) {
-        [self.media disconnect];
-        self.media = nil;
+        if (self.media) {
+            [self.media disconnect];
+            self.media = nil;
+        }
         [self.connectionDelegate sipManagerDidReceiveOutgoingDeclined:self];
     }
     else if (reply->rc == REGISTER_SUCCESS) {
@@ -183,8 +187,10 @@ int read_pipe[2];
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == INVITE_ERROR) {
-        [self.media disconnect];
-        self.media = nil;
+        if (self.media) {
+            [self.media disconnect];
+            self.media = nil;
+        }
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                        code:ERROR_SIGNALLING
                                                    userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
@@ -215,8 +221,10 @@ int read_pipe[2];
         }
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
-        [self.media disconnect];
-        self.media = nil;
+        if (self.media) {
+            [self.media disconnect];
+            self.media = nil;
+        }
         [self.connectionDelegate sipManagerDidReceiveBye:self];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
@@ -604,6 +612,18 @@ ssize_t pipeToSofia(const char * msg, int fd)
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
     return true;
+}
+
+- (bool)disconnectMedia
+{
+    if (self.media) {
+        [self.media disconnect];
+        self.media = nil;
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 - (BOOL)getMuted {

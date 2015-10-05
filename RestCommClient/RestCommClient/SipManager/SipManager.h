@@ -44,6 +44,7 @@
 - (bool)shutdown:(BOOL)restart;
 - (bool)cli:(NSString*)cmd;
 - (bool)updateParams:(NSDictionary*)params;
+- (bool)disconnectMedia;
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;

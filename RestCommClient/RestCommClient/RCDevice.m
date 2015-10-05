@@ -188,10 +188,10 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     RCLogNotice("[RCDevice connect: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (self.state != RCDeviceStateReady) {
         if (self.state == RCDeviceStateBusy) {
-            NSLog(@"Error connecting: RCDevice is busy");
+            RCLogError("Error connecting: RCDevice is busy");
         }
         else if (self.state == RCDeviceStateOffline) {
-            NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
+            RCLogError("Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         }
         return nil;
     }
@@ -210,6 +210,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     };
     // make a call to whoever parameters designate
     if (![self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed customHeaders:[parameters objectForKey:@"sip-headers"]]) {
+        RCLogError("Error connecting: connection already ongoing");
         return nil;
     }
 
