@@ -64,6 +64,8 @@
 #include <config.h>
 #endif
 
+#import <vector>
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1820,6 +1822,8 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     ssc_oper_t *op;
     bool registrarless = false;
     
+    //string resolved_registrar = resolveSipUri(registrar);
+
     // update proxy as well
     if (ssc->ssc_nua) {
         if (registrar && strcmp(registrar, "")) {
@@ -2235,6 +2239,34 @@ void ssc_shutdown(ssc_t *ssc)
     RCLogDebug("%s: quitting (this can take some time)", ssc->ssc_name);
     
     nua_shutdown(ssc->ssc_nua);
+}
+
+string resolveSipUri(string uri)
+{
+    string result = "";
+    // resolve manually as Sofia in iOS doesn't work by default (/etc/resolv.conf is not accessible)
+    stringstream ss(uri);
+    string item;
+    vector<string> items;
+    // registrar has the form: sip:dns/ip addr:5080
+    while (std::getline(ss, item, ':')) {
+        items.push_back(item);
+    }
+    if (items.size() != 3) {
+        RCLogError("Error parsing URI: ", uri.c_str());
+        return "";
+    }
+    
+    struct hostent *host_entry = gethostbyname(items[1].c_str());
+    char *resolved = NULL;
+    resolved = inet_ntoa(*((struct in_addr *)host_entry->h_addr_list[0]));
+    if (resolved == NULL) {
+        RCLogError("Error resolving %s", uri.c_str());
+        return "";
+    }
+    
+    string full_uri = items[0] + ":" + resolved + ":" + items[2];
+    return full_uri;
 }
 
 /*

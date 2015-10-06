@@ -170,6 +170,7 @@ void ssc_subscribe(ssc_t *ssc, char *destination);
 void ssc_unsubscribe(ssc_t *ssc, char *destination);
 void ssc_watch(ssc_t *ssc, char *event);
 void ssc_zap(ssc_t *ssc, char *d);
+std::string resolveSipUri(string uri);
 
 void ssc_print_payload(ssc_t *ssc, sip_payload_t const *pl);
 void ssc_print_settings(ssc_t *ssc);
