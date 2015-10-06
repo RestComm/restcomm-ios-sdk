@@ -11,4 +11,6 @@
 @interface Utilities : NSObject
 + (NSString*)usernameFromUri:(NSString*)uri;
 + (NSString*)stringifyDictionary:(NSDictionary*)dictionary;
++ (NSDictionary*)getIPAddresses;
++ (NSString*)getPrimaryIPAddress;
 @end

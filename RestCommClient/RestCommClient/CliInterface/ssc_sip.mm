@@ -181,7 +181,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc_t *ssc;
     string caps_str;
     char *userdomain = NULL;
-    const char *contact = NULL;
+    string contact;
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -210,13 +210,25 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc->ssc_address = su_strdup(home, conf->ssc_aor);
     ssc->ssc_autoanswer = conf->ssc_autoanswer;
     
-    NSDictionary * addresses = [Utilities getIPAddresses];
-    /* note: by default bind to a random port on all interfaces */
-    if (conf->ssc_contact)
-        contact = conf->ssc_contact;
-    else
-        contact = "sip:*:*;transport=tcp";
+    NSString * address = [Utilities getPrimaryIPAddress];
+    if ([address isEqualToString:@""]) {
+        RCLogError("No valid interface to bind to with nua_create()");
+        ssc_destroy(ssc);
+        ssc = NULL;
+    }
     
+    /* note: by default bind to a random port on all interfaces */
+    if (conf->ssc_contact) {
+        contact = conf->ssc_contact;
+    }
+    else {
+        contact = "sip:";
+        contact += [address UTF8String];
+        contact += ":*;transport=tcp";
+    }
+    
+    RCLogNotice("Creating SIP stack -binding to: %s", contact.c_str());
+
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
                               priv_callback, ssc,
@@ -228,8 +240,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      NUTAG_PROXY(conf->ssc_proxy)),
                               TAG_IF(conf->ssc_registrar,
                                      NUTAG_REGISTRAR(conf->ssc_registrar)),
-                              TAG_IF(contact,
-                                     NUTAG_URL(contact)),
+                              TAG_IF(contact.c_str(),
+                                     NUTAG_URL(contact.c_str())),
                               //NUTAG_M_PARAMS("transport=tcp"),
                               TAG_IF(conf->ssc_media_addr,
                                      NUTAG_MEDIA_ADDRESS(conf->ssc_media_addr)),
