@@ -1,29 +1,13 @@
 #!/bin/bash
 #
-# Usage:
-# $ . <sdk> <arch>
+# Build sofia sip library for all architectures and combine all the libs to a universal library
 #
-# Examples:
-# . iphonesimulator i386
+
 function build()
 {
-
-	#SDK="iphoneos"
-	#ARCH="armv7"
-
-	#if [[ $# -ne 2 ]]
-	#then
-	#	echo "Usage: ios.script.bash <sdk> <architecture>"
-	#	exit 1
-	#fi 
-
-	## Setup environment for build
-	#if [[ $1 == "simulator" ]]
-	#then
-	#	SDK="iphonesimulator"
-	#fi
 	SDK=$1
 	ARCH=$2
+
 	echo "--- Building for: $SDK, $ARCH"
 
 	# cleanup previous runs
@@ -43,11 +27,6 @@ function build()
 	then
 		export CC="$(xcrun --sdk $SDK --find clang)"
 		export CXX="$(xcrun --sdk $SDK --find clang++)"
-		#export CC="$(xcrun --sdk $SDK --find gcc)"
-		#export CXX="$(xcrun --sdk $SDK --find g++)"
-		# no longer exist:
-		#export CC=$DEVROOT/usr/bin/gcc
-		#export CXX=$DEVROOT/usr/bin/g++
 	else
 		export CC="$(xcrun --sdk $SDK --find clang)"
 		export CXX="$(xcrun --sdk $SDK --find clang++)"
@@ -70,8 +49,8 @@ function build()
 	if [[ $1 == "iphonesimulator" ]]
 	then
 		# there was no 'ranlib' in simulator DEVROOT, so I used the OSX one and worked
-		export RANLIB="/usr/bin/ranlib"
-		#export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
+		#export RANLIB="/usr/bin/ranlib"
+		export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
 	else
 		export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
 	fi
@@ -83,7 +62,6 @@ function build()
 		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv"
 	fi
 
-	#export ARCH="armv7"
 	export ARCH
 	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/"
 
@@ -94,10 +72,7 @@ function build()
 		CFLAGS=${CFLAGS}" -miphoneos-version-min=7.0"
 	fi
 
-
 	export CFLAGS
-	#export CFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/"
-
 	export CPPFLAGS="${CFLAGS}"
 	export CXXFLAGS="${CFLAGS}"
 
@@ -117,11 +92,8 @@ function build()
 
 
 	echo "--- Configuring"
-   ./configure --host=${ARCH}-apple-darwin
-	#./configure --host=armv7-apple-darwin --prefix=/Users/Antonis/src-pkg/sofia-sip-$2-$1
-   #./configure --host=x86_64-apple-darwin --prefix=/Users/Antonis/src-pkg/sofia-sip-$2-$1
-   #./configure --host=i386-apple-darwin --prefix=/Users/Antonis/src-pkg/sofia-sip-$2-$1 --enable-shared=no --verbose
-
+   #./configure --host=${ARCH}-apple-darwin
+   ./configure --host=arm-apple-darwin
 
 	echo "--- Building"
    #make SOFIA_SILENT=""   # verbose
@@ -134,29 +106,34 @@ function build()
 		echo "--- Error building Sofia SIP"
 		exit 1
 	fi
-   #cp "libmp3lame/.libs/libmp3lame.a" "build/libmp3lame-${PLATFORM}.a"
 }
 
 if [ ! -d "build" ] 
 then
 	mkdir build
 fi
+
 # i386 doesn't work 
 #ARCH="i386"   
 #SDK="iphonesimulator"
 #build $SDK $ARCH
 
-ARCH="x86_64"
-SDK="iphonesimulator"
-build $SDK $ARCH
+#ARCH="x86_64"
+#SDK="iphonesimulator"
+#build $SDK $ARCH
 
-ARCH="armv7"
-SDK="iphoneos"
-build $SDK $ARCH 
+#ARCH="armv7"
+#SDK="iphoneos"
+#build $SDK $ARCH 
 
-ARCH="armv7s"
+#ARCH="armv7s"
+#SDK="iphoneos"
+#build $SDK $ARCH
+
+ARCH="arm64"
 SDK="iphoneos"
 build $SDK $ARCH
 
 echo "--- Creating universal library at build/"
+rm -f build/libsofia-sip-ua.a
 lipo -create build/* -output build/libsofia-sip-ua.a
