@@ -22,38 +22,13 @@ function build()
 
 	export DEVROOT="$(xcrun --sdk $SDK --show-sdk-platform-path)/Developer"
 	export SDKROOT="$(xcrun --sdk $SDK --show-sdk-path)"
-
-	if [[ $1 == "iphonesimulator" ]]
-	then
-		export CC="$(xcrun --sdk $SDK --find clang)"
-		export CXX="$(xcrun --sdk $SDK --find clang++)"
-	else
-		export CC="$(xcrun --sdk $SDK --find clang)"
-		export CXX="$(xcrun --sdk $SDK --find clang++)"
-	fi
-
+	export CC="$(xcrun --sdk $SDK --find clang)"
+	export CXX="$(xcrun --sdk $SDK --find clang++)"
 	export LD="$(xcrun --sdk $SDK --find ld)"
-
-	if [[ $1 == "iphonesimulator" ]]
-	then
-		# there was no 'ar' in simulator DEVROOT, so I used the OSX one and worked
-		#export AR="/usr/bin/ar"
-		export AR="$(xcrun --sdk $SDK --find ar)"
-	else
-		export AR="$(xcrun --sdk $SDK --find ar)"
-	fi
-
+	export AR="$(xcrun --sdk $SDK --find ar)"
 	export AS="$(xcrun --sdk $SDK --find as)"
 	export NM="$(xcrun --sdk $SDK --find nm)"
-
-	if [[ $1 == "iphonesimulator" ]]
-	then
-		# there was no 'ranlib' in simulator DEVROOT, so I used the OSX one and worked
-		#export RANLIB="/usr/bin/ranlib"
-		export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
-	else
-		export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
-	fi
+	export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
 
 	if [[ $1 == "iphonesimulator" ]]
 	then
@@ -92,8 +67,13 @@ function build()
 
 
 	echo "--- Configuring"
-   #./configure --host=${ARCH}-apple-darwin
-   ./configure --host=arm-apple-darwin
+	if [[ $1 != "iphonesimulator" ]]
+	then 
+		# arm64 doesn't work here, although armv7 adn armv7s do. But arm covers us for armv7 and armv7s as well
+   	./configure --host=arm-apple-darwin
+	else
+   	./configure --host=${ARCH}-apple-darwin
+	fi
 
 	echo "--- Building"
    #make SOFIA_SILENT=""   # verbose
@@ -118,17 +98,17 @@ fi
 #SDK="iphonesimulator"
 #build $SDK $ARCH
 
-#ARCH="x86_64"
-#SDK="iphonesimulator"
-#build $SDK $ARCH
+ARCH="x86_64"
+SDK="iphonesimulator"
+build $SDK $ARCH
 
-#ARCH="armv7"
-#SDK="iphoneos"
-#build $SDK $ARCH 
+ARCH="armv7"
+SDK="iphoneos"
+build $SDK $ARCH 
 
-#ARCH="armv7s"
-#SDK="iphoneos"
-#build $SDK $ARCH
+ARCH="armv7s"
+SDK="iphoneos"
+build $SDK $ARCH
 
 ARCH="arm64"
 SDK="iphoneos"

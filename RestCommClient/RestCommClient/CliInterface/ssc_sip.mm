@@ -78,6 +78,7 @@
 #include "ssc_sip.h"
 #include "ssc_oper.h"
 #include "common.h"
+#include "Utilities.h"
 
 /* Globals
  * ------------------- */
@@ -209,6 +210,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc->ssc_address = su_strdup(home, conf->ssc_aor);
     ssc->ssc_autoanswer = conf->ssc_autoanswer;
     
+    NSDictionary * addresses = [Utilities getIPAddresses];
     /* note: by default bind to a random port on all interfaces */
     if (conf->ssc_contact)
         contact = conf->ssc_contact;
