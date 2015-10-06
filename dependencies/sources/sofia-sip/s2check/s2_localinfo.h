@@ -47,7 +47,6 @@ su_localinfo_t *s2_copylocalinfo(su_localinfo_t const *li0);
 int s2_sockaddr_scope(su_sockaddr_t const *su, socklen_t sulen);
 
 void s2_localinfo_ifaces(char const **ifaces);
-void s2_localinfo_teardown(void);
 
 #define S2_LOCALINFO_STUBS(static)					\
   static int su_getlocalinfo(su_localinfo_t const *hints, su_localinfo_t **res)	\

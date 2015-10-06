@@ -16,14 +16,11 @@ file. The instructions are aimed at developers.
 Quick start
 ===========
 
-To build Sofia-SIP::
+To build Sofia-IP::
 
-  sh> ``./autogen.sh`` (if building from a fresh Git checkout)
+  sh> ``./autogen.sh`` (if building from a fresh CVS checkout)
   sh> ``./configure``
   sh> ``make``
-
-Note that autogen.sh expects to have automake 1.9. If using a newer
-automake, generate the GNU autotool files using the command autoreconf.
 
 Autotool notes
 ==============
@@ -50,7 +47,7 @@ Maintainer mode
 ---------------
 
 Sofia-SIP tree is by default configured with automake
-maintainer mode disabled. In other words, Makefiles do not
+maintainer mode disable. In other words, Makefiles do not
 contain rules for recreating or updating configure, Makefiles
 or other autotool-generated files. To update these files,
 you need to run top-level autogen.sh script.
@@ -69,8 +66,8 @@ execture. Therefore, they are run only if the environment variable
 EXPENSIVE_CHECKS has been set. EXPENSIVE_CHECKS is also set by the build
 system if configure option '--enable-expensive-checks' has been used.
 
-On selectes architectures, it is possible to run tests under valgrind.
-Use the make target 'valcheck' for that purpose.
+On hosts with i386 architecture, it is possible to run tests under
+valgrind. Use the make target 'valcheck' for that purpose.
 
 Code-tree layout
 ================

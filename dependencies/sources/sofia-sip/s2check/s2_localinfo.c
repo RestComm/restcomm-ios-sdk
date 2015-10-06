@@ -61,11 +61,6 @@ void s2_localinfo_ifaces(char const **replace_ifaces)
   ifaces = replace_ifaces;
 }
 
-void s2_localinfo_teardown(void)
-{
-  ifaces = default_ifaces;
-}
-
 int
 s2_getlocalinfo(su_localinfo_t const *hints,
 		su_localinfo_t **return_localinfo)

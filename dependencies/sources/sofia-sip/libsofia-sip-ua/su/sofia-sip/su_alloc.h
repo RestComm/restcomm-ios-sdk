@@ -133,7 +133,7 @@ SU_DLL char *su_strndup(su_home_t *home, char const *s, isize_t n)
      __attribute__((__malloc__));
 
 SU_DLL char *su_strcat_all(su_home_t *home, ...)
-     __attribute__((__malloc__, __sentinel__ (0)));
+     __attribute__((__malloc__));
 
 SU_DLL char *su_sprintf(su_home_t *home, char const *fmt, ...)
      __attribute__ ((__malloc__, __format__ (printf, 2, 3)));

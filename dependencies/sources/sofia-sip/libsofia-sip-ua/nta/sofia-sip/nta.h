@@ -198,9 +198,6 @@ SOFIAPUBFUN void nta_leg_bind(nta_leg_t *leg,
 			      nta_request_f *callback,
 			      nta_leg_magic_t *);
 
-/** Get Call-Id */
-SOFIAPUBFUN sip_call_id_t const *nta_leg_get_call_id(nta_leg_t const *leg);
-
 /** Add local tag. */
 SOFIAPUBFUN char const *nta_leg_tag(nta_leg_t *leg, char const *tag);
 

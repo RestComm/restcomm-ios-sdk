@@ -62,8 +62,9 @@ SOFIA_BEGIN_DECLS
 #endif
 
 #define SU_LOG_LEVEL \
-((SU_LOG->log_init) == 0 ? 9 : \
-((SU_LOG->log_init > 1) ? SU_LOG->log_level : su_log_default->log_level))
+((SU_LOG != NULL && SU_LOG->log_init) == 0 ? 9 : \
+((SU_LOG != NULL && SU_LOG->log_init > 1) ? \
+  SU_LOG->log_level : su_log_default->log_level))
 
 #if SU_DEBUG_MAX >= 0
 #ifndef SU_LOG
@@ -85,7 +86,7 @@ SU_DEBUG_DEF(0)
  *
  * @sa su_llog(), su_vllog(), #su_log_t, @ref debug_logs
  */
-#define SU_DEBUG_0(x) (su_debug_0 x)
+#define SU_DEBUG_0(x) (SU_LOG_LEVEL >= 0 ? (su_debug_0 x) : (void)0)
 
 /** Log C library errors. */
 #define SU_LERROR(s) (su_llog(SU_LOG, 1, "%s: %s\n", (s), strerror(errno)))

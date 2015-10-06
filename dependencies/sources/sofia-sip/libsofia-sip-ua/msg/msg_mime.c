@@ -372,7 +372,7 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
   msg_multipart_t *mp = NULL, *all = NULL, **mmp = &all;
   /* Dummy msg object */
   msg_t msg[1] = {{{ SU_HOME_INIT(msg) }}};
-  size_t len, m, blen, prelen;
+  size_t len, m, blen;
   char *boundary, *p, *next, save;
   char const *b, *end;
   msg_param_t param;
@@ -413,8 +413,6 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
     return NULL;
   }
 
-  prelen = b - pl->pl_data;
-
   /* Split multipart into parts */
   for (;;) {
     while (p[0] == ' ')
@@ -435,11 +433,9 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
     if (next != p && next[-1] == '\r')
       next--, m++;
 
-    mp = (msg_multipart_t *)
-      msg_header_alloc(msg_home(msg), msg_multipart_class, 0);
+    mp = (msg_multipart_t *)msg_header_alloc(msg_home(msg), msg_multipart_class, 0);
     if (mp == NULL)
       break;			/* error */
-
     *mmp = mp; mmp = &mp->mp_next;
 
     /* Put delimiter transport-padding CRLF here */
@@ -452,6 +448,9 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
 
     if (next[m] == '-' && next[m + 1] == '-') {
       /* We found close-delimiter */
+      assert(mp);
+      if (!mp)
+	break;			/* error */
       mp->mp_close_delim = (msg_payload_t *)
 	msg_header_alloc(msg_home(msg), msg_payload_class, 0);
       if (!mp->mp_close_delim)
@@ -475,10 +474,7 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
 
   /* Parse each part */
   for (mp = all; mp; mp = mp->mp_next) {
-    msg->m_object = (msg_pub_t *)mp;
-
-    p = mp->mp_data;
-    next = p + mp->mp_len;
+    msg->m_object = (msg_pub_t *)mp; p = mp->mp_data; next = p + mp->mp_len;
 
     if (msg->m_tail)
       mp->mp_common->h_prev = msg->m_tail,
@@ -522,8 +518,7 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
     mp->mp_data = boundary;
     mp->mp_len = (unsigned)blen; /* XXX */
 
-    if (!(mp->mp_payload || mp->mp_separator))
-      continue;
+    assert(mp->mp_payload || mp->mp_separator);
 
     if (mp->mp_close_delim) {
       msg_header_t **tail;
@@ -542,8 +537,7 @@ msg_multipart_t *msg_multipart_parse(su_home_t *home,
   }
 
   msg_fragment_clear(pl->pl_common);
-
-  pl->pl_len = prelen;
+  pl->pl_len = all->mp_data - (char *)pl->pl_data;
 
   su_home_move(home, msg_home(msg)); su_home_deinit(msg_home(msg));
 
@@ -931,23 +925,21 @@ MSG_HEADER_CLASS(msg_, multipart, NULL, "", mp_common, append, msg_multipart);
  *
  * The function msg_q_value() converts q-value string @a q to numeric value
  * in range (0..1000).  Q values are used, for instance, to describe
- * relative priorities of acceptable Content-Types.
+ * relative priorities of registered contacts.
  *
  * @param q q-value string ("1" | "." 1,3DIGIT)
  *
  * @return
  * The function msg_q_value() returns an integer in range 0 .. 1000.
- *
- * @NEW_UNRELEASED
  */
 unsigned msg_q_value(char const *q)
 {
   unsigned value = 0;
 
   if (!q)
-    return 1000;
+    return 500;
   if (q[0] != '0' && q[0] != '.' && q[0] != '1')
-    return 500; /* Garbage... */
+    return 500;
   while (q[0] == '0')
     q++;
   if (q[0] >= '1' && q[0] <= '9')
@@ -955,7 +947,8 @@ unsigned msg_q_value(char const *q)
   if (q[0] == '\0')
     return 0;
   if (q[0] != '.')
-    return 500;    /* Garbage... */
+    /* Garbage... */
+    return 500;
 
   if (q[1] >= '0' && q[1] <= '9') {
     value = (q[1] - '0') * 100;
@@ -1071,33 +1064,30 @@ msg_hclass_t msg_accept_class[] =
 MSG_HEADER_CLASS(msg_, accept, "Accept", "", ac_params, apndlist,
 		 msg_accept, msg_accept);
 
-static issize_t msg_accept_field_d(su_home_t *home, msg_header_t *h, char **ss)
+issize_t msg_accept_d(su_home_t *home, msg_header_t *h, char *s, isize_t slen)
 {
   msg_accept_t *ac = (msg_accept_t *)h;
 
-  if (**ss == '\0') {
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
+
+  if (*s == '\0') {
     /* Empty Accept list is not an error */
     ac->ac_type = ac->ac_subtype = "";
     return 0;
   }
 
   /* "Accept:" #(type/subtyp ; *(parameters))) */
-  if (msg_mediatype_d(ss, &ac->ac_type) == -1)
+  if (msg_mediatype_d(&s, &ac->ac_type) == -1)
     return -1;
-
   if (!(ac->ac_subtype = strchr(ac->ac_type, '/')))
     return -1;
   ac->ac_subtype++;
 
-  if (**ss != ';')
-    return 0;
+  if (*s == ';' && msg_params_d(home, &s, &ac->ac_params) == -1)
+    return -1;
 
-  return msg_params_d(home, ss, &ac->ac_params);
-}
-
-issize_t msg_accept_d(su_home_t *home, msg_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, msg_accept_field_d);
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t msg_accept_e(char b[], isize_t bsiz, msg_header_t const *h, int flags)
@@ -1166,71 +1156,7 @@ int msg_accept_update(msg_common_t *h,
   return 0;
 }
 
-/** Check if the Content-Type is Acceptable.
- *
- * @return Best Accept header field from @a, or NULL if no match.
- *
- * @TODO Content-Type parameters (e.g., charset) are not checked.
- *
- * @NEW_UNRELEASED
- */
-msg_accept_t *msg_accept_match(msg_accept_t const *a,
-			       msg_content_type_t const *c)
-{
-  char const *c_type = NULL, *c_subtype = NULL;
-  msg_accept_t const *found = NULL;
-
-  if (c != NULL)
-    c_type = c->c_type, c_subtype = c->c_subtype;
-  if (c_type == NULL)
-    c_type = "*/*";
-  if (c_subtype == NULL)
-    c_type = "*";
-
-  for (; a; a = a->ac_next) {
-    if (msg_q_value(a->ac_q) == 0 || a->ac_type == NULL)
-      continue;
-
-    if (found == NULL && su_strmatch(a->ac_type, "*/*")) {
-      found = a;
-      continue;
-    }
-
-    if (!su_casenmatch(a->ac_type, c_type, a->ac_subtype - a->ac_type))
-      continue;
-
-    if (su_casematch(c_subtype, a->ac_subtype)) {
-      found = a;
-      break;
-    }
-
-    if (su_strmatch(a->ac_subtype, "*")) {
-      if (found == NULL || su_strmatch(found->ac_type, "*/*"))
-	found = a;
-    }
-  }
-
-  return (msg_accept_t *)found;
-}
-
 /* ====================================================================== */
-
-/** Decode an Accept-* header field. */
-static issize_t msg_accept_any_field_d(su_home_t *home,
-				       msg_header_t *h,
-				       char **ss)
-{
-  msg_accept_any_t *aa = (msg_accept_any_t *)h;
-
-  /* "Accept-*:" 1#(token *(SEMI accept-param)) */
-  if (msg_token_d(ss, &aa->aa_value) == -1)
-    return -1;
-
-  if (**ss != ';')
-    return 0;
-
-  return msg_params_d(home, ss, &aa->aa_params);
-}
 
 /** Decode an Accept-* header. */
 issize_t msg_accept_any_d(su_home_t *home,
@@ -1238,15 +1164,22 @@ issize_t msg_accept_any_d(su_home_t *home,
 			  char *s, isize_t slen)
 {
   /** @relatesalso msg_accept_any_s */
+  msg_accept_any_t *aa = (msg_accept_any_t *)h;
 
-  /* Ignore empty entries (comma-whitespace) */
-  while (*s == ',')
-    s += 1 + span_lws(s + 1);
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
 
   if (*s == '\0')
     return -2;			/* Empty list */
 
-  return msg_parse_header_fields(home, h, s, msg_accept_any_field_d);
+  /* "Accept-*:" 1#(token *(SEMI accept-param)) */
+  if (msg_token_d(&s, &aa->aa_value) == -1)
+    return -1;
+
+  if (*s == ';' && msg_params_d(home, &s, &aa->aa_params) == -1)
+    return -1;
+
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 /** Encode an Accept-* header field. */
@@ -2133,37 +2066,31 @@ MSG_HEADER_CLASS_G(content_transfer_encoding, "Content-Transfer-Encoding",
  * @endcode
  */
 
-static issize_t msg_warning_field_d(su_home_t *home,
-				    msg_header_t *h,
-				    char **ss)
+issize_t msg_warning_d(su_home_t *home, msg_header_t *h, char *s, isize_t slen)
 {
-
   msg_warning_t *w = (msg_warning_t *)h;
   char *text;
 
-  /* Parse protocol */
-  if (!IS_DIGIT(**ss))
-    return -1;
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
 
-  w->w_code = strtoul(*ss, ss, 10);
-  skip_lws(ss);
+  /* Parse protocol */
+  if (!IS_DIGIT(*s))
+    return -1;
+  w->w_code = strtoul(s, &s, 10);
+  skip_lws(&s);
 
   /* Host (and port) */
-  if (msg_hostport_d(ss, &w->w_host, &w->w_port) == -1)
+  if (msg_hostport_d(&s, &w->w_host, &w->w_port) == -1)
     return -1;
-  if (msg_quoted_d(ss, &text) == -1)
+  if (msg_quoted_d(&s, &text) == -1)
     return -1;
   if (msg_unquote(text, text) == NULL)
     return -1;
 
   w->w_text = text;
 
-  return 0;
-}
-
-issize_t msg_warning_d(su_home_t *home, msg_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, msg_warning_field_d);
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t msg_warning_e(char b[], isize_t bsiz, msg_header_t const *h, int f)

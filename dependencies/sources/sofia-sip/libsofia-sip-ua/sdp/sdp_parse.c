@@ -107,12 +107,8 @@ static int parsing_error(sdp_parser_t *p, char const *fmt, ...);
 /** Parse an SDP message.
  *
  * The function sdp_parse() parses an SDP message @a msg of size @a
- * msgsize. If msgsize is -1, the size of message is calculated using
- * strlen().
- *
- * Parsing is done according to the given @a flags.
- *
- * The SDP message may not contain a NUL.
+ * msgsize. Parsing is done according to the given @a flags. The SDP message
+ * may not contain a NUL.
  *
  * The parsing result is stored to an #sdp_session_t structure.
  *
@@ -148,7 +144,7 @@ sdp_parse(su_home_t *home, char const msg[], issize_t msgsize, int flags)
   char *b;
   size_t len;
 
-  if (msg == NULL) {
+  if (msgsize == -1 || msg == NULL) {
     p = su_home_clone(home, sizeof(*p));
     if (p)
       parsing_error(p, "invalid input message");
@@ -157,7 +153,7 @@ sdp_parse(su_home_t *home, char const msg[], issize_t msgsize, int flags)
     return p;
   }
 
-  if (msgsize == -1)
+  if (msgsize == -1 && msg)
     len = strlen(msg);
   else
     len = msgsize;
@@ -166,26 +162,31 @@ sdp_parse(su_home_t *home, char const msg[], issize_t msgsize, int flags)
     len = ISSIZE_MAX;
 
   p = su_home_clone(home, sizeof(*p) + len + 1);
-  if (p == NULL)
-    return (sdp_parser_t*)&no_mem_error;
 
-  b = strncpy((void *)(p + 1), msg, len);
-  b[len] = 0;
+  if (p) {
+    b = strncpy((void *)(p + 1), msg, len);
+    b[len] = 0;
 
-  p->pr_message = b;
-  p->pr_strict = (flags & sdp_f_strict) != 0;
-  p->pr_anynet = (flags & sdp_f_anynet) != 0;
-  p->pr_mode_0000 = (flags & sdp_f_mode_0000) != 0;
-  p->pr_insane = (flags & sdp_f_insane) != 0;
-  p->pr_c_missing = (flags & sdp_f_c_missing) != 0;
-  if (flags & sdp_f_config)
-    p->pr_c_missing = 1, p->pr_config = 1;
-  p->pr_mode_manual = (flags & sdp_f_mode_manual) != 0;
-  p->pr_session_mode = sdp_sendrecv;
+    p->pr_message = b;
+    p->pr_strict = (flags & sdp_f_strict) != 0;
+    p->pr_anynet = (flags & sdp_f_anynet) != 0;
+    p->pr_mode_0000 = (flags & sdp_f_mode_0000) != 0;
+    p->pr_insane = (flags & sdp_f_insane) != 0;
+    p->pr_c_missing = (flags & sdp_f_c_missing) != 0;
+    if (flags & sdp_f_config)
+      p->pr_c_missing = 1, p->pr_config = 1;
+    p->pr_mode_manual = (flags & sdp_f_mode_manual) != 0;
+    p->pr_session_mode = sdp_sendrecv;
 
-  parse_message(p);
+    parse_message(p);
 
-  return p;
+    return p;
+  }
+
+  if (p)
+    sdp_parser_free(p);
+
+  return (sdp_parser_t*)&no_mem_error;
 }
 
 
@@ -818,12 +819,12 @@ static void parse_connection(sdp_parser_t *p, char *r, sdp_connection_t **result
 
   *result = c;
 
-  if (su_casenmatch(r, "IN", 2) && (r[2] == ' ' || r[2] == '\t')) {
+  if (su_casenmatch(r, "IN", 2)) {
     char *s;
 
     /* nettype is internet */
-    token(&r, SPACE TAB, NULL, NULL);
     c->c_nettype = sdp_net_in;
+    s = token(&r, SPACE TAB, NULL, NULL);
 
     /* addrtype */
     s = token(&r, SPACE TAB, NULL, NULL);
@@ -1029,11 +1030,8 @@ static void parse_repeat(sdp_parser_t *p, char *d, sdp_repeat_t **result)
 
     switch (*d) {
     case 'd': case 'D': tt *= 24;
-      /* FALLTHROUGH */
     case 'h': case 'H': tt *= 60;
-      /* FALLTHROUGH */
     case 'm': case 'M': tt *= 60;
-      /* FALLTHROUGH */
     case 's': case 'S': d++;
       break;
     }
@@ -1082,7 +1080,7 @@ static void parse_zone(sdp_parser_t *p, char *r, sdp_zone_t **result)
     if (!(*s == '-' || is_posdigit(*s) || (!STRICT(p) && (*s) == '0')))
       break;
     do { s++; } while (is_digit(*s));
-    if (*s && strchr(STRICT(p) ? "dhms" : "dhmsDHMS", *s))
+    if (*s && strchr("dhms", *s))
       s++;
     N++;
     if (!(i = STRICT(p) ? is_space(*s) : strspn(s, SPACE TAB)))
@@ -1107,13 +1105,10 @@ static void parse_zone(sdp_parser_t *p, char *r, sdp_zone_t **result)
     unsigned long at = strtoul(r, &r, 10);
     long offset = strtol(r, &r, 10);
     switch (*r) {
-    case 'd': case 'D': offset *= 24;
-      /* FALLTHROUGH */
-    case 'h': case 'H': offset *= 60;
-      /* FALLTHROUGH */
-    case 'm': case 'M': offset *= 60;
-      /* FALLTHROUGH */
-    case 's': case 'S': r++;
+    case 'd': offset *= 24;
+    case 'h': offset *= 60;
+    case 'm': offset *= 60;
+    case 's': r++;
       break;
     }
 

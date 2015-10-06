@@ -244,31 +244,6 @@ tag_typedef_t soatag_user_sdp = SDPTAG_TYPEDEF(user_sdp);
  */
 tag_typedef_t soatag_user_sdp_str = STRTAG_TYPEDEF(user_sdp_str);
 
-
-/**@def SOATAG_USER_O_LINE(x)
- *
- * Use address, id and version in the initial o= line from the user SDP
- * o= line.
- *
- * @par Used with
- *    soa_set_params(), soa_get_params(), soa_get_paramlist() \n
- *
- * @par Parameter type
- *    Boolean (int)
- *
- * @par Values
- *    0 - generate address, id and version \n
- *    1 (!= 0) - use address, id and version from o= line
- *
- * Corresponding tag taking reference parameter is SOATAG_USER_O_LINE_REF()
- *
- * @sa SOATAG_USER_SDP()
- *
- * @NEW_UNRELEASED
- */
-tag_typedef_t soatag_user_o_line = BOOLTAG_TYPEDEF(user_o_line);
-
-
 /**@def SOATAG_AF(x)
  *
  * Preferred address family for media.

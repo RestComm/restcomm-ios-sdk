@@ -118,7 +118,7 @@ SOFIAPUBVAR tag_typedef_t soatag_local_sdp_ref;
 SOFIAPUBVAR tag_typedef_t soatag_local_sdp_str;
 #define SOATAG_LOCAL_SDP_STR_REF(x) \
   soatag_local_sdp_str_ref, tag_str_vr(&(x))
-SOFIAPUBVAR tag_typedef_t soatag_local_sdp_str_ref;
+SOFIAPUBVAR tag_typedef_t soatag_session_sdp_str_ref;
 
 #define SOATAG_AF(x)             soatag_af, tag_int_v((x))
 SOFIAPUBVAR tag_typedef_t soatag_af;
@@ -251,11 +251,6 @@ SOFIAPUBVAR tag_typedef_t soatag_delayed_offer_enable;
 
 #define SOATAG_DELAYED_OFFER_ENABLE_REF(x) soatag_delayed_offer_enable_ref, tag_bool_vr(&(x))
 SOFIAPUBVAR tag_typedef_t soatag_delayed_offer_enable_ref;
-
-#define SOATAG_USER_O_LINE(x) soatag_user_o_line, tag_bool_v(x)
-SOFIAPUBVAR tag_typedef_t soatag_user_o_line;
-#define SOATAG_USER_O_LINE_REF(x) soatag_user_o_line_ref, tag_bool_vr(&(x))
-SOFIAPUBVAR tag_typedef_t soatag_user_o_line_ref;
 
 SOFIA_END_DECLS
 

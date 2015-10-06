@@ -110,13 +110,6 @@ SOFIAPUBFUN issize_t msg_extract_payload(msg_t *msg, msg_pub_t *mo,
  * 2) Header processing methods for common headers.
  */
 
-SOFIAPUBFUN issize_t msg_parse_header_fields(su_home_t *home,
-					     msg_header_t *h,
-					     char *s,
-					     int (*parser)(su_home_t *,
-							   msg_header_t *h,
-							   char **s));
-
 SOFIAPUBFUN int msg_firstline_d(char *s, char **ss2, char **ss3);
 
 SOFIAPUBFUN isize_t msg_default_dup_xtra(msg_header_t const *header, isize_t offset);

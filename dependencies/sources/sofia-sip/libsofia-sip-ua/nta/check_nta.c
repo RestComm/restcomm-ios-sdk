@@ -112,7 +112,6 @@ int main(int argc, char *argv[])
   suite_add_tcase(suite, check_nta_client_2_0());
   suite_add_tcase(suite, check_nta_client_2_1());
   suite_add_tcase(suite, check_nta_client_2_2());
-  suite_add_tcase(suite, check_nta_client_2_3());
 
   suite_add_tcase(suite, check_nta_server_3_0());
 
@@ -128,24 +127,6 @@ int main(int argc, char *argv[])
   exit(failed ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
-/* -- Test timeout --------------------------------------------------------- */
-
-void s2_nta_set_tcase_timeout(TCase *tc, int timeout)
-{
-  if (getenv("CHECK_NTA_TIMEOUT")) {
-    char const *env = getenv("CHECK_NTA_TIMEOUT");
-    unsigned long tout;
-
-    if (strcmp(env, "no") == 0)
-      return;
-
-    tout = strtoul(env, NULL, 10);
-    if (tout)
-      timeout = tout;
-  }
-
-  tcase_set_timeout(tc, timeout);
-}
 
 /* -- NTA callbacks -------------------------------------------------------- */
 
@@ -186,7 +167,7 @@ s2_nta_next_event(void)
   for (;;) {
     if (s2->events)
       return s2_nta_remove_event(s2->events);
-    s2_quickstep(s2->root, 1, 50);
+    su_root_step(s2->root, 1);
   }
 }
 
@@ -263,8 +244,7 @@ s2_nta_vwait_for(enum wait_for wait_for0,
       if (!wait_for)
 	return s2_nta_remove_event(e);
     }
-
-    s2_quickstep(s2->root, 1, 50);
+    su_root_step(s2->root, 1);
   }
 }
 

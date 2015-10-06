@@ -206,18 +206,7 @@ static int tport_tls_init_master(tport_primary_t *pri,
 	  TPTAG_TLS_VERIFY_SUBJECTS_REF(tls_subjects),
 	  TAG_END());
 
-  if (path) {
-    if (su_strmatch(path, ":") || su_strmatch(path, "")) {
-      path = NULL;
-
-      ti.policy = tls_policy | (tls_verify ? TPTLS_VERIFY_ALL : 0);
-      ti.verify_depth = tls_depth;
-      ti.verify_date = tls_date;
-      ti.version = tls_version;
-
-      tlspri->tlspri_master = tls_init_master(&ti);
-    }
-  } else {
+  if (!path) {
     homedir = getenv("HOME");
     if (!homedir)
       homedir = "";

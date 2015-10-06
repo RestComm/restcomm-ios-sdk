@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 {
   char buffer[2048];
   int  n;
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   int exitcode = 1;
   FILE *f;
 

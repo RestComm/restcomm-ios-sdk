@@ -301,7 +301,7 @@ enum {
    (h))
 
 /** No header. */
-#define MSG_HEADER_NONE ((msg_header_t *)(intptr_t)-1)
+#define MSG_HEADER_NONE ((msg_header_t *)-1)
 
 SOFIA_END_DECLS
 

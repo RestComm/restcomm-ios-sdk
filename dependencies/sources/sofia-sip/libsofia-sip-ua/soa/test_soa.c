@@ -164,8 +164,6 @@ int test_localinfo_replacement(void)
   TEST(n, 3);
   su_freelocalinfo(res);
 
-  s2_localinfo_teardown();
-
   END();
 }
 /* ========================================================================= */
@@ -2638,7 +2636,6 @@ int test_address_selection(struct context *ctx)
   TEST_VOID(soa_destroy(b));
 #endif
   su_home_deinit(home);
-  s2_localinfo_teardown();
 
   END();
 }

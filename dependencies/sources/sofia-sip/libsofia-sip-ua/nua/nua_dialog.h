@@ -41,10 +41,6 @@
 #include <sofia-sip/nta.h>
 #endif
 
-#ifndef SOA_H
-#include <sofia-sip/soa.h>
-#endif
-
 struct nua_dialog_state
 {
   /** Dialog owner */
@@ -57,8 +53,6 @@ struct nua_dialog_state
   nua_client_request_t   *ds_cr;
   /** Server requests */
   nua_server_request_t *ds_sr;
-
-  soa_session_t *ds_soa;	/**< Media session */
 
   /* Dialog and subscription state */
   unsigned ds_reporting:1;	/**< We are reporting */
@@ -117,7 +111,7 @@ typedef struct {
 			  nua_dialog_state_t const *ds,
 			  sip_t const *sip);
   void (*usage_refresh)(nua_owner_t *, nua_dialog_state_t *ds,
-			nua_dialog_usage_t *du);
+			nua_dialog_usage_t *, sip_time_t now);
   int (*usage_shutdown)(nua_owner_t *, nua_dialog_state_t *ds,
 			nua_dialog_usage_t *);
 } nua_usage_class;
@@ -130,7 +124,7 @@ struct nua_dialog_usage {
   nua_dialog_state_t *du_dialog;
   nua_client_request_t *du_cr;	        /**< Client request bound with usage */
   sip_time_t   du_refquested;	        /**< When refreshed was requested */
-  su_timer_t  *du_refresh_timer;        /**< The timer for refresh, expiration, or retry */
+  sip_time_t   du_refresh;		/**< When to refresh */
 
   unsigned     du_ready:1;	        /**< Established usage */
   unsigned     du_shutdown:1;	        /**< Shutdown in progress */
@@ -199,9 +193,6 @@ int nua_dialog_repeat_shutdown(nua_owner_t *owner,
 
 void nua_dialog_usage_set_refresh(nua_dialog_usage_t *du, unsigned delta);
 
-void nua_dialog_usage_set_refresh_in(nua_dialog_usage_t *du,
-                                     unsigned delta);
-
 void nua_dialog_usage_set_refresh_range(nua_dialog_usage_t *du,
 					unsigned min, unsigned max);
 
@@ -212,7 +203,8 @@ void nua_dialog_usage_reset_refresh(nua_dialog_usage_t *du);
 
 void nua_dialog_usage_refresh(nua_owner_t *owner,
 			      nua_dialog_state_t *ds,
-			      nua_dialog_usage_t *du);
+			      nua_dialog_usage_t *du,
+			      sip_time_t now);
 
 int nua_dialog_usage_shutdown(nua_owner_t *owner,
 			      nua_dialog_state_t *ds,

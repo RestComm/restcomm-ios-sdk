@@ -24,15 +24,19 @@
 
 /**@defgroup su_uniqueid GloballyUniqueIDs
  *
- * Globally unique IDs.
+ * Globally unique IDs and random integers.
  *
- * GloballyUniqueID or #su_guid_t is a 128-bit identifier based on
- * current time and MAC address of the node generating the ID. A new ID
- * is generated each time su_guid_generate() is called. Please note that
- * such IDs are necessarily @b unique if multiple processes are run on
- * the same node.
+ * GloballyUniqueID or #su_guid_t is a 128-bit identifier based on current
+ * time and MAC address of the node generating the ID. A new ID is generated
+ * each time su_guid_generate() is called. Please note that such IDs are @b
+ * not unique if multiple processes are run on the same node.
  *
  * Use su_guid_sprintf() to convert #su_guid_t to printable format.
+ *
+ * The random integers can be generated with functions
+ * - su_randint(),
+ * - su_randmem(), or
+ * - su_random().
  */
 
 /**@ingroup su_uniqueid
@@ -42,18 +46,6 @@
  * @author Pekka Pessi <pessi@research.nokia.com>
  *
  * @date Created: Tue Apr 15 06:31:41 1997 pessi
- */
-
-/**@defgroup su_random
- *
- * Random numbers.
- *
- * The random numbers can be generated with functions
- * - su_randint(),
- * - su_randint64(),
- * - su_random64(),
- * - su_randmem(), or
- * - su_random().
  */
 
 #include "config.h"
@@ -79,7 +71,6 @@ int _getpid(void);
 
 #include "sofia-sip/su.h"
 #include "sofia-sip/su_time.h"
-#include "sofia-sip/su_random.h"
 #include "sofia-sip/su_uniqueid.h"
 
 /* For random number generator */
@@ -226,10 +217,8 @@ sofia_su_uniqueid_destructor(void)
 #endif
 #endif
 
-#define SIZEOF_NODE 6
-
 static
-void init_node(uint8_t node[SIZEOF_NODE])
+void init_node(uint8_t node[6])
 {
 #if HAVE_GETIFADDRS && HAVE_SOCKADDR_LL
   struct ifaddrs *ifa, *results;
@@ -250,7 +239,7 @@ void init_node(uint8_t node[SIZEOF_NODE])
 	continue;
       }
 
-      memcpy(node, sll->sll_addr, SIZEOF_NODE);
+      memcpy(node, sll->sll_addr, 6);
 
       break;
 #endif
@@ -263,11 +252,11 @@ void init_node(uint8_t node[SIZEOF_NODE])
   }
 #endif
 
-  su_randmem(node, SIZEOF_NODE);
+  su_randmem(node, 6);
   node[0] |= 1;			/* "multicast" address */
 }
 
-static unsigned char node[SIZEOF_NODE];
+static unsigned char node[6];
 
 size_t su_node_identifier(void *address, size_t addrlen)
 {
@@ -362,12 +351,6 @@ isize_t su_guid_sprintf(char* buf, size_t len, su_guid_t const *v)
   return su_guid_strlen;
 }
 
-/** Generate a random 64-bit unsigned integer.
- *
- * @return A 64-bit pseudo-random unsigned integer.
- *
- * @ingroup su_random
- */
 uint64_t su_random64(void)
 {
   union state *state = get_state();
@@ -383,15 +366,6 @@ uint64_t su_random64(void)
   }
 }
 
-/** Fill memory with random values.
- *
- * Fill the given memory range with pseudo-random data.
- *
- * @param mem [out] pointer to the beginning of the memory area to be filled
- * @param siz [in] size fo the memory area in bytes
- *
- * @ingroup su_random
- */
 void *su_randmem(void *mem, size_t siz)
 {
   union state *state = get_state();
@@ -418,14 +392,8 @@ void *su_randmem(void *mem, size_t siz)
   return mem;
 }
 
-/**Generate a pseudo-random integer in the range [ln, ub] (inclusive).
- *
- * @param lb [in] lower bound
- * @param ub [in] upper bound
- *
- * @return A pseudo-random integer.
- *
- * @ingroup su_random
+/**
+ * Generate random integer in range [lb, ub] (inclusive)
  */
 int su_randint(int lb, int ub)
 {
@@ -446,36 +414,8 @@ int su_randint(int lb, int ub)
   return (int)rnd + lb;
 }
 
-/** Random 64-bit integer in range [lb, ub] (inclusive).
+/** Get random 32-bit unsigned number.
  *
- * @ingroup su_random
- *
- * @param lb [in] lower bound
- * @param ub [in] upper bound
- *
- * @return A 64-bit pseudo-random integer.
- *
- * @NEW_UNRELEASED
- */
-int64_t su_randint64(int64_t lb, int64_t ub)
-{
-  uint64_t rnd = su_random64();
-  uint64_t modulo = (uint64_t)(ub - lb + 1);
-
-  if (modulo == 0)
-    return (int64_t)rnd;
-
-  while (rnd / modulo == 0xffffFFFFffffFFFFULL / modulo)
-    rnd = su_random64();
-
-  return (int64_t)(rnd % modulo) + lb;
-}
-
-/** Generate a random 32-bit unsigned integer.
- *
- * @return A 32-bit pseudo-random unsigned integer.
- *
- * @ingroup su_random
  */
 uint32_t su_random(void)
 {

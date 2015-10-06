@@ -255,7 +255,7 @@ int tport_udp_init_client(tport_primary_t *pri,
 /** Runtime test making sure MSG_TRUNC work as expected */
 static void tport_check_trunc(tport_t *tp, su_addrinfo_t *ai)
 {
-#if HAVE_MSG_TRUNC && 0		/* We are not using tp_trunc anymore */
+#if HAVE_MSG_TRUNC
   ssize_t n;
   char buffer[2];
   su_sockaddr_t su[1];

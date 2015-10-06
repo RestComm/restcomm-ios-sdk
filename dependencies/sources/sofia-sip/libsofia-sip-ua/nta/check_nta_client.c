@@ -191,7 +191,7 @@ TCase *check_nta_client_2_0(void)
 
   tcase_add_checked_fixture(tc, client_setup, client_teardown);
 
-  s2_nta_set_tcase_timeout(tc, 2);
+  tcase_set_timeout(tc, 2);
 
   tcase_add_test(tc, client_2_0_0);
   tcase_add_test(tc, client_2_0_1);
@@ -412,7 +412,7 @@ TCase *check_nta_client_2_1(void)
 
   tcase_add_checked_fixture(tc, NULL, client_teardown);
 
-  s2_nta_set_tcase_timeout(tc, 2);
+  tcase_set_timeout(tc, 20);
 
   tcase_add_test(tc, client_2_1_0);
   tcase_add_test(tc, client_2_1_1);
@@ -504,233 +504,9 @@ check_nta_client_2_2(void)
 
   tcase_add_checked_fixture(tc, NULL, client_teardown);
 
-  s2_nta_set_tcase_timeout(tc, 2);
+  tcase_set_timeout(tc, 2);
 
   tcase_add_test(tc, client_2_2_0);
-
-  return tc;
-}
-
-/* ------------------------------------------------------------------------- */
-
-static struct dialog *dialog = NULL;
-
-static nta_leg_t *leg;
-
-static void invite_setup(void)
-{
-  dialog = su_home_new(sizeof *dialog);
-
-  fail_unless(dialog != NULL);
-
-  s2_nta_setup("NTA", NULL, TAG_END());
-
-  fail_unless(s2sip->udp.contact != NULL);
-
-  s2_nta_agent_setup(URL_STRING_MAKE("sip:0.0.0.0:*"), NULL, NULL,
-		     NTATAG_UA(1),
-		     TAG_END());
-
-  leg = nta_leg_tcreate(s2->nta, NULL, NULL,
-			SIPTAG_FROM_STR("<sip:client@example.net>"),
-			SIPTAG_TO_STR("<sip:test2.3.1.example.org>"),
-			TAG_END());
-
-  fail_unless(leg != NULL);
-}
-
-static void invite_teardown(void)
-{
-  nta_leg_destroy(leg), leg = NULL;
-
-  client_teardown();
-}
-
-START_TEST(client_2_3_0)
-{
-  nta_outgoing_t *orq;
-  struct message *request, *ack;
-  struct event *response;
-
-  S2_CASE("client-2.3.0", "Basic INVITE transaction",
-	  "Basic INVITE transaction");
-
-  orq = nta_outgoing_tcreate(leg,
-			     s2_nta_orq_callback, NULL, NULL,
-			     SIP_METHOD_INVITE,
-			     (url_string_t *)s2sip->udp.contact->m_url,
-			     TAG_END());
-  fail_unless(orq != NULL);
-
-  request = s2_sip_wait_for_request(SIP_METHOD_INVITE);
-  fail_unless(request != NULL);
-
-  s2_sip_respond_to(request, NULL, SIP_480_TEMPORARILY_UNAVAILABLE, TAG_END());
-  response = s2_nta_wait_for(wait_for_orq, orq,
-			     wait_for_status, 480,
-			     0);
-  fail_unless(response != NULL);
-  ack = s2_sip_wait_for_request(SIP_METHOD_ACK);
-
-  s2_sip_free_message(ack);
-  s2_sip_free_message(request);
-  s2_nta_free_event(response);
-
-  nta_outgoing_destroy(orq);
-}
-END_TEST
-
-START_TEST(client_2_3_1)
-{
-  nta_outgoing_t *orq, *tagged, *prack;
-  struct message *request, *r_prack, *r_ack;
-  sip_t *sip;
-  struct event *response;
-
-  S2_CASE("client-2.3.1", "INVITE with 100rel",
-	  "INVITE with 200rel response and PRACK");
-
-  orq = nta_outgoing_tcreate(leg, s2_nta_orq_callback, NULL, NULL,
-			     SIP_METHOD_INVITE,
-			     (url_string_t *)s2sip->udp.contact->m_url,
-			     SIPTAG_SUPPORTED_STR("100rel"),
-			     TAG_END());
-  fail_unless(orq != NULL);
-
-  request = s2_sip_wait_for_request(SIP_METHOD_INVITE);
-  fail_unless(request != NULL);
-
-  s2_sip_respond_to(request, dialog, SIP_183_SESSION_PROGRESS,
-		    SIPTAG_RSEQ_STR("1"),
-		    SIPTAG_REQUIRE_STR("100rel"),
-		    TAG_END());
-
-  response = s2_nta_wait_for(wait_for_orq, orq,
-			     wait_for_status, 183,
-			     0);
-
-  sip = response->sip;
-  tagged = nta_outgoing_tagged(orq, s2_nta_orq_callback, NULL,
-			       sip->sip_to->a_tag, sip->sip_rseq);
-  fail_unless(tagged != NULL);
-  nta_outgoing_destroy(orq), orq = NULL;
-
-  fail_unless(nta_leg_rtag(leg, sip->sip_to->a_tag) != NULL);
-
-  prack = nta_outgoing_prack(leg, tagged, s2_nta_orq_callback, NULL,
-			     NULL, sip, TAG_END());
-  r_prack = s2_sip_wait_for_request(SIP_METHOD_PRACK);
-  fail_unless(r_prack != NULL);
-  s2_sip_respond_to(r_prack, dialog, SIP_200_OK,
-		    TAG_END());
-  response = s2_nta_wait_for(wait_for_orq, prack,
-			     wait_for_status, 200,
-			     0);
-  fail_unless(response != NULL);
-
-  s2_sip_respond_to(request, dialog, SIP_480_TEMPORARILY_UNAVAILABLE, TAG_END());
-  s2_nta_free_event(response);
-  response = s2_nta_wait_for(wait_for_orq, tagged,
-			     wait_for_status, 480,
-			     0);
-  fail_unless(response != NULL);
-  r_ack = s2_sip_wait_for_request(SIP_METHOD_ACK);
-
-  s2_sip_free_message(r_prack);
-  s2_sip_free_message(r_ack);
-  s2_sip_free_message(request);
-  s2_nta_free_event(response);
-
-  nta_outgoing_destroy(tagged);
-}
-END_TEST
-
-START_TEST(client_2_3_2)
-{
-  nta_outgoing_t *orq, *tagged, *prack;
-  struct message *request, *r_prack, *r_ack;
-  sip_t *sip;
-  struct event *response;
-
-  S2_CASE("client-2.3.2", "INVITE with 100rel",
-	  "Forked INVITE transaction with 100rel");
-
-  orq = nta_outgoing_tcreate(leg, s2_nta_orq_callback, NULL, NULL,
-			     SIP_METHOD_INVITE,
-			     (url_string_t *)s2sip->udp.contact->m_url,
-			     SIPTAG_SUPPORTED_STR("100rel"),
-			     TAG_END());
-  fail_unless(orq != NULL);
-
-  request = s2_sip_wait_for_request(SIP_METHOD_INVITE);
-  fail_unless(request != NULL);
-
-  s2_sip_respond_to(request, dialog, SIP_183_SESSION_PROGRESS,
-		    SIPTAG_RSEQ_STR("1"),
-		    SIPTAG_REQUIRE_STR("100rel"),
-		    TAG_END());
-
-  response = s2_nta_wait_for(wait_for_orq, orq,
-			     wait_for_status, 183,
-			     0);
-
-  sip = response->sip;
-  tagged = nta_outgoing_tagged(orq, s2_nta_orq_callback, NULL,
-			       sip->sip_to->a_tag, sip->sip_rseq);
-  fail_unless(tagged != NULL);
-
-  fail_unless(nta_leg_rtag(leg, sip->sip_to->a_tag) != NULL);
-
-  prack = nta_outgoing_prack(leg, tagged, s2_nta_orq_callback, NULL,
-			     NULL, sip, TAG_END());
-  r_prack = s2_sip_wait_for_request(SIP_METHOD_PRACK);
-  fail_unless(r_prack != NULL);
-  s2_sip_respond_to(r_prack, dialog, SIP_200_OK,
-		    TAG_END());
-  s2_sip_free_message(r_prack);
-
-  response = s2_nta_wait_for(wait_for_orq, prack,
-			     wait_for_status, 200,
-			     0);
-  fail_unless(response != NULL);
-
-  nta_outgoing_destroy(prack);
-
-  s2_sip_respond_to(request, NULL, SIP_480_TEMPORARILY_UNAVAILABLE, TAG_END());
-  s2_nta_free_event(response);
-  response = s2_nta_wait_for(wait_for_orq, orq,
-			     wait_for_status, 480,
-			     0);
-  fail_unless(response != NULL);
-  s2_nta_free_event(response), response = NULL;
-  r_ack = s2_sip_wait_for_request(SIP_METHOD_ACK);
-  s2_sip_free_message(r_ack);
-  nta_outgoing_destroy(orq), orq = NULL;
-  s2_sip_free_message(request);
-
-  /* 408 is eventually received by tagged transaction */
-  response = s2_nta_wait_for(wait_for_orq, tagged,
-			     wait_for_status, 408,
-			     0);
-  fail_unless(response != NULL);
-  nta_outgoing_destroy(tagged);
-
-  s2_nta_free_event(response);
-}
-END_TEST
-
-TCase *
-check_nta_client_2_3(void)
-{
-  TCase *tc = tcase_create("NTA 2.3 - INVITE Client");
-
-  tcase_add_checked_fixture(tc, invite_setup, invite_teardown);
-
-  s2_nta_set_tcase_timeout(tc, 2);
-
-  tcase_add_test(tc, client_2_3_0);
-  tcase_add_test(tc, client_2_3_1);
-  tcase_add_test(tc, client_2_3_2);
 
   return tc;
 }

@@ -143,7 +143,6 @@ int main(int ac, char *av[])
 	case 'm': t += t2 * 60; s++; break;
 	case 's':
 	  s++;
-	  /*FALLTHROUGH*/
 	default:
 	  t += t2;
 	  break;

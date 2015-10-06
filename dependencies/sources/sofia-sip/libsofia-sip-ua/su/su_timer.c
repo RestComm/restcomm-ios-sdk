@@ -33,9 +33,6 @@
 #include "config.h"
 
 #include <sys/types.h>
-
-#if USE_HEAP_TIMER_QUEUE
-
 #include "sofia-sip/heap.h"
 
 typedef union {
@@ -49,21 +46,6 @@ typedef union {
 
 #define SU_TIMER_QUEUE_T su_timer_heap_t
 
-#else /* default rb-tree queue */
-
-#include "sofia-sip/rbtree.h"
-
-struct su_timer_queue_s {
-  struct {
-    struct su_timer_s *first;
-    struct su_timer_s *tree;
-  } *queue;
-};
-
-#define SU_TIMER_QUEUE_T struct su_timer_queue_s
-
-#endif
-
 #include "sofia-sip/su.h"
 #include "su_port.h"
 #include "sofia-sip/su_wait.h"
@@ -76,8 +58,6 @@ struct su_timer_queue_s {
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-
-#define SU_DUR64(d) (1000000 * (su_dur64_t)(d))
 
 /**@ingroup su_wait
  *
@@ -99,8 +79,7 @@ struct su_timer_queue_s {
  *   - su_timer_set(),
  *   - su_timer_set_for_ever(),
  *   - su_timer_run(),
- *   - su_timer_reset(),
- *   - su_timer_latest(), and
+ *   - su_timer_reset(), and
  *   - su_timer_root().
  *
  * @note
@@ -151,12 +130,9 @@ struct su_timer_queue_s {
  *
  * Alternatively, the timer can be @b set for one-time event invocation.
  * When the timer is set, it is given the wakeup function and pointer to
- * context data.
- * @code su_timer_set(timer, timer_wakeup, args);
+ * context data. The actual duration can also be specified using
+ * su_timer_set_at(). @code su_timer_set(timer, timer_wakeup, args);
  * @endcode
- *
- * The duration for one-time invocation can be specified using
- * su_timer_set_interval().
  *
  * When the timer expires, the root event loop calls the wakeup function:
  * @code
@@ -182,28 +158,15 @@ struct su_timer_queue_s {
 
 struct su_timer_s {
   su_task_r       sut_task;	/**< Task reference */
-  su_time64_t     sut_when;	/**< When timer should be waken up next time */
-  su_dur64_t      sut_dur64;	/**< Timer duration */
+  size_t          sut_set;	/**< Timer is set (inserted in heap) */
+  su_time_t       sut_when;	/**< When timer should be waken up next time */
+  su_duration_t   sut_duration;	/**< Timer duration */
   su_timer_f      sut_wakeup;	/**< Function to call when waken up */
   su_timer_arg_t *sut_arg;	/**< Pointer to argument data */
-  unsigned        sut_woken;	/**< Timer has been woken up this many times */
+  unsigned        sut_woken;	/**< Timer has waken up this many times */
 
   unsigned        sut_running:2;/**< Timer is running */
-  unsigned        sut_deferrable:1;/**< Timer is deferrable */
-
-#if USE_HEAP_TIMER_QUEUE
-
-  unsigned        :0;
-  size_t          sut_set;	/**< Timer is set (inserted in heap) */
-
-#else
-
-  unsigned        sut_set:1;	/**< Timer is set (inserted in tree) */
-
-  unsigned        _sut_black:1, :0;
-  su_timer_t     *_sut_dad, *_sut_left, *_sut_right;
-
-#endif
+  unsigned        sut_deferrable:1;/**< Timer can be deferrable */
 };
 
 /** Timer running status */
@@ -215,8 +178,6 @@ enum sut_running {
 
 #define SU_TIMER_IS_SET(sut) ((sut)->sut_set != 0)
 
-#if USE_HEAP_TIMER_QUEUE
-
 HEAP_DECLARE(su_inline, su_timer_queue_t, timers_, su_timer_t *);
 
 su_inline void timers_set(su_timer_t **array, size_t index, su_timer_t *t)
@@ -226,7 +187,10 @@ su_inline void timers_set(su_timer_t **array, size_t index, su_timer_t *t)
 
 su_inline int timers_less(su_timer_t *a, su_timer_t *b)
 {
-  return a->sut_when < b->sut_when;
+  return
+    a->sut_when.tv_sec < b->sut_when.tv_sec ||
+    (a->sut_when.tv_sec == b->sut_when.tv_sec &&
+     a->sut_when.tv_usec < b->sut_when.tv_usec);
 }
 
 su_inline void *timers_alloc(void *argument, void *memory, size_t size)
@@ -242,68 +206,6 @@ su_inline void *timers_alloc(void *argument, void *memory, size_t size)
 HEAP_BODIES(su_inline, su_timer_queue_t, timers_, su_timer_t *,
 	    timers_less, timers_set, timers_alloc, NULL);
 
-#else
-
-/* Define macros for rbtree implementation */
-#define SUT_LEFT(t) ((t)->_sut_left)
-#define SUT_RIGHT(t) ((t)->_sut_right)
-#define SUT_PARENT(t) ((t)->_sut_dad)
-#define SUT_SET_RED(t) ((t)->_sut_black = 0)
-#define SUT_SET_BLACK(t) ((t)->_sut_black = 1)
-#define SUT_IS_RED(t) ((t) && (t)->_sut_black == 0)
-#define SUT_IS_BLACK(t) (!(t) || (t)->_sut_black == 1)
-#define SUT_COPY_COLOR(dst, src) ((dst)->_sut_black = (src)->_sut_black)
-#define SUT_INSERT(t) ((t)->sut_set = 1)
-#define SUT_REMOVE(t) ((t)->_sut_left = NULL, (t)->_sut_right = NULL,	\
-		       (t)->_sut_dad = NULL, (t)->sut_set = 0)
-
-su_inline int sut_cmp(su_timer_t const *a, su_timer_t const *b)
-{
-  if (a->sut_when < b->sut_when)
-    return -1;
-  else if (a->sut_when == b->sut_when)
-    return 0;
-  else
-    return 1;
-}
-
-RBTREE_PROTOS(su_inline, timer, su_timer_t);
-
-RBTREE_BODIES(su_inline, timer, su_timer_t,
-	      SUT_LEFT, SUT_RIGHT, SUT_PARENT,
-	      SUT_IS_RED, SUT_SET_RED,
-	      SUT_IS_BLACK, SUT_SET_BLACK,
-	      SUT_COPY_COLOR, sut_cmp, SUT_INSERT, SUT_REMOVE);
-
-#endif
-
-/**@internal Get current time. */
-su_inline su_time64_t
-su_timer_current(su_timer_t const *t)
-{
-  (void)t;
-
-  return su_now64();
-}
-
-/**@internal Get current time. */
-su_inline su_dur64_t
-su_timer_offset(su_timer_t const *t)
-{
-  return 0;
-}
-
-/**@internal Get current time. */
-su_inline su_timer_t *
-su_timer_queue_first(su_timer_queue_t const *timers)
-{
-#if USE_HEAP_TIMER_QUEUE
-  return timers ? timers_get(timers[0], 1) : NULL;
-#else
-  return timers && timers->queue ? timers->queue->first : NULL;
-#endif
-}
-
 /**@internal Set the timer.
  *
  * @retval 0 when successful (always)
@@ -313,36 +215,20 @@ su_timer_set0(su_timer_queue_t *timers,
 	      su_timer_t *t,
 	      su_timer_f wakeup,
 	      su_wakeup_arg_t *arg,
-	      su_time64_t when,
-	      su_dur64_t offset)
+	      su_time_t when,
+	      su_duration_t offset)
 {
+  int retval;
+
   if (timers == NULL)
     return -1;
-
-#if USE_HEAP_TIMER_QUEUE
 
   if (SU_TIMER_IS_SET(t))
     timers_remove(timers[0], t->sut_set);
 
-#else
-
-  if (SU_TIMER_IS_SET(t)) {
-    if (t == timers->queue->first)
-      timers->queue->first = timer_succ(t);
-    timer_remove(&timers->queue->tree, t);
-  }
-
-#endif
-
   t->sut_wakeup = wakeup;
   t->sut_arg = arg;
-
-  if (when == 0)
-    when = su_timer_current(t);
-
-  t->sut_when = when + offset;
-
-#if USE_HEAP_TIMER_QUEUE
+  t->sut_when = su_time_add(when, offset);
 
   if (timers_is_full(timers[0])) {
     timers_resize(NULL, timers, 0);
@@ -351,18 +237,9 @@ su_timer_set0(su_timer_queue_t *timers,
       return -1;
   }
 
-  return timers_add(timers[0], t);
+  retval = timers_add(timers[0], t); assert(retval == 0);
 
-#else
-
-  timer_append(&timers->queue->tree, t);
-
-  if (timer_prec(t) == NULL)
-    timers->queue->first = t;
-
-  return 0;
-
-#endif
+  return retval;
 }
 
 /**@internal Validate timer @a t and return pointer to per-port timer tree.
@@ -372,7 +249,7 @@ su_timer_set0(su_timer_queue_t *timers,
  */
 static
 su_timer_queue_t *su_timer_queue(su_timer_t const *t,
-				 int use_sut_dur64,
+				 int use_sut_duration,
 				 char const *caller)
 {
   su_timer_queue_t *timers;
@@ -383,7 +260,8 @@ su_timer_queue_t *su_timer_queue(su_timer_t const *t,
     return NULL;
   }
 
-  if (use_sut_dur64 && t->sut_dur64 == 0) {
+  if (use_sut_duration && t->sut_duration == 0) {
+    assert(t->sut_duration > 0);
     SU_DEBUG_1(("%s(%p): %s\n", caller, (void *)t,
 		"timer without default duration"));
     return NULL;
@@ -398,41 +276,14 @@ su_timer_queue_t *su_timer_queue(su_timer_t const *t,
     SU_DEBUG_1(("%s(%p): %s\n", caller, (void *)t, "invalid timer"));
     return NULL;
   }
-
-#if USE_HEAP_TIMER_QUEUE
-
-  if (timers_is_full(timers[0]) && timers_resize(NULL, timers, 0) == -1) {
+  else if (timers_is_full(timers[0]) && timers_resize(NULL, timers, 0) == -1) {
     SU_DEBUG_1(("%s(%p): %s\n", caller, (void *)t, "timer queue failed"));
     return NULL;
   }
 
-#else
-
-  if (timers->queue == NULL) {
-    timers->queue = calloc(1, sizeof *timers->queue);
-    if (timers->queue == NULL)
-      return NULL;
-  }
-
-#endif
-
   return timers;
 }
 
-su_inline void su_timer_dequeue(su_timer_queue_t *timers,
-				su_timer_t *t)
-{
-  if (!SU_TIMER_IS_SET(t))
-    return;
-
-#if USE_HEAP_TIMER_QUEUE
-  timers_remove(timers[0], t->sut_set);
-#else
-  if (t == timers->queue->first)
-    timers->queue->first = timer_succ(t);
-  timer_remove(&timers->queue->tree, t);
-#endif
-}
 
 /**Create a timer.
  *
@@ -452,13 +303,10 @@ su_timer_t *su_timer_create(su_task_r const task, su_duration_t msec)
   if (!su_task_cmp(task, su_task_null))
     return NULL;
 
-  if (msec < 0)
-    return NULL;
-
   retval = su_zalloc(NULL, sizeof(*retval));
   if (retval) {
     su_task_copy(retval->sut_task, task);
-    retval->sut_dur64 = SU_DUR64(msec);
+    retval->sut_duration = msec;
   }
 
   return retval;
@@ -493,19 +341,6 @@ int su_timer_is_set(su_timer_t const *t)
   return t && t->sut_set != 0;
 }
 
-/** Check if the timer is running.
- *
- * @param t pointer to a timer object
- *
- * @return Nonzero if running.
- *
- * @NEW_UNRELEASED
- */
-int su_timer_is_running(su_timer_t const *t)
-{
-  return t && t->sut_running != 0;
-}
-
 /**Return when the timer has been last expired.
  *
  * @param t pointer to a timer object
@@ -521,14 +356,8 @@ int su_timer_is_running(su_timer_t const *t)
 su_time_t su_timer_latest(su_timer_t const *t)
 {
   su_time_t tv = { 0, 0 };
-  su_dur64_t offset;
 
-  if (t == NULL)
-    return tv;
-
-  offset = su_timer_offset(t);
-
-  return su_time64_to_time(t->sut_when + offset);
+  return t ? t->sut_when : tv;
 }
 
 /** Set the timer for the given @a interval.
@@ -549,30 +378,7 @@ int su_timer_set_interval(su_timer_t *t,
 {
   su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_set_interval");
 
-  return su_timer_set0(timers, t, wakeup, arg, 0, SU_DUR64(interval));
-}
-
-/** Set the timer for the given @a interval.
- *
- *  Sets (starts) the given timer to expire after the specified duration.
- *
- * @param t       pointer to the timer object
- * @param wakeup  pointer to the wakeup function
- * @param arg     argument given to the wakeup function
- * @param interval duration in nanoseconds before timer wakeup is called
- *
- * @return 0 if successful, -1 otherwise.
- *
- * @NEW_UNRELEASED
- */
-int su_timer_set_interval64(su_timer_t *t,
-			    su_timer_f wakeup,
-			    su_timer_arg_t *arg,
-			    su_dur64_t interval)
-{
-  su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_set_interval64");
-
-  return su_timer_set0(timers, t, wakeup, arg, 0, interval);
+  return su_timer_set0(timers, t, wakeup, arg, su_now(), interval);
 }
 
 /** Set the timer for the default interval.
@@ -593,43 +399,39 @@ int su_timer_set(su_timer_t *t,
 {
   su_timer_queue_t *timers = su_timer_queue(t, 1, "su_timer_set");
 
-  return su_timer_set0(timers, t, wakeup, arg, 0, t->sut_dur64);
+  return su_timer_set0(timers, t, wakeup, arg, su_now(), t->sut_duration);
 }
 
 /** Set timer at known time.
  *
- * Sets the timer to expire at given time.
+ *  Sets the timer to expire at given time.
  *
  * @param t       pointer to the timer object
  * @param wakeup  pointer to the wakeup function
  * @param arg     argument given to the wakeup function
- * @param at      time structure defining the wakeup time
+ * @param when    time structure defining the wakeup time
  *
  * @return 0 if successful, -1 otherwise.
  */
 int su_timer_set_at(su_timer_t *t,
 		    su_timer_f wakeup,
 		    su_wakeup_arg_t *arg,
-		    su_time_t at)
+		    su_time_t when)
 {
   su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_set_at");
-  su_time64_t when;
-  su_dur64_t offset;
 
-  if (timers == NULL)
-    return -1;
-
-  when = su_time_to_time64(at);
-  offset = -su_timer_offset(t);
-
-  return su_timer_set0(timers, t, wakeup, arg, when, offset);
+  return su_timer_set0(timers, t, wakeup, arg, when, 0);
 }
 
 /** Set the timer for regular intervals.
  *
- * Run the given timer continuously, call wakeup function repeately in
- * the default interval. If a wakeup call is latye or missed, timer
- * tries to make it up.
+ * Run the given timer continuously, call wakeup function repeately in the
+ * default interval. If a wakeup call is missed, try to make it up (in other
+ * words, this kind of timer fails miserably if time is adjusted and it
+ * should really use /proc/uptime instead of gettimeofday()).
+ *
+ * While a continously running timer is active it @b must @b not @b be @b
+ * set using su_timer_set() or su_timer_set_at().
  *
  * The timer must have an non-zero default interval.
  *
@@ -651,14 +453,16 @@ int su_timer_run(su_timer_t *t,
   t->sut_running = run_at_intervals;
   t->sut_woken = 0;
 
-  return su_timer_set0(timers, t, wakeup, arg, 0, t->sut_dur64);
+  return su_timer_set0(timers, t, wakeup, arg, su_now(), t->sut_duration);
 }
 
 /**Set the timer for regular intervals.
  *
- * Run the given timer continuously, call wakeup function repeately in
- * the default interval. Unlike su_timer_run(), set-for-ever timer does
- * not try to catchup missed callbacks.
+ * Run the given timer continuously, call wakeup function repeately in the
+ * default interval. While a continously running timer is active it @b must
+ * @b not @b be @b set using su_timer_set() or su_timer_set_at(). Unlike
+ * su_timer_run(), set for ever timer does not try to catchup missed
+ * callbacks.
  *
  * The timer must have an non-zero default interval.
  *
@@ -680,7 +484,7 @@ int su_timer_set_for_ever(su_timer_t *t,
   t->sut_running = run_for_ever;
   t->sut_woken = 0;
 
-  return su_timer_set0(timers, t, wakeup, arg, 0, t->sut_dur64);
+  return su_timer_set0(timers, t, wakeup, arg, su_now(), t->sut_duration);
 }
 
 /**Reset the timer.
@@ -693,130 +497,19 @@ int su_timer_set_for_ever(su_timer_t *t,
  */
 int su_timer_reset(su_timer_t *t)
 {
-  su_timer_queue_t *timers;
+  su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_reset");
 
-  if (t == NULL)
-    return -1;
-
-  timers = su_timer_queue(t, 0, "su_timer_reset");
   if (timers == NULL)
     return -1;
 
-  su_timer_dequeue(timers, t);
+  if (SU_TIMER_IS_SET(t))
+    timers_remove(timers[0], t->sut_set);
 
   t->sut_wakeup = NULL;
   t->sut_arg = NULL;
   t->sut_running = reset;
 
   return 0;
-}
-
-/** @internal Expire one timer. */
-static int
-expire_one(su_timer_queue_t *timers, su_timer_t *t, su_time64_t now)
-{
-  su_timer_f f;
-
-  f = t->sut_wakeup; t->sut_wakeup = NULL;
-  assert(f);
-
-  if (!t->sut_running) {
-    t->sut_when = now;
-
-    f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg);
-
-    return 1;
-  }
-
-  if (t->sut_running == run_for_ever) {
-    t->sut_woken++;
-    t->sut_when = now;
-
-    f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg);
-
-    if (t->sut_running == run_for_ever && t->sut_set == 0)
-      su_timer_set0(timers, t, f, t->sut_arg, now, t->sut_dur64);
-
-    return 1;
-  } else {
-    int n;
-
-    for (n = 0;
-	 t->sut_running == run_at_intervals &&
-	   t->sut_set == 0 &&
-	   t->sut_dur64 > 0;
-	 n++) {
-      if (t->sut_when > now) {
-	su_timer_set0(timers, t, f, t->sut_arg, t->sut_when, 0);
-	break;
-      }
-      t->sut_when += t->sut_dur64;
-      t->sut_woken++;
-      f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg);
-    }
-
-    return n;
-  }
-}
-
-/** @internal Check for expired timers in queue.
- *
- * Remove and executes expired timers from the queue.
- *
- * @param timers   pointer to the timer queue
- * @param until_wait maximum number of timers to expire at one run
- *
- * @return The number of expired timers.
- *
- * @NEW_UNRELEASED
- */
-int
-su_timer_queue_expire(su_timer_queue_t *timers, int until_wait)
-{
-  su_timer_t *t;
-  int n;
-  su_time64_t when;
-
-  t = su_timer_queue_first(timers);
-  if (t == NULL)
-    return 0;
-
-  when = su_timer_current(t);
-
-#if USE_HEAP_TIMER_QUEUE
-  while ((t = timers_get(timers[0], 1))) {
-    if (t->sut_when > when)
-      break;
-
-    timers_remove(timers[0], 1);
-
-    n += expire_one(timers, t, when);
-
-    if (until_wait <= n)
-      break;
-  }
-
-#else
-
-  for (n = 0; timers->queue->first;) {
-    t = timers->queue->first;
-
-    if (t->sut_when > when)
-      break;
-
-    timers->queue->first = timer_succ(t);
-
-    timer_remove(&timers->queue->tree, t);
-
-    n += expire_one(timers, t, when);
-
-    if (until_wait <= n)
-      break;
-  }
-
-#endif
-
-  return n;
 }
 
 /** @internal Check for expired timers in queue.
@@ -827,64 +520,91 @@ su_timer_queue_expire(su_timer_queue_t *timers, int until_wait)
  *
  * @param timers   pointer to the timer queue
  * @param timeout  timeout in milliseconds [IN/OUT]
- * @param now      current timestamp (ignored)
+ * @param now      current timestamp
  *
  * @return
  * The number of expired timers.
  */
-int su_timer_expire(su_timer_queue_t *timers,
+int su_timer_expire(su_timer_queue_t * const timers,
 		    su_duration_t *timeout,
 		    su_time_t now)
 {
-  int n = su_timer_queue_expire(timers, INT_MAX);
+  su_timer_t *t;
+  su_timer_f f;
+  int n = 0;
 
-  if (timeout != NULL) {
-    su_duration_t d = su_timer_queue_timeout(timers);
+  if (timers_used(timers[0]) == 0)
+    return 0;
 
-    if (d < SU_DURATION_MAX && (d < *timeout || *timeout < 0))
-      *timeout = d;
+  while ((t = timers_get(timers[0], 1))) {
+    if (SU_TIME_CMP(t->sut_when, now) > 0) {
+      su_duration_t at = su_duration(t->sut_when, now);
+
+      if (at < *timeout || *timeout < 0)
+	*timeout = at;
+
+      break;
+    }
+
+    timers_remove(timers[0], 1);
+
+    f = t->sut_wakeup; t->sut_wakeup = NULL;
+    assert(f);
+
+    if (t->sut_running == run_at_intervals) {
+      while (t->sut_running == run_at_intervals &&
+	     t->sut_set == 0 &&
+	     t->sut_duration > 0) {
+	if (su_time_diff(t->sut_when, now) > 0) {
+	  su_timer_set0(timers, t, f, t->sut_arg, t->sut_when, 0);
+	  break;
+	}
+	t->sut_when = su_time_add(t->sut_when, t->sut_duration);
+	t->sut_woken++;
+	f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg), n++;
+      }
+    }
+    else if (t->sut_running == run_for_ever) {
+      t->sut_woken++;
+      t->sut_when = now;
+      f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg), n++;
+      if (t->sut_running == run_for_ever && t->sut_set == 0)
+	su_timer_set0(timers, t, f, t->sut_arg, now, t->sut_duration);
+    }
+    else {
+      t->sut_when = now;
+      f(su_root_magic(su_task_root(t->sut_task)), t, t->sut_arg); n++;
+    }
   }
 
   return n;
 }
 
-/** Calculate duration in milliseconds until next timer expires.
- *
- * @NEW_UNRELEASED
- */
-su_duration_t
-su_timer_queue_timeout(su_timer_queue_t const *timers)
-{
-  su_timer_t const *t = su_timer_queue_first(timers);
-  su_time64_t next, now;
-
-  if (t == NULL)
-    return SU_DURATION_MAX;
-
-  next = t->sut_when;
-  now = su_timer_current(t);
-
-  if (next < now)
-    return 0;
-
-  if (next > now + 1000000 * (su_dur64_t)SU_DURATION_MAX)
-    return SU_DURATION_MAX;
-
-  return (su_duration_t)((next - now) / 1000000);
-}
 
 /** Calculate duration in milliseconds until next timer expires. */
-su_duration_t
-su_timer_next_expires(su_timer_queue_t const *timers, su_time_t now)
+su_duration_t su_timer_next_expires(su_timer_queue_t const *timers,
+				    su_time_t now)
 {
-  return su_timer_queue_timeout(timers);
+  su_duration_t next = SU_DURATION_MAX;
+
+  su_timer_t const *t;
+
+  t = timers ? timers_get(timers[0], 1) : NULL;
+
+  if (t) {
+    next = su_duration(t->sut_when, now);
+    if (next < 0)
+      next = 0;
+  }
+
+  return next;
 }
 
 /**
  * Resets and frees all timers belonging to a task.
  *
- * Resets and frees all timers belonging to the specified task in the
- * queue.
+ * The function su_timer_destroy_all() resets and frees all timers belonging
+ * to the specified task in the queue.
  *
  * @param timers   pointer to the timers
  * @param task     task owning the timers
@@ -893,9 +613,11 @@ su_timer_next_expires(su_timer_queue_t const *timers, su_time_t now)
  */
 int su_timer_reset_all(su_timer_queue_t *timers, su_task_r task)
 {
-#if USE_HEAP_TIMER_QUEUE
-  int n = 0;
   size_t i;
+  int n = 0;
+
+  if (!timers)
+    return 0;
 
   timers_sort(timers[0]);
 
@@ -907,8 +629,6 @@ int su_timer_reset_all(su_timer_queue_t *timers, su_task_r task)
 
     timers_remove(timers[0], i);
 
-    su_task_deinit(t->sut_task);
-
     su_free(NULL, t);
     n++;
   }
@@ -917,41 +637,6 @@ int su_timer_reset_all(su_timer_queue_t *timers, su_task_r task)
     free(timers->private), timers->private = NULL;
 
   return n;
-#else
-  int n = 0;
-  su_timer_t *t, *succ, *all = NULL;
-
-  if (timers == NULL || timers->queue == NULL)
-    return 0;
-
-  for (t = timers->queue->first; t; t = succ) {
-    succ = timer_succ(t);
-
-    if (su_task_cmp(task, t->sut_task))
-      continue;
-
-    timer_remove(&timers->queue->tree, t);
-
-    t->_sut_right = all, all = t;
-
-    n++;
-  }
-
-  for (t = all; t; t = succ) {
-    succ = t->_sut_right;
-
-    su_task_deinit(t->sut_task);
-
-    su_free(NULL, t);
-  }
-
-  if (timers->queue->tree != NULL)
-    timers->queue->first = timer_first(timers->queue->tree);
-  else
-    free(timers->queue), timers->queue = NULL;
-
-  return n;
-#endif
 }
 
 /** Get the root object owning the timer.
@@ -988,32 +673,10 @@ su_root_t *su_timer_root(su_timer_t const *t)
  */
 int su_timer_deferrable(su_timer_t *t, int value)
 {
-  int live_timer;
-
   if (t == NULL || su_task_deferrable(t->sut_task) == NULL)
     return errno = EINVAL, -1;
 
-  value = value != 0;
-
-  /* Check for fast path: the value is unchanged */
-  if (t->sut_deferrable == value)
-    return 0;
-
-  live_timer = SU_TIMER_IS_SET(t);
-
-  /* If the timer is live, remove it from the old queue */
-  if (live_timer) {
-    su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_deferrable");
-    su_timer_dequeue(timers, t);
-  }
-
-  t->sut_deferrable = value;
-
-  /* If the timer is live, insert it into the proper queue */
-  if (live_timer) {
-    su_timer_queue_t *timers = su_timer_queue(t, 0, "su_timer_deferrable");
-    return su_timer_set0(timers, t, t->sut_wakeup, t->sut_arg, t->sut_when, 0);
-  }
-
+  t->sut_deferrable = value != 0;
+ 
   return 0;
 }

@@ -113,7 +113,6 @@ struct outbound {
    *   up if OPTIONS probe fails.
    */
   unsigned ob_once_validated:1;
-  unsigned ob_validate_timed_out:1;
 
   unsigned ob_proxy_override:1;	/**< Override stack default proxy */
   unsigned :0;
@@ -135,7 +134,6 @@ struct outbound {
   void *ob_stun;		/**< Stun context */
   void *ob_upnp;		/**< UPnP context  */
 
-  /** Keepalive information */
   struct {
     char *sipstun;		/**< Stun server usable for keep-alives */
     unsigned interval;		/**< Interval. */
@@ -145,7 +143,7 @@ struct outbound {
     auth_client_t *auc[1];	/**< Authenticator for OPTIONS */
     /** Progress of registration validation */
     unsigned validating:1, validated:1,:0;
-  } ob_keepalive;
+  } ob_keepalive;		/**< Keepalive informatio */
 };
 
 static
@@ -689,16 +687,10 @@ void outbound_start_keepalive(outbound_t *ob,
        /* Otherwise, only if requested */
        : ob->ob_prefs.okeepalive > 0))
     interval = ob->ob_prefs.interval;
-
   need_to_validate = ob->ob_prefs.validate && !ob->ob_validated;
 
   if (!register_transaction ||
-      !(need_to_validate || interval != 0) ||
-      /*
-       * Never validated, but OPTIONS timed out
-       * => retry only if application retries REGISTER
-       */
-      ob->ob_validate_timed_out) {
+      !(need_to_validate || interval != 0)) {
     outbound_stop_keepalive(ob);
     return;
   }
@@ -831,8 +823,7 @@ static int keepalive_options(outbound_t *ob)
   if (ob->ob_keepalive.orq)
     return 0;
 
-  if (ob->ob_prefs.validate && ob->ob_registered && !ob->ob_validated
-      && !ob->ob_validate_timed_out)
+  if (ob->ob_prefs.validate && ob->ob_registered && !ob->ob_validated)
     return keepalive_options_with_registration_probe(ob);
 
   req = msg_copy(ob->ob_keepalive.msg);
@@ -952,16 +943,12 @@ static int process_response_to_keepalive_options(outbound_t *ob,
 	loglevel = 99;		/* only once */
       ob->ob_validated = ob->ob_once_validated = 1;
     }
-    else if (status == 408) {
-      loglevel = 3, failed = 1;
-      ob->ob_validate_timed_out = !ob->ob_once_validated;
-    }
     else if (status == 401 || status == 407 || status == 403)
       loglevel = 5, failed = 1;
     else
       loglevel = 3, failed = 1;
 
-    if (loglevel <= SU_LOG->log_level) {
+    if (loglevel >= SU_LOG->log_level) {
       sip_contact_t const *m = ob->ob_rcontact;
 
       if  (m)
@@ -986,7 +973,6 @@ static int process_response_to_keepalive_options(outbound_t *ob,
   }
   else if (status == 408) {
     SU_DEBUG_3(("outbound(%p): keepalive timeout\n", (void *)ob->ob_owner));
-    outbound_stop_keepalive(ob);
     ob->ob_oo->oo_keepalive_error(ob->ob_owner, ob, status, phrase, TAG_END());
     return 0;
   }

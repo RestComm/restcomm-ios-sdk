@@ -475,7 +475,7 @@ ssize_t su_recv(su_socket_t s, void *buffer, size_t length, int flags)
 ssize_t su_recvfrom(su_socket_t s, void *buffer, size_t length, int flags,
 		    su_sockaddr_t *from, socklen_t *fromlen)
 {
-  int retval, ilen = 0;
+  int retval, ilen;
 
   if (fromlen)
     ilen = *fromlen;

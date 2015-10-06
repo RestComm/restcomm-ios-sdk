@@ -551,7 +551,7 @@ sip_contact_t *sip_contact_immunize(su_home_t *home, sip_contact_t const *m)
  * @retval 1000 if contact is immune to caller preferences
  * @retval 0..1000 reflecting @RFC3841 score in 0.000 - 1.000.
  *
- * @sa msg_q_value(),
+ * @sa sip_q_value(),
  * sip_contact_accept(), sip_contact_reject(), sip_contact_is_immune(),
  * sip_contact_immunize(), sip_is_callerpref(), sip_prefs_matching(),
  * @RFC3841, @AcceptContact, @RejectContact, @Contact
@@ -592,7 +592,7 @@ int sip_contact_score(sip_contact_t const *m,
     }
 
     if (S > 0 && N > 0)
-      S_total += msg_q_value(ac->cp_q) * (scale * S / N + (2 * S >= N));
+      S_total += sip_q_value(ac->cp_q) * (scale * S / N + (2 * S >= N));
   }
 
   if (!M)

@@ -47,10 +47,10 @@ SU_DLL su_strlst_t *su_strlst_create(su_home_t *home)
 SU_DLL void su_strlst_destroy(su_strlst_t *);
 
 SU_DLL su_strlst_t *su_strlst_create_with(su_home_t *, char const *, ...)
-     __attribute__((__malloc__, __sentinel__(0)));
+     __attribute__((__malloc__));
 
 SU_DLL su_strlst_t *su_strlst_create_with_dup(su_home_t *, char const *, ...)
-     __attribute__((__malloc__, __sentinel__(0)));
+     __attribute__((__malloc__));
 
 SU_DLL su_strlst_t *su_strlst_vcreate_with(su_home_t *,
 					   char const *,
@@ -75,8 +75,7 @@ SU_DLL char *su_strlst_dup_append(su_strlst_t *, char const *str);
 SU_DLL char const *su_strlst_append(su_strlst_t *, char const *str);
 
 /** Append a formatted string to the list. */
-SU_DLL char const *su_slprintf(su_strlst_t *self, char const *fmt, ...)
-      __attribute__ ((__format__ (printf, 2, 3)));
+SU_DLL char const *su_slprintf(su_strlst_t *self, char const *fmt, ...);
 
 /** Append a formatted string to the list. */
 SU_DLL char const *su_slvprintf(su_strlst_t *self, char const *fmt, va_list ap);

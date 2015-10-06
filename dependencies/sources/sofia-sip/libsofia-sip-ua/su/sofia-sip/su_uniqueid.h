@@ -42,10 +42,6 @@
 #include <sofia-sip/su_types.h>
 #endif
 
-#ifndef SOFIA_SIP_SU_RANDOM_H
-#include <sofia-sip/su_random.h>
-#endif
-
 SOFIA_BEGIN_DECLS
 
 /** Globally unique identifier type. */
@@ -97,6 +93,31 @@ enum {
   /** Length of guid in hex format */
   su_guid_strlen = 8 + 5 + 5 + 5 + 13
 };
+
+/** Random integer in range [lb, ub] (inclusive).
+ *
+ * The function randint() generates a pseudo-random integer in the range
+ * [ln, ub] (inclusive).
+ *
+ * @param lb [in] lower bound
+ * @param ub [in] upper bound
+ *
+ * @return
+* The function randint() returns a pseudo-random integer.
+ */
+SOFIAPUBFUN int su_randint(int lb, int ub);
+
+/** Fill memory with random values.
+ *
+ * The function randmem() fills the given memory range with pseudo-random data.
+ *
+ * @param mem [out] pointer to the beginning of the memory area to be filled
+ * @param siz [in] size fo the memory area in bytes
+ */
+SOFIAPUBFUN void *su_randmem(void *mem, size_t siz);
+
+/** Generate a random 32-bit integer. */
+SOFIAPUBFUN uint32_t su_random(void);
 
 SOFIA_END_DECLS
 

@@ -190,46 +190,43 @@ size_t span_attribute_value(char *s)
   return n;
 }
 
-static issize_t
-sip_caller_prefs_field_d(su_home_t *home, sip_header_t *h, char **ss)
+static
+issize_t sip_caller_prefs_d(su_home_t *home, sip_header_t *h,
+			    char *s, isize_t slen)
 {
   sip_caller_prefs_t *cp = (sip_caller_prefs_t *)h;
   url_t url[1];
   char const *ignore = NULL;
   int kludge = 0;
 
-  if (su_strnmatch(*ss, "*,", 2)) {
-    /* Kludge: support PoC IS spec with a typo... */
-    (*ss)[1] = ';', kludge = 0;
-  }
-  else if (**ss != '*' && **ss != '<') {
-    /* Kludge: missing URL -  */
-    size_t n = span_attribute_value(*ss);
+  assert(h);
 
-    if (n > 0) {
-      char end = (*ss)[n];
-      kludge = end == '\0' || end == ',' || end == ';';
-    }
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
+
+  /* Kludge: support PoC IS spec with a typo... */
+  if (su_casenmatch(s, "*,", 2))
+    s[1] = ';',  kludge = 0;
+  else if (s[0] != '*' && s[0] != '<') {
+    /* Kludge: missing URL -  */
+    size_t n = span_attribute_value(s);
+    kludge = n > 0 && (s[n] == '\0' || s[n] == ',' || s[n] == ';');
   }
 
   if (kludge) {
-    return msg_any_list_d(home, ss, (msg_param_t **)&cp->cp_params,
-			  msg_attribute_value_scanner, ';');
+    if (msg_any_list_d(home, &s, (msg_param_t **)&cp->cp_params,
+		       msg_attribute_value_scanner, ';') == -1)
+      return -1;
   }
   /* Parse params (and ignore display name and url) */
-  else {
-    return sip_name_addr_d(home, ss, &ignore, url, &cp->cp_params, NULL);
+  else if (sip_name_addr_d(home, &s, &ignore, url, &cp->cp_params, NULL)
+	   == -1)
+    return -1;
+  /* Be liberal... */
+  /* if (url->url_type != url_any)
+     return -1; */
 
-    /* Be liberal... */
-    /* if (url->url_type != url_any)
-       return -1; */
-  }
-}
-
-static issize_t
-sip_caller_prefs_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_caller_prefs_field_d);
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 static

@@ -1,7 +1,7 @@
 /*
  * This file is part of the Sofia-SIP package
  *
- * Copyright (C) 2005,2011 Nokia Corporation.
+ * Copyright (C) 2005 Nokia Corporation.
  *
  * Contact: Pekka Pessi <pekka.pessi@nokia.com>
  *
@@ -1207,8 +1207,6 @@ int test_mime(void)
     "GET /a-life HTTP/1.1" CRLF
     "Accept: text/html;level=4;q=1" CRLF
     "Accept: text / plain;q=0.9" CRLF
-    "Accept: text / calendar;q=0.0" CRLF
-    "Accept: text/*, */*" CRLF
     "Accept-Charset: *;q=0.1, iso-latin-1, utf-8;q=0.9" CRLF
     "Accept-Encoding: gzip;q=0.9, deflate" CRLF
     "Accept-Encoding: , identity ," CRLF
@@ -1288,32 +1286,6 @@ int test_mime(void)
 
   TEST_1(aa = tst->msg_accept_charset);
   TEST_S(aa->aa_value, "*");   TEST_S(aa->aa_q, "0.1");
-
-  {
-    msg_content_type_t *c = msg_content_type_make(home, "text/plain");
-    msg_accept_t *ac;
-
-    TEST_1(c != NULL);
-
-    ac = msg_accept_match(tst->msg_accept, c);
-    TEST_1(ac != NULL);
-    TEST_S(ac->ac_type, "text/plain");
-
-    ac = msg_accept_match(ac->ac_next, c);
-    TEST_1(ac != NULL);
-    TEST_S(ac->ac_type, "text/*");
-
-    ac = msg_accept_match(ac->ac_next, c);
-    TEST_1(ac != NULL);
-    TEST_S(ac->ac_type, "*/*");
-
-    su_free(home, c);
-
-    c = msg_content_type_make(home, "text/calendar");
-    ac = msg_accept_match(tst->msg_accept, c);
-    TEST_1(ac != NULL);
-    TEST_S(ac->ac_type, "text/*");
-  }
 
   mp = msg_multipart_parse(home, tst->msg_content_type, tst->msg_payload);
 

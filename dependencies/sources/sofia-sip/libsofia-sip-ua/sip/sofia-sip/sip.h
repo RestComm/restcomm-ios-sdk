@@ -81,10 +81,10 @@ typedef enum {
 #define SIP_METHOD_PUBLISH    sip_method_publish, "PUBLISH"
 
 /** Magic pointer value - never valid for SIP headers. @HI */
-#define SIP_NONE ((void const *)(intptr_t)-1)
+#define SIP_NONE ((void const *)-1L)
 
 /** SIP protocol identifier @HIDE */
-#define SIP_PROTOCOL_TAG ((void *)(uintptr_t)0x53495020) /* 'SIP ' */
+#define SIP_PROTOCOL_TAG   ((void *)0x53495020)	/* 'SIP'20 */
 
 enum {
   /** Default port for SIP as integer */

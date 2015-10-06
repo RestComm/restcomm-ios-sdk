@@ -56,8 +56,7 @@
 #include <sofia-sip/su_string.h>
 #include <sofia-sip/su_errno.h>
 
-#define NONE ((void *)(intptr_t)-1)
-
+#define NONE ((void *)-1)
 #define XXX assert(!"implemented")
 
 typedef unsigned longlong ull;
@@ -403,7 +402,7 @@ int soa_set_params(soa_session_t *ss, tag_type_t tag, tag_value_t value, ...)
 	      ss ? ss->ss_actions->soa_name : "", (void *)ss));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   ta_start(ta, tag, value);
 
@@ -453,7 +452,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
   int rtp_mismatch;
   int srtp_enable, srtp_confidentiality, srtp_integrity;
   int delayed_offer_enable;
-  int user_o_line;
 
   af = ss->ss_af;
 
@@ -469,7 +467,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
   srtp_integrity = ss->ss_srtp_integrity;
 
   delayed_offer_enable = ss->ss_delayed_offer_enable;
-  user_o_line = ss->ss_user_o_line;
 
   caps_sdp = user_sdp = NONE;
   caps_sdp_str = user_sdp_str = NONE;
@@ -495,7 +492,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
 	      SOATAG_SRTP_INTEGRITY_REF(srtp_integrity),
 
 	      SOATAG_DELAYED_OFFER_ENABLE_REF(delayed_offer_enable),
-	      SOATAG_USER_O_LINE_REF(user_o_line),
 
 	      TAG_END());
 
@@ -532,8 +528,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
     }
   }
 
-  user_o_line = user_o_line != 0;
-
   if (af < SOA_AF_ANY || af > SOA_AF_IP6_IP4)
     af = ss->ss_af;
 
@@ -551,7 +545,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
 
   change_session
     =  af != (int)ss->ss_af
-    || user_o_line != (int)ss->ss_user_o_line
     || rtp_select != (int)ss->ss_rtp_select
     || rtp_sort != (int)ss->ss_rtp_sort
     || rtp_mismatch != (int)ss->ss_rtp_mismatch
@@ -572,7 +565,6 @@ int soa_base_set_params(soa_session_t *ss, tagi_t const *tags)
   ss->ss_srtp_integrity = srtp_integrity;
 
   ss->ss_delayed_offer_enable = delayed_offer_enable;
-  ss->ss_user_o_line = user_o_line;
 
   if (!su_casematch(media_address, ss->ss_address)) {
     su_free(ss->ss_home, (void *)ss->ss_address);
@@ -632,7 +624,7 @@ int soa_get_params(soa_session_t const *ss,
 	      ss ? ss->ss_actions->soa_name : "", (void *)ss));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   ta_start(ta, tag, value);
 
@@ -668,9 +660,8 @@ int soa_get_params(soa_session_t const *ss,
  * SOATAG_RTP_MISMATCH(),
  * SOATAG_SRTP_ENABLE(),
  * SOATAG_SRTP_CONFIDENTIALITY(),
- * SOATAG_SRTP_INTEGRITY(),
- * SOATAG_DELAYED_OFFER_ENABLE(), and
- * SOATAG_USER_O_LINE().
+ * SOATAG_SRTP_INTEGRITY(), and
+ * SOATAG_DELAYED_OFFER_ENABLE().
  */
 int soa_base_get_params(soa_session_t const *ss, tagi_t *tags)
 {
@@ -702,7 +693,6 @@ int soa_base_get_params(soa_session_t const *ss, tagi_t *tags)
 	       SOATAG_SRTP_INTEGRITY(ss->ss_srtp_integrity),
 
 	       SOATAG_DELAYED_OFFER_ENABLE(ss->ss_delayed_offer_enable),
-	       SOATAG_USER_O_LINE(ss->ss_user_o_line),
 
 	       TAG_END());
 
@@ -771,9 +761,6 @@ tagi_t *soa_base_get_paramlist(soa_session_t const *ss,
 		   SOATAG_SRTP_ENABLE(ss->ss_srtp_enable),
 		   SOATAG_SRTP_CONFIDENTIALITY(ss->ss_srtp_confidentiality),
 		   SOATAG_SRTP_INTEGRITY(ss->ss_srtp_integrity),
-
-		   SOATAG_DELAYED_OFFER_ENABLE(ss->ss_delayed_offer_enable),
-		   SOATAG_USER_O_LINE(ss->ss_user_o_line),
 
 		   ta_tags(ta));
 
@@ -869,7 +856,7 @@ int soa_get_capability_sdp(soa_session_t const *ss,
 	      (void *)return_sdp, (void *)return_sdp_str, (void *)return_len));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 
   sdp = ss->ss_caps->ssd_sdp;
   sdp_str = ss->ss_caps->ssd_str;
@@ -1005,7 +992,7 @@ int soa_get_user_sdp(soa_session_t const *ss,
 			  (void *)return_sdp, (void *)return_sdp_str, (void *)return_len));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 
   sdp = ss->ss_user->ssd_sdp;
   sdp_str = ss->ss_user->ssd_str;
@@ -1122,7 +1109,7 @@ int soa_get_remote_sdp(soa_session_t const *ss,
 			  (void *)return_sdp, (void *)return_sdp_str, (void *)return_len));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 
   sdp = ss->ss_remote->ssd_sdp;
   sdp_str = ss->ss_remote->ssd_str;
@@ -1238,7 +1225,7 @@ int soa_clear_remote_sdp(soa_session_t *ss)
 	      ss ? ss->ss_actions->soa_name : "", (void *)ss));
 
   if (!ss)
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 
   ss->ss_unprocessed_remote = 0;
 
@@ -1294,7 +1281,7 @@ int soa_get_local_sdp(soa_session_t const *ss,
 			  (void *)return_sdp, (void *)return_sdp_str, (void *)return_len));
 
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 
   sdp = ss->ss_local->ssd_sdp;
   sdp_str = ss->ss_local->ssd_str;
@@ -1406,7 +1393,7 @@ int soa_remote_sip_features(soa_session_t *ss,
     /* Calls soa_base_remote_sip_features() by default */
     return ss->ss_actions->soa_remote_sip_features(ss, supported, require);
   else
-    return su_seterrno(EFAULT);
+    return (void)su_seterrno(EFAULT), -1;
 }
 
 int soa_base_remote_sip_features(soa_session_t *ss,
@@ -1451,27 +1438,27 @@ int soa_generate_offer(soa_session_t *ss,
 
   /** @ERROR EFAULT Bad address. */
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   /** @ERROR EALREADY An operation is already in progress */
   if (ss->ss_in_progress)
-    return su_seterrno(EALREADY);
+    return su_seterrno(EALREADY), -1;
 
   /** @ERROR EPROTO We have received offer, now we should send answer */
   if (ss->ss_offer_recv && !ss->ss_answer_sent)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /** @ERROR EPROTO We have received SDP, but it has not been processed */
   if (soa_has_received_sdp(ss))
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /** @ERROR EPROTO We have sent an offer, but have received no answer */
   if (ss->ss_offer_sent && !ss->ss_answer_recv)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /** @ERROR EPROTO We have received offer. */
   if (ss->ss_unprocessed_remote)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /* We should avoid actual operation unless always is true */
   (void)always;  /* We always regenerate offer */
@@ -1540,19 +1527,19 @@ int soa_generate_answer(soa_session_t *ss,
 
   /** @ERROR EFAULT Bad address as @a ss. */
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   /** @ERROR EALREADY An operation is already in progress. */
   if (ss->ss_in_progress)
-    return su_seterrno(EALREADY);
+    return su_seterrno(EALREADY), -1;
 
   /** @ERROR EPROTO We have sent an offer, but have received no answer. */
   if (ss->ss_offer_sent && !ss->ss_answer_recv)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /** @ERROR EPROTO We have not received offer. */
   if (!ss->ss_unprocessed_remote)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /* Calls soa_static_generate_answer() by default. */
   return ss->ss_actions->soa_generate_answer(ss, completed);
@@ -1620,20 +1607,20 @@ int soa_process_answer(soa_session_t *ss,
 
   /** @ERROR EFAULT Bad address as @a ss. */
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   /** @ERROR EALREADY An operation is already in progress. */
   if (ss->ss_in_progress)
-    return su_seterrno(EALREADY);
+    return su_seterrno(EALREADY), -1;
 
   /** @ERROR EPROTO We have not sent an offer
       or already have received answer. */
   if (!ss->ss_offer_sent || ss->ss_answer_recv)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /** @ERROR EPROTO We have not received answer. */
   if (!ss->ss_unprocessed_remote)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /**@sa soa_init_offer_answer(), soa_set_user_sdp(), soa_set_remote_sdp(),
    * soa_get_local_sdp(), soa_generate_offer(), soa_generate_answer(),
@@ -1701,16 +1688,16 @@ int soa_process_reject(soa_session_t *ss,
 
   /** @ERROR EFAULT Bad address as @a ss. */
   if (ss == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   /** @ERROR EALREADY An operation is already in progress. */
   if (ss->ss_in_progress)
-    return su_seterrno(EALREADY);
+    return su_seterrno(EALREADY), -1;
 
   /** @ERROR EPROTO We have not sent an offer
       or already have received answer. */
   if (!ss->ss_offer_sent || ss->ss_answer_recv)
-    return su_seterrno(EPROTO);
+    return su_seterrno(EPROTO), -1;
 
   /**@sa soa_init_offer_answer(), soa_set_user_sdp(), soa_set_remote_sdp(),
    * soa_get_local_sdp(), soa_generate_offer(), soa_generate_answer(),
@@ -2059,12 +2046,10 @@ int soa_set_sdp(soa_session_t *ss,
   else if (sdp_str) {
     if (str_len == -1)
       str_len = strlen(sdp_str);
-    new_version =
-      !su_strnmatch(sdp_str, ssd->ssd_unparsed, str_len)
-      || ssd->ssd_unparsed[str_len] != '\0';
+    new_version = !su_strnmatch(sdp_str, ssd->ssd_unparsed, str_len + 1);
   }
   else
-    return su_seterrno(EINVAL);
+    return (void)su_seterrno(EINVAL), -1;
 
   if (!new_version) {
     if (what == soa_remote_sdp_kind) {
@@ -2290,7 +2275,7 @@ soa_init_sdp_connection_with_session(soa_session_t *ss,
   char abuffer[64];		/* getting value from ss_address */
 
   if (ss == NULL || c == NULL || buffer == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   address = ss->ss_address;
 

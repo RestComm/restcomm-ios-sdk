@@ -52,8 +52,7 @@ nobase_include_sofia_HEADERS = \
 			sofia-sip/rbtree.h sofia-sip/heap.h \
 			sofia-sip/su_debug.h sofia-sip/su_log.h \
 			sofia-sip/su_config.h sofia-sip/su_md5.h \
-			sofia-sip/su_uniqueid.h sofia-sip/su_random.h \
-			sofia-sip/su_bm.h \
+			sofia-sip/su_uniqueid.h sofia-sip/su_bm.h \
 			sofia-sip/tstdef.h sofia-sip/su_os_nw.h \
 			sofia-sip/su_string.h sofia-sip/string0.h \
 			$(OSXHEADERS)

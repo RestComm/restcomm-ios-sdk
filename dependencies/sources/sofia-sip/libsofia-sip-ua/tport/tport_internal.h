@@ -79,7 +79,7 @@
 #endif
 
 #ifndef NONE
-#define NONE ((void *)(intptr_t)-1)
+#define NONE ((void *)-1)
 #endif
 
 SOFIA_BEGIN_DECLS
@@ -134,12 +134,16 @@ typedef struct {
 struct tport_s {
   su_home_t           tp_home[1];       /**< Memory home */
 
+  ssize_t             tp_refs;		/**< Number of references to tport */
+
+  unsigned            tp_black:1;       /**< Used by red-black-tree */
+
   unsigned            tp_accepted:1;    /**< Originally server? */
   unsigned            tp_conn_orient:1;	/**< Is connection-oriented */
   unsigned            tp_has_connection:1; /**< Has real connection */
   unsigned            tp_reusable:1;    /**< Can this connection be reused */
   unsigned            tp_closed : 1;
-  /**< This transport has been closed.
+  /**< This transport is closed.
    *
    * A closed transport is inserted into pri_closed list.
    */
@@ -153,12 +157,9 @@ struct tport_s {
   unsigned            tp_trunc:1;
   unsigned            tp_is_connected:1; /**< Connection is established */
   unsigned            tp_verified:1;     /**< Certificate Chain was verified */
-  unsigned            tp_error_reported:1; /**< Already reported */
-
-  /* Red-black tree */
-  unsigned            tp_black:1;       /**< Black node */
   unsigned:0;
-  tport_t *tp_left, *tp_right, *tp_dad; /**< Links in tport rbtree */
+
+  tport_t *tp_left, *tp_right, *tp_dad; /**< Links in tport tree */
 
   tport_master_t     *tp_master;        /**< Master transport */
   tport_primary_t    *tp_pri;           /**< Primary transport */
@@ -182,7 +183,7 @@ struct tport_s {
                                          *
                                          * Subject Name(s) provided by the peer
 					 * in a TLS connection (if secondary).
-					 * or matched against incoming
+					 * or matched against incoming 
 					 * connections (if primary).
                                          */
 

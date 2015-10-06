@@ -125,14 +125,11 @@ nta_agent_t *s2_nta_agent_setup(url_string_t const *bind_url,
 				tag_type_t tag, tag_value_t value, ...);
 void s2_nta_teardown(void);
 
-void s2_nta_set_tcase_timeout(TCase *, int timeout);
-
 TCase *check_nta_api_1_0(void);
 
 TCase *check_nta_client_2_0(void);
 TCase *check_nta_client_2_1(void);
 TCase *check_nta_client_2_2(void);
-TCase *check_nta_client_2_3(void);
 
 TCase *check_nta_server_3_0(void);
 

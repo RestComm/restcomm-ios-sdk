@@ -15,13 +15,6 @@
 
 #include <sofia-sip/su_string.h>
 
-su_inline int str0cmp(char const *a, char const *b);
-su_inline int str0ncmp(char const *a, char const *b, size_t n);
-su_inline int str0casecmp(char const *a, char const *b);
-su_inline int str0ncasecmp(char const *a, char const *b, size_t n);
-su_inline size_t strnspn(char const *s, size_t ssize, char const *term);
-su_inline size_t strncspn(char const *s, size_t ssize, char const *term);
-
 su_inline int str0cmp(char const *a, char const *b)
 {
   return su_strcmp(a, b);

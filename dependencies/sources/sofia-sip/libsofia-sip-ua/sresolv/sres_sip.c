@@ -516,7 +516,7 @@ sres_sip_url_transport(url_t const *uri)
   if (len >= sizeof parameter)
     return -1;
 
-  for (i = 0; sres_sip_tports[i].stp_number; i++) {
+  for (i = 0; sres_sip_tports[i].stp_name; i++) {
     if (su_casematch(parameter, sres_sip_tports[i].stp_name))
       return sres_sip_tports[i].stp_number;
   }
@@ -904,7 +904,7 @@ sres_sip_log_answers(sres_sip_t *srs,
       SU_DEBUG_5(("srs(%p): %s IN CNAME %s\n", (void *)srs, domain, cname));
     }
 #if SU_HAVE_IN6
-    else if (type == sres_type_aaaa) {
+    else if (type == sres_type_cname) {
       sres_aaaa_record_t const *aaaa = sr->sr_aaaa;
       su_inet_ntop(AF_INET6, &aaaa->aaaa_addr, addr, sizeof(addr));
       SU_DEBUG_5(("srs(%p): %s IN AAAA %s\n", (void *)srs, domain, addr));
@@ -1625,7 +1625,7 @@ sres_sip_append_result(sres_sip_t *srs,
       break;
   }
 
-  if ((srs->srs_canonname && srs->srs_numeric) || (SU_LOG->log_level >= 5)) {
+  if ((srs->srs_canonname && srs->srs_numeric) || (SU_LOG->log_level >= 0)) {
     unsigned port = 0;
     char const *lb = "", *rb = "";
 
@@ -1660,7 +1660,6 @@ sres_sip_append_result(sres_sip_t *srs,
 
   if (!srs->srs_canonname)
     canonname = NULL;
-
   if (canonname) {
     clen = strlen(canonname);
     if (clen && canonname[clen - 1] == '.')
@@ -1677,7 +1676,6 @@ sres_sip_append_result(sres_sip_t *srs,
   *ai = *result;
   ai->ai_next = NULL;
   ai->ai_addr = memcpy(ai + 1, ai->ai_addr, ai->ai_addrlen);
-
   if (canonname) {
     ai->ai_canonname = (char *)(ai->ai_addr) + ai->ai_addrlen;
     memcpy(ai->ai_canonname, canonname, clen - 1);

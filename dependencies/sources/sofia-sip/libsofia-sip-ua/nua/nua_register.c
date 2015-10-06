@@ -116,7 +116,8 @@ static void nua_register_usage_peer_info(nua_dialog_usage_t *du,
 					 sip_t const *sip);
 static void nua_register_usage_refresh(nua_handle_t *,
 				       nua_dialog_state_t *,
-				       nua_dialog_usage_t *);
+				       nua_dialog_usage_t *,
+				       sip_time_t);
 static int nua_register_usage_shutdown(nua_handle_t *,
 				       nua_dialog_state_t *,
 				       nua_dialog_usage_t *);
@@ -1086,7 +1087,8 @@ nua_register_usage_update_params(nua_dialog_usage_t const *du,
 
 static void nua_register_usage_refresh(nua_handle_t *nh,
 				       nua_dialog_state_t *ds,
-				       nua_dialog_usage_t *du)
+				       nua_dialog_usage_t *du,
+				       sip_time_t now)
 {
   nua_t *nua = nh->nh_nua;
   nua_client_request_t *cr = du->du_cr;
@@ -1337,7 +1339,7 @@ nua_stack_init_registrations(nua_t *nua)
     du = ds->ds_usage;
 
     if (ds->ds_has_register == 1 && du->du_class->usage_refresh) {
-      nua_dialog_usage_refresh(*nh_list, ds, du);
+      nua_dialog_usage_refresh(*nh_list, ds, du, 1);
     }
   }
 
@@ -1908,7 +1910,7 @@ static int nua_stack_outbound_refresh(nua_handle_t *nh,
   du = nua_dialog_usage_get(ds, nua_register_usage, NULL);
 
   if (du)
-    nua_dialog_usage_refresh(nh, ds, du);
+    nua_dialog_usage_refresh(nh, ds, du, 1);
 
   return 0;
 }
@@ -2033,7 +2035,7 @@ sip_contact_t *nua_handle_contact_by_via(nua_handle_t *nh,
       char *s = strcpy(_transport, transport);
       short c;
 
-      for (; (c = *s) && c != ';'; s++)
+      for (s = _transport; (c = *s) && c != ';'; s++)
 	if (isupper(c))
 	  *s = tolower(c);
 
@@ -2107,8 +2109,8 @@ sip_contact_t *nua_handle_contact_by_via(nua_handle_t *nh,
 	su_strlst_append(l, "\"");
       }
 
-      if (nh->nh_ds->ds_soa) {
-	char **media = soa_media_features(nh->nh_ds->ds_soa, 0, home);
+      if (nh->nh_soa) {
+	char **media = soa_media_features(nh->nh_soa, 0, home);
 
 	while (*media) {
 	  if (su_strlst_len(l))

@@ -1317,11 +1317,6 @@ int test_bye_after_sending_401(struct context *ctx)
 int test_bye_after_receiving_401_to_update(struct context *ctx)
 {
   BEGIN();
-  /*
-   * Stack behaviour has been changed so that a queued UPDATE does not
-   * prevent stack from sending BYE
-   */
-#if NOMORE
   struct endpoint *a = &ctx->a,  *b = &ctx->b;
   struct call *a_call = a->call, *b_call = b->call;
   struct event *e;
@@ -1392,7 +1387,6 @@ int test_bye_after_receiving_401_to_update(struct context *ctx)
   if (print_headings)
     printf("TEST NUA-6.4.2: PASSED\n");
 
-#endif
   END();
 }
 

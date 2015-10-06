@@ -881,18 +881,22 @@ issize_t sip_if_match_e(char b[], isize_t bsiz, sip_header_t const *h, int f)
 /* ====================================================================== */
 
 /** Parsing @CallInfo, @ErrorInfo. */
-static issize_t
-sip_info_field_d(su_home_t *home, sip_header_t *h, char **ss)
+static
+issize_t sip_info_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
 {
   sip_call_info_t *ci = h->sh_call_info;
+  char *end = s + slen;
 
-  return sip_name_addr_d(home, ss, NULL, ci->ci_url, &ci->ci_params, NULL);
-}
+  assert(h);
 
-static issize_t
-sip_info_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_info_field_d);
+  while (*s == ',')
+    s += span_lws(s + 1) + 1;
+
+  if (sip_name_addr_d(home, &s, NULL, ci->ci_url, &ci->ci_params, NULL) < 0)
+    return -1;
+
+  /* Recurse */
+  return msg_parse_next_field(home, h, s, end - s);
 }
 
 isize_t sip_info_dup_xtra(sip_header_t const *h, isize_t offset)
@@ -1141,22 +1145,21 @@ msg_hclass_t sip_remote_party_id_class[] =
 SIP_HEADER_CLASS(remote_party_id, "Remote-Party-ID", "",
 		 rpid_params, append, remote_party_id);
 
-static issize_t
-sip_remote_party_id_field_d(su_home_t *home, sip_header_t *h, char **ss)
-
+issize_t sip_remote_party_id_d(su_home_t *home, sip_header_t *h,
+			       char *s, isize_t slen)
 {
   sip_remote_party_id_t *rpid = (sip_remote_party_id_t *)h;
 
-  return sip_name_addr_d(home, ss,
-			 &rpid->rpid_display,
-			 rpid->rpid_url,
-			 &rpid->rpid_params, NULL);
-}
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
 
-issize_t
-sip_remote_party_id_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_remote_party_id_field_d);
+  if (sip_name_addr_d(home, &s,
+		      &rpid->rpid_display,
+		      rpid->rpid_url,
+		      &rpid->rpid_params, NULL) == -1)
+    return -1;
+
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t sip_remote_party_id_e(char b[], isize_t bsiz,
@@ -1282,22 +1285,21 @@ msg_hclass_t sip_p_asserted_identity_class[] =
 SIP_HEADER_CLASS(p_asserted_identity, "P-Asserted-Identity", "",
 		 paid_common, append, p_asserted_identity);
 
-static issize_t
-sip_p_asserted_identity_field_d(su_home_t *home, sip_header_t *h, char **ss)
+issize_t sip_p_asserted_identity_d(su_home_t *home, sip_header_t *h,
+				   char *s, isize_t slen)
 {
   sip_p_asserted_identity_t *paid = (sip_p_asserted_identity_t *)h;
 
-  return sip_name_addr_d(home, ss,
-			 &paid->paid_display,
-			 paid->paid_url,
-			 NULL, NULL);
-}
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
 
-issize_t
-sip_p_asserted_identity_d(su_home_t *home, sip_header_t *h,
-			  char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_p_asserted_identity_field_d);
+  if (sip_name_addr_d(home, &s,
+		      &paid->paid_display,
+		      paid->paid_url,
+		      NULL, NULL) == -1)
+    return -1;
+
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t sip_p_asserted_identity_e(char b[], isize_t bsiz,

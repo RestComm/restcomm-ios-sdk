@@ -70,31 +70,6 @@
  *     value).
  */
 
-static const su_time64_t su_res64 = (su_time64_t)1000000000UL;
-
-#define SU_TIME_TO_T64(tv) \
-  (su_res64 * (su_time64_t)(tv).tv_sec + \
-   ((su_time64_t)1000) * (su_time64_t)(tv).tv_usec)
-
-#define SU_DUR_TO_T64(d) (1000000 * (su_dur64_t)(d))
-
-#define E9 (1000000000)
-
-su_time_t su_time64_to_time(su_time64_t const us)
-{
-  su_time_t tv;
-
-  tv.tv_sec = (unsigned long) (us / su_res64);
-  tv.tv_usec = (unsigned long) (us % su_res64) / 1000;
-
-  return tv;
-}
-
-su_time64_t su_time_to_time64(su_time_t tv)
-{
-  return SU_TIME_TO_T64(tv);
-}
-
 /**
  * Compare two timestamps.
  *
@@ -225,33 +200,18 @@ su_duration_t su_duration(su_time_t const t1, su_time_t const t2)
   return tdiff;
 }
 
-/** Time difference in milliseconds.
- *
- * Calculates the duration from t2 to t1 in milliseconds.
- *
- * @param t1   after time
- * @param t2   before time
- *
- * @return The duration in milliseconds between the two times.
- *
- * If the difference is bigger than #SU_DURATION_MAX, return
- * #SU_DURATION_MAX instead.
- *
- * If the difference is smaller than -#SU_DURATION_MAX, return
- * -#SU_DURATION_MAX instead.
- */
-su_duration_t su_duration64(su_time64_t t1, su_time64_t t2)
-{
-  su_dur64_t d = (t1 - t2 + (su_dur64_t)500000) / 1000000;
+typedef uint64_t su_t64_t;	/* time with 64 bits */
 
-  if (d > SU_DURATION_MAX)
-    return SU_DURATION_MAX;
+static su_time_t su_t64_to_time(su_t64_t const us);
 
-  if (d < -SU_DURATION_MAX)
-    return -SU_DURATION_MAX;
+const uint32_t su_res32 = 1000000UL;
+const su_t64_t su_res64 = (su_t64_t)1000000UL;
 
-  return (su_duration_t)d;
-}
+#define SU_TIME_TO_T64(tv) \
+  (su_res64 * (su_t64_t)(tv).tv_sec + (su_t64_t)(tv).tv_usec)
+#define SU_DUR_TO_T64(d) (1000 * (int64_t)(d))
+
+#define E9 (1000000000)
 
 /** Get NTP timestamp.
  *
@@ -349,6 +309,17 @@ uint32_t su_ntp_mw(su_ntp_t ntp)
   return (uint32_t) (ntp >> 16) & 0xffffffffLU;
 }
 
+static
+su_time_t su_t64_to_time(su_t64_t const us)
+{
+  su_time_t tv;
+
+  tv.tv_sec = (unsigned long) (us / su_res64);
+  tv.tv_usec = (unsigned long) (us % su_res64);
+
+  return tv;
+}
+
 /**
  * Add milliseconds to the time.
  *
@@ -357,7 +328,7 @@ uint32_t su_ntp_mw(su_ntp_t ntp)
  */
 su_time_t su_time_add(su_time_t t0, su_duration_t dur)
 {
-  return su_time64_to_time(SU_TIME_TO_T64(t0) + SU_DUR_TO_T64(dur));
+  return su_t64_to_time(SU_TIME_TO_T64(t0) + SU_DUR_TO_T64(dur));
 }
 
 /**
@@ -371,7 +342,7 @@ su_time_t su_time_add(su_time_t t0, su_duration_t dur)
  */
 su_time_t su_time_dadd(su_time_t t0, double sec)
 {
-  return su_time64_to_time(SU_TIME_TO_T64(t0) + (su_dur64_t)(1e9 * sec));
+  return su_t64_to_time(SU_TIME_TO_T64(t0) + (int64_t)(su_res32 * sec));
 }
 
 #ifdef WIN32

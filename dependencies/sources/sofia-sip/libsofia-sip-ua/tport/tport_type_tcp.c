@@ -270,8 +270,6 @@ int tport_recv_stream(tport_t *self)
     size_t i;
 
     n = su_recv(self->tp_socket, crlf, N, MSG_PEEK);
-    if (n <= 0)
-      return (int)n;
 
     i = ws_span(crlf, n);
     if (i == 0)
@@ -480,7 +478,15 @@ int tport_tcp_ping(tport_t *self, su_time_t now)
     return 0;
 
   n = send(self->tp_socket, "\r\n\r\n", 4, 0);
-  if (n == -1) {
+
+  if (n > 0)
+    self->tp_ktime = now;
+
+  if (n == 4) {
+    if (self->tp_ptime.tv_sec == 0)
+      self->tp_ptime = now;
+  }
+  else if (n == -1) {
     int error = su_errno();
 
     why = " failed";
@@ -493,19 +499,11 @@ int tport_tcp_ping(tport_t *self, su_time_t now)
     return -1;
   }
 
-  if (n > 0)
-    self->tp_ktime = now;
-
-  if (n == 4) {
-    if (self->tp_ptime.tv_sec == 0)
-      self->tp_ptime = now;
-  }
-
   SU_DEBUG_7(("%s(%p): %s to " TPN_FORMAT "%s\n",
 	      __func__, (void *)self,
 	      "sending PING", TPN_ARGS(self->tp_name), why));
 
-  return 0;
+  return n == -1 ? -1 : 0;
 }
 
 /** Send pong */

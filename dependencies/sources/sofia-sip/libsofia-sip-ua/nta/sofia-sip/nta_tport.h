@@ -64,8 +64,6 @@ SOFIAPUBFUN tport_t *nta_agent_tports(nta_agent_t *agent);
 SOFIAPUBFUN
 tport_t *nta_incoming_transport(nta_agent_t *, nta_incoming_t *, msg_t *msg);
 
-SOFIAPUBFUN int nta_agent_tport_is_updating(nta_agent_t *agent);
-
 SOFIAPUBFUN
 struct sigcomp_compartment *nta_incoming_compartment(nta_incoming_t *irq);
 

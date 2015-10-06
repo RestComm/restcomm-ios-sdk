@@ -172,8 +172,6 @@ su_port_vtable_t const su_source_port_vtable[1] =
       su_base_port_max_defer,
       su_source_wakeup,
       su_source_is_running,
-      su_base_port_stamp64,
-      su_base_port_stamp64_offset,
     }};
 
 static char const *su_source_name(su_port_t const *self)
@@ -389,8 +387,6 @@ gboolean su_source_prepare(GSource *gs, gint *return_tout)
 
   enter;
 
-  su_base_port_waiting(self);
-
   if (self->sup_base->sup_head) {
     *return_tout = 0;
     return TRUE;
@@ -458,8 +454,6 @@ gboolean su_source_dispatch(GSource *gs,
   su_port_t *self = ss->ss_port;
 
   enter;
-
-  su_base_port_waiting(self);
 
   if (self->sup_base->sup_head)
     su_base_port_getmsgs(self);
@@ -1021,8 +1015,6 @@ su_duration_t su_source_step(su_port_t *self, su_duration_t tout)
 
     if (src_tout >= 0 && tout > (su_duration_t)src_tout)
       tout = src_tout;
-
-    su_base_port_waiting(self);
 
     su_wait((su_wait_t *)fds, fds_wait, tout);
 

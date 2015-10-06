@@ -74,7 +74,7 @@
  */
 issize_t http_request_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_request_t *rq = (http_request_t *)h;
+  http_request_t *rq = h->sh_request;
   char *uri, *version;
 
   if (msg_firstline_d(s, &uri, &version) < 0 ||
@@ -93,7 +93,7 @@ issize_t http_request_d(su_home_t *home, http_header_t *h, char *s, isize_t slen
  */
 issize_t http_request_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 {
-  http_request_t const *rq = (http_request_t const *)h;
+  http_request_t const *rq = h->sh_request;
 
   return snprintf(b, bsiz, "%s " URL_FORMAT_STRING "%s%s" CRLF,
 		  rq->rq_method_name,
@@ -104,7 +104,7 @@ issize_t http_request_e(char b[], isize_t bsiz, http_header_t const *h, int flag
 
 isize_t http_request_dup_xtra(http_header_t const *h, isize_t offset)
 {
-  http_request_t const *rq = (http_request_t const *)h;
+  http_request_t const *rq = h->sh_request;
 
   offset += url_xtra(rq->rq_url);
   if (!rq->rq_method)
@@ -119,8 +119,8 @@ isize_t http_request_dup_xtra(http_header_t const *h, isize_t offset)
 char *http_request_dup_one(http_header_t *dst, http_header_t const *src,
 			   char *b, isize_t xtra)
 {
-  http_request_t *rq = (http_request_t *)dst;
-  http_request_t const *o = (http_request_t const *)src;
+  http_request_t *rq = dst->sh_request;
+  http_request_t const *o = src->sh_request;
   char *end = b + xtra;
 
   URL_DUP(b, end, rq->rq_url, o->rq_url);
@@ -158,7 +158,7 @@ http_request_t *http_request_create(su_home_t *home,
 
   xtra = url_xtra(url->us_url) + (method ? 0 : strlen(name) + 1);
 
-  rq = (void *)msg_header_alloc(home, http_request_class, (isize_t)xtra);
+  rq = msg_header_alloc(home, http_request_class, (isize_t)xtra)->sh_request;
 
   if (rq) {
     char *b = (char *)(rq + 1), *end = b + xtra;
@@ -191,7 +191,7 @@ HTTP_HEADER_CLASS(request, NULL, rq_common, single_critical, request);
 /** Parse status line */
 issize_t http_status_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_status_t *st = (http_status_t *)h;
+  http_status_t *st = h->sh_status;
   char *status, *phrase;
   uint32_t code;
 
@@ -209,7 +209,7 @@ issize_t http_status_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 
 issize_t http_status_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 {
-  http_status_t const *st = (http_status_t const *)h;
+  http_status_t const *st = h->sh_status;
   char const *phrase = st->st_phrase;
 
   if (phrase == NULL)
@@ -229,10 +229,9 @@ issize_t http_status_e(char b[], isize_t bsiz, http_header_t const *h, int flags
 /** Extra size of a http_status_t object. */
 isize_t http_status_dup_xtra(http_header_t const *h, isize_t offset)
 {
-  http_status_t const *st = (http_status_t const *)h;
-  if (st->st_version)
-    offset += http_version_xtra(st->st_version);
-  offset += MSG_STRING_SIZE(st->st_phrase);
+  if (h->sh_status->st_version)
+    offset += http_version_xtra(h->sh_status->st_version);
+  offset += MSG_STRING_SIZE(h->sh_status->st_phrase);
   return offset;
 }
 
@@ -240,8 +239,8 @@ isize_t http_status_dup_xtra(http_header_t const *h, isize_t offset)
 char *http_status_dup_one(http_header_t *dst, http_header_t const *src,
 			  char *b, isize_t xtra)
 {
-  http_status_t *st = (http_status_t *)dst;
-  http_status_t const *o = (http_status_t const *)src;
+  http_status_t *st = dst->sh_status;
+  http_status_t const *o = src->sh_status;
   char *end = b + xtra;
 
   if (o->st_version)
@@ -269,8 +268,7 @@ http_status_t *http_status_create(su_home_t *home,
   if (phrase == NULL && (phrase = http_status_phrase(status)) == NULL)
     return NULL;
 
-  st = (void *) msg_header_alloc(home, http_status_class, 0);
-  if (st) {
+  if ((st = msg_header_alloc(home, http_status_class, 0)->sh_status)) {
     st->st_status = status;
     st->st_phrase = phrase;
     st->st_version = version ? version : HTTP_VERSION_CURRENT;
@@ -446,7 +444,7 @@ HTTP_HEADER_CLASS_LIST(connection, "Connection", list_critical);
 
 issize_t http_content_range_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_content_range_t *cr = (http_content_range_t *)h;
+  http_content_range_t *cr = h->sh_content_range;
 
   if (!su_casenmatch(s, "bytes", 5))
     return -1;
@@ -481,7 +479,7 @@ issize_t http_content_range_d(su_home_t *home, http_header_t *h, char *s, isize_
 
 issize_t http_content_range_e(char b[], isize_t bsiz, http_header_t const *h, int f)
 {
-  http_content_range_t const *cr = (http_content_range_t const *)h;
+  http_content_range_t const *cr = h->sh_content_range;
 
   if (cr->cr_first == (http_off_t)-1) {
     if (cr->cr_length == (http_off_t)-1)
@@ -551,7 +549,7 @@ HTTP_HEADER_CLASS(content_range, "Content-Range", cr_common, single, default);
 
 issize_t http_date_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_date_t *date = (http_date_t *)h;
+  http_date_t *date = h->sh_date;
 
   if (msg_date_d((char const **)&s, &date->d_time) < 0 || *s)
     return -1;
@@ -562,7 +560,7 @@ issize_t http_date_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 
 issize_t http_date_e(char b[], isize_t bsiz, http_header_t const *h, int f)
 {
-  http_date_t const *date = (http_date_t const *)h;
+  http_date_t const *date = h->sh_date;
 
   return msg_date_e(b, bsiz, date->d_time);
 }
@@ -583,15 +581,15 @@ issize_t http_date_e(char b[], isize_t bsiz, http_header_t const *h, int f)
  */
 http_date_t *http_date_create(su_home_t *home, http_time_t date)
 {
-  http_date_t *d = (void *)msg_header_alloc(home, http_date_class, 0);
+  http_header_t *h = msg_header_alloc(home, http_date_class, 0);
 
-  if (d) {
+  if (h) {
     if (date == 0)
       date = msg_now();
-    d->d_time = date;
+    h->sh_date->d_time = date;
   }
 
-  return d;
+  return h->sh_date;
 }
 
 
@@ -679,7 +677,7 @@ HTTP_HEADER_CLASS_G(from, "From", single);
 /** Parse Host header */
 issize_t http_host_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_host_t *host = (http_host_t *)h;
+  http_host_t *host = h->sh_host;
 
   if (msg_hostport_d(&s, &host->h_host, &host->h_port) < 0 || *s)
     return -1;
@@ -690,13 +688,12 @@ issize_t http_host_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 /** Print Host header */
 issize_t http_host_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 {
-  http_host_t const *host = (http_host_t const *)h;
   char *b0 = b, *end = b + bsiz;
 
-  MSG_STRING_E(b, end, host->h_host);
-  if (host->h_port) {
+  MSG_STRING_E(b, end, h->sh_host->h_host);
+  if (h->sh_host->h_port) {
     MSG_CHAR_E(b, end, ':');
-    MSG_STRING_E(b, end, host->h_port);
+    MSG_STRING_E(b, end, h->sh_host->h_port);
   }
 
   return b - b0;
@@ -706,9 +703,8 @@ issize_t http_host_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 static
 isize_t http_host_dup_xtra(http_header_t const *h, isize_t offset)
 {
-  http_host_t const *host = (http_host_t const *)h;
-  offset += MSG_STRING_SIZE(host->h_host);
-  offset += MSG_STRING_SIZE(host->h_port);
+  offset += MSG_STRING_SIZE(h->sh_host->h_host);
+  offset += MSG_STRING_SIZE(h->sh_host->h_port);
   return offset;
 }
 
@@ -717,8 +713,8 @@ static
 char *http_host_dup_one(http_header_t *dst, http_header_t const *src,
 			char *b, isize_t xtra)
 {
-  http_host_t *h = (http_host_t *)dst;
-  http_host_t const *o = (http_host_t const *)src;
+  http_host_t *h = dst->sh_host;
+  http_host_t const *o = src->sh_host;
   char *end = b + xtra;
 
   MSG_STRING_DUP(b, h->h_host, o->h_host);
@@ -860,8 +856,8 @@ static
 char *http_if_range_dup_one(http_header_t *dst, http_header_t const *src,
 			    char *b, isize_t xtra)
 {
-  http_if_range_t *ifr = (http_if_range_t *)dst;
-  http_if_range_t const *o = (http_if_range_t const *)src;
+  http_if_range_t *ifr = dst->sh_if_range;
+  http_if_range_t const *o = src->sh_if_range;
   char *end = b + xtra;
 
   MSG_STRING_DUP(b, ifr->ifr_tag, o->ifr_tag);
@@ -1294,7 +1290,7 @@ HTTP_HEADER_CLASS(referer, "Referer", loc_common, single, location);
 
 issize_t http_retry_after_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
-  http_retry_after_t *ra = (http_retry_after_t *)h;
+  http_retry_after_t *ra = h->sh_retry_after;
 
   if (msg_date_delta_d((char const **)&s,
 		       &ra->ra_date,
@@ -1306,7 +1302,7 @@ issize_t http_retry_after_d(su_home_t *home, http_header_t *h, char *s, isize_t 
 
 issize_t http_retry_after_e(char b[], isize_t bsiz, http_header_t const *h, int f)
 {
-  http_retry_after_t const *ra = (http_retry_after_t const *)h;
+  http_retry_after_t const *ra = h->sh_retry_after;
 
   if (ra->ra_date)
     return msg_date_e(b, bsiz, ra->ra_date + ra->ra_delta);
@@ -1500,7 +1496,7 @@ HTTP_HEADER_CLASS_LIST(vary, "Vary", list);
 issize_t http_via_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
 {
   http_header_t **hh = &h->sh_succ, *h0 = h;
-  http_via_t *v = (http_via_t *)h;
+  http_via_t *v = h->sh_via;
 
   assert(h && h->sh_class);
 
@@ -1512,7 +1508,7 @@ issize_t http_via_d(su_home_t *home, http_header_t *h, char *s, isize_t slen)
       if (!(h = msg_header_alloc(home, h0->sh_class, 0)))
 	return -1;
       *hh = h; h->sh_prev = hh; hh = &h->sh_succ;
-      v = v->v_next = (http_via_t *)h;
+      v = v->v_next = h->sh_via;
     }
 
     if (http_version_d(&s, &v->v_version) == -1) /* Parse protocol version */
@@ -1537,7 +1533,7 @@ issize_t http_via_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 {
   int const compact = MSG_IS_COMPACT(flags);
   char *b0 = b, *end = b + bsiz;
-  http_via_t const *v = (http_via_t const *)h;
+  http_via_t const *v = h->sh_via;
 
   MSG_STRING_E(b, end, v->v_version);
   MSG_CHAR_E(b, end, ' ');
@@ -1560,7 +1556,7 @@ issize_t http_via_e(char b[], isize_t bsiz, http_header_t const *h, int flags)
 
 static isize_t http_via_dup_xtra(http_header_t const *h, isize_t offset)
 {
-  http_via_t const *v = (http_via_t const *)h;
+  http_via_t const *v = h->sh_via;
 
   offset += MSG_STRING_SIZE(v->v_version);
   offset += MSG_STRING_SIZE(v->v_host);
@@ -1574,8 +1570,8 @@ static isize_t http_via_dup_xtra(http_header_t const *h, isize_t offset)
 static char *http_via_dup_one(http_header_t *dst, http_header_t const *src,
 			      char *b, isize_t xtra)
 {
-  http_via_t *v = (http_via_t *)dst;
-  http_via_t const *o = (http_via_t const *)src;
+  http_via_t *v = dst->sh_via;
+  http_via_t const *o = src->sh_via;
   char *end = b + xtra;
 
   MSG_STRING_DUP(b, v->v_version, o->v_version);

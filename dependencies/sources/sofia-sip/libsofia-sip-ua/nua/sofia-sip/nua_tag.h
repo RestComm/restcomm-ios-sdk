@@ -114,6 +114,7 @@ SOFIAPUBVAR tag_typedef_t nutag_use_dialog;
 #define NUTAG_USE_DIALOG_REF(x)    nutag_use_dialog_ref, tag_bool_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_use_dialog_ref;
 
+
 /* Protocol engine parameters,
  * set by nua_set_params(), get by nua_get_params() */
 
@@ -148,12 +149,6 @@ SOFIAPUBVAR tag_typedef_t nutag_include_extra_sdp;
 #define NUTAG_INCLUDE_EXTRA_SDP_REF(x) \
    nutag_include_extra_sdp_ref, tag_bool_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_include_extra_sdp_ref;
-
-#define NUTAG_ACCEPT_MULTIPART(x)    nutag_accept_multipart, tag_bool_v(x)
-SOFIAPUBVAR tag_typedef_t nutag_accept_multipart;
-#define NUTAG_ACCEPT_MULTIPART_REF(x) \
-   nutag_accept_multipart_ref, tag_bool_vr(&(x))
-SOFIAPUBVAR tag_typedef_t nutag_accept_multipart_ref;
 
 #define NUTAG_INVITE_TIMER(x)  nutag_invite_timer, tag_uint_v((x))
 SOFIAPUBVAR tag_typedef_t nutag_invite_timer;
@@ -234,18 +229,6 @@ SOFIAPUBVAR tag_typedef_t nutag_auto302_ref;
 SOFIAPUBVAR tag_typedef_t nutag_auto305;
 #define NUTAG_AUTO305_REF(x)    nutag_auto305_ref, tag_bool_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_auto305_ref;
-
-#define NUTAG_AUTO100(x)        nutag_auto100, tag_bool_v(x)
-SOFIAPUBVAR tag_typedef_t nutag_auto100;
-#define NUTAG_AUTO100_REF(x)    nutag_auto100_ref, tag_bool_vr(&(x))
-SOFIAPUBVAR tag_typedef_t nutag_auto100_ref;
-
-#define NUTAG_MAX_RETRY_AFTER(x) \
-  nutag_max_retry_after, tag_bool_v(x)
-SOFIAPUBVAR tag_typedef_t nutag_max_retry_after;
-#define NUTAG_MAX_RETRY_AFTER_REF(x) \
-  nutag_max_retry_after_ref, tag_bool_vr(&(x))
-SOFIAPUBVAR tag_typedef_t nutag_max_retry_after_ref;
 
 /* Start NRC Boston */
 
@@ -475,6 +458,7 @@ SOFIAPUBVAR tag_typedef_t nutag_appl_method;
 #define NUTAG_APPL_METHOD_REF(x) nutag_appl_method_ref, tag_str_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_appl_method_ref;
 
+
 #define NUTAG_SUPPORTED(x)     nutag_supported, tag_str_v(x)
 SOFIAPUBVAR tag_typedef_t nutag_supported;
 #define NUTAG_SUPPORTED_REF(x) nutag_supported_ref, tag_str_vr(&(x))
@@ -484,11 +468,6 @@ SOFIAPUBVAR tag_typedef_t nutag_supported_ref;
 SOFIAPUBVAR tag_typedef_t nutag_allow_events;
 #define NUTAG_ALLOW_EVENTS_REF(x) nutag_allow_events_ref, tag_str_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_allow_events_ref;
-
-#define NUTAG_APPL_EVENT(x)     nutag_appl_event, tag_str_v(x)
-SOFIAPUBVAR tag_typedef_t nutag_appl_event;
-#define NUTAG_APPL_EVENT_REF(x) nutag_appl_event_ref, tag_str_vr(&(x))
-SOFIAPUBVAR tag_typedef_t nutag_appl_event_ref;
 
 #define NUTAG_CALLSTATE(x) nutag_callstate, tag_int_v(x)
 SOFIAPUBVAR tag_typedef_t nutag_callstate;
@@ -616,13 +595,6 @@ SOFIAPUBVAR tag_typedef_t nutag_shutdown_events;
 #define NUTAG_SHUTDOWN_EVENTS_REF(x) \
   nutag_shutdown_events_ref, tag_bool_vr(&(x))
 SOFIAPUBVAR tag_typedef_t nutag_shutdown_events_ref;
-
-#define NUTAG_DEFERRABLE_TIMERS(x) \
-  nutag_deferrable_timers, tag_bool_v(x)
-SOFIAPUBVAR tag_typedef_t nutag_deferrable_timers;
-#define NUTAG_DEFERRABLE_TIMERS_REF(x) \
-  nutag_deferrable_timers_ref, tag_bool_vr(&(x))
-SOFIAPUBVAR tag_typedef_t nutag_deferrable_timers_ref;
 
 /* Pass nua handle as tagged argument */
 #if SU_INLINE_TAG_CAST

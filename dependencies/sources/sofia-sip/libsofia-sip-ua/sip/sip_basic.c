@@ -1386,19 +1386,23 @@ msg_hclass_t sip_contact_class[] =
     /* hc_critical: */ 0
    }};
 
-issize_t
-sip_contact_one_d(su_home_t *home, sip_header_t *h, char **ss)
+issize_t sip_contact_d(su_home_t *home,
+		       sip_header_t *h,
+		       char *s,
+		       isize_t slen)
 {
   sip_contact_t *m = (sip_contact_t *)h;
 
-  return sip_name_addr_d(home, ss, &m->m_display, m->m_url,
-			 &m->m_params, &m->m_comment);
-}
+  assert(h);
 
-issize_t
-sip_contact_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_contact_one_d);
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
+
+  if (sip_name_addr_d(home, &s, &m->m_display, m->m_url,
+		      &m->m_params, &m->m_comment) == -1)
+    return -1;
+
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 
@@ -2092,24 +2096,28 @@ static int sip_retry_after_update(msg_common_t *h,
 
 /* ====================================================================== */
 
-static issize_t
-sip_any_route_field_d(su_home_t *home, sip_header_t *h, char **ss)
-{
-  sip_route_t *r = (sip_route_t *)h;
-
-  return sip_name_addr_d(home, ss, &r->r_display,
-			 r->r_url, &r->r_params, NULL);
-}
-
 /**Parse a @Route or a @RecordRoute header.
  *
  * @retval 0 when successful,
  * @retval -1 upon an error.
  */
-issize_t
-sip_any_route_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
+issize_t sip_any_route_d(su_home_t *home,
+			 sip_header_t *h,
+			 char *s,
+			 isize_t slen)
 {
-  return msg_parse_header_fields(home, h, s, sip_any_route_field_d);
+  sip_route_t *r = (sip_route_t *)h;
+
+  assert(h);
+
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
+
+  if (sip_name_addr_d(home, &s, &r->r_display,
+		      r->r_url, &r->r_params, NULL) < 0)
+    return -1;
+
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t sip_any_route_e(char b[], isize_t bsiz, sip_header_t const *h, int flags)
@@ -2524,33 +2532,31 @@ static msg_update_f sip_via_update;
 msg_hclass_t sip_via_class[] =
 SIP_HEADER_CLASS(via, "Via", "v", v_params, prepend, via);
 
-static issize_t
-sip_via_field_d(su_home_t *home, sip_header_t *h, char **ss)
+issize_t sip_via_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
 {
   sip_via_t *v = (sip_via_t *)h;
+
+  assert(h);
+
+  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
+    *s = '\0', s += span_lws(s + 1) + 1;
 
   /* sent-protocol sent-by *( ";" via-params ) [ comment ] */
 
   /* Parse protocol */
-  if (sip_transport_d(ss, &v->v_protocol) == -1)
+  if (sip_transport_d(&s, &v->v_protocol) == -1)
     return -1;
   /* Host (and port) */
-  if (msg_hostport_d(ss, &v->v_host, &v->v_port) == -1)
+  if (msg_hostport_d(&s, &v->v_host, &v->v_port) == -1)
     return -1;
   /* Parameters */
-  if (**ss == ';' && msg_params_d(home, ss, &v->v_params) == -1)
+  if (*s == ';' && msg_params_d(home, &s, &v->v_params) == -1)
     return -1;
   /* Comment */
-  if (**ss == '(' && msg_comment_d(ss, &v->v_comment) == -1)
+  if (*s == '(' && msg_comment_d(&s, &v->v_comment) == -1)
     return -1;
 
-  return 0;
-}
-
-issize_t
-sip_via_d(su_home_t *home, sip_header_t *h, char *s, isize_t slen)
-{
-  return msg_parse_header_fields(home, h, s, sip_via_field_d);
+  return msg_parse_next_field(home, h, s, slen);
 }
 
 issize_t sip_via_e(char b[], isize_t bsiz, sip_header_t const *h, int flags)

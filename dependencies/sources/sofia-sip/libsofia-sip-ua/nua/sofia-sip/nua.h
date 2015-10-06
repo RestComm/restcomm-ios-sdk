@@ -65,8 +65,6 @@ typedef NUA_MAGIC_T nua_magic_t;
 /** Application context for NUA handle. */
 typedef NUA_HMAGIC_T nua_hmagic_t;
 
-#define NUA_NONE ((void *)(intptr_t)-1)
-
 /**Network change event levels given to NUTAG_DETECT_NETWORK_UPDATES().
  *
  * @sa NUTAG_DETECT_NETWORK_UPDATES(), #nua_i_network_changed

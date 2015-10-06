@@ -2170,7 +2170,7 @@ static int test_prack(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(rack = sip_rack_make(home, "1 2 INVITE"));
   TEST(rack->ra_response, 1);
   TEST(rack->ra_cseq, 2);
@@ -2210,7 +2210,7 @@ static int test_accept(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(ac = ac0 = sip_accept_make(home, "image / jpeg ; q = 0.6,, image/png, image/*, */*  "));
   TEST_S(ac->ac_type, "image/jpeg");
   TEST_S(ac->ac_subtype, "jpeg");
@@ -2258,7 +2258,7 @@ static int test_content_disposition(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(cd = cd0 = sip_content_disposition_make(home, "sip-cgi ; action = store;handling=required  "));
   TEST_S(cd->cd_type, "sip-cgi");
   TEST_1(cd->cd_params && cd->cd_params[0] && cd->cd_params[1] && !cd->cd_params[2]);
@@ -2281,7 +2281,7 @@ static int test_content_type(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(c = sip_content_type_make(home, "application/sdp ; charset = utf-8"));
   TEST_S(c->c_type, "application/sdp");
   TEST_S(c->c_subtype, "sdp");
@@ -2313,7 +2313,7 @@ static int test_www_authenticate(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(www = sip_www_authenticate_make
 	 (home, "Digest realm=\"Registered_Subscribers\",\n"
 	  "domain=\"sip:206.229.26.61\",\n"
@@ -2363,7 +2363,7 @@ int test_retry_after(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(af = sip_retry_after_make(home, "1800"));
   TEST(af->af_delta, 1800);
   TEST_1(af = sip_retry_after_make(home, "1800(foo); duration = 3600"));
@@ -2395,7 +2395,7 @@ int test_session_expires(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(x = x0 = sip_session_expires_make(home, "1800"));
   TEST(x->x_delta, 1800);
   TEST_1(x = x0 = sip_session_expires_make(home, "1800 ; refresher = uas"));
@@ -2416,7 +2416,7 @@ int test_min_se(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(min = min0 = sip_min_se_make(home, "1800"));
   TEST(min->min_delta, 1800);
   TEST_1(min = sip_min_se_dup(home, min0));
@@ -2473,7 +2473,7 @@ int test_refer(void)
   char *back;
   sip_refer_sub_t *rs;
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   /* Check that Refer-Sub has now been added to our parser */
   TEST_1(msg_mclass_insert_with_mask(test_mclass, sip_refer_sub_class,
@@ -2557,7 +2557,7 @@ int test_refer(void)
 
   su_home_unref(home);
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(b = b0 = sip_referred_by_make(home,
 				      "sip:joe@example.edu;param=value"));
   TEST_P(b->b_display, NULL);
@@ -2627,7 +2627,7 @@ static int test_features(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
   TEST_1(pr = sip_proxy_require_make(home, "foo, bar, baz, dig, dug"));
   TEST_1(r = sip_require_make(home, "dig, dug"));
   TEST_1(s = sip_supported_make(home, "foo, baz, dug"));
@@ -2689,7 +2689,7 @@ static int test_events(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   TEST_1((o = sip_event_make(home, "presence;id=1")));
   TEST_S(o->o_type, "presence");
@@ -2795,7 +2795,7 @@ static int test_route(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   TEST_1((rr = sip_record_route_make(home, "sip:foo.bar;lr")));
   TEST_1(rr->r_params);
@@ -2852,7 +2852,7 @@ int test_request_disposition(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   TEST_1(rd = sip_request_disposition_make(home, "proxy, recurse, parallel"));
   TEST_S(rd->rd_items[1], "recurse");
@@ -3335,7 +3335,7 @@ static int test_reason(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   TEST_1((re = sip_reason_make(home, "SIP;cause=200;text=\"Ok\"")));
   TEST_S(re->re_protocol, "SIP");
@@ -3417,7 +3417,7 @@ static int test_warning(void)
 
   BEGIN();
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   TEST_1((w = sip_warning_make(home,
 			       "399 host:5060 \"Ok\", "

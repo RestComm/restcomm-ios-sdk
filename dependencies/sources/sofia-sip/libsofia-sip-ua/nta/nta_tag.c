@@ -1343,8 +1343,6 @@ tag_typedef_t ntatag_client_rport = BOOLTAG_TYPEDEF(client_rport);
  *          or false (zero or NULL pointer)
  *
  * @par Values
- *    - 3 - add "rport" parameter even if was not present in request
- *          @b and if client User-Agent is "Polycom"
  *    - 2 - add "rport" parameter even if was not present in request
  *    - 1 - use "rport" parameter (default)
  *    - 0 - do not use "rport" parameter

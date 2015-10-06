@@ -662,7 +662,7 @@ int tport_thread_send(tport_t *tp,
   SU_DEBUG_9(("tport_thread_send()\n"));
 
   if (thrp->thrp_killing)
-    return (su_seterrno(ECHILD));
+    return (su_seterrno(ECHILD)), -1;
 
   qlen = totalqlen = thrp->thrp_s_sent - thrp->thrp_s_recv;
 
@@ -695,7 +695,7 @@ int tport_thread_send(tport_t *tp,
   tpd->tpd_thrp = thrp;
   tpd->tpd_when = su_now();
   tpd->tpd_mtu = mtu;
-  tpd->tpd_msg = msg_ref(msg);
+  tpd->tpd_msg = msg_ref_create(msg);
 
 #if HAVE_SIGCOMP
   tpd->tpd_cc = cc;
@@ -708,7 +708,7 @@ int tport_thread_send(tport_t *tp,
     return 0;
   }
 
-  msg_unref(msg);
+  msg_ref_destroy(msg);
   return -1;
 }
 
@@ -813,6 +813,6 @@ void thrp_udp_send_report(su_root_magic_t *magic,
   if (tpd->tpd_errorcode)
     tport_error_report(tp, tpd->tpd_errorcode, msg_addr(tpd->tpd_msg));
 
-  msg_unref(tpd->tpd_msg);
+  msg_ref_destroy(tpd->tpd_msg);
 
 }

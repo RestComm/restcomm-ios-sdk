@@ -508,48 +508,38 @@ void url_init(url_t *url, enum url_type_e type)
 }
 
 /** Get url type */
-su_inline enum url_type_e url_get_type(char const *scheme, size_t len)
+su_inline
+enum url_type_e url_get_type(char const *scheme, size_t len)
 {
 #define test_scheme(s) \
    if (len == strlen(#s) && !strncasecmp(scheme, #s, len)) return url_##s
 
   switch (scheme[0]) {
-  case '*':
-    if (strcmp(scheme, "*") == 0)
-      return url_any;
-    break;
+  case '*': if (strcmp(scheme, "*") == 0) return url_any;
   case 'c': case 'C':
     test_scheme(cid); break;
   case 'f': case 'F':
-    test_scheme(ftp); test_scheme(file); test_scheme(fax);
-    break;
+    test_scheme(ftp); test_scheme(file); test_scheme(fax); break;
   case 'h': case 'H':
-    test_scheme(http); test_scheme(https);
-    break;
+    test_scheme(http); test_scheme(https); break;
   case 'i': case 'I':
-    test_scheme(im);
-    break;
+    test_scheme(im); break;
   case 'm': case 'M':
     test_scheme(mailto); test_scheme(modem);
-    test_scheme(msrp); test_scheme(msrps);
-    break;
+    test_scheme(msrp); test_scheme(msrps); break;
   case 'p': case 'P':
-    test_scheme(pres);
-    break;
+    test_scheme(pres); break;
   case 'r': case 'R':
-    test_scheme(rtsp); test_scheme(rtspu);
-    break;
+    test_scheme(rtsp); test_scheme(rtspu); break;
   case 's': case 'S':
-    test_scheme(sip); test_scheme(sips);
-    break;
+    test_scheme(sip); test_scheme(sips); break;
   case 't': case 'T':
-    test_scheme(tel);
-    break;
+    test_scheme(tel); break;
   case 'w': case 'W':
-    test_scheme(wv);
-    break;
-  default:
-    break;
+    test_scheme(wv); break;
+
+
+  default: break;
   }
 
 #undef test_scheme
@@ -1411,10 +1401,11 @@ char *url_strip_param_string(char *params, char const *name)
 
       rest = strlen(params + i + remove);
       if (!rest) {
+	if (i == 0)
+	  return NULL;		/* removed everything */
 	params[i - 1] = '\0';
 	break;
       }
-
       memmove(params + i, params + i + remove, rest + 1);
     }
 

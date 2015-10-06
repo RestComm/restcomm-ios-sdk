@@ -655,8 +655,7 @@ static int new_udp(struct nat *nat, su_wait_t *wait, struct binding *dummy)
   n = su_recvfrom(nat->udp_socket, nat->buffer, sizeof nat->buffer, 0,
 		  from, &fromlen);
   if (n < 0) {
-    if (errno != EAGAIN && errno != EWOULDBLOCK && errno != ECONNREFUSED)
-      su_perror("new_udp: recvfrom");
+    su_perror("new_udp: recvfrom");
     return 0;
   }
 
@@ -689,8 +688,7 @@ static int udp_in_to_out(struct nat *nat, su_wait_t *wait, struct binding *b)
 
   n = su_recv(b->in_socket, nat->buffer, sizeof nat->buffer, 0);
   if (n == -1) {
-    if (errno != EAGAIN && errno != EWOULDBLOCK && errno != ECONNREFUSED)
-      su_perror("udp_in_to_out: recv");
+    su_perror("udp_in_to_out: recv");
     return 0;
   }
 
@@ -732,8 +730,7 @@ static int udp_out_to_in(struct nat *nat, su_wait_t *wait, struct binding *b)
 
   n = su_recv(b->out_socket, nat->buffer, sizeof nat->buffer, 0);
   if (n < 0) {
-    if (errno != EAGAIN && errno != EWOULDBLOCK && errno != ECONNREFUSED)
-      su_perror("udp_out_to_in: recv");
+    su_perror("udp_out_to_out: recv");
     return 0;
   }
 

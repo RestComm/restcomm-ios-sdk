@@ -158,10 +158,6 @@ typedef struct su_port_vtable {
 			   su_duration_t *set_duration);
   int (*su_port_wakeup)(su_port_t *port);
   int (*su_port_is_running)(su_port_t const *port);
-
-  /* >= 1.12.12 */
-  su_time64_t (*su_port_stamp64)(su_port_t *);
-  su_dur64_t (*su_port_stamp64_offset)(su_port_t *);
 } su_port_vtable_t;
 
 SOFIAPUBFUN su_port_t *su_port_create(void)
@@ -181,11 +177,6 @@ SOFIAPUBFUN su_root_t *su_root_create_with_port(su_root_magic_t *magic,
 SOFIAPUBFUN char const *su_port_name(su_port_t const *port);
 
 SOFIAPUBFUN int su_timer_reset_all(su_timer_queue_t *, su_task_r );
-
-/* Extension from >= 1.12.12 */
-
-SOFIAPUBFUN int su_timer_queue_expire(su_timer_queue_t *, int max);
-SOFIAPUBFUN su_duration_t su_timer_queue_timeout(su_timer_queue_t const *);
 
 /* ---------------------------------------------------------------------- */
 
@@ -459,27 +450,6 @@ int su_port_is_running(su_port_t const *self)
   return base && base->sup_vtable->su_port_is_running(self);
 }
 
-su_inline su_time64_t
-su_port_stamp64(su_port_t *self)
-{
-  su_virtual_port_t *base = (su_virtual_port_t *)self;
-
-  if (base)
-    return base->sup_vtable->su_port_stamp64(self);
-  else
-    return su_stamp64();
-}
-
-su_inline su_dur64_t su_port_stamp64_offset(su_port_t *self)
-{
-  su_virtual_port_t *base = (su_virtual_port_t *)self;
-
-  if (base)
-    return base->sup_vtable->su_port_stamp64_offset(self);
-
-  return su_now64() - su_stamp64();
-}
-
 SOFIAPUBFUN void su_port_wait(su_clone_r rclone);
 
 SOFIAPUBFUN int su_port_execute(su_task_r const task,
@@ -498,14 +468,6 @@ typedef struct su_base_port_s {
   su_port_vtable_t const *sup_vtable;
 
   /* Implementation may vary stuff below, too. */
-
-  /* Cached timestamps */
-  su_time64_t      sup_stamp64;
-
-  struct {
-    su_time64_t    sampled;
-    su_dur64_t     value;
-  } sup_offset;
 
   /* Pre-poll callback */
   su_prepoll_f    *sup_prepoll;
@@ -577,12 +539,6 @@ SOFIAPUBFUN int su_base_port_max_defer(su_port_t *self,
 				       su_duration_t *set_duration);
 
 SOFIAPUBFUN int su_base_port_is_running(su_port_t const *self);
-
-SOFIAPUBFUN su_time64_t su_base_port_stamp64(su_port_t *);
-
-SOFIAPUBFUN su_dur64_t su_base_port_stamp64_offset(su_port_t *);
-
-SOFIAPUBFUN void su_base_port_waiting(su_port_t *);
 
 /* ---------------------------------------------------------------------- */
 
@@ -673,6 +629,7 @@ typedef struct su_socket_port_s {
 SOFIAPUBFUN int su_socket_port_init(su_socket_port_t *,
 				    su_port_vtable_t const *);
 SOFIAPUBFUN void su_socket_port_deinit(su_socket_port_t *self);
+SOFIAPUBFUN int su_socket_port_send(su_port_t *self, su_msg_r rmsg);
 SOFIAPUBFUN int su_socket_port_wakeup(su_port_t *self);
 
 SOFIA_END_DECLS

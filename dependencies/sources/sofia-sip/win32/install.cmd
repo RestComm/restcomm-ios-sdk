@@ -50,7 +50,7 @@ set SUBDIRS=su features bnf sresolv sdp url msg sip stun ipt soa tport http nta 
 xcopy /Y sofia-sip\*.h %sofiadir%
 for %%s in (%SUBDIRS%) do xcopy /Y ..\libsofia-sip-ua\%%s\sofia-sip\*.h %sofiadir%
 
-xcopy /Y pthread\*.h %includedir%
+xcopy /Y pthread\.*.h %includedir%
 
 ::
 :: Copy libraries

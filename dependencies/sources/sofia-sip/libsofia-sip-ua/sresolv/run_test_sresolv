@@ -36,14 +36,6 @@ test x$s = x. && s=`pwd`
 PATH=/usr/sbin:/usr/local/sbin:/sbin:$PATH
 export PATH
 
-# No BIND 9, no fun
-{ type named >/dev/null &&
-  named -v | grep BIND.*9 > /dev/null
-} || {
-echo test_sresolv: there is no BIND 9 named in your path, skipping
-exit 77
-}
-
 # Test for support for IPv6 on Linux. This probably fails on everything else.
 ipv6='sysctl net.ipv6.conf.default.mtu >/dev/null 2>&1'
 # Bind not working with IPv6 on RHEL 4:
@@ -62,6 +54,14 @@ if netstat --ip >/dev/null 2>&1 ; then
 	fi
     done
 fi
+
+# No BIND 9, no fun
+{ type named >/dev/null &&
+  named -v | grep BIND.*9 > /dev/null
+} || {
+echo test_sresolv: there is no BIND 9 named in you path, skipping
+exit 77
+}
 
 if eval $ipv6
 then

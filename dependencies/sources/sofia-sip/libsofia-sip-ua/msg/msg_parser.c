@@ -1101,7 +1101,7 @@ msg_header_t *header_parse(msg_t *msg, msg_pub_t *mo,
   su_home_t *home = msg_home(msg);
   msg_header_t *h, **hh;
   msg_hclass_t *hc = hr->hr_class;
-  issize_t n;
+  int n;
   int add_to_list, clear = 0;
 
   hh = (msg_header_t **)((char *)mo + hr->hr_offset);
@@ -1236,68 +1236,6 @@ issize_t msg_parse_next_field(su_home_t *home, msg_header_t *prev,
   prev->sh_next = h;
 
   return hc->hc_parse(home, h, s, end - s);
-}
-
-/** Parse a multi-field header.
- *
- * Parses a multi-field header like @Accept, @Contact, @Via or @Warning.
- * It scans for the next header field and if one is found, it calls the
- * given parsing function.
- *
- * @param home 	 memory home used ot allocate
- *             	 new header structures and parameter lists
- * @param h 	 pointer to header structure
- * @param s	 header content to parse
- * @param parser function parsing each header field
- *
- * @since New in @VERSION_UNRELEASED.
- *
- * @retval >= 0 when successful
- * @retval -1 upon an error
- */
-issize_t msg_parse_header_fields(su_home_t *home,
-				 msg_header_t *h,
-				 char *s,
-				 int (*parser)(su_home_t *,
-					       msg_header_t *h,
-					       char **s))
-{
-  msg_hclass_t *hc = h->sh_class;
-  msg_header_t *prev;
-  issize_t n;
-
-  while (*s == ',')   /* Ignore empty entries (comma-whitespace) */
-    s += 1 + span_lws(s + 1);
-
-  for (;;) {
-    n = (*parser)(home, h, &s);
-    if (n < 0)
-      return n;
-
-    if (msg_header_update_params((msg_common_t *)h, 0) < 0)
-      return -1;
-
-    if (*s == '\0')
-      return 0;
-
-    if (*s != ',')
-      return -1;
-
-    while (*s == ',')
-      *s = '\0', s += 1 + span_lws(s + 1);
-
-    if (*s == '\0')
-      return 0;
-
-    prev = h;
-
-    h = msg_header_alloc(home, hc, 0);
-    if (h == NULL)
-      return -1;
-
-    prev->sh_succ = h, h->sh_prev = &prev->sh_succ;
-    prev->sh_next = h;
-  }
 }
 
 /** Decode a message header. */
@@ -2976,7 +2914,6 @@ int msg_header_remove(msg_t *msg, msg_pub_t *pub, msg_header_t *h)
   if (msg == NULL || h == NULL || h == MSG_HEADER_NONE ||
       h->sh_class == NULL)
     return -1;
-
   if (pub == NULL)
     pub = msg->m_object;
 
@@ -3067,8 +3004,8 @@ int msg_header_remove_all(msg_t *msg, msg_pub_t *pub, msg_header_t *h)
  *
  * @param msg message object owning the fragment chain
  * @param pub public message structure to which header is added
- * @param replaced   old header to be removed (may be NULL)
- * @param h  list of header(s) to be added (may be NULL)
+ * @param replaced   old header to be removed
+ * @param h   list of header(s) to be added
  */
 int msg_header_replace(msg_t *msg,
 		       msg_pub_t *pub,
@@ -3077,20 +3014,16 @@ int msg_header_replace(msg_t *msg,
 {
   msg_header_t *h0, *last, **hh, **hh0;
 
-  if (msg == NULL)
+  if (msg == NULL || replaced == NULL)
     return -1;
-
   if (h == NULL || h == MSG_HEADER_NONE || h->sh_class == NULL)
     return msg_header_remove(msg, pub, replaced);
-
   if (pub == NULL)
     pub = msg->m_object;
 
   hh = hh0 = msg_hclass_offset(msg->m_class, pub, h->sh_class);
-
   if (hh == NULL)
     return -1;
-
   if (replaced == NULL)
     return msg_header_add(msg, pub, hh, h);
 

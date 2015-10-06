@@ -52,8 +52,15 @@
 
 SOFIA_BEGIN_DECLS
 
-su_inline int su_strcmp(char const *a, char const *b);
-su_inline int su_strncmp(char const *a, char const *b, size_t n);
+su_inline int su_strcmp(char const *a, char const *b)
+{
+  return strcmp(a ? a : "", b ? b : "");
+}
+
+su_inline int su_strncmp(char const *a, char const *b, size_t n)
+{
+  return strncmp(a ? a : "", b ? b : "", n);
+}
 
 SOFIAPUBFUN char *su_strcasestr(const char *haystack, const char *needle);
 
@@ -73,16 +80,6 @@ SOFIAPUBFUN size_t su_memspn(const void *mem, size_t memlen,
 			     const void *accept, size_t acceptlen);
 SOFIAPUBFUN size_t su_memcspn(const void *mem, size_t memlen,
 			      const void *reject, size_t rejectlen);
-
-su_inline int su_strcmp(char const *a, char const *b)
-{
-  return strcmp(a ? a : "", b ? b : "");
-}
-
-su_inline int su_strncmp(char const *a, char const *b, size_t n)
-{
-  return strncmp(a ? a : "", b ? b : "", n);
-}
 
 SOFIA_END_DECLS
 

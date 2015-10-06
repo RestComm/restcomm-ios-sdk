@@ -155,7 +155,7 @@ TCase *check_nta_server_3_0(void)
 
   tcase_add_checked_fixture(tc, server_setup, server_teardown);
 
-  s2_nta_set_tcase_timeout(tc, 2);
+  tcase_set_timeout(tc, 2);
 
   tcase_add_test(tc, server_3_0_0);
   tcase_add_test(tc, server_3_0_1);

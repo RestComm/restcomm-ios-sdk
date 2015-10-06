@@ -535,7 +535,7 @@ void auth_method_basic(auth_mod_t *am,
     if (!au->au_params)
       continue;
     n = base64_d(userpass, upsize - 1, au->au_params[0]);
-    if (n >= INT_MAX)
+    if (n < 0 || n >= INT_MAX)
       continue;
     if (n >= upsize) {
       void *b = realloc(userpass == buffer ? NULL : userpass, upsize = n + 1);
@@ -957,12 +957,12 @@ int auth_readdb_if_needed(auth_mod_t *am)
 #define auth_apw_local ((void *)(intptr_t)auth_readdb_internal)
 
 /** Read authentication database */
-static int auth_readdb_internal(auth_mod_t *am, int always)
+static
+int auth_readdb_internal(auth_mod_t *am, int always)
 {
   FILE *f;
   char *data, *s;
-  ssize_t len;
-  size_t i, n, N;
+  size_t len, i, n, N;
   auth_passwd_t *apw;
 
   if (!am->am_stat)
@@ -1018,7 +1018,7 @@ static int auth_readdb_internal(auth_mod_t *am, int always)
 
     fclose(f);
 
-    if (len == -1)
+    if (len < 0)
       return -1;
 
     /* Count number of entries in new buffer */

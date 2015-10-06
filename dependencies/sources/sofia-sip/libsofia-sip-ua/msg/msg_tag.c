@@ -50,7 +50,7 @@
 #include <sofia-sip/su_tagarg.h>
 #include "sofia-sip/msg_tag_class.h"
 
-#define NONE ((void*)(intptr_t)-1)
+#define NONE ((void*)-1)
 
 int msghdrtag_snprintf(tagi_t const *t, char b[], size_t size)
 {
@@ -251,10 +251,10 @@ tagi_t *msgobjtag_dup(tagi_t *dst, tagi_t const *src, void **bb)
   mo->msg_size = omo->msg_size;
   mo->msg_flags = omo->msg_flags;
 
-  if (omo->msg_request)
-    o = omo->msg_request;
+  if (mo->msg_request)
+    o = mo->msg_request;
   else
-    o = omo->msg_status;
+    o = mo->msg_status;
 
   for (; o; o = o->sh_succ) {
     size_t size;

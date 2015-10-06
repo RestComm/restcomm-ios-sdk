@@ -40,10 +40,6 @@
 SOFIA_BEGIN_DECLS
 
 SOFIAPUBFUN msg_t *msg_create(msg_mclass_t const *mc, int flags);
-
-SOFIAPUBFUN msg_t *msg_ref(msg_t *);
-SOFIAPUBFUN void msg_unref(msg_t *);
-
 SOFIAPUBFUN void msg_destroy(msg_t *);
 
 SOFIAPUBFUN msg_t *msg_copy(msg_t *);

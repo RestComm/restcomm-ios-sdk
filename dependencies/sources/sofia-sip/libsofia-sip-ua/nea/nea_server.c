@@ -41,7 +41,7 @@
 
 #include "nea_debug.h"
 
-#define NONE ((void *)(intptr_t)-1)
+#define NONE ((void *)- 1)
 
 #define SU_ROOT_MAGIC_T      struct nea_server_s
 #define SU_MSG_ARG_T         tagi_t
@@ -1219,6 +1219,7 @@ nea_event_t *nea_event_tcreate(nea_server_t *nes,
 			       tag_type_t tag, tag_value_t value, ...)
 {
   nea_event_t *ev, **pev;
+  size_t len = strlen(name);
   ta_list ta;
 
   if (nes == NULL || callback == NULL || name == NULL)
@@ -1234,11 +1235,6 @@ nea_event_t *nea_event_tcreate(nea_server_t *nes,
     }
   }
   else {
-    size_t len = strlen(name);
-
-    if (len == 0)
-      return NULL;
-
     for (pev = &nes->nes_events; (ev = *pev); pev = &(*pev)->ev_next) {
       if (strncmp(ev->ev_event->o_type, name, len) != 0 ||
 	  ev->ev_event->o_type[len] != '.' ||
@@ -1784,7 +1780,7 @@ int nea_sub_process_subscribe(nea_sub_t *s,
 	    a_next = a->ac_next;
 
 	    for (aa = (sip_accept_t **)&accept;
-		 *aa && msg_q_value((*aa)->ac_q) >= msg_q_value(a->ac_q);
+		 *aa && sip_q_value((*aa)->ac_q) >= sip_q_value(a->ac_q);
 		 aa = &(*aa)->ac_next)
 	      ;
 

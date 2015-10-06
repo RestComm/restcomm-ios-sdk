@@ -102,7 +102,7 @@ nua_handle_t *nh_create(nua_t *nua, tag_type_t t, tag_value_t v, ...);
 static void nh_append(nua_t *nua, nua_handle_t *nh);
 static void nh_remove(nua_t *nua, nua_handle_t *nh);
 
-static void nua_stack_shutdown_timer(nua_t *nua, su_timer_t *t, su_timer_arg_t *a);
+static void nua_stack_timer(nua_t *nua, su_timer_t *t, su_timer_arg_t *a);
 
 /* ---------------------------------------------------------------------- */
 /* Constant data */
@@ -112,7 +112,7 @@ char const nua_internal_error[] = "Internal NUA Error";
 
 char const nua_application_sdp[] = "application/sdp";
 
-#define NUA_SHUTDOWN_TIMER_INTERVAL (1000)
+#define NUA_STACK_TIMER_INTERVAL (1000)
 
 /* ----------------------------------------------------------------------
  * Initialization & deinitialization
@@ -142,6 +142,10 @@ int nua_stack_init(su_root_t *root, nua_t *nua)
   }
 
   nua->nua_root = root;
+  nua->nua_timer = su_timer_create(su_root_task(root),
+				   NUA_STACK_TIMER_INTERVAL);
+  if (!nua->nua_timer)
+    return -1;
 
   home = nua->nua_home;
   nua->nua_handles_tail = &nua->nua_handles;
@@ -167,12 +171,7 @@ int nua_stack_init(su_root_t *root, nua_t *nua)
   if (nua_stack_set_params(nua, dnh, nua_i_none, nua->nua_args) < 0)
     return -1;
 
-  /* XXX - soa should know what it supports */
   nua->nua_invite_accept = sip_accept_make(home, SDP_MIME_TYPE);
-
-  nua->nua_accept_multipart = sip_accept_format(home, "%s, %s",
-						SDP_MIME_TYPE,
-						"multipart/*");
 
   nua->nua_nta = nta_agent_create(root, NONE, NULL, NULL,
 				  NTATAG_MERGE_482(1),
@@ -203,6 +202,8 @@ int nua_stack_init(su_root_t *root, nua_t *nua)
   if (nua->nua_prefs->ngp_detect_network_updates)
     nua_stack_launch_network_change_detector(nua);
 
+  nua_stack_timer(nua, nua->nua_timer, NULL);
+
   return 0;
 }
 
@@ -210,7 +211,7 @@ void nua_stack_deinit(su_root_t *root, nua_t *nua)
 {
   enter;
 
-  su_timer_destroy(nua->nua_shutdown_timer), nua->nua_shutdown_timer = NULL;
+  su_timer_destroy(nua->nua_timer), nua->nua_timer = NULL;
   nta_agent_destroy(nua->nua_nta), nua->nua_nta = NULL;
 }
 
@@ -691,15 +692,79 @@ nua_signal_data_t const *nua_signal_data(nua_saved_signal_t const saved[1])
 
 /* ====================================================================== */
 
+static int nh_call_pending(nua_handle_t *nh, sip_time_t time);
+
 /**@internal
- * Timer routine for graceful shutdown.
+ * Timer routine.
+ *
+ * Go through all active handles and execute pending tasks
  */
-void nua_stack_shutdown_timer(nua_t *nua, su_timer_t *t, su_timer_arg_t *a)
+void nua_stack_timer(nua_t *nua, su_timer_t *t, su_timer_arg_t *a)
 {
+  nua_handle_t *nh, *nh_next;
+  sip_time_t now = sip_now();
+  su_root_t *root = su_timer_root(t);
+
+  su_timer_set(t, nua_stack_timer, a);
+
   if (nua->nua_shutdown) {
     nua_stack_shutdown(nua);
+    return;
+  }
+
+  for (nh = nua->nua_handles; nh; nh = nh_next) {
+    nh_next = nh->nh_next;
+    nh_call_pending(nh, now);
+    su_root_yield(root);	/* Handle received packets */
   }
 }
+
+
+static
+int nh_call_pending(nua_handle_t *nh, sip_time_t now)
+{
+  nua_dialog_state_t *ds = nh->nh_ds;
+  nua_dialog_usage_t *du;
+  sip_time_t next = now + NUA_STACK_TIMER_INTERVAL / 1000;
+
+  for (du = ds->ds_usage; du; du = du->du_next) {
+    if (now == 0)
+      break;
+    if (du->du_refresh && du->du_refresh < next)
+      break;
+  }
+
+  if (du == NULL)
+    return 0;
+
+  nua_handle_ref(nh);
+
+  while (du) {
+    nua_dialog_usage_t *du_next = du->du_next;
+
+    nua_dialog_usage_refresh(nh, ds, du, now);
+
+    if (du_next == NULL)
+      break;
+
+    for (du = nh->nh_ds->ds_usage; du; du = du->du_next)
+      if (du == du_next)
+	break;
+
+    for (; du; du = du->du_next) {
+      if (now == 0)
+	break;
+      if (du->du_refresh && du->du_refresh < next)
+	break;
+    }
+  }
+
+  nua_handle_unref(nh);
+
+  return 1;
+}
+
+
 
 /* ====================================================================== */
 
@@ -768,8 +833,9 @@ void nua_stack_shutdown(nua_t *nua)
 
     busy += nua_dialog_repeat_shutdown(nh, ds);
 
-    if (nh->nh_ds->ds_soa)
-      soa_destroy(nh->nh_ds->ds_soa), nh->nh_ds->ds_soa = NULL;
+    if (nh->nh_soa) {
+      soa_destroy(nh->nh_soa), nh->nh_soa = NULL;
+    }
 
     if (nua_client_request_pending(ds->ds_cr))
       busy++;
@@ -794,19 +860,8 @@ void nua_stack_shutdown(nua_t *nua)
 	nua_dialog_usage_remove(nh, nh->nh_ds, nh->nh_ds->ds_usage, NULL, NULL);
       }
     }
-    if (nua->nua_shutdown_timer) {
-      su_timer_destroy(nua->nua_shutdown_timer);
-      nua->nua_shutdown_timer = NULL;
-    }
+    su_timer_destroy(nua->nua_timer), nua->nua_timer = NULL;
     nta_agent_destroy(nua->nua_nta), nua->nua_nta = NULL;
-  } else {
-    if (!nua->nua_shutdown_timer)
-      nua->nua_shutdown_timer = su_timer_create(su_root_task(nua->nua_root),
-                                                NUA_SHUTDOWN_TIMER_INTERVAL);
-    if (nua->nua_shutdown_timer)
-      su_timer_set(nua->nua_shutdown_timer, nua_stack_shutdown_timer, NULL);
-    else
-      SET_STATUS(500, "Shutdown timer creation failed");
   }
 
   nua_stack_event(nua, NULL, NULL, nua_r_shutdown, status, phrase, NULL);
@@ -904,6 +959,9 @@ void nh_destroy(nua_t *nua, nua_handle_t *nh)
     nua_server_request_destroy(nh->nh_ds->ds_sr);
 
   nua_dialog_deinit(nh, nh->nh_ds);
+
+  if (nh->nh_soa)
+    soa_destroy(nh->nh_soa), nh->nh_soa = NULL;
 
   if (nh_is_inserted(nh))
     nh_remove(nua, nh);

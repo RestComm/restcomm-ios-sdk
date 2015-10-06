@@ -1021,7 +1021,7 @@ msg_t *nth_client_request(nth_client_t * hc)
 msg_t *nth_client_response(nth_client_t const *hc)
 {
   if (hc)
-    return msg_ref(hc->hc_response);
+    return msg_ref_create(hc->hc_response);
   else
     return NULL;
 }

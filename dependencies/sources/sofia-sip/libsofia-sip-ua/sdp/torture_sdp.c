@@ -79,7 +79,7 @@ static char const e1_msg[] =
 
 static int test_error(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_parser_t *parser;
 
   BEGIN();
@@ -121,7 +121,7 @@ static char const s0_msg[] =
 
 static int test_session(void)
 {
-  su_home_t *home = su_home_new(sizeof *home), *home2 = su_home_create();
+  su_home_t *home = su_home_create(), *home2 = su_home_create();
   sdp_session_t *sdp_src, *sdp_target;
   sdp_session_t const *sdp = NULL;
   sdp_parser_t *parser;
@@ -259,7 +259,7 @@ static char const s2_msg[] =
 
 static int test_session2(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_session_t const *sdp = NULL;
   sdp_parser_t *parser;
   sdp_media_t *m;
@@ -454,7 +454,7 @@ static char const s3_msg[] =
 
 static int test_sanity(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_parser_t *parser;
 
   BEGIN();
@@ -494,7 +494,7 @@ static char const pint_torture_msg[] =
 
 static int test_pint(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_parser_t *parser;
   sdp_session_t *sdp;
   sdp_printer_t *printer;
@@ -529,7 +529,7 @@ static sdp_list_t const l1[1] = {{ sizeof(l1), (sdp_list_t *)l0, "bar" }};
 /** Test list things */
 int test_list(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_list_t *l;
 
   BEGIN();
@@ -574,7 +574,7 @@ sdp_rtpmap_t const rm1[1] =
 /** Test rtpmap-related things */
 int test_rtpmap(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_rtpmap_t *rm;
 
   BEGIN();
@@ -611,7 +611,7 @@ static sdp_attribute_t const a1[1] =
 
 static int test_attribute(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_attribute_t *a, *a_new, *list, *replaced;
 
   BEGIN();
@@ -703,7 +703,7 @@ static sdp_media_t const m0[1] =
 
 static int test_media(void)
 {
-  su_home_t *home = su_home_new(sizeof *home);
+  su_home_t *home = su_home_create();
   sdp_media_t *media;
   sdp_session_t *sdp;
   sdp_parser_t *parser;
@@ -828,7 +828,7 @@ static int test_build(void)
 
   srand(time(NULL));
 
-  TEST_1(home = su_home_new(sizeof *home));
+  TEST_1(home = su_home_create());
 
   /*
    * Allocate an SDP structure using su_salloc().

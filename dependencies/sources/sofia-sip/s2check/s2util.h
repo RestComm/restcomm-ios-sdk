@@ -38,7 +38,6 @@
 
 SOFIA_BEGIN_DECLS
 
-su_duration_t s2_quickstep(su_root_t *, su_duration_t, su_duration_t);
 void s2_fast_forward(unsigned long seconds, su_root_t *root);
 void s2_timed_logger(void *stream, char const *fmt, va_list ap);
 

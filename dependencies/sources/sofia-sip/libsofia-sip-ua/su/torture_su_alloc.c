@@ -257,8 +257,6 @@ static int test_lock(void)
   TEST(su_home_trylock(home), 0);
   TEST(su_home_unlock(home), 0);
 
-  TEST_VOID(su_home_deinit(home));
-
   END();
 }
 

@@ -83,7 +83,7 @@ typedef struct nua_ee_data {
   nua_event_data_t ee_data[1];
 } nua_ee_data_t;
 
-#define NONE ((void *)(intptr_t)-1)
+#define       NONE ((void *)-1)
 
 typedef struct register_usage nua_registration_t;
 
@@ -151,6 +151,8 @@ struct nua_handle_s
   nua_dialog_state_t nh_ds[1];
 
   auth_client_t  *nh_auth;	/**< Authorization objects */
+
+  soa_session_t  *nh_soa;	/**< Media session */
 
   struct nua_referral {
     nua_handle_t  *ref_handle;	/**< Referring handle */
@@ -221,13 +223,12 @@ struct nua_s {
   nua_registration_t *nua_registrations; /**< Active registrations */
 
   /* Constants */
-  sip_accept_t       *nua_accept_multipart;
   sip_accept_t       *nua_invite_accept; /* What we accept for invite */
 
   su_root_t          *nua_root;
   su_task_r           nua_server;
   nta_agent_t        *nua_nta;
-  su_timer_t         *nua_shutdown_timer;
+  su_timer_t         *nua_timer;
 
   /* User-agent parameters */
   nua_global_preferences_t nua_prefs[1];

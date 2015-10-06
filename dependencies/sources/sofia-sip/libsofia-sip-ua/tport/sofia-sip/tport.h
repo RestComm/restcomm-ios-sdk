@@ -187,7 +187,7 @@ TPORT_DLL int tport_get_params(tport_t const *, tag_type_t tag, tag_value_t valu
 /** Set transport parameters. */
 TPORT_DLL int tport_set_params(tport_t *self, tag_type_t tag, tag_value_t value, ...);
 
-/** Destroy a master transport. */
+/** Destroy transport(s). */
 TPORT_DLL void tport_destroy(tport_t *tport);
 
 /** Shutdown a transport connection. */
@@ -339,7 +339,7 @@ TPORT_DLL int tport_delivered_from(tport_t *tp, msg_t const *msg,
 				   tp_name_t name[1]);
 
 /** Return TLS Subjects provided by the source transport */
-TPORT_DLL su_strlst_t const *tport_delivered_from_subjects(tport_t *tp,
+TPORT_DLL su_strlst_t const *tport_delivered_from_subjects(tport_t *tp, 
                                                            msg_t const *msg);
 
 /** Check if the given subject string is found in su_strlst_t */

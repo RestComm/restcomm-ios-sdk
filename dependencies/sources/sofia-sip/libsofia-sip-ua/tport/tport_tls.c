@@ -355,19 +355,11 @@ int tls_init_context(tls_t *tls, tls_issues_t const *ti)
 #endif
   }
 
-  if (ti->CAfile == NULL && ti->CApath == NULL) {
-    /* No CAfile, default path */
-    if (!SSL_CTX_set_default_verify_paths(tls->ctx)) {
-      SU_DEBUG_1(("tls_init_context: error setting default verify paths\n"));
-      errno = EIO;
-      return -1;
-    }
-  }
-  else if (!SSL_CTX_load_verify_locations(tls->ctx,
-					  ti->CAfile,
-					  ti->CApath)) {
+  if (!SSL_CTX_load_verify_locations(tls->ctx,
+                                     ti->CAfile,
+                                     ti->CApath)) {
     SU_DEBUG_1(("%s: error loading CA list: %s\n",
-		"tls_init_context", ti->CAfile ? ti->CAfile : "<default>"));
+		 "tls_init_context", ti->CAfile));
     if (ti->configured > 0)
       tls_log_errors(3, "tls_init_context(CA)", 0);
     errno = EIO;
@@ -527,13 +519,13 @@ int tls_post_connection_check(tport_t *self, tls_t *tls)
 
   cert = SSL_get_peer_certificate(tls->con);
   if (!cert) {
-    SU_DEBUG_7(("%s(%p): Peer did not provide X.509 Certificate.\n",
+    SU_DEBUG_7(("%s(%p): Peer did not provide X.509 Certificate.\n", 
 		 __func__, (void *) self));
     if (self->tp_accepted && tls->verify_incoming)
       return X509_V_ERR_CERT_UNTRUSTED;
     else if (!self->tp_accepted && tls->verify_outgoing)
       return X509_V_ERR_CERT_UNTRUSTED;
-    else
+    else 
       return X509_V_OK;
   }
 

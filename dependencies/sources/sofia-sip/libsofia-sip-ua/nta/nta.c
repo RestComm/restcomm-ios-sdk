@@ -104,7 +104,7 @@ char const nta_version[] = PACKAGE_VERSION;
 static char const __func__[] = "nta";
 #endif
 
-#define NONE ((void *)(intptr_t)-1)
+#define NONE ((void *)-1)
 
 /* ------------------------------------------------------------------------- */
 
@@ -149,8 +149,6 @@ struct nta_agent_s
   su_time_t             sa_now;	 /**< Timestamp in microsecond resolution. */
   uint32_t              sa_next; /**< Timestamp for next agent_timer. */
   uint32_t              sa_millisec; /**< Timestamp in milliseconds. */
-
-  uint32_t              sa_cseq;
 
   msg_mclass_t const   *sa_mclass;
   uint32_t sa_flags;		/**< SIP message flags */
@@ -430,9 +428,7 @@ struct nta_incoming_s
 
   short               	irq_status;
 
-  unsigned irq_retries:8;	/**< Number of retries.
-				 * Disable SigComp if too many retries.
-				 */
+  unsigned irq_retries:8;
   unsigned irq_default:1;	/**< Default transaction */
   unsigned irq_canceled:1;	/**< Transaction is canceled */
   unsigned irq_completed:1;	/**< Transaction is completed */
@@ -874,8 +870,6 @@ nta_agent_t *nta_agent_create(su_root_t *root,
     agent->sa_magic = magic;
     agent->sa_flags = MSG_DO_CANONIC;
 
-    agent->sa_cseq = (su_nanotime(NULL) / 4 / SU_E9) & 0x3fffffff;
-
     agent->sa_maxsize         = 2 * 1024 * 1024; /* 2 MB */
     agent->sa_bad_req_mask    =
       /*
@@ -1059,7 +1053,7 @@ void nta_agent_destroy(nta_agent_t *agent)
 	  SU_DEBUG_3(("%s: destroying %s%s client transaction to <"
 		      URL_PRINT_FORMAT ">\n",
 		      __func__,
-		      (orq->orq_forking || orq->orq_forks) ? "forked " : "forking ",
+		      (orq->orq_forking || orq->orq_forks) ? "forked " : "forking",
 		      orq->orq_method_name,
 		      URL_PRINT_ARGS(orq->orq_to->a_url)));
 
@@ -1208,11 +1202,6 @@ static int agent_tag_init(nta_agent_t *self)
   self->sa_tags = NTA_TAG_PRIME * self->sa_branch;
 
   return 0;
-}
-
-static uint32_t agent_seq(nta_agent_t *agent)
-{
-  return ++agent->sa_cseq;
 }
 
 /** Initialize agent timer. */
@@ -1682,7 +1671,7 @@ int agent_set_params(nta_agent_t *agent, tagi_t *tags)
     progress = 60 * 1000;
   agent->sa_progress = progress;
 
-  if (server_rport > 3)
+  if (server_rport > 2)
     server_rport = 1;
   else if (server_rport < 0)
     server_rport = 1;
@@ -1877,7 +1866,7 @@ int nta_agent_get_stats(nta_agent_t *agent,
   ta_list ta;
 
   if (!agent)
-    return su_seterrno(EINVAL);
+    return su_seterrno(EINVAL), -1;
 
   ta_start(ta, tag, value);
 
@@ -3094,9 +3083,7 @@ int agent_check_request_via(nta_agent_t *agent,
     rport = su_sprintf(msg_home(msg), "rport=%u", ntohs(from->su_port));
     msg_header_replace_param(msg_home(msg), v->v_common, rport);
   }
-  else if (agent->sa_server_rport == 2 ||
-	   (agent->sa_server_rport == 3 && sip && sip->sip_user_agent &&
-	    su_casenmatch(sip->sip_user_agent->g_string, "Polycom", 7))) {
+  else if (agent->sa_server_rport == 2) {
     rport = su_sprintf(msg_home(msg), "rport=%u", ntohs(from->su_port));
     msg_header_replace_param(msg_home(msg), v->v_common, rport);
   }
@@ -3470,7 +3457,7 @@ int nta_msg_tsend(nta_agent_t *agent, msg_t *msg, url_string_t const *u,
   }
   else {
     /* Send request */
-    if (outgoing_create(agent, NULL, NULL, u, NULL, msg_ref(msg),
+    if (outgoing_create(agent, NULL, NULL, u, NULL, msg_ref_create(msg),
 			NTATAG_STATELESS(1),
 			ta_tags(ta)))
       retval = 0;
@@ -3780,7 +3767,7 @@ int nta_msg_ackbye(nta_agent_t *agent, msg_t *msg)
 				   TAG_END())))
     goto err;
   else
-    nta_outgoing_destroy(ack);	/* Fire and forget */
+    nta_outgoing_destroy(ack);
 
   home = msg_home(bmsg);
 
@@ -3798,8 +3785,6 @@ int nta_msg_ackbye(nta_agent_t *agent, msg_t *msg)
 				   NTATAG_STATELESS(1),
 				   TAG_END())))
     goto err;
-  else
-    nta_outgoing_destroy(bye);	/* Fire and forget */
 
   msg_destroy(msg);
   return 0;
@@ -3977,7 +3962,7 @@ int nta_msg_request_complete(msg_t *msg,
   else if (sip->sip_cseq) /* Obtain initial value from existing CSeq header */
     seq = leg->leg_seq = sip->sip_cseq->cs_seq;
   else
-    seq = leg->leg_seq = agent_seq(leg->leg_agent);
+    seq = leg->leg_seq = (sip_now() >> 1) & 0x7ffffff;
 
   if (!sip->sip_call_id) {
     if (leg->leg_id)
@@ -4447,21 +4432,6 @@ char const *nta_leg_tag(nta_leg_t *leg, char const *tag)
   leg->leg_tagged = 1;
 
   return leg->leg_local->a_tag;
-}
-
-/** Get Call-Id.
- *
- * @param leg pointer to dialog object
- *
- * @return Pointer to Call-Id structure, or NULL if there is none.
- */
-sip_call_id_t const *
-nta_leg_get_call_id(nta_leg_t const *leg)
-{
-  if (leg)
-    return leg->leg_id;
-  else
-    return NULL;
 }
 
 /** Get local tag. */
@@ -5291,7 +5261,7 @@ nta_incoming_t *incoming_create(nta_agent_t *agent,
     sip_method_t method = sip->sip_request->rq_method;
 
     irq->irq_request = msg;
-    irq->irq_home = home = msg_home(msg_ref(msg));
+    irq->irq_home = home = msg_home(msg_ref_create(msg));
     irq->irq_agent = agent;
 
     irq->irq_received = agent_now(agent); /* Timestamp originally from tport */
@@ -5788,7 +5758,7 @@ msg_t *nta_incoming_getrequest(nta_incoming_t *irq)
   msg_t *msg = NULL;
 
   if (irq && !irq->irq_default)
-    msg = msg_ref(irq->irq_request);
+    msg = msg_ref_create(irq->irq_request);
 
   return msg;
 }
@@ -5809,7 +5779,7 @@ msg_t *nta_incoming_getrequest_ackcancel(nta_incoming_t *irq)
   msg_t *msg = NULL;
 
   if (irq && irq->irq_request2)
-    msg = msg_ref(irq->irq_request2);
+    msg = msg_ref_create(irq->irq_request2);
 
   return msg;
 }
@@ -5830,7 +5800,7 @@ msg_t *nta_incoming_getresponse(nta_incoming_t *irq)
   msg_t *msg = NULL;
 
   if (irq && irq->irq_response)
-    msg = msg_ref(irq->irq_response);
+    msg = msg_ref_create(irq->irq_response);
 
   return msg;
 }
@@ -6146,7 +6116,7 @@ int incoming_cancel(nta_incoming_t *irq, msg_t *msg, sip_t *sip,
     nta_incoming_tag(irq, NULL);
   }
 
-  mreply(agent, NULL, SIP_200_OK, msg_ref(msg),
+  mreply(agent, NULL, SIP_200_OK, msg_ref_create(msg),
 	 tport, 0, 0, irq->irq_tag,
 	 TAG_END());
 
@@ -6381,10 +6351,10 @@ int nta_incoming_complete_response(nta_incoming_t *irq,
   ta_list ta;
 
   if (irq == NULL || sip == NULL)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
 
   if (status != 0 && (status < 100 || status > 699))
-    return su_seterrno(EINVAL);
+    return su_seterrno(EINVAL), -1;
 
   if (status != 0 && !sip->sip_status)
     sip->sip_status = sip_status_create(home, status, phrase, NULL);
@@ -6786,30 +6756,27 @@ void incoming_retransmit_reply(nta_incoming_t *irq, tport_t *tport)
   if (tport == NULL)
     tport = irq->irq_tport;
 
-  if (tport == NULL)
-    return;
-
   /* Answer with existing reply */
   if (irq->irq_reliable && !irq->irq_reliable->rel_pracked)
     msg = reliable_response(irq);
   else
     msg = irq->irq_response;
 
-  if (msg == NULL)
-    return;
+  if (msg && tport) {
+    irq->irq_retries++;
 
-  if (irq->irq_tpn->tpn_comp && ++irq->irq_retries == 2) {
-    irq->irq_tpn->tpn_comp = NULL;
+    if (irq->irq_retries == 2 && irq->irq_tpn->tpn_comp) {
+      irq->irq_tpn->tpn_comp = NULL;
 
-    if (irq->irq_cc) {
-      agent_close_compressor(irq->irq_agent, irq->irq_cc);
-      nta_compartment_decref(&irq->irq_cc);
+      if (irq->irq_cc) {
+	agent_close_compressor(irq->irq_agent, irq->irq_cc);
+	nta_compartment_decref(&irq->irq_cc);
+      }
     }
-  }
 
-  if (tport_tsend(tport, msg, irq->irq_tpn,
-		  IF_SIGCOMP_TPTAG_COMPARTMENT(irq->irq_cc)
-		  TPTAG_MTU(INT_MAX), TAG_END())) {
+    tport = tport_tsend(tport, msg, irq->irq_tpn,
+			IF_SIGCOMP_TPTAG_COMPARTMENT(irq->irq_cc)
+			TPTAG_MTU(INT_MAX), TAG_END());
     irq->irq_agent->sa_stats->as_sent_msg++;
     irq->irq_agent->sa_stats->as_sent_response++;
   }
@@ -7621,7 +7588,7 @@ char const *nta_outgoing_branch(nta_outgoing_t const *orq)
 msg_t *nta_outgoing_getresponse(nta_outgoing_t *orq)
 {
   if (orq != NULL && orq != NONE)
-    return msg_ref(orq->orq_response);
+    return msg_ref_create(orq->orq_response);
   else
     return NULL;
 }
@@ -7638,7 +7605,7 @@ msg_t *nta_outgoing_getresponse(nta_outgoing_t *orq)
 msg_t *nta_outgoing_getrequest(nta_outgoing_t *orq)
 {
   if (orq != NULL && orq != NONE)
-    return msg_ref(orq->orq_request);
+    return msg_ref_create(orq->orq_request);
   else
     return NULL;
 }
@@ -7813,7 +7780,7 @@ nta_outgoing_t *outgoing_create(nta_agent_t *agent,
   if (tpn) {
     /* CANCEL or ACK to [3456]XX */
     invalid = tport_name_dup(home, orq->orq_tpn, tpn);
-#if 0 /* XXX - HAVE_SOFIA_SRESOLV */
+#if HAVE_SOFIA_SRESOLV
     /* We send ACK or CANCEL only if original request was really sent */
     assert(tport_name_is_resolved(orq->orq_tpn));
 #endif
@@ -9294,15 +9261,7 @@ int outgoing_recv(nta_outgoing_t *_orq,
     /* Non-INVITE */
     if (orq->orq_queue == sa->sa_out.trying ||
 	orq->orq_queue == sa->sa_out.resolving) {
-      if (orq->orq_status >= 200) {
-	/* hacked by freeswitch:
-	   this is being hit by options 404 status with 404 in orq->orq_status
-	   and orq_destroyed = 1, orq_completed = 1
-	*/
-	/* assert(orq->orq_status < 200); */
-	msg_destroy(msg);
-	return 0;
-      }
+      assert(orq->orq_status < 200);
 
       if (status < 200) {
 	/* @RFC3261 17.1.2.1:
@@ -10721,10 +10680,7 @@ void outgoing_answer_a(sres_context_t *orq, sres_query_t *q,
   else if (found)
     results = &result;
 
-  if (results == NULL)
-    found = 0;
-
-  for (i = j = 0; results && answers && answers[i]; i++) {
+  for (i = j = 0; answers && answers[i]; i++) {
     char addr[SU_ADDRSIZE];
     sres_a_record_t const *a = answers[i]->sr_a;
 
@@ -10948,7 +10904,7 @@ nta_reliable_t *reliable_mreply(nta_incoming_t *irq,
       return irq->irq_reliable = rel;
     }
 
-    if (reliable_send(irq, rel, msg_ref(msg), sip) < 0) {
+    if (reliable_send(irq, rel, msg_ref_create(msg), sip) < 0) {
       msg_destroy(msg);
       su_free(agent->sa_home, rel);
       return NULL;
@@ -11098,7 +11054,7 @@ int reliable_recv(nta_reliable_t *rel, msg_t *msg, sip_t *sip, tport_t *tp)
   int status;
 
   rel->rel_pracked = 1;
-  msg_unref(rel->rel_unsent), rel->rel_unsent = NULL;
+  msg_ref_destroy(rel->rel_unsent), rel->rel_unsent = NULL;
 
   pr_irq = incoming_create(irq->irq_agent, msg, sip, tp, irq->irq_tag);
   if (!pr_irq) {
@@ -11143,7 +11099,7 @@ int reliable_recv(nta_reliable_t *rel, msg_t *msg, sip_t *sip, tport_t *tp)
     msg = rel->rel_unsent, sip = sip_object(msg);
 
     if (sip->sip_status->st_status < 200) {
-      if (reliable_send(irq, rel, msg_ref(msg), sip) < 0) {
+      if (reliable_send(irq, rel, msg_ref_create(msg), sip) < 0) {
 	assert(!"send reliable response");
       }
     }
@@ -11175,7 +11131,7 @@ void reliable_flush(nta_incoming_t *irq)
 
     if (rel) {
       rel->rel_pracked = 1;
-      msg_unref(rel->rel_unsent), rel->rel_unsent = NULL;
+      msg_ref_destroy(rel->rel_unsent), rel->rel_unsent = NULL;
       rel->rel_callback(rel->rel_magic, rel, NULL, NULL);
     }
   } while (rel);
@@ -11341,12 +11297,8 @@ int outgoing_recv_reliable(nta_outgoing_t *orq,
  * diffent fork will create an early dialog with a distinct tag in @To
  * header. When each fork should be handled separately, a tagged INVITE
  * request can be used. It will only receive responses from the specified
- * fork.
- *
- * Please note that the tagged INVITE transaction is terminated with the
- * final response from another fork, too. Stack will generate a 408
- * response to all tagged INVITE transactions when the original INVITE
- * transaction is terminated.
+ * fork. Please note that the tagged transaction should be terminated with
+ * the final response from another fork, too.
  *
  * @param orq
  * @param callback
@@ -11391,8 +11343,6 @@ nta_outgoing_t *nta_outgoing_tagged(nta_outgoing_t *orq,
 
   agent = orq->orq_agent;
   tagged = su_zalloc(agent->sa_home, sizeof(*tagged));
-  if (!tagged)
-    return NULL;
 
   home = msg_home((msg_t *)orq->orq_request);
 
@@ -11413,8 +11363,8 @@ nta_outgoing_t *nta_outgoing_tagged(nta_outgoing_t *orq,
   tagged->orq_cseq = orq->orq_cseq;
   tagged->orq_call_id = orq->orq_call_id;
 
-  tagged->orq_request = msg_ref(orq->orq_request);
-  tagged->orq_response = msg_ref(orq->orq_response);
+  tagged->orq_request = msg_ref_create(orq->orq_request);
+  tagged->orq_response = msg_ref_create(orq->orq_response);
 
   tagged->orq_status = orq->orq_status;
   tagged->orq_via_added = orq->orq_via_added;
@@ -11804,7 +11754,7 @@ int nta_agent_bind_tport_update(nta_agent_t *agent,
 				nta_update_tport_f *callback)
 {
   if (!agent)
-    return su_seterrno(EFAULT);
+    return su_seterrno(EFAULT), -1;
   agent->sa_update_magic = magic;
   agent->sa_update_tport = callback;
   return 0;

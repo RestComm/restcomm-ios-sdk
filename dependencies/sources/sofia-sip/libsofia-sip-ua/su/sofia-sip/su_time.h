@@ -40,15 +40,6 @@
 
 SOFIA_BEGIN_DECLS
 
-/** Time in nanoseconds. @NEW_UNRELEASED */
-typedef uint64_t su_time64_t;
-
-/** Time in nanoseconds. */
-typedef su_time64_t su_nanotime_t;
-
-/** Time offset (duration) in nanoseconds. @NEW_UNRELEASED */
-typedef int64_t su_dur64_t;
-
 /** Time in seconds and microsecondcs.
  *
  * The structure su_time_t contains time in seconds and microseconds since
@@ -90,21 +81,12 @@ typedef uint64_t su_ntp_t;
 /** Seconds from 1.1.1900 to 1.1.1970. @NEW_1_12_4. */
 #define SU_TIME_EPOCH 2208988800UL
 
+typedef uint64_t su_nanotime_t;
+
 #define SU_E9 (1000000000U)
 
-/** Maximum value of su_time64_t type. @NEW_UNRELEASED */
-#define SU_TIME64_MAX ((su_time64_t)(su_dur64_t)-1)
-
-SOFIAPUBFUN su_time64_t su_nanotime(su_time64_t *return_time);
-SOFIAPUBFUN su_time64_t su_monotime(su_time64_t *return_time);
-
-SOFIAPUBFUN su_time64_t su_now64(void);
-SOFIAPUBFUN su_time64_t su_stamp64(void);
-
-SOFIAPUBFUN su_time_t su_time64_to_time(su_time64_t t);
-SOFIAPUBFUN su_time64_t su_time_to_time64(su_time_t tv);
-
-SOFIAPUBFUN su_duration_t su_duration64(su_time64_t t1, su_time64_t t2);
+SOFIAPUBFUN su_nanotime_t su_nanotime(su_nanotime_t *return_time);
+SOFIAPUBFUN su_nanotime_t su_monotime(su_nanotime_t *return_time);
 
 SOFIAPUBFUN su_time_t su_now(void);
 SOFIAPUBFUN void su_time(su_time_t *tv);
@@ -128,11 +110,9 @@ SOFIAPUBFUN uint32_t su_ntp_mw(su_ntp_t ntp);
 #if !SU_HAVE_INLINE
 SOFIAPUBFUN uint32_t su_ntp_fraq(su_time_t t);
 SOFIAPUBFUN uint32_t su_time_ms(su_time_t t);
-SOFIAPUBFUN su_time64_t su_time64_add(su_time64_t t, su_duration_t dur);
 #else
 su_inline uint32_t su_ntp_fraq(su_time_t t);
 su_inline uint32_t su_time_ms(su_time_t t);
-su_inline su_time64_t su_time64_add(su_time64_t t, su_duration_t dur);
 #endif
 
 SOFIAPUBFUN su_ntp_t su_ntp_hilo(uint32_t hi, uint32_t lo);
@@ -160,13 +140,6 @@ su_inline uint32_t su_time_ms(su_time_t t)
 {
   return t.tv_sec * 1000 + (t.tv_usec + 500) / 1000;
 }
-
-/** Add @a offset in milliseconds to 64-bit nanosecond time. @NEW_UNRELEASED */
-su_inline su_time64_t su_time64_add(su_time64_t t, su_duration_t offset)
-{
-  return t + 1000000 * (su_dur64_t)offset;
-}
-
 #endif
 
 SOFIA_END_DECLS

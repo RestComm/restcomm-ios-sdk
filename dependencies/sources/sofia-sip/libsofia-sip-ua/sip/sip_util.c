@@ -260,7 +260,7 @@ sip_contact_string_from_via(su_home_t *home,
     char *s = strcpy(_transport, transport);
     short c;
 
-    for (; (c = *s) && c != ';'; s++)
+    for (s = _transport; (c = *s) && c != ';'; s++)
       if (isupper(c))
 	*s = tolower(c);
 
@@ -451,12 +451,40 @@ url_t *sip_url_dup(su_home_t *home, url_t const *o)
  * @param q q-value string <code>("1" | "." 1,3DIGIT)</code>
  *
  * @return An integer in range 0 .. 1000.
- *
- * @deprecated Use msg_q_value() instead.
  */
 unsigned sip_q_value(char const *q)
 {
-  return msg_q_value(q);
+  unsigned value = 0;
+
+  if (!q)
+    return 1000;
+  if (q[0] != '0' && q[0] != '.' && q[0] != '1')
+    return 500; /* Garbage... */
+  while (q[0] == '0')
+    q++;
+  if (q[0] >= '1' && q[0] <= '9')
+    return 1000;
+  if (q[0] == '\0')
+    return 0;
+  if (q[0] != '.')
+    return 500;    /* Garbage... */
+
+  if (q[1] >= '0' && q[1] <= '9') {
+    value = (q[1] - '0') * 100;
+    if (q[2] >= '0' && q[2] <= '9') {
+      value += (q[2] - '0') * 10;
+      if (q[3] >= '0' && q[3] <= '9') {
+	value += (q[3] - '0');
+	if (q[4] > '5' && q[4] <= '9')
+	  /* Round upwards */
+	  value += 1;
+	else if (q[4] == '5')
+	  value += value & 1; /* Round to even */
+      }
+    }
+  }
+
+  return value;
 }
 
 

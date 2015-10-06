@@ -1231,7 +1231,7 @@ msg_t *nth_request_message(nth_request_t *req)
   msg_t *retval = NULL;
 
   if (req)
-    retval = msg_ref(req->req_request);
+    retval = msg_ref_create(req->req_request);
 
   return retval;
 }

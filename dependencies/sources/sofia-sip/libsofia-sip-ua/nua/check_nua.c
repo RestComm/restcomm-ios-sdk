@@ -55,7 +55,6 @@
 #include <limits.h>
 #include <time.h>
 
-static int s2_nua_deferrable_timers;
 static int s2_nua_print_events;
 
 static void usage(int exitcode)
@@ -83,9 +82,6 @@ int main(int argc, char *argv[])
   if (getenv("CHECK_NUA_EVENTS"))
     s2_nua_print_events = 1;
 
-  if (getenv("CHECK_NUA_DEFERRABLE_TIMERS"))
-    s2_nua_deferrable_timers = 1;
-
   for (i = 1; argv[i]; i++) {
     if (su_strnmatch(argv[i], "--xml=", strlen("--xml="))) {
       xml = argv[i] + strlen("--xml=");
@@ -111,7 +107,7 @@ int main(int argc, char *argv[])
     s2_select_tests(getenv("CHECK_NUA_CASES"));
 
   if (getenv("CHECK_NUA_THREADING")) {
-    single_thread = (strcmp(getenv("CHECK_NUA_THREADING"), "no") == 0);
+    single_thread = strcmp(getenv("CHECK_NUA_THREADING"), "no");
     multi_thread = !single_thread;
   }
   else {
@@ -145,23 +141,6 @@ int main(int argc, char *argv[])
 }
 
 /* ---------------------------------------------------------------------- */
-
-void s2_nua_set_tcase_timeout(TCase *tc, int timeout)
-{
-  if (getenv("CHECK_NUA_TIMEOUT")) {
-    char const *env = getenv("CHECK_NUA_TIMEOUT");
-    unsigned long tout;
-
-    if (strcmp(env, "no") == 0)
-      return;
-
-    tout = strtoul(env, NULL, 10);
-    if (tout)
-      timeout = tout;
-  }
-
-  tcase_set_timeout(tc, timeout);
-}
 
 /* -- Globals -------------------------------------------------------------- */
 
@@ -229,31 +208,13 @@ void s2_flush_events(void)
   }
 }
 
-int s2_next_thing(struct event **event,
-		  struct message **message)
-{
-  for (;;) {
-    if (s2->events) {
-      *event = s2_remove_event(s2->events);
-      return 0;
-    }
-
-    if (s2sip->received) {
-      *message = s2_sip_remove_message(s2sip->received);
-      return 1;
-    }
-
-    s2_quickstep(s2base->root, 1, 50);
-  }
-}
-
 struct event *s2_next_event(void)
 {
   for (;;) {
     if (s2->events)
       return s2_remove_event(s2->events);
 
-    s2_quickstep(s2base->root, 1, 50);
+    su_root_step(s2base->root, 100);
   }
 }
 
@@ -270,7 +231,7 @@ struct event *s2_wait_for_event(nua_event_t event, int status)
       return s2_remove_event(e);
     }
 
-    s2_quickstep(s2base->root, 1, 50);
+    su_root_step(s2base->root, 100);
   }
 }
 
@@ -281,24 +242,19 @@ int s2_check_event(nua_event_t event, int status)
   return e != NULL;
 }
 
-enum nua_callstate s2_event_callstate(struct event *e)
-{
-  if (e) {
-    tagi_t const *tagi = tl_find(e->data->e_tags, nutag_callstate);
-    if (tagi)
-      return (enum nua_callstate) tagi->t_value;
-  }
-
-  return -1;
-}
-
 int s2_check_callstate(enum nua_callstate state)
 {
   int retval = 0;
+  tagi_t const *tagi;
   struct event *e;
 
   e = s2_wait_for_event(nua_i_state, 0);
-  retval = state == s2_event_callstate(e);
+  if (e) {
+    tagi = tl_find(e->data->e_tags, nutag_callstate);
+    if (tagi) {
+      retval = (tag_value_t)state == tagi->t_value;
+    }
+  }
   s2_free_event(e);
   return retval;
 }
@@ -427,7 +383,6 @@ nua_t *s2_nua_setup(char const *label,
 #else
 	       SRESTAG_RESOLV_CONF("/dev/null"),
 #endif
-	       NUTAG_DEFERRABLE_TIMERS(s2_nua_deferrable_timers),
 	       ta_tags(ta));
   ta_end(ta);
 
@@ -461,9 +416,6 @@ void s2_nua_teardown(void)
   s2_sip_teardown();
   s2_teardown();
 
-  /* Restore globals */
-  s2_nua_thread = 0;
-  s2_default_registration_duration = 3600;
 }
 
 /* ====================================================================== */

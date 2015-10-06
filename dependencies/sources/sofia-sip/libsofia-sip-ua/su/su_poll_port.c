@@ -145,8 +145,6 @@ su_port_vtable_t const su_poll_port_vtable[1] =
       su_base_port_max_defer,
       su_socket_port_wakeup,
       su_base_port_is_running,
-      su_base_port_stamp64,
-      su_base_port_stamp64_offset,
     }};
 
 static char const *su_poll_port_name(su_port_t const *self)

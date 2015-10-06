@@ -174,7 +174,7 @@ int nua_client_create(nua_handle_t *nh,
 
       if (tags) {
 	nua_move_signal(cr->cr_signal, nh->nh_nua->nua_signal);
-	if (cr->cr_signal[0]) {
+	if (cr->cr_signal) {
 	  /* Steal reference from signal */
 	  cr->cr_owner = e->e_nh, e->e_nh = NULL;
 	  cr->cr_tags = tags;
@@ -566,7 +566,7 @@ int nua_client_init_request0(nua_client_request_t *cr)
 
   if (!ds->ds_leg) {
     if (ds->ds_remote_tag && ds->ds_remote_tag[0] &&
-	sip_to_tag(msg_home(msg), sip->sip_to, ds->ds_remote_tag) < 0)
+	sip_to_tag(nh->nh_home, sip->sip_to, ds->ds_remote_tag) < 0)
       return nua_client_return(cr, NUA_ERROR_AT(__FILE__, __LINE__), msg);
 
     if (sip->sip_from == NULL &&
@@ -578,9 +578,6 @@ int nua_client_init_request0(nua_client_request_t *cr)
 		     (sip_header_t *)sip->sip_from) < 0) {
       return nua_client_return(cr, NUA_ERROR_AT(__FILE__, __LINE__), msg);
     }
-
-    if (sip->sip_call_id == NULL)
-      sip->sip_call_id = sip_call_id_create(msg_home(msg), NULL);
   }
   else {
     if (ds->ds_route)
@@ -977,24 +974,6 @@ nua_client_orq_response(nua_client_request_t *cr,
   if (sip && sip->sip_status) {
     status = sip->sip_status->st_status;
     phrase = sip->sip_status->st_phrase;
-
-    if (sip->sip_payload != NULL &&
-	NH_PGET(cr->cr_owner, accept_multipart) &&
-	sip->sip_multipart == NULL) {
-      sip_content_type_t *c = sip->sip_content_type;
-
-      if (c != NULL && su_casenmatch(c->c_type, "multipart/", 10)) {
-	msg_t *msg = nta_outgoing_getresponse(orq);
-	su_home_t *home = msg_home(msg);
-	sip_t *request = (sip_t *)sip;
-	sip_payload_t *pl = (sip_payload_t *)sip->sip_payload;
-	msg_multipart_t *mp = msg_multipart_parse(home, c, pl);
-
-	request->sip_multipart = mp;
-
-	msg_unref(msg);
-      }
-    }
   }
   else {
     status = nta_outgoing_status(orq);
@@ -1171,8 +1150,12 @@ int nua_base_client_check_restart(nua_client_request_t *cr,
 	  sip_add_dup(cr->cr_msg, cr->cr_sip, (sip_header_t *)r) >= 0)
 	return nua_client_restart(cr, 100, "Redirected via a proxy");
       break;
+
+    default:
+      break;
     }
   }
+
 
   if (status == 423) {
     unsigned my_expires = 0;
@@ -1234,7 +1217,7 @@ int nua_base_client_check_restart(nua_client_request_t *cr,
 
   if (500 <= status && status < 600 &&
       sip->sip_retry_after &&
-      sip->sip_retry_after->af_delta < NH_PGET(nh, max_retry_after)) {
+      sip->sip_retry_after->af_delta < 32) {
     su_timer_t *timer;
     char phrase[18];		/* Retry After XXXX\0 */
 

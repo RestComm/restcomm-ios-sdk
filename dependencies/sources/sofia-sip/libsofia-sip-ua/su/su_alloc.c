@@ -922,8 +922,6 @@ void su_home_check_blocks(su_block_t const *b)
  *
  * @return This function returns a pointer to an #su_home_t object, or
  * NULL upon an error.
- *
- * @deprecated Use su_home_new(sizeof (su_home_t)) instead
  */
 su_home_t *su_home_create(void)
 {
@@ -1131,11 +1129,8 @@ int su_home_move(su_home_t *dst, su_home_t *src)
 	  d2->sub_ref = d->sub_ref;
 	  d2->sub_preload = d->sub_preload;
 	  d2->sub_prsize = d->sub_prsize;
-	  d2->sub_hauto = d->sub_hauto;
 	  d2->sub_prused = d->sub_prused;
 	  d2->sub_preauto = d->sub_preauto;
-	  d2->sub_destructor = d->sub_destructor;
-	  /* auto && auto_all are not copied! */
 	  d2->sub_stats = d->sub_stats;
 	}
 
@@ -1587,7 +1582,7 @@ int su_home_mutex_unlock(su_home_t *home)
   }
 
   if (home->suh_blocks == NULL)
-    return su_seterrno(EINVAL); /* Uninitialized home */
+    return su_seterrno(EINVAL), -1; /* Uninitialized home */
 
   su_home_unref(home);
 
