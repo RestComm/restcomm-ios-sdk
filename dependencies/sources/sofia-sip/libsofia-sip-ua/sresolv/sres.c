@@ -110,10 +110,6 @@ typedef int socklen_t;
 
 #include <assert.h>
 
-#ifdef IOS_BUILD
-#include <resolv.h>
-#endif
-
 #if HAVE_WINSOCK2_H
 /* Posix send() */
 su_inline
@@ -2228,19 +2224,6 @@ sres_config_t *sres_parse_resolv_conf(sres_resolver_t *res,
     else
       /* now what? */;
 #else
-
-#ifdef IOS_BUILD
-	if ((_res.options & RES_INIT) == 0) {
-		res_init();
-	}
-	for (i = 0; i < _res.nscount; i++) {
-		char* pDNS = inet_ntoa(_res.nsaddr_list[i].sin_addr);
-		if (pDNS) {
-			sres_parse_nameserver(c, pDNS);
-		}
-	}
-#endif /* IOS_BUILD */
-
     /* Use local nameserver by default */
     if (c->c_nameservers[0] == NULL)
       sres_parse_nameserver(c, "127.0.0.1");
