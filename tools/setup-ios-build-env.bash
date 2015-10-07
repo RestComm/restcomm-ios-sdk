@@ -15,7 +15,7 @@ function build()
    make distclean > /dev/null
 
 	I386_FLAGS=""
-	if [[ $2 == "i386" ]]
+	if [[ $ARCH == "i386" ]]
 	then
 		I386_FLAGS="-m32"
 	fi
@@ -30,7 +30,7 @@ function build()
 	export NM="$(xcrun --sdk $SDK --find nm)"
 	export RANLIB="$(xcrun --sdk $SDK --find ranlib)"
 
-	if [[ $1 == "iphonesimulator" ]]
+	if [[ $SDK == "iphonesimulator" ]]
 	then
 		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv" # -miphoneos-version-min=7.0"
 	else
@@ -39,8 +39,10 @@ function build()
 
 	export ARCH
 	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/"
+	# for debug
+	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0"
 
-	if [[ $1 != "iphonesimulator" ]]
+	if [[ $SDK != "iphonesimulator" ]]
 	then
 		CFLAGS=${CFLAGS}" -DIOS_BUILD"
 	else
@@ -67,7 +69,7 @@ function build()
 
 
 	echo "--- Configuring"
-	if [[ $1 != "iphonesimulator" ]]
+	if [[ $SDK != "iphonesimulator" ]]
 	then 
 		# arm64 doesn't work here, although armv7 adn armv7s do. But arm covers us for armv7 and armv7s as well
    	./configure --host=arm-apple-darwin
@@ -98,9 +100,9 @@ fi
 #SDK="iphonesimulator"
 #build $SDK $ARCH
 
-ARCH="x86_64"
-SDK="iphonesimulator"
-build $SDK $ARCH
+#ARCH="x86_64"
+#SDK="iphonesimulator"
+#build $SDK $ARCH
 
 ARCH="armv7"
 SDK="iphoneos"

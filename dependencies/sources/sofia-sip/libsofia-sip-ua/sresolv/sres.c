@@ -2230,9 +2230,14 @@ sres_config_t *sres_parse_resolv_conf(sres_resolver_t *res,
 #else
 
 #ifdef IOS_BUILD
-	if ((_res.options & RES_INIT) == 0) {
+    // in order for Cellular/Wifi transitions to work smoothly we need to initialize DNS facilities
+    // even when they are already initialized. If we only initialize once in the beginning, when we
+    // transition from Cellular to Wifi or the opposite, the old name servers remain in effect
+    // (recall that different name servers are used between Cellular and Wifi networks) and name resolution fails
+      
+	//if ((_res.options & RES_INIT) == 0) {
 		res_init();
-	}
+	//}
 	for (i = 0; i < _res.nscount; i++) {
 		char* pDNS = inet_ntoa(_res.nsaddr_list[i].sin_addr);
 		if (pDNS) {
