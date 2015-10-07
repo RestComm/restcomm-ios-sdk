@@ -215,6 +215,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         RCLogError("No valid interface to bind to with nua_create()");
         ssc_destroy(ssc);
         ssc = NULL;
+        su_free(home, userdomain);
+        return ssc;
     }
     
     /* note: by default bind to a random port on all interfaces */
