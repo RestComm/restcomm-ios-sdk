@@ -161,7 +161,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)unlisten
 {
-    RCLogNotice("[RCDevice unlisten]");
+    RCLogNotice("[RCDevice unlisten], state: %d", self.state);
     if (self.state != RCDeviceStateOffline) {
         if (self.state == RCDeviceStateBusy) {
             [self disconnectAll];
@@ -252,7 +252,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)disconnectAll
 {
-    RCLogNotice("[RCDevice disconnectAll]");
+    RCLogNotice("[RCDevice disconnectAll], state: %d", self.state);
     if (self.state == RCDeviceStateBusy) {
         [self.currentConnection disconnect];
         _state = RCDeviceStateReady;
@@ -317,8 +317,10 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)sipManagerDidRegisterSuccessfully:(SipManager *)sipManager
 {
-    _state = RCDeviceStateReady;
-    [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+    if (_state == RCDeviceStateOffline) {
+        _state = RCDeviceStateReady;
+        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+    }
 }
 
 - (void)sipManagerWillUnregister:(SipManager *)sipManager
