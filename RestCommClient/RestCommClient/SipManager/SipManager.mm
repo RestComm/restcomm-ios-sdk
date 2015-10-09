@@ -101,6 +101,7 @@ int read_pipe[2];
         [self pipeToSofia:cmd];
     }
     else {
+        /*
         [self.activeCallParams setObject:sdpString forKey:@"sdp"];
         [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-gathering-complete"];
         if ([self.activeCallParams objectForKey:@"incoming-call-was-answered"]) {
@@ -108,6 +109,11 @@ int read_pipe[2];
                                                                             forKey:@"sdp"];
             [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
         }
+         */
+        NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:sdpString
+                                                                        forKey:@"sdp"];
+
+        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
     }
 }
 
@@ -156,7 +162,9 @@ int read_pipe[2];
 
         // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
         [self.deviceDelegate sipManagerDidReceiveCall:self from:[args objectForKey:@"sip-uri"]];
-        
+
+        [self.activeCallParams setObject:[args objectForKey:@"sdp"] forKey:@"sdp"];
+        /*
         if (!self.media) {
             self.media = [[MediaWebRTC alloc] initWithDelegate:self];
             [self.media connect:nil sdp:[args objectForKey:@"sdp"] isInitiator:NO withVideo:self.videoAllowed];
@@ -169,6 +177,7 @@ int read_pipe[2];
             
             [self.connectionDelegate sipManager:self didSignallingError:error];
         }
+         */
     }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
@@ -505,13 +514,22 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     self.videoAllowed = video;
     
+    if (!self.media) {
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"] isInitiator:NO withVideo:self.videoAllowed];
+    }
+    else {
+        return false;
+    }
+
+    /*
     [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-was-answered"];
     if ([self.activeCallParams objectForKey:@"incoming-call-gathering-complete"]) {
         NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"sdp"]
                                                                         forKey:@"sdp"];
         [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
     }
-    
+    */
     return true;
 }
 
