@@ -53,7 +53,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
          andSipManager:(SipManager*)sipManager
            andIncoming:(BOOL)incoming
-              andState:(RCConnectionState)state
+              andState:(RCConnectionState)connectionState
          andParameters:(NSDictionary*)parameters
 {
     RCLogNotice("[RCConnection initWithDelegate]");
@@ -63,7 +63,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         self.delegate = delegate;
         self.sipManager = sipManager;
         self.incoming = incoming;
-        self.state = RCConnectionStateConnecting;
+        self.state = connectionState;
         _parameters = parameters;
         self.device = device;
         muted = NO;
@@ -77,25 +77,6 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
 {
     return [self initWithDelegate:delegate andDevice:device andSipManager:nil andIncoming:NO andState:RCConnectionStateDisconnected andParameters:nil];
-
-    /*
-    RCLogNotice("[RCConnection initWithDelegate]");
-
-    self = [super init];
-    if (self) {
-        self.delegate = delegate;
-        //NSLog(@"[RCConnection setting delegate: %p]", self.delegate);
-        //NSLog(@"[RCConnection init, self: %p]", self);
-        self.sipManager = nil;
-        self.state = RCConnectionStateDisconnected;
-        self.device = device;
-        muted = NO;
-        self.cancelPending = NO;
-        
-        [self prepareSounds];
-    }
-    return self;
-     */
 }
 
 - (void)dealloc {

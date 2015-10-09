@@ -114,7 +114,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 - (id)initWithDelegate:(id<RCConnectionDelegate>)delegate andDevice:(RCDevice*)device
          andSipManager:(SipManager*)sipManager
            andIncoming:(BOOL)incoming
-              andState:(RCConnectionState)state
+              andState:(RCConnectionState)connectionState
          andParameters:(NSDictionary*)parameters;
 
 /**
