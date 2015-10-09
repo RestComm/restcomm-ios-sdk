@@ -156,6 +156,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     if (_state == kARDAppClientStateDisconnected) {
         return;
     }
+    
+    _state = kARDAppClientStateDisconnected;
+
     /*
     if (self.hasJoinedRoomServerRoom) {
         [_roomServerClient leaveRoomWithRoomId:_roomId
@@ -178,8 +181,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     _isInitiator = NO;
     //_hasReceivedSdp = NO;
     //_messageQueue = [NSMutableArray array];
+    [_peerConnection close];
     _peerConnection = nil;
-    _state = kARDAppClientStateDisconnected;
+    RCLogNotice("[MediaWebRTC disconnect] end");
 }
 
 
@@ -399,7 +403,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     }
     
     // important: the complete message also has the sofia handle (so that sofia knows which active session to associate this with)
-    NSString * completeMessage = [NSString stringWithFormat:@"%@ %@", self.sofia_handle, searchedString];
+    NSString * completeMessage = [NSString stringWithFormat:@"%@", searchedString];
 
     return completeMessage;
 }
@@ -557,7 +561,12 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
     RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
     if (newState == RTCICEGatheringComplete) {
-        [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        if ([_iceCandidates count] > 0) {
+            [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        }
+        else {
+            RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete but no candidates collected");
+        }
     }
 }
 

@@ -52,6 +52,7 @@ int read_pipe[2];
 @interface SipManager ()
 @property int signallingInstances;
 @property NSRecursiveLock * signallingInstancesLock;
+@property NSMutableDictionary * activeCallParams;
 @end
 
 @implementation SipManager
@@ -72,11 +73,41 @@ int read_pipe[2];
 #pragma mark - RTCSessionDescriptionDelegate WebRTC <-> Sofia communication: MediaDelegate protocol
 - (void)mediaController:(MediaWebRTC *)mediaController didCreateSdp:(NSString *)sdpString isInitiator:(BOOL)initiator
 {
+    if (self.media.state == kARDAppClientStateDisconnected) {
+        RCLogError("[mediaController:didCreateSdp:isInitiator:] media disconnected; bailing");
+        return;
+    }
+    
     if (initiator) {
-        [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", sdpString]];
+        // Sofia expects these in the message:
+        // - destination
+        // - SDP
+        // - sip headers if applicable
+        NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"destination" ]
+                                                                        forKey:@"destination"];
+        [args setValue:sdpString forKey:@"sdp"];
+        
+        // serialize sip-headers
+        if ([self.activeCallParams objectForKey:@"sip-headers"]) {
+            NSMutableString *serializedHeaders = [NSMutableString string];
+            for (NSString* key in [[self.activeCallParams objectForKey:@"sip-headers"] allKeys]){
+                [serializedHeaders appendFormat:@"%@:%@", key, [[self.activeCallParams objectForKey:@"sip-headers"] objectForKey:key]];
+                [serializedHeaders appendString:@"\r\n"];
+            }
+            [args setValue:serializedHeaders forKey:@"sip-headers"];
+        }
+
+        NSString* cmd = [NSString stringWithFormat:@"i %@", [Utilities stringifyDictionary:args]];
+        [self pipeToSofia:cmd];
     }
     else {
-        [self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp-called %@", sdpString]];
+        [self.activeCallParams setObject:sdpString forKey:@"sdp"];
+        [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-gathering-complete"];
+        if ([self.activeCallParams objectForKey:@"incoming-call-was-answered"]) {
+            NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"sdp"]
+                                                                            forKey:@"sdp"];
+            [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
+        }
     }
 }
 
@@ -115,22 +146,20 @@ int read_pipe[2];
         pipeToSofia([string UTF8String], write_pipe[1]);
     }
     else if (reply->rc == INCOMING_CALL) {
-        // we have an incoming call, we need to ring
-        
-        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
-        [self.deviceDelegate sipManagerDidReceiveCall:self from:[NSString stringWithUTF8String:reply->text.c_str()]];
-    }
-    else if (reply->rc == ANSWER_PRESSED) {
-        // the incoming message has first the address of the Sofia operation (until the first space)
-        // and then the SDP, let's parse them into separate strings
-        NSString * string = [NSString stringWithUTF8String:reply->text.c_str()];
-        NSRange range = [string rangeOfString:@" "];
-        NSString * address = [string substringToIndex:range.location];
-        NSString * sdp = [string substringFromIndex:range.location + 1];
+        // we have an incoming call, we need to start media processing and notify the application
+        [self.activeCallParams removeAllObjects];
 
+        NSError * error;
+        NSString * string = [NSString stringWithUTF8String:reply->text.c_str()];
+        NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+
+        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
+        [self.deviceDelegate sipManagerDidReceiveCall:self from:[args objectForKey:@"sip-uri"]];
+        
         if (!self.media) {
             self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-            [self.media connect:address sdp:sdp isInitiator:NO withVideo:self.videoAllowed];
+            [self.media connect:nil sdp:[args objectForKey:@"sdp"] isInitiator:NO withVideo:self.videoAllowed];
         }
         else {
             // report error
@@ -204,22 +233,6 @@ int read_pipe[2];
         
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
-    else if (reply->rc == WEBRTC_SDP_REQUEST) {
-        // INVITE has been requested in Sofia, need to initialize WebRTC
-        if (!self.media) {
-            self.media = [[MediaWebRTC alloc] initWithDelegate:self];
-            [self.media connect:[NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding]
-                            sdp:nil isInitiator:YES withVideo:self.videoAllowed];
-        }
-        else {
-            // report error
-            NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                        code:ERROR_WEBRTC_ALREADY_INITIALIZED
-                                                    userInfo:@{NSLocalizedDescriptionKey : @"Error: Could not initialize webrtc; already initialized"}];
-            
-            [self.connectionDelegate sipManager:self didSignallingError:error];
-        }
-    }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
         if (self.media) {
             [self.media disconnect];
@@ -290,6 +303,8 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
             // handle error
             NSLog(@"Error setting AVAudioSession category");
         }
+        
+        self.activeCallParams = [[NSMutableDictionary alloc] init];
         /*
         if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
                                          error:&error]) {
@@ -446,7 +461,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 // the whole pipe communication channel will be removed
 - (bool)message:(NSString*)msg to:(NSString*)recipient customHeaders:(NSDictionary*)headers
 {
-    NSDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:recipient, @"destination",
+    NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:recipient, @"destination",
                            msg, @"message", nil];
     if (headers) {
         NSMutableString *serializedHeaders = [NSMutableString string];
@@ -465,27 +480,23 @@ ssize_t pipeToSofia(const char * msg, int fd)
 
 - (bool)invite:(NSString*)recipient withVideo:(BOOL)video customHeaders:(NSDictionary*)headers
 {
-    if (self.media) {
+    self.videoAllowed = video;
+    // INVITE has been requested need to initialize WebRTC first
+    if (!self.media) {
+        [self.activeCallParams removeAllObjects];
+        [self.activeCallParams setObject:recipient forKey:@"destination"];
+        if (headers) {
+            [self.activeCallParams setObject:headers forKey:@"sip-headers"];
+        }
+        
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        [self.media connect:nil sdp:nil isInitiator:YES withVideo:self.videoAllowed];
+    }
+    else {
         // media already initialized, cannot continue
         return false;
     }
-    
-    self.videoAllowed = video;
-    NSString* cmd = nil;
-    if (headers) {
-        NSMutableString *serializedHeaders = [NSMutableString string];
-        for (NSString* key in [headers allKeys]){
-            [serializedHeaders appendFormat:@"%@:%@", key, [headers objectForKey:key]];
-            [serializedHeaders appendString:@"\r\n"];
-        }
-        
-        cmd = [NSString stringWithFormat:@"i %@ %@", recipient, serializedHeaders];
-    }
-    else {
-        cmd = [NSString stringWithFormat:@"i %@", recipient];
-    }
-    [self pipeToSofia:cmd];
-    
+
     return true;
 }
 
@@ -493,8 +504,13 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (bool)answerWithVideo:(BOOL)video
 {
     self.videoAllowed = video;
-    NSString* cmd = [NSString stringWithFormat:@"a"];
-    [self pipeToSofia:cmd];
+    
+    [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-was-answered"];
+    if ([self.activeCallParams objectForKey:@"incoming-call-gathering-complete"]) {
+        NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"sdp"]
+                                                                        forKey:@"sdp"];
+        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
+    }
     
     return true;
 }

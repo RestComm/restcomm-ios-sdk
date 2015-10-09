@@ -147,19 +147,19 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     if (self.state == RCConnectionStateConnecting) {
         if (!self.isIncoming) {
             // for outgoing calls in state connecting (i.e. ringing), treat disconnect as cancel
-            //NSLog(@"[RCConnection disconnect:cancel]");
+            NSLog(@"[RCConnection disconnect:cancel]");
 
             [self.sipManager cancel];
         }
         else {
             // for incoming calls in state connecting (i.e. ringing), treat disconnect as decline
-            //NSLog(@"[RCConnection disconnect:decline]");
+            NSLog(@"[RCConnection disconnect:decline]");
 
             [self.sipManager decline];
         }
     }
     else if (self.state == RCConnectionStateConnected) {
-        //NSLog(@"[RCConnection disconnect:bye]");
+        NSLog(@"[RCConnection disconnect:bye]");
 
         [self.sipManager bye];
     }
@@ -172,7 +172,9 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         }
     }
     
+    RCLogNotice("[RCConnection disconnect] before disconnectMedia");
     [self.sipManager disconnectMedia];
+    RCLogNotice("[RCConnection disconnect] after disconnectMedia");
 
     self.state = RCConnectionStateDisconnected;
     self.device.state = RCDeviceStateReady;

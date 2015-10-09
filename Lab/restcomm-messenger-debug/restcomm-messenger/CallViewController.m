@@ -192,6 +192,7 @@
 
 - (IBAction)hangUpPressed:(id)sender
 {
+    NSLog(@"[CallViewController hangUpPressed]");
     if (self.pendingIncomingConnection) {
         // incomind ringing
         self.statusLabel.text = @"Rejecting Call...";
@@ -201,15 +202,16 @@
     else {
         if (self.connection) {
             self.statusLabel.text = @"Disconnecting Call...";
+            [self stopVideoRendering];
             [self.connection disconnect];
             self.connection = nil;
             self.pendingIncomingConnection = nil;
-            [self stopVideoRendering];
         }
         else {
             NSLog(@"Error: not connected/connecting/pending");
         }
     }
+    NSLog(@"[CallViewController hangUpPressed], dismissing");
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -233,6 +235,7 @@
 
 - (void)stopVideoRendering
 {
+    NSLog(@"[CallViewController stopVideoRendering]");
     if (self.remoteVideoTrack) {
         [self.remoteVideoTrack removeRenderer:self.videoCallView.remoteVideoView];
         self.remoteVideoTrack = nil;
@@ -375,6 +378,7 @@
 
 - (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack
 {
+    NSLog(@"[connection:didReceiveLocalVideo:]");
     if (self.isVideoCall && !self.localVideoTrack) {
         self.statusLabel.text = @"Received local video";
         self.localVideoTrack = localVideoTrack;

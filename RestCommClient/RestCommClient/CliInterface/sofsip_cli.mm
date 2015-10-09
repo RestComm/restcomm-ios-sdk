@@ -378,7 +378,12 @@ static void sofsip_handle_input_cb(char *input)
   cli->cli_prompt = 0;
 
   if (match("a") || match("answer")) {
-    ssc_answer(cli->cli_ssc, SIP_200_OK);
+    NSError * error;
+    NSString * string = [NSString stringWithUTF8String:rest];
+    NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+
+    ssc_answer(cli->cli_ssc, (char *)[[args objectForKey:@"sdp"] UTF8String], SIP_200_OK);
   }
   else if (match("addr")) {
     ssc_set_public_address(cli->cli_ssc, rest);
@@ -390,27 +395,31 @@ static void sofsip_handle_input_cb(char *input)
     ssc_cancel(cli->cli_ssc);
   }
   else if (MATCH("d")) {
-    ssc_answer(cli->cli_ssc, SIP_480_TEMPORARILY_UNAVAILABLE);
+    ssc_answer(cli->cli_ssc, NULL, SIP_480_TEMPORARILY_UNAVAILABLE);
   }
   else if (MATCH("D")) {
-    ssc_answer(cli->cli_ssc, SIP_603_DECLINE);
+    ssc_answer(cli->cli_ssc, NULL, SIP_603_DECLINE);
   }
   else if (match("h") || match("help")) {
     sofsip_help(cli);
   }
   else if (match("i") || match("invite")) {
-      // 'rest' contains the destination and the message, delimited by a whitespace
-      char * token, * dest = NULL;
-      int pos = 0;
-      while ((token = strsep(&rest, " ")) != NULL) {
-          if (pos == 0) {
-              dest = token;
-              break;
-          }
-          RCLogDebug("%s\n", token);
-          pos++;
+      NSError * error;
+      NSString * string = [NSString stringWithUTF8String:rest];
+      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+      
+      // SIP headers might or might not be there
+      char * sip_headers = NULL;
+      if ([args objectForKey:@"sip-headers"]) {
+          sip_headers = strdup([[args objectForKey:@"sip-headers"] UTF8String]);
       }
-      ssc_invite(cli->cli_ssc, dest, rest);
+
+      ssc_invite(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"sdp"] UTF8String], sip_headers);
+    
+      if (sip_headers) {
+          free(sip_headers);
+      }
   }
   else if (match("info")) {
     //ssc_input_set_prompt("Enter INFO message> ");
@@ -441,31 +450,6 @@ static void sofsip_handle_input_cb(char *input)
       else {
           ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
       }
-  }
-  else if (match("webrtc-sdp") || match("webrtc-sdp-called")) {
-    // 'rest' contains the destination and the message, delimited by a whitespace
-    char * token, * dest = NULL;
-    int pos = 0;
-    while ((token = strsep(&rest, " ")) != NULL) {
-        if (pos == 0) {
-            dest = token;
-            break;
-        }
-        RCLogDebug("%s\n", token);
-       pos++;
-    }
-    if (match("webrtc-sdp")) {
-       void * op_context = NULL;
-       // convert address string to pointer, which is the Sofia operation handle
-       sscanf(dest, "%p", (void **)&op_context);
-       ssc_webrtc_sdp(op_context, rest);
-    }
-    if (match("webrtc-sdp-called")) {
-       void * op_context = NULL;
-       // convert address string to pointer, which is the Sofia operation handle
-       sscanf(dest, "%p", (void **)&op_context);
-       ssc_webrtc_sdp_called(op_context, rest);
-    }
   }
   else if (match("set")) {
     ssc_print_settings(cli->cli_ssc);

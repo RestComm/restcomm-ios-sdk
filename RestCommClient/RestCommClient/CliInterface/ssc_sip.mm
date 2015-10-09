@@ -83,7 +83,6 @@
 /* Globals
  * ------------------- */
 static struct SofiaReply sofiaReply;
-char stored_sdp[65536] = "";
 static int pending_registration = false;
 
 /* Function prototypes
@@ -697,10 +696,8 @@ void ssc_list(ssc_t *ssc)
  * @param ssc context pointer
  * @param destination SIP URI
  */
-void ssc_invite(ssc_t *ssc, const char *destination, const char *headers)
+void ssc_invite(ssc_t *ssc, const char *destination, const char * sdp, const char *headers)
 {
-    ssc_oper_t *op;
-    
     /* enable this to not allow second outgoing call on top of the first
     int check_states = opc_pending | opc_complete | opc_sent | opc_active;
     if (ssc_oper_find_by_callstate(ssc, check_states)) {
@@ -709,7 +706,7 @@ void ssc_invite(ssc_t *ssc, const char *destination, const char *headers)
     }
      */
 
-    op = ssc_oper_create(ssc, SIP_METHOD_INVITE, destination, TAG_END());
+    ssc_oper_t *op = ssc_oper_create(ssc, SIP_METHOD_INVITE, destination, TAG_END());
     if (op) {
         /* SDP O/A note:
          *  - before issuing nua_invite(), we activate the media
@@ -722,13 +719,23 @@ void ssc_invite(ssc_t *ssc, const char *destination, const char *headers)
         op->op_callstate = (op_callstate_t)(op->op_callstate | opc_pending);
         op->is_outgoing = true;
         op->custom_headers = su_strdup(ssc->ssc_home, headers);
+
+        // set localsdp with WebRTC media
+        ssc->ssc_media->setLocalSdp(sdp);
         
-        char value_str[32] = "";
-        sprintf(value_str, "%p", op);
-        SofiaReply reply(WEBRTC_SDP_REQUEST, value_str);
-        reply.Send(ssc->ssc_output_fd);
-        //setSofiaReply(WEBRTC_SDP_REQUEST, value_str);
-        //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
+        /* active media before INVITE */
+        int res = ssc->ssc_media->ssc_media_activate();
+        
+        if (res < 0) {
+            RCLogDebug("%s: ERROR: unable to active media subsystem, aborting session.", ssc->ssc_name);
+            priv_destroy_oper_with_disconnect (ssc, op);
+        }
+        else {
+            RCLogDebug("%s: INVITE to %s pending", ssc->ssc_name, op->op_ident);
+        }
+        
+        priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
+
     }
 }
 
@@ -758,32 +765,6 @@ void ssc_webrtc_sdp(void* op_context, char *sdp)
         RCLogDebug("%s: INVITE to %s pending", ssc->ssc_name, op->op_ident);
     }
     
-    priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
-}
-
-/**
- * Callback that triggers the second phase of ssc_answer()
- * for WebRTC. When WebRTC module is ready with full SDP
- * (including ICE candidates), it calls this via the pipe interface
- * to set the localsdp
- */
-void ssc_webrtc_sdp_called(void* op_context, char *sdp)
-{
-    ssc_oper_t *op = (ssc_oper_t*)op_context;
-    ssc_t *ssc = op->op_ssc;
-    
-    // set localsdp with WebRTC media
-    ssc->ssc_media->setLocalSdp(sdp);
-    
-    int res = ssc->ssc_media->ssc_media_activate();
-    if (res < 0) {
-        RCLogDebug("%s: ERROR: unable to active media subsystem, unable to answer session.", ssc->ssc_name);
-        priv_destroy_oper_with_disconnect (ssc, op);
-        // ssc_oper_destroy(ssc, op);
-    }
-    else {
-        RCLogDebug("%s: answering to the offer received from %s", ssc->ssc_name, op->op_ident);
-    }
     priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
 }
 
@@ -923,27 +904,20 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
                 RCLogDebug("\tSubject: %s", subject->g_value);
             
             if (ssc->ssc_autoanswer) {
-                ssc_answer(ssc, SIP_200_OK);
+                ssc_answer(ssc, NULL, SIP_200_OK);
             }
             else {
                 RCLogDebug("Please Answer(a), decline(d) or Decline(D) the call");
 
-                strncpy(stored_sdp, sip->sip_payload->pl_data, 65535);
-
                 char url[1000];
                 snprintf(url, sizeof(url), URL_PRINT_FORMAT, URL_PRINT_ARGS(from->a_url));
+                
+                NSDictionary * message = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithUTF8String:url], @"sip-uri",
+                                          [NSString stringWithUTF8String:sip->sip_payload->pl_data], @"sdp", nil];
 
                 // notify the client application that they should answer
-                SofiaReply reply(INCOMING_CALL, url);
+                SofiaReply reply(INCOMING_CALL, [[Utilities stringifyDictionary:message] UTF8String]);
                 reply.Send(ssc->ssc_output_fd);
-                //setSofiaReply(INCOMING_CALL, "");
-                //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-
-                // TODO: remove when done debugging
-                //nua_get_hparams(nua_default(nua), TAG_ANY(), TAG_NULL());
-                //nua_get_params(nua, TAG_ANY(), TAG_NULL());
-                //nua_set_hparams(nh, SIPTAG_CONTACT_STR("sip:alice@54.225.212.191.5080;transport=udp"), TAG_NULL());
-                //nua_get_hparams(nh, TAG_ANY(), TAG_NULL());
             }
         }
         else {
@@ -1076,7 +1050,7 @@ static void priv_media_state_cb(void* context, int state, void * data)
  *
  * See also ssc_i_invite().
  */
-void ssc_answer(ssc_t *ssc, int status, char const *phrase)
+void ssc_answer(ssc_t *ssc, char * sdp, int status, char const *phrase)
 {
     ssc_oper_t *op = ssc_oper_find_unanswered(ssc);
     
@@ -1094,18 +1068,21 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
         
         /* active media before sending offer */
         if (status >= 200 && status < 300) {
-            if (strlen(stored_sdp) > 0) {
-              char value_str[65536] = "";
-              sprintf(value_str, "%p %s", op, stored_sdp);
-
-              // notify the client application that they should answer
-              SofiaReply reply(ANSWER_PRESSED, value_str);
-              reply.Send(ssc->ssc_output_fd);
-              //setSofiaReply(ANSWER_PRESSED, value_str);
-              //sendSofiaReply(ssc->ssc_output_fd, &sofiaReply);
-              strncpy(stored_sdp, "", 65535);
+            // set localsdp with WebRTC media
+            if (sdp) {
+                ssc->ssc_media->setLocalSdp(sdp);
             }
-
+            
+            int res = ssc->ssc_media->ssc_media_activate();
+            if (res < 0) {
+                RCLogDebug("%s: ERROR: unable to active media subsystem, unable to answer session.", ssc->ssc_name);
+                priv_destroy_oper_with_disconnect (ssc, op);
+                // ssc_oper_destroy(ssc, op);
+            }
+            else {
+                RCLogDebug("%s: answering to the offer received from %s", ssc->ssc_name, op->op_ident);
+            }
+            priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
         }
         else {
             /* call rejected */
@@ -1117,6 +1094,33 @@ void ssc_answer(ssc_t *ssc, int status, char const *phrase)
     else
         RCLogDebug("%s: no call to answer", ssc->ssc_name);
 }
+
+/**
+ * Callback that triggers the second phase of ssc_answer()
+ * for WebRTC. When WebRTC module is ready with full SDP
+ * (including ICE candidates), it calls this via the pipe interface
+ * to set the localsdp
+ */
+void ssc_webrtc_sdp_called(void* op_context, char *sdp)
+{
+    ssc_oper_t *op = (ssc_oper_t*)op_context;
+    ssc_t *ssc = op->op_ssc;
+    
+    // set localsdp with WebRTC media
+    ssc->ssc_media->setLocalSdp(sdp);
+    
+    int res = ssc->ssc_media->ssc_media_activate();
+    if (res < 0) {
+        RCLogDebug("%s: ERROR: unable to active media subsystem, unable to answer session.", ssc->ssc_name);
+        priv_destroy_oper_with_disconnect (ssc, op);
+        // ssc_oper_destroy(ssc, op);
+    }
+    else {
+        RCLogDebug("%s: answering to the offer received from %s", ssc->ssc_name, op->op_ident);
+    }
+    priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
+}
+
 
 /**
  * Converts 'mode' to a string.

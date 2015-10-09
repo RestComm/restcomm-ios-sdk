@@ -142,13 +142,13 @@ void ssc_destroy(ssc_t *self);
 
 void ssc_store_pending_auth(ssc_t *ssc, ssc_oper_t *op, sip_t const *sip, tagi_t *tags);
 
-void ssc_answer(ssc_t *ssc, int status, char const *phrase);
+void ssc_answer(ssc_t *ssc, char * sdp, int status, char const *phrase);
 void ssc_auth(ssc_t *ssc, const char *data);
 void ssc_bye(ssc_t *ssc);
 void ssc_cancel(ssc_t *ssc);
 void ssc_hold(ssc_t *ssc, char *destination, int hold);
 void ssc_info(ssc_t *ssc, const char *msg);
-void ssc_invite(ssc_t *ssc, const char *destination, const char *headers);
+void ssc_invite(ssc_t *ssc, const char *destination, const char * sdp, const char *headers);
 //#if HAVE_MEDIA_WEBRTC_IMPL
 void ssc_webrtc_sdp(void* op_context, char *sdp);
 void ssc_webrtc_sdp_called(void* op_context, char *sdp);
@@ -293,11 +293,9 @@ enum SipMsgEnum {
     OUTGOING_RINGING,
     OUTGOING_ESTABLISHED,
     INCOMING_ESTABLISHED,
-    WEBRTC_SDP_REQUEST,
     WEBRTC_SDP_RESPONSE,
     OUTGOING_BYE_RESPONSE,
     INCOMING_BYE,
-    ANSWER_PRESSED,
     SIGNALLING_INITIALIZED,
     INCOMING_CANCELLED,
     OUTGOING_DECLINED,
