@@ -22,7 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE182F971B09F70200B40A0F /* libWebRTC-9190.a */; };
 		AE3AD0141BB2B84500B09737 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD0131BB2B84500B09737 /* MessageTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		AE3AD01A1BB2C83800B09737 /* LocalMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD0191BB2C83800B09737 /* LocalMessageTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		AE3AD01D1BB2C85500B09737 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3AD01C1BB2C85500B09737 /* RemoteMessageTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
@@ -54,6 +53,7 @@
 		AE4747561BAACC19008DE3DE /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4747551BAACC19008DE3DE /* Utils.m */; };
 		AE47475C1BAB0E10008DE3DE /* ContactDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */; };
 		AE47475F1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */; };
+		AE4A9C2A1BC7FC4900B7B989 /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */; };
 		AE4B3C2C1B13048B009C00CF /* icon-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */; };
 		AE4BC5EF1B67C746009831E7 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -251,6 +251,7 @@
 		AE47475B1BAB0E10008DE3DE /* ContactDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsTableViewController.m; sourceTree = "<group>"; };
 		AE47475D1BAB0E2F008DE3DE /* ContactUpdateTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUpdateTableViewController.h; sourceTree = "<group>"; };
 		AE47475E1BAB0E2F008DE3DE /* ContactUpdateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUpdateTableViewController.m; sourceTree = "<group>"; };
+		AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
 		AE4B3C2B1B13048B009C00CF /* icon-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60x60@2x.png"; sourceTree = "<group>"; };
 		AE4BC5ED1B67C746009831E7 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AE4BC5EE1B67C746009831E7 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
@@ -394,7 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEB09A431B1DB29400016DB6 /* libRestCommClient.a in Frameworks */,
-				AE182F981B09F70200B40A0F /* libWebRTC-9190.a in Frameworks */,
+				AE4A9C2A1BC7FC4900B7B989 /* libWebRTC-9814.a in Frameworks */,
 				AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */,
 				AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
@@ -477,6 +478,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */,
 				AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */,
 				AE7880091B738E3300205C26 /* SystemConfiguration.framework */,
 				AECDB8A31B0DFB9900563107 /* libRestCommClient.a */,

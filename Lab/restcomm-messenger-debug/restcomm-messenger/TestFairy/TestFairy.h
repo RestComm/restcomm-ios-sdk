@@ -6,17 +6,17 @@
 /**
  * Initialize a TestFairy session.
  *
- * @param APIKey Your key as given to you in your TestFairy account
+ * @param appToken Your key as given to you in your TestFairy account
  */
-+ (void)begin:(NSString *)APIKey;
++ (void)begin:(NSString *)appToken;
 
 /**
  * Initialize a TestFairy session with options.
  *
- * @param APIKey Your key as given to you in your TestFairy account
+ * @param appToken Your key as given to you in your TestFairy account
  * @param options A dictionary of options controlling the current session
  */
-+ (void)begin:(NSString *)APIKey withOptions:(NSDictionary *)options;
++ (void)begin:(NSString *)appToken withOptions:(NSDictionary *)options;
 
 /**
  * Returns SDK version (x.x.x) string

@@ -37,7 +37,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Domain" footerTitle="For example: 23.23.228.238:5080. Leave empty for registrarless access" id="e03-Nj-qx5">
+                            <tableViewSection headerTitle="Domain" footerTitle="For example: live.telestax.com:5080. Leave empty for registrarless access" id="e03-Nj-qx5">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="iCd-aL-NGt">
                                         <rect key="frame" x="0.0" y="161" width="600" height="44"/>

@@ -43,6 +43,9 @@
         self.sipUriTxt.text = self.sipUri;
         self.sipUriTxt.userInteractionEnabled = NO;
     }
+    else {
+        [self.aliasTxt becomeFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,6 +70,15 @@
             [Utils addContact:[NSArray arrayWithObjects:self.aliasTxt.text, self.sipUriTxt.text, nil]];
             [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
                                                 sipUri:self.sipUriTxt.text];
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Input"
+                                                            message:@"Please fill in Username and SIP URI fields"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
         }
     }
 

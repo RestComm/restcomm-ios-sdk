@@ -17,14 +17,14 @@
                                     @"placeholder-bool" : @YES,
                                     @"sip-identification" : @"sip:bob@telestax.com",
                                     @"sip-password" : @"1234",
-                                    @"sip-registrar" : @"23.23.228.238:5080",
+                                    @"sip-registrar" : @"live.telestax.com:5080",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
                                         @[@"Alice", @"sip:alice@telestax.com:5080"],
                                         @[@"Bob", @"sip:bob@telestax.com:5080"],
                                         @[@"Hello World App", @"sip:1235@telestax.com:5080"],
                                         @[@"Conference App", @"sip:1311@telestax.com:5080"],
-                                        @[@"Team Call", @"sip:+5126001502@telestax.com:5080"],
+                                        @[@"Team Call", @"sip:+15126001502@telestax.com:5080"],
                                         ],
                                     @"chat-history" :   // a dictionary of chat histories (key is remote party full sip URI)
                                     @{

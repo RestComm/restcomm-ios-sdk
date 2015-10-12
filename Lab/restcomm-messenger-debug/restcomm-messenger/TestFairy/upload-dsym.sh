@@ -4,9 +4,11 @@ TESTFAIRY_ENDPOINT="http://app.testfairy.com/upload/dsym/"
 
 ZIP=zip
 CURL=curl
+STAT=stat
+DATE=date
 
 log() {
-	NOW=$(date +"%Y-%m-%d %H:%M:%S")
+	NOW=$($DATE +"%Y-%m-%d %H:%M:%S")
 	echo "${NOW} ${1}"
 }
 
@@ -47,19 +49,19 @@ if [ "${DSYM_PATH}" == "" ] || [ "${DSYM_PATH}" == "/" ] || [ ! -d "${DSYM_PATH}
 	help
 fi
 
-NOW=$(date +%s)
+NOW=$($DATE +%s)
 TMP_FILENAME="/tmp/${NOW}-${DWARF_DSYM_FILE_NAME}.zip"
 
 # Compress the .dSYM folder into a zip file
 log "Compressing .dSYM folder ${DSYM_PATH}"
-$ZIP -qrp9 ${TMP_FILENAME} ${DSYM_PATH}
-FILE_SIZE=$(stat -f "%z" "${TMP_FILENAME}")
+$ZIP -qrp9 "${TMP_FILENAME}" "${DSYM_PATH}"
+FILE_SIZE=$($STAT -f "%z" "${TMP_FILENAME}")
 
 foreground_upload() {
 	# Upload zipped .dSYM file to TestFairy's servers
-	STARTED=$(date +"%s")
+	STARTED=$($DATE +"%s")
 	$CURL -s -F api_key="${API_KEY}" -F dsym=@"${1}" -o /dev/null "${TESTFAIRY_ENDPOINT}"
-	ENDED=$(date +"%s")
+	ENDED=$($DATE +"%s")
 	DIFF=$(expr ${ENDED} - ${STARTED})
 	log "Symbols uploaded in ${DIFF} seconds"
 
