@@ -56,7 +56,7 @@
 		AED0B0661A0976F8008A6057 /* restcomm-helloworldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-helloworldTests.m */; };
 		AED0B07E1A097764008A6057 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0691A097764008A6057 /* AppDelegate.m */; };
 		AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06A1A097764008A6057 /* Main_iPad.storyboard */; };
-		AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */; };
+		AED0B0801A097764008A6057 /* Main_Universal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06C1A097764008A6057 /* Main_Universal.storyboard */; };
 		AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B06E1A097764008A6057 /* InfoPlist.strings */; };
 		AED0B0821A097764008A6057 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0701A097764008A6057 /* Images.xcassets */; };
 		AED0B0831A097764008A6057 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0711A097764008A6057 /* main.m */; };
@@ -134,7 +134,7 @@
 		AED0B0681A097764008A6057 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AED0B0691A097764008A6057 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		AED0B06B1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		AED0B06D1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		AED0B06D1A097764008A6057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_Universal.storyboard; sourceTree = "<group>"; };
 		AED0B06F1A097764008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0701A097764008A6057 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AED0B0711A097764008A6057 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 				AED0B0681A097764008A6057 /* AppDelegate.h */,
 				AED0B0691A097764008A6057 /* AppDelegate.m */,
 				AED0B06A1A097764008A6057 /* Main_iPad.storyboard */,
-				AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */,
+				AED0B06C1A097764008A6057 /* Main_Universal.storyboard */,
 				AED0B06E1A097764008A6057 /* InfoPlist.strings */,
 				AED0B0701A097764008A6057 /* Images.xcassets */,
 				AED0B0711A097764008A6057 /* main.m */,
@@ -411,7 +411,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED0B0801A097764008A6057 /* Main_iPhone.storyboard in Resources */,
+				AED0B0801A097764008A6057 /* Main_Universal.storyboard in Resources */,
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
@@ -524,12 +524,12 @@
 			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
-		AED0B06C1A097764008A6057 /* Main_iPhone.storyboard */ = {
+		AED0B06C1A097764008A6057 /* Main_Universal.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				AED0B06D1A097764008A6057 /* Base */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main_Universal.storyboard;
 			sourceTree = "<group>";
 		};
 		AED0B06E1A097764008A6057 /* InfoPlist.strings */ = {

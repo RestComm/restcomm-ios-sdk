@@ -25,6 +25,8 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *answerButton;
+@property (weak, nonatomic) IBOutlet UILabel *callLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @end
 
 @implementation ViewController
@@ -60,6 +62,7 @@
         NSLog(@"Connection already ongoing");
         return;
     }
+    
 
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
@@ -67,6 +70,9 @@
 
     // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];
+    
+    self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:@"username"]];
+    self.statusLabel.text = @"Initiating Call...";
 }
 
 - (IBAction)hangUpPressed:(id)sender
@@ -80,12 +86,22 @@
         [self.connection disconnect];
         
         self.connection = nil;
+        
+        self.statusLabel.text = @"Disconnecting Call...";
     }
 }
 
 - (void)register:(NSNotification *)notification
 {
+    /*
     if (self.device && self.isInitialized && !self.isRegistered) {
+        [self register];
+    }
+     */
+    if (self.device && self.isInitialized && !self.isRegistered) {
+        if (self.device.state == RCDeviceStateOffline) {
+            [self.device listen];
+        }
         [self register];
     }
 }
@@ -100,7 +116,9 @@
 - (void)unregister:(NSNotification *)notification
 {
     [self disconnect];
+
     [self.device unlisten];
+    self.isRegistered = NO;
 }
 
 
@@ -150,15 +168,19 @@
 // 'ringing' for outgoing connections
 - (void)connectionDidStartConnecting:(RCConnection*)connection
 {
+    self.statusLabel.text = @"Did start connecting";
 }
 
 - (void)connectionDidConnect:(RCConnection*)connection
 {
+    self.statusLabel.text = @"Connected";
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection
 {
     self.connection = nil;
+    self.callLabel.text = @"";
+    self.statusLabel.text = @"Disconnected";
 }
 
 - (void)didReceiveMemoryWarning
