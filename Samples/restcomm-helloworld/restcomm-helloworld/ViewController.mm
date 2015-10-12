@@ -42,7 +42,7 @@
                        nil];
 
     // CHANGEME: set the IP address of your RestComm instance in the URI below
-    [self.parameters setObject:@"sip:23.23.228.238:5080" forKey:@"registrar"];
+    [self.parameters setObject:@"sip:live.telestax.com:5080" forKey:@"registrar"];
 
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
@@ -63,7 +63,7 @@
 
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
-    [self.parameters setObject:@"sip:1235@23.23.228.238:5080" forKey:@"username"];
+    [self.parameters setObject:@"sip:1235@live.telestax.com:5080" forKey:@"username"];
 
     // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];

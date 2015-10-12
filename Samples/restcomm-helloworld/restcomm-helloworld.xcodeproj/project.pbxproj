@@ -22,7 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05B61B15DD9F00F5E834 /* libWebRTC-9190.a */; };
 		AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */; };
 		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
 		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
@@ -65,6 +64,13 @@
 		AED0B0871A097764008A6057 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0781A097764008A6057 /* message.mp3 */; };
 		AED0B0881A097764008A6057 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0791A097764008A6057 /* ringing.mp3 */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
+		AEE94BCA1BCBADDA00987ECC /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */; };
+		AEE94BCD1BCBB42900987ECC /* hangup-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCB1BCBB42900987ECC /* hangup-74x74.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BCE1BCBB42900987ECC /* hangup-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCC1BCBB42900987ECC /* hangup-74x74@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BD11BCBB49600987ECC /* make-call-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCF1BCBB49600987ECC /* make-call-74x74.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BD21BCBB49600987ECC /* make-call-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD01BCBB49600987ECC /* make-call-74x74@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BD51BCBB51000987ECC /* restcomm-logo-call-139x54.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD31BCBB51000987ECC /* restcomm-logo-call-139x54.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BD61BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD41BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png */; settings = {ASSET_TAGS = (); }; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
@@ -140,6 +146,13 @@
 		AED0B07C1A097764008A6057 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		AED0B07D1A097764008A6057 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
+		AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
+		AEE94BCB1BCBB42900987ECC /* hangup-74x74.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hangup-74x74.png"; sourceTree = "<group>"; };
+		AEE94BCC1BCBB42900987ECC /* hangup-74x74@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hangup-74x74@2x.png"; sourceTree = "<group>"; };
+		AEE94BCF1BCBB49600987ECC /* make-call-74x74.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "make-call-74x74.png"; sourceTree = "<group>"; };
+		AEE94BD01BCBB49600987ECC /* make-call-74x74@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "make-call-74x74@2x.png"; sourceTree = "<group>"; };
+		AEE94BD31BCBB51000987ECC /* restcomm-logo-call-139x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54.png"; sourceTree = "<group>"; };
+		AEE94BD41BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +171,7 @@
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
-				AE1C05B71B15DD9F00F5E834 /* libWebRTC-9190.a in Frameworks */,
+				AEE94BCA1BCBADDA00987ECC /* libWebRTC-9814.a in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
 				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
 				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
@@ -204,6 +217,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */,
 				AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */,
 				AE1C05BC1B15DDF200F5E834 /* libcrypto.a */,
 				AE1C05BD1B15DDF200F5E834 /* libssl.a */,
@@ -239,6 +253,12 @@
 		AE9520861B0B268C00E947D8 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AEE94BD31BCBB51000987ECC /* restcomm-logo-call-139x54.png */,
+				AEE94BD41BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png */,
+				AEE94BCF1BCBB49600987ECC /* make-call-74x74.png */,
+				AEE94BD01BCBB49600987ECC /* make-call-74x74@2x.png */,
+				AEE94BCB1BCBB42900987ECC /* hangup-74x74.png */,
+				AEE94BCC1BCBB42900987ECC /* hangup-74x74@2x.png */,
 				AE95209F1B0B2C4D00E947D8 /* splash */,
 				AE9520871B0B268C00E947D8 /* icon */,
 			);
@@ -395,20 +415,26 @@
 				AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */,
 				AED0B0861A097764008A6057 /* calling.mp3 in Resources */,
 				AE95209A1B0B2AC100E947D8 /* icon-40x40@2x.png in Resources */,
+				AEE94BD51BCBB51000987ECC /* restcomm-logo-call-139x54.png in Resources */,
 				AE9520991B0B2AC100E947D8 /* icon-40x40.png in Resources */,
 				AE9520A41B0B2C4D00E947D8 /* splash-320x480@2x.png in Resources */,
 				AED0B0821A097764008A6057 /* Images.xcassets in Resources */,
 				AED0B0811A097764008A6057 /* InfoPlist.strings in Resources */,
 				AE9520981B0B2AC100E947D8 /* icon-29x29@2x.png in Resources */,
 				AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */,
+				AEE94BD61BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png in Resources */,
 				AED0B0871A097764008A6057 /* message.mp3 in Resources */,
 				AE95209D1B0B2AC100E947D8 /* icon-76x76.png in Resources */,
 				AE95209E1B0B2AC100E947D8 /* icon-76x76@2x.png in Resources */,
+				AEE94BCD1BCBB42900987ECC /* hangup-74x74.png in Resources */,
+				AEE94BD21BCBB49600987ECC /* make-call-74x74@2x.png in Resources */,
 				AED0B07F1A097764008A6057 /* Main_iPad.storyboard in Resources */,
 				AE95209B1B0B2AC100E947D8 /* icon-60x60@2x.png in Resources */,
 				AE9520971B0B2AC100E947D8 /* icon-29x29.png in Resources */,
 				AE95209C1B0B2AC100E947D8 /* icon-60x60@3x.png in Resources */,
 				AED0B0881A097764008A6057 /* ringing.mp3 in Resources */,
+				AEE94BCE1BCBB42900987ECC /* hangup-74x74@2x.png in Resources */,
+				AEE94BD11BCBB49600987ECC /* make-call-74x74.png in Resources */,
 				AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -609,10 +635,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
-				);
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -644,10 +668,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/../../dependencies/packages/GStreamer",
-				);
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
