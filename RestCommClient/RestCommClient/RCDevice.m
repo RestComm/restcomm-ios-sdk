@@ -92,13 +92,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         // init logging + set logging level
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
-        /*
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            initializeLogging();
-        });
-         */
-        
         RCLogNotice("[RCDevice initWithParams]");
 
         // reachability
@@ -416,20 +409,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
      */
 }
-
-/* DEBUG
--(void)startSofia
-{
-    [self.sipManager eventLoop];
-    //_state = RCDeviceStateReady;
-}
-
--(void)stopSofia
-{
-    [self.sipManager shutdown:NO];
-    //_state = RCDeviceStateOffline;
-}
- */
 
 // TODO: leave this around because at some point we might add REST functionality on the client
 /*

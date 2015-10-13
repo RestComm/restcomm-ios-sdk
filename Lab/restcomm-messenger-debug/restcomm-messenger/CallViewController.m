@@ -33,7 +33,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *keypadButton;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *muteAudioButton;
-//@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 // who we are calling/get called from
 @property (weak, nonatomic) IBOutlet UILabel *callLabel;
 // signaling/media status to inform the user how call setup goes (like Android toasts)
@@ -56,7 +55,6 @@
     [super viewDidLoad];
     
     self.pendingError = NO;
-    //self.muteSwitch.enabled = false;
     self.isVideoMuted = NO;
     self.isAudioMuted = NO;
     
@@ -64,7 +62,6 @@
     self.videoCallView.hidden = YES;
     self.durationLabel.hidden = YES;
     
-    //self.videoCallView.delegate = self;
     [self.view insertSubview:self.videoCallView belowSubview:self.hangupButton];
 }
 
@@ -90,11 +87,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    /*
-    if (self.durationTimer && [self.durationTimer isValid]) {
-        [self.durationTimer invalidate];
-    }
-     */
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,7 +109,7 @@
         NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
         self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
         self.statusLabel.text = @"Initiating Call...";
-        // SIP custom headers: uncomment this to use SIP custom headers
+        // *** SIP custom headers: uncomment this to use SIP custom headers
         //[self.parameters setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
         //                    forKey:@"sip-headers"];
         self.connection = [self.device connect:self.parameters delegate:self];
@@ -177,19 +169,6 @@
     }
 }
 
-/*
-- (IBAction)declinePressed:(id)sender
-{
-    if (self.pendingIncomingConnection) {
-        // reject the pending RCConnection
-        [self.pendingIncomingConnection reject];
-        self.pendingIncomingConnection = nil;
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:nil];
-    }
-}
- */
-
 - (IBAction)hangUpPressed:(id)sender
 {
     NSLog(@"[CallViewController hangUpPressed]");
@@ -216,23 +195,6 @@
                                                       completion:nil];
 }
 
-/*
-- (IBAction)cancelPressed:(id)sender
-{
-    if (self.connection) {
-        [self.connection disconnect];
-    }
-}
-
-- (void)disconnect
-{
-    if (self.connection) {
-        [self.connection disconnect];
-    }
-    [self stopVideoRendering];
-}
- */
-
 - (void)stopVideoRendering
 {
     NSLog(@"[CallViewController stopVideoRendering]");
@@ -247,14 +209,6 @@
         [self.videoCallView.localVideoView renderFrame:nil];
     }
 }
-
-// ---------- Video View delegate methods:
-/*
-- (void)videoCallViewDidHangup:(ARDVideoCallView *)view
-{
-    [self disconnect];
-}
- */
 
 // ---------- Delegate methods for RC Connection
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error
@@ -355,12 +309,6 @@
     if (self.durationTimer && [self.durationTimer isValid]) {
         [self.durationTimer invalidate];
     }
-
-    /*
-    else {
-        self.pendingError = NO;
-    }
-     */
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection

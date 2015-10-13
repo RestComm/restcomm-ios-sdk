@@ -23,16 +23,9 @@
 #import "MainNavigationController.h"
 #import "Utils.h"
 
-//char AOR[] = "sip:antonis-2@telestax.com";
-// elastic
-//char REGISTRAR[] = "23.23.228.238:5080";
-//char REGISTRAR[] = "192.168.2.32:5080";
-
-
 @interface SipSettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
-//@property (weak, nonatomic) IBOutlet UISwitch *muteSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *passwordText;
 @end
 
@@ -55,27 +48,13 @@
     [self.view addGestureRecognizer:tapGesture];
     
     self.navigationItem.title = @"SIP Settings";
-    
-    // set some defaults when in debug to avoid typing
-    //self.aorText.text = [NSString stringWithUTF8String:AOR];
-    //self.registrarText.text = [NSString stringWithUTF8String:REGISTRAR];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.aorText.text = [Utils sipIdentification]; //[[self.device getParams] objectForKey:@"aor"];
+    self.aorText.text = [Utils sipIdentification];
     self.registrarText.text = [Utils sipRegistrar];
-    /*
-    NSString * fullRegistrar = [[self.device getParams] objectForKey:@"registrar"];
-    if (![fullRegistrar isEqualToString:@""]) {
-        NSRange range = [fullRegistrar rangeOfString:@":"];
-        self.registrarText.text = [fullRegistrar substringFromIndex:range.location + 1];
-    }
-    else {
-        self.registrarText.text = @"";
-    }
-     */
-    self.passwordText.text = [Utils sipPassword]; //[[self.device getParams] objectForKey:@"password"];
+    self.passwordText.text = [Utils sipPassword]; 
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;

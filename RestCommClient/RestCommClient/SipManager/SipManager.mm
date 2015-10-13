@@ -21,13 +21,10 @@
  */
 
 #include <sys/event.h>
-//#include <string>
-
 #include "sofsip_cli.h"
 #include "ssc_sip.h"
 #include <iostream>
 #include <map>
-//#include "gst_ios_init.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
@@ -37,13 +34,6 @@
 #import "SipManager.h"
 #import "Utilities.h"
 #import "common.h"
-
-/* TODOs:
- * - There's no way you can stop a call before it is established (i.e. while it is ringing)
- * - When receiving a call, cannot hangup (Issue #2)
- * - When issuing a call towards Alice (WebRTC) and Alice answers nothing happens; I don't see any answer in tcpdump. Could it be a WebRTC issue?
- *
- */
 
 // those are used both in the context of SipManager class and outside (i.e. C callbacks); lets make them global
 int write_pipe[2];
@@ -101,6 +91,9 @@ int read_pipe[2];
         [self pipeToSofia:cmd];
     }
     else {
+        // This logic was for when media processing started when INVITE arrived for incoming calls
+        // (as opposed to when we press answer as it is now). Let's keep it around since we'll be
+        // revisiting this at some point in the future
         /*
         [self.activeCallParams setObject:sdpString forKey:@"sdp"];
         [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-gathering-complete"];
@@ -135,14 +128,6 @@ int read_pipe[2];
     [self.connectionDelegate sipManager:self didReceiveRemoteVideo:videoTrack];
 }
 
-/*
-- (void)peerDisconnected:(MediaWebRTC *)media withData:(NSString *)data
-{
-    [self bye];
-    //[self pipeToSofia:[NSString stringWithFormat:@"webrtc-sdp %@", data]];
-}
- */
-
 // notice that we can make this an Objective-C method as well, if we want
 - (int)handleSofiaInput:(struct SofiaReply *) reply fd:(int) fd
 {
@@ -160,10 +145,12 @@ int read_pipe[2];
         NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
 
-        // Once WebRTC implementation is working re-enable the event below (maybe it needs to be relocated though)
         [self.deviceDelegate sipManagerDidReceiveCall:self from:[args objectForKey:@"sip-uri"]];
-
         [self.activeCallParams setObject:[args objectForKey:@"sdp"] forKey:@"sdp"];
+
+        // This logic was for when media processing started when INVITE arrived for incoming calls
+        // (as opposed to when we press answer as it is now). Let's keep it around since we'll be
+        // revisiting this at some point in the future
         /*
         if (!self.media) {
             self.media = [[MediaWebRTC alloc] initWithDelegate:self];
@@ -278,11 +265,9 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     }
     else {
         string incomingMsg(buf, size);
-        //printf("\n######### Receiving from Sofia, res: %lu buf: %s\n", size, buf);
         while (1) {
             // remember, Deserialize() will return the remaining commands after it parses the first, if applicable
             incomingMsg = reply.Deserialize(incomingMsg);
-            //NSLog(@"\n@@@@@@@@@ App << Sofia: %d, %s", reply.rc, reply.text.c_str());
             [sipManager handleSofiaInput:&reply fd:fd];
             
             if (incomingMsg == "") {
@@ -337,11 +322,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
         [RTCPeerConnectionFactory initializeSSL];
-        // do we want to restart Sofia facilities when shutting down (i.e. after shutdown is successful)
-        //self.restartSignalling = NO;
-        //self.restartSignallingLock = [[NSLock alloc] init];
-
-        //self.media = [[MediaWebRTC alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -350,7 +330,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 {
     self = [self initWithDelegate:deviceDelegate];
     [self.params setDictionary:params];
-    //[self setParams:params];
     
     return self;
 }
@@ -522,6 +501,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
         return false;
     }
 
+    // This logic was for when media processing started when INVITE arrived for incoming calls
+    // (as opposed to when we press answer as it is now). Let's keep it around since we'll be
+    // revisiting this at some point in the future
     /*
     [self.activeCallParams setObject:@(YES) forKey:@"incoming-call-was-answered"];
     if ([self.activeCallParams objectForKey:@"incoming-call-gathering-complete"]) {
@@ -580,12 +562,6 @@ ssize_t pipeToSofia(const char * msg, int fd)
         cmd = @"qr";
     }
     [self pipeToSofia:cmd];
-
-    /*
-    [_restartSignallingLock lock];
-    self.restartSignalling = restart;
-    [_restartSignallingLock unlock];
-     */
 
     return true;
 }
