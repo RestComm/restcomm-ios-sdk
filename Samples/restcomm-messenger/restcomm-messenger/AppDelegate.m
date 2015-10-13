@@ -21,12 +21,16 @@
  */
 
 #import "AppDelegate.h"
+#import "Utils.h"
 #import "TestFairy/TestFairy.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // register the preference defaults early with default values
+    [Utils setupUserDefaults];
+
     // Override point for customization after application launch.
     [TestFairy begin:@"52d3ee1de1b7681d1fcbbc3295b2b86a0aa43fcc"];
     

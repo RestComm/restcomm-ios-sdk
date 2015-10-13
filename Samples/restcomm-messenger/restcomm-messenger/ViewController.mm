@@ -25,12 +25,13 @@
 #import "ViewController.h"
 #import "RestCommClient.h"
 #import "SettingsNavigationController.h"
-#import "SettingsViewController.h"
+#import "SettingsTableViewController.h"
 #import "CallViewController.h"
 #import "MessageViewController.h"
+#import "Utils.h"
 
-extern char AOR[];
-extern char REGISTRAR[];
+//extern char AOR[];
+//extern char REGISTRAR[];
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *sipMessageText;
@@ -53,11 +54,11 @@ extern char REGISTRAR[];
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
-    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSString stringWithUTF8String:AOR], @"aor",
+    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        @"1234", @"password",
                        nil];
 
-    [self.parameters setObject:[NSString stringWithFormat:@"sip:%s", REGISTRAR] forKey:@"registrar"];
+    [self.parameters setObject:[NSString stringWithFormat:@"sip:%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
@@ -69,7 +70,9 @@ extern char REGISTRAR[];
     [self.view addGestureRecognizer:tapGesture];
 #ifdef DEBUG
     // set some defaults when in debug to avoid typing
-    self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
+    NSArray * contact = [Utils contactForIndex:0];
+    self.sipUriText.text = [contact objectAtIndex:1];
+    //self.sipUriText.text = @"sip:antonis@23.23.228.238:5080";
     //self.sipUriText.text = @"sip:alice@192.168.2.32:5080";
 #else
     self.sipUriText.text = @"sip:1235@23.23.228.238:5080";
@@ -125,13 +128,15 @@ extern char REGISTRAR[];
 - (void)register
 {
     // update our parms
-    [self.device updateParams:self.parameters];
+    [self.device startSofia];
+    //[self.device updateParams:self.parameters];
     self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
 {
-    [self.device unlisten];
+    [self.device stopSofia];
+    //[self.device unlisten];
     self.isRegistered = NO;
 }
 
@@ -250,8 +255,8 @@ extern char REGISTRAR[];
         }
     }
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
-        SettingsViewController * settingsViewController = [segue destinationViewController];
-        settingsViewController.device = self.device;
+        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
+        settingsTableViewController.device = self.device;
     }
     if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
         MessageViewController *callViewController = [segue destinationViewController];
@@ -259,6 +264,16 @@ extern char REGISTRAR[];
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
     }
+}
+
+- (IBAction)start:(id)sender
+{
+    [self.device startSofia];
+}
+
+- (IBAction)stop:(id)sender
+{
+    [self.device stopSofia];
 }
 
 @end

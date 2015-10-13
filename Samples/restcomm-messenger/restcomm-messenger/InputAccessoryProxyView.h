@@ -22,10 +22,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
-#import "MessageViewController.h"
+#import "MessageTableViewController.h"
 
 @interface InputAccessoryProxyView : UIView
-- (id)initWithFrame:(CGRect)rect viewController:(MessageViewController *)viewController;
+- (id)initWithFrame:(CGRect)rect viewController:(MessageTableViewController *)viewController;
 // we don't own it
-@property (weak, nonatomic) MessageViewController * viewController;
+@property (weak, nonatomic) MessageTableViewController * viewController;
 @end

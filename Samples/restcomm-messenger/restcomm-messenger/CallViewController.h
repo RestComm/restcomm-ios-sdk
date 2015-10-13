@@ -26,7 +26,8 @@
 
 @protocol CallDelegate;
 
-@interface CallViewController : UIViewController<RCConnectionDelegate>
+@interface CallViewController : UIViewController<RCConnectionDelegate, UIAlertViewDelegate>
+
 // owner is ViewController
 @property (weak) RCDevice * device;
 @property (nonatomic,retain) RCConnection* connection;
