@@ -370,8 +370,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         if (self.state != RCDeviceStateOffline) {
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             [self.sipManager shutdown:YES];
-            //[self.sipManager eventLoop];
             self.reachabilityStatus = newStatus;
+            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
             return;
         }
     }
