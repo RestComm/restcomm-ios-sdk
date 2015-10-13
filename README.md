@@ -3,6 +3,25 @@ RestComm Mobile - iOS SDK
 
 iOS Mobile SDK to easily integrate communication features (messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
 
+Quick Start guide
+================
+
+For an easy to follow guide on how to get started with RestComm Client SDK for iOS, please check:
+
+http://docs.telestax.com/restcomm-client-ios-sdk-quick-start/
+
+Reference Documentation
+================
+
+Appledoc style reference documentation can be found at:
+
+http://mobicents.github.io/restcomm-ios-sdk/doc/html/
+
+OS/Hardware requirements
+================
+
+RestComm Client SDK for iOS has been tested to work on iOS 7.0 and above (has been successfully tested with iphone 4 and above)
+
 Latest Messenger .ipa
 =============================
 
