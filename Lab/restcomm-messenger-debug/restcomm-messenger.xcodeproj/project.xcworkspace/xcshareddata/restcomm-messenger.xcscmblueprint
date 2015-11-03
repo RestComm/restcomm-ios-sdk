@@ -10,7 +10,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "61F10F0A-E052-4F61-A6A1-56790853E92D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "C9515563FCCB6E03492535E0732AB0EDB73E0628" : "..\/Downloads\/webrtc-build-scripts",
-    "B4C2C0FE344BB97778628C9FFABFBFF08173FC50" : "restcomm-ios-sdk"
+    "B4C2C0FE344BB97778628C9FFABFBFF08173FC50" : "restcomm-ios-sdk\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "restcomm-messenger",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
