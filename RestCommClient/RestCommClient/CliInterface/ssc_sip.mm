@@ -1903,6 +1903,7 @@ void ssc_r_register(int status, char const *phrase,
         ssc_store_pending_auth(ssc, op, sip, tags);
     else if (status >= 300) {
         // Error
+        RCLogError("REGISTER failed: %03d %s", status, phrase);
         ssc_oper_destroy(ssc, op);
         if (pending_registration) {
             RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");

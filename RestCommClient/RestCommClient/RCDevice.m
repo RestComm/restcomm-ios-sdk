@@ -145,23 +145,48 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)listen
 {
     RCLogNotice("[RCDevice listen]");
-    if (self.state == RCDeviceStateReady) {
+    if (_state == RCDeviceStateOffline) {
+        NetworkStatus status = [_internetReachable currentReachabilityStatus];
+        if (self.reachabilityStatus != NotReachable) {
+            // we are reachable
+
+            // start signalling eventLoop (i.e. Sofia)
+            [self.sipManager eventLoop];
+
+            if (![self.sipManager.params objectForKey:@"registrar"]) {
+                // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
+                _state = RCDeviceStateReady;
+            }
+            
+            if (status != self.reachabilityStatus) {
+                // reachability status changed, notify application
+                RCLogNotice("[RCDevice listen] Reachability state has changed from: %d to: %d", self.reachabilityStatus, status);
+                [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
+                self.reachabilityStatus = status;
+            }
+            [self.delegate deviceDidStartListeningForIncomingConnections:self];
+        }
+        else {
+            RCLogError("[RCDevice listen] No internet connectivity");
+        }
+    }
+    else if (_state == RCDeviceStateReady) {
         [self.sipManager updateParams:nil];
-        //_state = RCDeviceStateReady;
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
 
 - (void)unlisten
 {
-    RCLogNotice("[RCDevice unlisten], state: %d", self.state);
-    if (self.state != RCDeviceStateOffline) {
-        if (self.state == RCDeviceStateBusy) {
+    RCLogNotice("[RCDevice unlisten], state: %d", _state);
+    if (_state != RCDeviceStateOffline) {
+        if (_state == RCDeviceStateBusy) {
             [self disconnectAll];
         }
 
         [self.sipManager unregister:nil];
-        //_state = RCDeviceStateOffline;
+        [self.sipManager shutdown:NO];
+        _state = RCDeviceStateOffline;
         [self.delegate device:self didStopListeningForIncomingConnections:nil];
     }
 }
@@ -179,11 +204,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
     RCLogNotice("[RCDevice connect: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
-    if (self.state != RCDeviceStateReady) {
-        if (self.state == RCDeviceStateBusy) {
+    if (_state != RCDeviceStateReady) {
+        if (_state == RCDeviceStateBusy) {
             RCLogError("Error connecting: RCDevice is busy");
         }
-        else if (self.state == RCDeviceStateOffline) {
+        else if (_state == RCDeviceStateOffline) {
             RCLogError("Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         }
         return nil;
@@ -214,7 +239,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (BOOL)sendMessage:(NSDictionary*)parameters
 {
     RCLogNotice("[RCDevice message: %s\nto: %s]", [[parameters objectForKey:@"message"] UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
-    if (self.state == RCDeviceStateOffline) {
+    if (_state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         return NO;
     }
@@ -245,8 +270,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)disconnectAll
 {
-    RCLogNotice("[RCDevice disconnectAll], state: %d", self.state);
-    if (self.state == RCDeviceStateBusy) {
+    RCLogNotice("[RCDevice disconnectAll], state: %d", _state);
+    if (_state == RCDeviceStateBusy) {
         [self.currentConnection disconnect];
         _state = RCDeviceStateReady;
     }
@@ -349,7 +374,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     NetworkStatus newStatus = [_internetReachable currentReachabilityStatus];
     RCLogNotice("[RCDevice checkNetworkStatus] Reachability update: %d", (int)newStatus);
     
-    if (newStatus == NotReachable && self.state != RCDeviceStateOffline) {
+    if (newStatus == NotReachable && _state != RCDeviceStateOffline) {
         RCLogNotice("[RCDevice checkNetworkStatus] action: no connectivity");
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
@@ -360,7 +385,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if ((self.reachabilityStatus == ReachableViaWiFi && newStatus == ReachableViaWWAN) ||
         (self.reachabilityStatus == ReachableViaWWAN && newStatus == ReachableViaWiFi)) {
-        if (self.state != RCDeviceStateOffline) {
+        if (_state != RCDeviceStateOffline) {
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             [self.sipManager shutdown:YES];
             self.reachabilityStatus = newStatus;
@@ -370,7 +395,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
     
     if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
-        self.state == RCDeviceStateOffline) {
+        _state == RCDeviceStateOffline) {
         RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
         [self.sipManager eventLoop];
         self.reachabilityStatus = newStatus;

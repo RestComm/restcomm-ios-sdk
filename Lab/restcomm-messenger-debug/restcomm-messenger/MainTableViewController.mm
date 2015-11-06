@@ -127,14 +127,13 @@
 - (void)register
 {
     // update our parms
-    //[self.device startSofia];
-    [self.device updateParams:self.parameters];
+    [self.device listen];
+    //[self.device updateParams:self.parameters];
     self.isRegistered = YES;
 }
 
 - (void)unregister:(NSNotification *)notification
 {
-    //[self.device stopSofia];
     [self.device unlisten];
     self.isRegistered = NO;
 }
