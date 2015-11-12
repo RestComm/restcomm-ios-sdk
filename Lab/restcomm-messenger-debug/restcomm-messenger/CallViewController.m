@@ -68,65 +68,76 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (!self.connection || self.connection.state != RCConnectionStateConnected) {
-        self.muteAudioButton.hidden = YES;
-        self.muteVideoButton.hidden = YES;
-        self.keypadButton.hidden = YES;
-    }
-    
-    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
-        self.videoButton.hidden = YES;
-        self.audioButton.hidden = YES;
-    }
-    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
-        self.videoButton.hidden = NO;
-        self.audioButton.hidden = NO;
+    if (self.isBeingPresented) {
+        if (!self.connection || self.connection.state != RCConnectionStateConnected) {
+            self.muteAudioButton.hidden = YES;
+            self.muteVideoButton.hidden = YES;
+            self.keypadButton.hidden = YES;
+        }
+        
+        if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
+            self.videoButton.hidden = YES;
+            self.audioButton.hidden = YES;
+        }
+        if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
+            self.videoButton.hidden = NO;
+            self.audioButton.hidden = NO;
+        }
+        
+        // for the duration of the call don't allow the screen to sleep (we will remove this when backgrounding is implemented)
+        [UIApplication sharedApplication].idleTimerDisabled = YES;
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    if (self.isBeingDismissed) {
+        // we are leaving the call, allow the screen to sleep
+        [UIApplication sharedApplication].idleTimerDisabled = NO;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
-        // call the other party
-        if (self.connection) {
-            NSLog(@"Connection already ongoing");
-            return;
+    if (self.isBeingPresented) {
+        if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
+            // call the other party
+            if (self.connection) {
+                NSLog(@"Connection already ongoing");
+                return;
+            }
+            
+            if ([[self.parameters objectForKey:@"video-enabled"] boolValue] == YES) {
+                self.isVideoCall = YES;
+            }
+            else {
+                self.isVideoCall = NO;
+            }
+            
+            NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
+            self.statusLabel.text = @"Initiating Call...";
+            // *** SIP custom headers: uncomment this to use SIP custom headers
+            //[self.parameters setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
+            //                    forKey:@"sip-headers"];
+            self.connection = [self.device connect:self.parameters delegate:self];
+            if (self.connection == nil) {
+                self.pendingError = YES;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
+                                                                message:@"Not connected"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
         }
-        
-        if ([[self.parameters objectForKey:@"video-enabled"] boolValue] == YES) {
-            self.isVideoCall = YES;
+        if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
+            NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            self.callLabel.text = [NSString stringWithFormat:@"Call from %@", username];
+            self.statusLabel.text = @"Call received";
         }
-        else {
-            self.isVideoCall = NO;
-        }
-        
-        NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
-        self.callLabel.text = [NSString stringWithFormat:@"Calling %@", username];
-        self.statusLabel.text = @"Initiating Call...";
-        // *** SIP custom headers: uncomment this to use SIP custom headers
-        //[self.parameters setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
-        //                    forKey:@"sip-headers"];
-        self.connection = [self.device connect:self.parameters delegate:self];
-        if (self.connection == nil) {
-            self.pendingError = YES;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
-                                                            message:@"Not connected"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-    }
-    if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
-        NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
-        self.callLabel.text = [NSString stringWithFormat:@"Call from %@", username];
-        self.statusLabel.text = @"Call received";
     }
 }
 
@@ -246,11 +257,7 @@
     self.keypadButton.hidden = NO;
 
     self.durationLabel.hidden = NO;
-    self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                             target:self
-                                                           selector:@selector(timerAction)
-                                                           userInfo:nil
-                                                            repeats:NO];
+    [self timerAction];
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
@@ -288,7 +295,6 @@
             [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
                 [self.presentingViewController dismissViewControllerAnimated:YES
                                                                   completion:nil];
-                
             }];
         }
         else {
@@ -391,9 +397,9 @@
 
 - (void)timerAction
 {
-    self.secondsElapsed++;
-    self.durationLabel.text = [NSString stringWithFormat:@"%01d:%02d", (self.secondsElapsed % 3600) / 60,
+    self.durationLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", self.secondsElapsed / 3600, (self.secondsElapsed % 3600) / 60,
                   (self.secondsElapsed % 3600) % 60];
+    self.secondsElapsed++;
     
     if (self.connection && self.connection.state == RCConnectionStateConnected) {
         // not using repeating timer to avoid retain cycles
@@ -402,6 +408,7 @@
                                                             selector:@selector(timerAction)
                                                             userInfo:nil
                                                              repeats:NO];
+        
     }
 }
 

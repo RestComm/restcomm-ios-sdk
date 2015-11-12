@@ -144,7 +144,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)listen
 {
-    RCLogNotice("[RCDevice listen]");
+    RCLogNotice("[RCDevice listen], state: %d", _state);
     if (_state == RCDeviceStateOffline) {
         NetworkStatus status = [_internetReachable currentReachabilityStatus];
         if (self.reachabilityStatus != NotReachable) {

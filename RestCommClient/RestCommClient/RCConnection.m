@@ -294,12 +294,13 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         self.ringingPlayer.currentTime = 0.0;
     }
     
-    //NSLog(@"[RCConnection self: %p]", self);
-    //if (self.state != RCConnectionStateDisconnected) {
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidDisconnect:self];
-    self.device.state = RCDeviceStateReady;
-    //}
+    
+    // we need this check to avoid setting state to ready when we have already been shutdown
+    if (self.device.state != RCDeviceStateOffline) {
+        self.device.state = RCDeviceStateReady;
+    }
 }
 
 - (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;
