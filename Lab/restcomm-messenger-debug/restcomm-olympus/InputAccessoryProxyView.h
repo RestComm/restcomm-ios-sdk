@@ -21,7 +21,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
+//#import "ViewController.h"
 #import "MessageTableViewController.h"
 
 @interface InputAccessoryProxyView : UIView
