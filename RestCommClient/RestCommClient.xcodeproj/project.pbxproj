@@ -890,8 +890,11 @@
 					armv7,
 					x86_64,
 				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				DSTROOT = /tmp/RestCommClient.dst;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -920,8 +923,11 @@
 					armv7,
 					x86_64,
 				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				DSTROOT = /tmp/RestCommClient.dst;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestCommClient/RestCommClient-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

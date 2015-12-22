@@ -388,6 +388,7 @@
 		AEE656591BAC851A005FD311 /* plus-sign-30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-sign-30x30@2x.png"; sourceTree = "<group>"; };
 		AEE6565A1BAC851A005FD311 /* settings-30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-30x30.png"; sourceTree = "<group>"; };
 		AEE6565B1BAC851A005FD311 /* settings-30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-30x30@2x.png"; sourceTree = "<group>"; };
+		AEF8D3171BF9FD0F00F63A69 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		AEFE1D6A1B6295EF00E2FF51 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		AEFE1D6B1B6295EF00E2FF51 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -490,6 +491,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEF8D3171BF9FD0F00F63A69 /* libc++.tbd */,
 				AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */,
 				AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */,
 				AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */,
@@ -1154,11 +1156,14 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1191,11 +1196,14 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-messenger/restcomm-messenger-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

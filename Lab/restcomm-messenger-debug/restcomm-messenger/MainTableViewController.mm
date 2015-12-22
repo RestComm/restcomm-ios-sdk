@@ -35,6 +35,8 @@
 #import "Utilities.h"
 #import "Utils.h"
 
+#include <string>
+
 @interface MainTableViewController ()
 @property RCConnectivityStatus previousConnectivityStatus;
 @end

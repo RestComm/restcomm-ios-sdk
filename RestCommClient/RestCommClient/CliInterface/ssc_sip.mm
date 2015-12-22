@@ -180,7 +180,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc_t *ssc;
     string caps_str;
     char *userdomain = NULL;
-    string contact;
+    std::string contact;
+    //char contact2[1000] = "";
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -223,12 +224,19 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = conf->ssc_contact;
     }
     else {
+        //strcat(contact2, "sip:");
         contact = "sip:";
+        //strcat(contact2, [address UTF8String]);
         contact += [address UTF8String];
+        //strcat(contact2, ":*;transport=tcp");
         contact += ":*;transport=tcp";
+
     }
     
+    cout << "COUT CONTACT: " << contact << endl;
+    printf("CONTACT: %s", contact.c_str());
     RCLogNotice("Creating SIP stack -binding to: %s", contact.c_str());
+    //RCLogNotice("Creating SIP stack -binding to: %s", contact2);
 
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
