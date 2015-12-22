@@ -30,20 +30,20 @@
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
                                     @"placeholder-bool" : @YES,
-                                    @"sip-identification" : @"sip:bob@telestax.com",
+                                    @"sip-identification" : @"sip:bob@cloud.restcomm.com",
                                     @"sip-password" : @"1234",
-                                    @"sip-registrar" : @"live.telestax.com:5080",
+                                    @"sip-registrar" : @"",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
-                                        @[@"Alice", @"sip:alice@telestax.com:5080"],
-                                        @[@"Bob", @"sip:bob@telestax.com:5080"],
-                                        @[@"Hello World App", @"sip:1235@telestax.com:5080"],
-                                        @[@"Conference App", @"sip:1311@telestax.com:5080"],
-                                        @[@"Team Call", @"sip:+15126001502@telestax.com:5080"],
+                                        @[@"Play App", @"sip:+1234@cloud.restcomm.com"],
+                                        @[@"Say App", @"sip:+1235@cloud.restcomm.com"],
+                                        @[@"Gather App", @"sip:+1236@cloud.restcomm.com"],
+                                        @[@"Conference Admin App", @"sip:+1311@cloud.restcomm.com"],
+                                        @[@"Conference App", @"sip:+1310@cloud.restcomm.com"],
                                         ],
                                     @"chat-history" :   // a dictionary of chat histories (key is remote party full sip URI)
                                     @{
-                                        @"sip:alice@telestax.com:5080" : @[
+                                        @"sip:alice@cloud.restcomm.com" : @[
                                                 @{
                                                     @"text" : @"Hello Alice",
                                                     @"type" : @"local",
@@ -57,7 +57,7 @@
                                                     @"type" : @"local",
                                                     },
                                                 ],
-                                        @"sip:bob@telestax.com:5080" : @[
+                                        @"sip:bob@cloud.restcomm.com" : @[
                                                 @{
                                                     @"text" : @"Is Bob around?",
                                                     @"type" : @"local",

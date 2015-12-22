@@ -205,7 +205,7 @@
 			containerPortal = AE79D30E19BC8DAD0023306C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AE79D31519BC8DAD0023306C;
-			remoteInfo = "test-ios-sip-sofia";
+			remoteInfo = "restcomm-olympus";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -722,7 +722,7 @@
 				AE5669141BE903FB00C66789 /* PBXTargetDependency */,
 			);
 			name = "restcomm-olympus";
-			productName = "test-ios-sip-sofia";
+			productName = "restcomm-olympus";
 			productReference = AE79D31619BC8DAD0023306C /* restcomm-olympus.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -740,7 +740,7 @@
 				AE79D34019BC8DAE0023306C /* PBXTargetDependency */,
 			);
 			name = "restcomm-olympusTests";
-			productName = "test-ios-sip-sofiaTests";
+			productName = "restcomm-olympusTests";
 			productReference = AE79D33A19BC8DAE0023306C /* restcomm-olympus.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -957,7 +957,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"${PROJECT_NAME}\" \\\n--project-company \"Telestax\" \\\n--company-id \"com.telestax\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"*.m\" \\\n--include \"${PROJECT_DIR}/${PROJECT_NAME}/Documentation/Images\" \\\n--ignore \"LoadableCategory.h\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}/test-ios-sip-sofia\"";
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"${PROJECT_NAME}\" \\\n--project-company \"Telestax\" \\\n--company-id \"com.telestax\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"*.m\" \\\n--include \"${PROJECT_DIR}/${PROJECT_NAME}/Documentation/Images\" \\\n--ignore \"LoadableCategory.h\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}/restcomm-olympus\"";
 		};
 		AEED877C19F42E51000C15C6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
