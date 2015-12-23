@@ -30,7 +30,7 @@
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
                                     @"placeholder-bool" : @YES,
-                                    @"sip-identification" : @"sip:bob@cloud.restcomm.com",
+                                    @"sip-identification" : @"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"1234",
                                     @"sip-registrar" : @"",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature

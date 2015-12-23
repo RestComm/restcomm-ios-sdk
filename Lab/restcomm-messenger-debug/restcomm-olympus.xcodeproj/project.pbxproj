@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		AE22B2C11BCD05BD00EBDBDE /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */; };
+		AE49514A1C2ABCE9006335CE /* restcomm-logo-call-139x58.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */; };
+		AE49514B1C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B831B0600E30053F5B6 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE41A5AE11100B155E4 /* libcrypto.a */; };
 		AE505B841B0600E30053F5B6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE51A5AE11100B155E4 /* libssl.a */; };
@@ -107,8 +109,6 @@
 		AEA496431C2997F6000D9762 /* one-digit-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B21C2997F6000D9762 /* one-digit-74x74@2x.png */; };
 		AEA496441C2997F6000D9762 /* plus-sign-30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B31C2997F6000D9762 /* plus-sign-30x30.png */; };
 		AEA496451C2997F6000D9762 /* plus-sign-30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B41C2997F6000D9762 /* plus-sign-30x30@2x.png */; };
-		AEA496461C2997F6000D9762 /* restcomm-logo-call-139x54.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B51C2997F6000D9762 /* restcomm-logo-call-139x54.png */; };
-		AEA496471C2997F6000D9762 /* restcomm-logo-call-139x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B61C2997F6000D9762 /* restcomm-logo-call-139x54@2x.png */; };
 		AEA496481C2997F6000D9762 /* settings-22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B71C2997F6000D9762 /* settings-22x22.png */; };
 		AEA496491C2997F6000D9762 /* settings-22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B81C2997F6000D9762 /* settings-22x22@2x.png */; };
 		AEA4964A1C2997F6000D9762 /* settings-30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = AEA495B91C2997F6000D9762 /* settings-30x30.png */; };
@@ -214,6 +214,8 @@
 		AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-ios-armeabi_v7a-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
 		AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58.png"; sourceTree = "<group>"; };
+		AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58@2x.png"; sourceTree = "<group>"; };
 		AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -306,8 +308,6 @@
 		AEA495B21C2997F6000D9762 /* one-digit-74x74@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "one-digit-74x74@2x.png"; sourceTree = "<group>"; };
 		AEA495B31C2997F6000D9762 /* plus-sign-30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-sign-30x30.png"; sourceTree = "<group>"; };
 		AEA495B41C2997F6000D9762 /* plus-sign-30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-sign-30x30@2x.png"; sourceTree = "<group>"; };
-		AEA495B51C2997F6000D9762 /* restcomm-logo-call-139x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54.png"; sourceTree = "<group>"; };
-		AEA495B61C2997F6000D9762 /* restcomm-logo-call-139x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x54@2x.png"; sourceTree = "<group>"; };
 		AEA495B71C2997F6000D9762 /* settings-22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-22x22.png"; sourceTree = "<group>"; };
 		AEA495B81C2997F6000D9762 /* settings-22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-22x22@2x.png"; sourceTree = "<group>"; };
 		AEA495B91C2997F6000D9762 /* settings-30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-30x30.png"; sourceTree = "<group>"; };
@@ -554,6 +554,8 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */,
+				AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */,
 				AEA4957A1C2997F6000D9762 /* answer-audio-50x50.png */,
 				AEA4957B1C2997F6000D9762 /* answer-audio-50x50@2x.png */,
 				AEA4957C1C2997F6000D9762 /* answer-video-50x50.png */,
@@ -605,8 +607,6 @@
 				AEA495B21C2997F6000D9762 /* one-digit-74x74@2x.png */,
 				AEA495B31C2997F6000D9762 /* plus-sign-30x30.png */,
 				AEA495B41C2997F6000D9762 /* plus-sign-30x30@2x.png */,
-				AEA495B51C2997F6000D9762 /* restcomm-logo-call-139x54.png */,
-				AEA495B61C2997F6000D9762 /* restcomm-logo-call-139x54@2x.png */,
 				AEA495B71C2997F6000D9762 /* settings-22x22.png */,
 				AEA495B81C2997F6000D9762 /* settings-22x22@2x.png */,
 				AEA495B91C2997F6000D9762 /* settings-30x30.png */,
@@ -846,6 +846,7 @@
 				AEA496391C2997F6000D9762 /* message-2-30x30@2x.png in Resources */,
 				AEA496211C2997F6000D9762 /* hangup-73x73@2x.png in Resources */,
 				AEA4964D1C2997F6000D9762 /* seven-digit-74x74@2x.png in Resources */,
+				AE49514A1C2ABCE9006335CE /* restcomm-logo-call-139x58.png in Resources */,
 				AEA496381C2997F6000D9762 /* message-2-30x30.png in Resources */,
 				AEA4963F1C2997F6000D9762 /* message-remote-square-43x43@2x.png in Resources */,
 				AEA4964C1C2997F6000D9762 /* seven-digit-74x74.png in Resources */,
@@ -892,20 +893,19 @@
 				AEA4964F1C2997F6000D9762 /* six-digit-74x74@2x.png in Resources */,
 				AEA496771C2997F6000D9762 /* dtmf6.wav in Resources */,
 				AEA4965C1C2997F6000D9762 /* video-active-50x50@2x.png in Resources */,
-				AEA496471C2997F6000D9762 /* restcomm-logo-call-139x54@2x.png in Resources */,
 				AEA4965F1C2997F6000D9762 /* video-muted-30x22@2x.png in Resources */,
 				AEA496591C2997F6000D9762 /* two-digit-74x74@2x.png in Resources */,
 				AEA496141C2997F6000D9762 /* audio-call-30x30@2x.png in Resources */,
 				AEA496701C2997F6000D9762 /* calling.mp3 in Resources */,
 				AEA4961C1C2997F6000D9762 /* five-digit-74x74.png in Resources */,
 				AEA4965D1C2997F6000D9762 /* video-call-30x30.png in Resources */,
-				AEA496461C2997F6000D9762 /* restcomm-logo-call-139x54.png in Resources */,
 				AEA4967B1C2997F6000D9762 /* message.mp3 in Resources */,
 				AEA496751C2997F6000D9762 /* dtmf4.wav in Resources */,
 				AEA4962C1C2997F6000D9762 /* icon-76x76.png in Resources */,
 				AEA496241C2997F6000D9762 /* hash-digit-74x74.png in Resources */,
 				AEA4963C1C2997F6000D9762 /* message-local-square-43x43.png in Resources */,
 				AEA496161C2997F6000D9762 /* audio-muted-50x50.png in Resources */,
+				AE49514B1C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png in Resources */,
 				AEA4967C1C2997F6000D9762 /* pound.wav in Resources */,
 				AEA496191C2997F6000D9762 /* back-74x74@2x.png in Resources */,
 				AEA4962B1C2997F6000D9762 /* icon-60x60@3x.png in Resources */,

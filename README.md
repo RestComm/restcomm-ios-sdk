@@ -22,10 +22,10 @@ OS/Hardware requirements
 
 RestComm Client SDK for iOS has been tested to work on iOS 7.0 and above (has been successfully tested with iphone 4 and above)
 
-Latest Messenger .ipa
+Latest Olympus .ipa
 =============================
 
-Here's the .ipa for the Messenger Restcomm Client SDK sample application: https://community.testfairy.com/join/KtR96PyJ
+Here's the .ipa for the Olympus Restcomm iOS App utilizing the RestComm Client SDK and providing a simple client application for Restcomm Cloud: https://tsfr.io/xex2zc 
 
 Want to Contribute ? 
 ========
