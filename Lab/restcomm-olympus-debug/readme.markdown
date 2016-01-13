@@ -1,4 +1,1 @@
-AppleDoc Documentation
-======================
-
-This is just a test for now
+../../Samples/restcomm-olympus/readme.markdown
