@@ -132,8 +132,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     
     // in AppRTCDemo, connectToRoom
     // Request TURN
-    /* TODO: uncomment this when we are ready to re-introduce TURN
+    // TODO: uncomment this when we are ready to re-introduce TURN
     __weak MediaWebRTC *weakSelf = self;
+    /*
     [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
                                                        NSError *error) {
         if (error) {
@@ -142,7 +143,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         MediaWebRTC *strongSelf = weakSelf;
         [strongSelf.iceServers addObjectsFromArray:turnServers];
         strongSelf.isTurnComplete = YES;
-        [strongSelf startSignalingIfReady];
+        [strongSelf startSignalingIfReady:sdp];
     }];
      */
     

@@ -27,11 +27,12 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 
-#define IOS_CELLULAR    @"pdp_ip0"
-#define IOS_WIFI        @"en0"
-#define IOS_VPN         @"utun0"
-#define IP_ADDR_IPv4    @"ipv4"
-#define IP_ADDR_IPv6    @"ipv6"
+#define IOS_CELLULAR            @"pdp_ip0"
+#define WIFI                    @"en0"   // iOS or OSX (simulator)
+#define ETH_OVER_THUNDERBOLT    @"en4"   // OSX
+#define IOS_VPN                 @"utun0"
+#define IP_ADDR_IPv4            @"ipv4"
+#define IP_ADDR_IPv6            @"ipv6"
 
 
 @implementation Utilities
@@ -112,7 +113,7 @@
 {
     NSDictionary * addresses = [Utilities getIPAddresses];
     // prefer wifi over cellular. TODO: need to add ipv6 logic if we want to support it
-    NSArray * preference = @[IOS_WIFI@"/"IP_ADDR_IPv4, IOS_CELLULAR@"/"IP_ADDR_IPv4];
+    NSArray * preference = @[WIFI@"/"IP_ADDR_IPv4, ETH_OVER_THUNDERBOLT@"/"IP_ADDR_IPv4, IOS_CELLULAR@"/"IP_ADDR_IPv4];
     
     for (NSString * key in preference) {
         if ([addresses objectForKey:key]) {
