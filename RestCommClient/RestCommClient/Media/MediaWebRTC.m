@@ -70,12 +70,9 @@
 @implementation MediaWebRTC
 
 // TODO: update these properly
-static NSString *kARDTurnRequestUrl =
-    @"https://computeengineondemand.appspot.com"
-    @"/turn?username=iapprtc&key=4080218913";
-static NSString *kARDDefaultSTUNServerUrl =
-    @"stun:stun.l.google.com:19302";
-
+static NSString *kARDTurnRequestUrl = @"https://computeengineondemand.appspot.com/turn?username=iapprtc&key=4080218913";
+//static NSString *kARDTurnRequestUrl = @"https://service.xirsys.com/ice?ident=atsakiridis&secret=4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7&domain=cloud.restcomm.com&application=default&room=default&secure=1";
+static NSString *kARDDefaultSTUNServerUrl = @"stun:stun.l.google.com:19302";
 static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 //static NSInteger kARDAppClientErrorUnknown = -1;
 //static NSInteger kARDAppClientErrorRoomFull = -2;
@@ -95,6 +92,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         _isInitiator = YES;
         self.sofia_handle = nil;
         self.videoAllowed = NO;
+        _candidatesGathered = NO;
     }
     return self;
 }
@@ -133,19 +131,21 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     // in AppRTCDemo, connectToRoom
     // Request TURN
     // TODO: uncomment this when we are ready to re-introduce TURN
+    /**/
     __weak MediaWebRTC *weakSelf = self;
-    /*
+    // IMPORTANT: this only works with Google's TURN servers, when we replace it with our own we should add similar functionality that will parse the TURN servers
     [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
                                                        NSError *error) {
         if (error) {
             NSLog(@"Error retrieving TURN servers: %@", error);
         }
+        //NSArray * array = @[ [NSURL URLWithString:@""]];
         MediaWebRTC *strongSelf = weakSelf;
         [strongSelf.iceServers addObjectsFromArray:turnServers];
         strongSelf.isTurnComplete = YES;
         [strongSelf startSignalingIfReady:sdp];
     }];
-     */
+     /**/
     
     // TODO: remove this when we are ready to re-introduce TURN
     self.isTurnComplete = YES;
@@ -184,6 +184,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     //_messageQueue = [NSMutableArray array];
     [_peerConnection close];
     _peerConnection = nil;
+    _candidatesGathered = NO;
     RCLogNotice("[MediaWebRTC disconnect] end");
 }
 
@@ -560,27 +561,32 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
-    RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
-    if (newState == RTCICEGatheringComplete) {
-        if ([_iceCandidates count] > 0) {
-            [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
+        
+        if (newState == RTCICEGatheringComplete) {
+            if ([_iceCandidates count] > 0) {
+                RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete");
+                //[self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+                [self candidateGatheringComplete];
+            }
+            else {
+                RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete but no candidates collected");
+            }
         }
-        else {
-            RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete but no candidates collected");
-        }
-    }
+     //});
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
-    RCLogNotice("[MediaWebRTC gotICECandidate:%s]", [[candidate sdp] UTF8String]);
-    [_iceCandidates addObject:candidate];
-    /*
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //ARDICECandidateMessage *message = [[ARDICECandidateMessage alloc] initWithCandidate:candidate];
-        //[self sendSignalingMessage:message];
+    //dispatch_async(dispatch_get_main_queue(), ^{
         
-    });
-     */
+        RCLogNotice("[MediaWebRTC gotICECandidate:%s]", [[candidate sdp] UTF8String]);
+        [_iceCandidates addObject:candidate];
+        
+        if ([_iceCandidates count] == 1) {
+            [self performSelector:@selector(candidateGatheringComplete) withObject:nil afterDelay:5.0];
+        }
+    //});
 }
 
 - (void)peerConnection:(RTCPeerConnection*)peerConnection didOpenDataChannel:(RTCDataChannel*)dataChannel {
@@ -648,5 +654,16 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     });
 }
 
+- (void)candidateGatheringComplete
+{
+    if (!_candidatesGathered) {
+        RCLogNotice("[MediaWebRTC candidateGatheringComplete] notifying signaling to send SDP");
+        _candidatesGathered = YES;
+        [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+    }
+    else {
+        RCLogNotice("[MediaWebRTC candidateGatheringComplete] already notified signaling; skipping");
+    }
+}
 
 @end

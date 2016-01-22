@@ -90,6 +90,7 @@ typedef enum {
 @property NSString * sofia_handle;
 @property NSString * sdp;
 @property BOOL videoAllowed;
+@property BOOL candidatesGathered;
 
 @end
 
