@@ -35,9 +35,18 @@
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;
++ (NSString*)turnUrl;
++ (NSString*)turnUsername;
++ (NSString*)turnPassword;
++ (NSString*)turnCandidateTimeout;
+
 + (void)updateSipIdentification:(NSString*)sipIdentification;
 + (void)updateSipPassword:(NSString*)sipPassword;
 + (void)updateSipRegistrar:(NSString*)sipRegistrar;
++ (void)updateTurnUrl:(NSString*)turnUrl;
++ (void)updateTurnUsername:(NSString*)turnUsername;
++ (void)updateTurnPassword:(NSString*)turnPassword;
++ (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;

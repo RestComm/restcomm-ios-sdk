@@ -22,6 +22,7 @@
 
 #import "SettingsTableViewController.h"
 #import "SipSettingsTableViewController.h"
+#import "ICESettingsTableViewController.h"
 
 @implementation SettingsTableViewController
 
@@ -53,6 +54,11 @@
         SipSettingsTableViewController * sipSettingsTableViewController = [segue destinationViewController];
         sipSettingsTableViewController.device = self.device;
     }
+    if ([segue.identifier isEqualToString:@"invoke-ice-settings"]) {
+        ICESettingsTableViewController * ICESettingsTableViewController = [segue destinationViewController];
+        ICESettingsTableViewController.device = self.device;
+    }
+
     /*
     if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
         MessageViewController *callViewController = [segue destinationViewController];

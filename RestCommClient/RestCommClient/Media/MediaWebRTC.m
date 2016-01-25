@@ -81,7 +81,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 //static NSInteger kARDAppClientErrorInvalidClient = -5;
 //static NSInteger kARDAppClientErrorInvalidRoom = -6;
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -93,6 +93,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         self.sofia_handle = nil;
         self.videoAllowed = NO;
         _candidatesGathered = NO;
+        _parameters = parameters;
     }
     return self;
 }
@@ -123,33 +124,36 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         self.sofia_handle = sofia_handle;
     }
     
-    // in AppRTCDemo this happens in constructor
-    NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
-    _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
     [self configure];
-    
-    // in AppRTCDemo, connectToRoom
-    // Request TURN
-    // TODO: uncomment this when we are ready to re-introduce TURN
-    /**/
-    __weak MediaWebRTC *weakSelf = self;
-    // IMPORTANT: this only works with Google's TURN servers, when we replace it with our own we should add similar functionality that will parse the TURN servers
-    [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
-                                                       NSError *error) {
-        if (error) {
-            NSLog(@"Error retrieving TURN servers: %@", error);
-        }
-        //NSArray * array = @[ [NSURL URLWithString:@""]];
-        MediaWebRTC *strongSelf = weakSelf;
-        [strongSelf.iceServers addObjectsFromArray:turnServers];
-        strongSelf.isTurnComplete = YES;
-        [strongSelf startSignalingIfReady:sdp];
-    }];
-     /**/
-    
-    // TODO: remove this when we are ready to re-introduce TURN
-    self.isTurnComplete = YES;
-    [self startSignalingIfReady:sdp];
+
+    // If TURN url is empty then it means that we want TURN disabled
+    if (![[_parameters objectForKey:@"turn-url"] isEqualToString:@""]) {
+        //NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
+        NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?username=%@&key=%@",
+                                                      [_parameters objectForKey:@"turn-url"],
+                                                      [_parameters objectForKey:@"turn-username"],
+                                                      [_parameters objectForKey:@"turn-password"]]];
+
+        _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
+        
+        __weak MediaWebRTC *weakSelf = self;
+        // IMPORTANT: this only works with Google's TURN servers, when we replace it with our own we should add similar functionality that will parse the TURN servers
+        [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
+                                                           NSError *error) {
+            if (error) {
+                NSLog(@"Error retrieving TURN servers: %@", error);
+            }
+            //NSArray * array = @[ [NSURL URLWithString:@""]];
+            MediaWebRTC *strongSelf = weakSelf;
+            [strongSelf.iceServers addObjectsFromArray:turnServers];
+            strongSelf.isTurnComplete = YES;
+            [strongSelf startSignalingIfReady:sdp];
+        }];
+    }
+    else {
+        self.isTurnComplete = YES;
+        [self startSignalingIfReady:sdp];
+    }
 }
 
 - (void)disconnect {
@@ -518,7 +522,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 #pragma mark - RTCPeerConnectionDelegate
 - (void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged {
-    RCLogNotice("[MediaWebRTC signalingStateChanged:%d]", stateChanged);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC signalingStateChanged:%d]", stateChanged);
+    });
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection addedStream:(RTCMediaStream *)stream {
@@ -535,12 +541,16 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection removedStream:(RTCMediaStream *)stream {
-    RCLogNotice("[MediaWebRTC removedStream]");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC removedStream]");
+    });
 }
 
 - (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection {
-    RCLogNotice("[MediaWebRTC peerConnectionOnRenegotiationNeeded]");
-    //NSLog(@"WARNING: Renegotiation needed but unimplemented.");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC peerConnectionOnRenegotiationNeeded]");
+        //NSLog(@"WARNING: Renegotiation needed but unimplemented.");
+    });
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
@@ -561,36 +571,45 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
-    //dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
         
         if (newState == RTCICEGatheringComplete) {
             if ([_iceCandidates count] > 0) {
-                RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete");
-                //[self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+                RCLogNotice("[MediaWebRTC iceGatheringChanged:], state Complete");
                 [self candidateGatheringComplete];
             }
             else {
                 RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete but no candidates collected");
             }
         }
-     //});
+    });
 }
 
 - (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
-    //dispatch_async(dispatch_get_main_queue(), ^{
-        
+    dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC gotICECandidate:%s]", [[candidate sdp] UTF8String]);
         [_iceCandidates addObject:candidate];
         
+        // NOTE: when first candidate is retrieved, start timer. If the candidates haven't been all retrieved in 'timeout' seconds, then
+        // we need to stop waiting for 'candidates gathered' event and send SDP to the peer right then. Reason for that is that in iOS
+        // and when TURN is enabled, in order for 'candidates gathered' event to fire, we first need to get the SDP answer's
+        // candidates (when we are initiator) from the peer and that will never happen unless we first send the SDP offer.
         if ([_iceCandidates count] == 1) {
-            [self performSelector:@selector(candidateGatheringComplete) withObject:nil afterDelay:5.0];
+            // default is 5 seconds
+            float timeout = 5.0;
+            if ([_parameters objectForKey:@"turn-candidate-timeout"]) {
+                timeout = [[_parameters objectForKey:@"turn-candidate-timeout"] floatValue];
+            }
+            [self performSelector:@selector(candidateGatheringComplete) withObject:nil afterDelay:timeout];
         }
-    //});
+    });
 }
 
 - (void)peerConnection:(RTCPeerConnection*)peerConnection didOpenDataChannel:(RTCDataChannel*)dataChannel {
-    RCLogNotice("[MediaWebRTC didOpenDataChannel]");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RCLogNotice("[MediaWebRTC didOpenDataChannel]");
+    });
 }
 
 #pragma mark - RTCSessionDescriptionDelegate
@@ -612,6 +631,8 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             [self.mediaDelegate mediaController:self didError:sdpError];
             return;
         }
+        
+        RCLogNotice("[MediaWebRTC didCreateSessionDescription], sdp: %@", sdp.description);
         [_peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
 

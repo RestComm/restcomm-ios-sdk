@@ -477,7 +477,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
             [self.activeCallParams setObject:headers forKey:@"sip-headers"];
         }
         
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
         [self.media connect:nil sdp:nil isInitiator:YES withVideo:self.videoAllowed];
     }
     else {
@@ -494,7 +494,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     self.videoAllowed = video;
     
     if (!self.media) {
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
         [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"] isInitiator:NO withVideo:self.videoAllowed];
     }
     else {
@@ -613,6 +613,18 @@ ssize_t pipeToSofia(const char * msg, int fd)
         }
         else if ([key isEqualToString:@"password"]) {
             [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
+        }
+        else if ([key isEqualToString:@"turn-url"]) {
+            [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
+        }
+        else if ([key isEqualToString:@"turn-username"]) {
+            [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
+        }
+        else if ([key isEqualToString:@"turn-password"]) {
+            [self.params setObject:[params objectForKey:@"turn-password"] forKey:@"turn-password"];
+        }
+        else if ([key isEqualToString:@"turn-candidate-timeout"]) {
+            [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
         }
     }
     // when no params are passed, we default to registering to restcomm with the stored registrar at self.params

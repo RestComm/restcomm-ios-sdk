@@ -71,6 +71,9 @@
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
+                       [Utils turnUrl], @"turn-url",  // leave empty to disable TURN
+                       [Utils turnUsername], @"turn-username",
+                       [Utils turnPassword], @"turn-password",
                        nil];
     
     if (![[Utils sipRegistrar] isEqualToString:@""]) {

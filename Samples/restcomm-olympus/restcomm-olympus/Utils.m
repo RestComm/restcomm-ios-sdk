@@ -33,7 +33,10 @@
                                     @"sip-identification" : @"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"1234",
                                     @"sip-registrar" : @"",
-                                    @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
+                                    @"turn-url" : @"https://computeengineondemand.appspot.com/turn",
+                                    @"turn-username" : @"iapprtc",
+                                    @"turn-password" : @"4080218913",
+                                    @"turn-candidate-timeout" : @"5",                                    @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
                                         @[@"Play App", @"sip:+1234@cloud.restcomm.com"],
                                         @[@"Say App", @"sip:+1235@cloud.restcomm.com"],
@@ -169,6 +172,30 @@
     return [appDefaults stringForKey:@"sip-registrar"];
 }
 
++ (NSString*)turnUrl
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:@"turn-url"];
+}
+
++ (NSString*)turnUsername
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:@"turn-username"];
+}
+
++ (NSString*)turnPassword
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:@"turn-password"];
+}
+
++ (NSString*)turnCandidateTimeout
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:@"turn-candidate-timeout"];
+}
+
 + (int)contactCount
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -277,6 +304,30 @@
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     [appDefaults setObject:sipRegistrar forKey:@"sip-registrar"];
+}
+
++ (void)updateTurnUrl:(NSString*)turnUrl
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:turnUrl forKey:@"turn-url"];
+}
+
++ (void)updateTurnUsername:(NSString*)turnUsername
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:turnUsername forKey:@"turn-username"];
+}
+
++ (void)updateTurnPassword:(NSString*)turnPassword
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:turnPassword forKey:@"turn-password"];
+}
+
++ (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:turnCandidateTimeout forKey:@"turn-candidate-timeout"];
 }
 
 
