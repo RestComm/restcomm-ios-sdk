@@ -180,7 +180,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc_t *ssc;
     string caps_str;
     char *userdomain = NULL;
-    string contact;
+    string contact, secure_contact;
+    const char *proxy = NULL, *registrar = NULL;
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -218,6 +219,14 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         return ssc;
     }
     
+    // NULL unless there's actual text in ssc_proxy, so that TAG_IF below works
+    if (conf->ssc_proxy && strcmp(conf->ssc_proxy, "")) {
+        proxy = conf->ssc_proxy;
+    }
+    if (conf->ssc_registrar && strcmp(conf->ssc_registrar, "")) {
+        registrar = conf->ssc_registrar;
+    }
+    
     /* note: by default bind to a random port on all interfaces */
     if (conf->ssc_contact) {
         contact = conf->ssc_contact;
@@ -226,6 +235,10 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = "sip:";
         contact += [address UTF8String];
         contact += ":*;transport=tcp";
+
+        secure_contact = "sips:";
+        secure_contact += [address UTF8String];
+        secure_contact += ":*;transport=tls";
     }
     
     RCLogNotice("Creating SIP stack -binding to: %s", contact.c_str());
@@ -237,12 +250,18 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      SIPTAG_FROM_STR(conf->ssc_aor)),
                               // timeout timer
                               //NTATAG_SIP_T1X64(4000),
-                              TAG_IF(conf->ssc_proxy,
-                                     NUTAG_PROXY(conf->ssc_proxy)),
-                              TAG_IF(conf->ssc_registrar,
-                                     NUTAG_REGISTRAR(conf->ssc_registrar)),
+                              
+                              TAG_IF(proxy,
+                                     NUTAG_PROXY(proxy)),
+                              TAG_IF(registrar,
+                                     NUTAG_REGISTRAR(registrar)),
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
+                              
+                              //TAG_IF(secure_contact.c_str(),
+                              //       NUTAG_SIPS_URL(secure_contact.c_str())),
+                              //NUTAG_CERTIFICATE_DIR("/tmp/"),
+
                               //NUTAG_M_PARAMS("transport=tcp"),
                               TAG_IF(conf->ssc_media_addr,
                                      NUTAG_MEDIA_ADDRESS(conf->ssc_media_addr)),

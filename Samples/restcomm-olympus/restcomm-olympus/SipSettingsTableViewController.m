@@ -101,7 +101,8 @@
         //update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        [params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
+        //[params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
+        [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:@"registrar"];
         //[Utils updateSipRegistrar:self.registrarText.text];
         //update = true;
     }

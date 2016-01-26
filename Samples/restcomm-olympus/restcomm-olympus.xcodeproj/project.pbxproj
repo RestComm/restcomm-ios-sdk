@@ -22,7 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE22B2C11BCD05BD00EBDBDE /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */; };
+		AE3E52B51C578BF40057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52B41C578BF40057F5D0 /* libWebRTC-11366.a */; };
+		AE3E52B91C578E9A0057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52B81C578E9A0057F5D0 /* ICESettingsTableViewController.m */; };
 		AE49514A1C2ABCE9006335CE /* restcomm-logo-call-139x58.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */; };
 		AE49514B1C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -191,6 +192,9 @@
 		AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-ios-armeabi_v7a-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
 		AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AE3E52B41C578BF40057F5D0 /* libWebRTC-11366.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366.a"; sourceTree = "<group>"; };
+		AE3E52B71C578E9A0057F5D0 /* ICESettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsTableViewController.h; sourceTree = "<group>"; };
+		AE3E52B81C578E9A0057F5D0 /* ICESettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsTableViewController.m; sourceTree = "<group>"; };
 		AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58.png"; sourceTree = "<group>"; };
 		AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58@2x.png"; sourceTree = "<group>"; };
 		AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
@@ -373,7 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEDD0F531C46927B00D933C3 /* libRestCommClient.a in Frameworks */,
-				AE22B2C11BCD05BD00EBDBDE /* libWebRTC-9814.a in Frameworks */,
+				AE3E52B51C578BF40057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */,
 				AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
@@ -433,6 +437,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE3E52B41C578BF40057F5D0 /* libWebRTC-11366.a */,
 				AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */,
 				AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */,
 				AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */,
@@ -505,6 +510,8 @@
 				AEA495E51C2997F6000D9762 /* restcomm-olympus-Prefix.pch */,
 				AEA495E61C2997F6000D9762 /* SettingsTableViewController.h */,
 				AEA495E71C2997F6000D9762 /* SettingsTableViewController.m */,
+				AE3E52B71C578E9A0057F5D0 /* ICESettingsTableViewController.h */,
+				AE3E52B81C578E9A0057F5D0 /* ICESettingsTableViewController.m */,
 				AEA495E81C2997F6000D9762 /* SipSettingsTableViewController.h */,
 				AEA495E91C2997F6000D9762 /* SipSettingsTableViewController.m */,
 				AEA495EA1C2997F6000D9762 /* sounds */,
@@ -518,8 +525,6 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
-				AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */,
-				AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */,
 				AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */,
 				AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */,
 				AEA4957A1C2997F6000D9762 /* answer-audio-50x50.png */,
@@ -551,8 +556,10 @@
 				AEA495941C2997F6000D9762 /* icon */,
 				AEA4959D1C2997F6000D9762 /* inapp-grey-icon-30x30.png */,
 				AEA4959E1C2997F6000D9762 /* inapp-grey-icon-30x30@2x.png */,
+				AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */,
 				AEA495A11C2997F6000D9762 /* inapp-icon-30x30.png */,
 				AEA495A21C2997F6000D9762 /* inapp-icon-30x30@2x.png */,
+				AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */,
 				AEA495A51C2997F6000D9762 /* keypad-50x50.png */,
 				AEA495A61C2997F6000D9762 /* keypad-50x50@2x.png */,
 				AEA495A71C2997F6000D9762 /* message-2-30x30.png */,
@@ -923,6 +930,7 @@
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,
 				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
+				AE3E52B91C578E9A0057F5D0 /* ICESettingsTableViewController.m in Sources */,
 				AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */,
 				AEA496661C2997F6000D9762 /* KeypadViewController.m in Sources */,
 				AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */,

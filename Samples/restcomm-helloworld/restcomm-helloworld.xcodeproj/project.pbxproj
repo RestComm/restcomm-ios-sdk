@@ -26,6 +26,7 @@
 		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
 		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
 		AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */; };
+		AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52B21C578A600057F5D0 /* libWebRTC-11366.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -64,13 +65,12 @@
 		AED0B0871A097764008A6057 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0781A097764008A6057 /* message.mp3 */; };
 		AED0B0881A097764008A6057 /* ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0791A097764008A6057 /* ringing.mp3 */; };
 		AED0B08A1A097764008A6057 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AED0B07D1A097764008A6057 /* ViewController.mm */; };
-		AEE94BCA1BCBADDA00987ECC /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */; };
-		AEE94BCD1BCBB42900987ECC /* hangup-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCB1BCBB42900987ECC /* hangup-74x74.png */; settings = {ASSET_TAGS = (); }; };
-		AEE94BCE1BCBB42900987ECC /* hangup-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCC1BCBB42900987ECC /* hangup-74x74@2x.png */; settings = {ASSET_TAGS = (); }; };
-		AEE94BD11BCBB49600987ECC /* make-call-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCF1BCBB49600987ECC /* make-call-74x74.png */; settings = {ASSET_TAGS = (); }; };
-		AEE94BD21BCBB49600987ECC /* make-call-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD01BCBB49600987ECC /* make-call-74x74@2x.png */; settings = {ASSET_TAGS = (); }; };
-		AEE94BD51BCBB51000987ECC /* restcomm-logo-call-139x54.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD31BCBB51000987ECC /* restcomm-logo-call-139x54.png */; settings = {ASSET_TAGS = (); }; };
-		AEE94BD61BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD41BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png */; settings = {ASSET_TAGS = (); }; };
+		AEE94BCD1BCBB42900987ECC /* hangup-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCB1BCBB42900987ECC /* hangup-74x74.png */; };
+		AEE94BCE1BCBB42900987ECC /* hangup-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCC1BCBB42900987ECC /* hangup-74x74@2x.png */; };
+		AEE94BD11BCBB49600987ECC /* make-call-74x74.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BCF1BCBB49600987ECC /* make-call-74x74.png */; };
+		AEE94BD21BCBB49600987ECC /* make-call-74x74@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD01BCBB49600987ECC /* make-call-74x74@2x.png */; };
+		AEE94BD51BCBB51000987ECC /* restcomm-logo-call-139x54.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD31BCBB51000987ECC /* restcomm-logo-call-139x54.png */; };
+		AEE94BD61BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEE94BD41BCBB51000987ECC /* restcomm-logo-call-139x54@2x.png */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
 		AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A71A6BC7AE00C0CB1B /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
@@ -93,6 +93,7 @@
 		AE1C05BC1B15DDF200F5E834 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AE1C05BD1B15DDF200F5E834 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../dependencies/packages/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../dependencies/packages/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE3E52B21C578A600057F5D0 /* libWebRTC-11366.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366.a"; sourceTree = "<group>"; };
 		AE41B0F01B0C907D000E91BB /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -160,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
@@ -171,7 +173,6 @@
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
-				AEE94BCA1BCBADDA00987ECC /* libWebRTC-9814.a in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
 				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
 				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
@@ -217,6 +218,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE3E52B21C578A600057F5D0 /* libWebRTC-11366.a */,
 				AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */,
 				AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */,
 				AE1C05BC1B15DDF200F5E834 /* libcrypto.a */,

@@ -76,9 +76,7 @@
                        [Utils turnPassword], @"turn-password",
                        nil];
     
-    if (![[Utils sipRegistrar] isEqualToString:@""]) {
-        [self.parameters setObject:[NSString stringWithFormat:@"sip:%@", [Utils sipRegistrar]] forKey:@"registrar"];
-    }
+    [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];

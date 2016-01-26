@@ -22,8 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		AE3E52A21C5629AD0057F5D0 /* libWebRTC-9814.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */; };
 		AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */; };
+		AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */; };
 		AE49514A1C2ABCE9006335CE /* restcomm-logo-call-139x58.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */; };
 		AE49514B1C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
@@ -215,6 +215,9 @@
 		AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICESettingsTableViewController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsTableViewController.h"; sourceTree = "<group>"; };
 		AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICESettingsTableViewController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsTableViewController.m"; sourceTree = "<group>"; };
+		AE3E52AB1C569E700057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../../webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
+		AE3E52AD1C569F230057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
+		AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366.a"; sourceTree = "<group>"; };
 		AE402E2A1C525C6D00B0AD06 /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58.png"; sourceTree = "<group>"; };
 		AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58@2x.png"; sourceTree = "<group>"; };
@@ -398,7 +401,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE3E52A21C5629AD0057F5D0 /* libWebRTC-9814.a in Frameworks */,
+				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
 				AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */,
 				AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */,
@@ -469,6 +472,9 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */,
+				AE3E52AD1C569F230057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */,
+				AE3E52AB1C569E700057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */,
 				AE402E2A1C525C6D00B0AD06 /* libWebRTC-10255-arm-intel-Debug.a */,
 				AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */,
 				AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */,

@@ -110,7 +110,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
 
         if (self.reachabilityStatus != NotReachable) {
-            if (![parameters objectForKey:@"registrar"]) {
+            if (![parameters objectForKey:@"registrar"] ||
+                ([parameters objectForKey:@"registrar"] && [[parameters objectForKey:@"registrar"] length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
             }
@@ -153,7 +154,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             // start signalling eventLoop (i.e. Sofia)
             [self.sipManager eventLoop];
 
-            if (![self.sipManager.params objectForKey:@"registrar"]) {
+            if (![self.sipManager.params objectForKey:@"registrar"] ||
+                ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
             }
@@ -399,7 +401,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
         [self.sipManager eventLoop];
         self.reachabilityStatus = newStatus;
-        if (![self.sipManager.params objectForKey:@"registrar"]) {
+        if (![self.sipManager.params objectForKey:@"registrar"] ||
+            ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
             // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
             _state = RCDeviceStateReady;
             [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
