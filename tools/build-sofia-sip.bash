@@ -32,15 +32,15 @@ function build()
 
 	if [[ $SDK == "iphonesimulator" ]]
 	then
-		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv" # -miphoneos-version-min=7.0"
+		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/lib -lresolv -lssl -lcrypto" # -miphoneos-version-min=7.0"
 	else
-		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv"
+		export LDFLAGS="-L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/lib -lresolv -lssl -lcrypto"
 	fi
 
 	export ARCH
-	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/"
+	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/include"
 	# for debug
-	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0"
+	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/include -g -O0" 
 
 	if [[ $SDK != "iphonesimulator" ]]
 	then
@@ -72,9 +72,9 @@ function build()
 	if [[ $SDK != "iphonesimulator" ]]
 	then 
 		# arm64 doesn't work here, although armv7 adn armv7s do. But arm covers us for armv7 and armv7s as well
-   	./configure --host=arm-apple-darwin
+   	./configure --host=arm-apple-darwin --without-openssl
 	else
-   	./configure --host=${ARCH}-apple-darwin
+   	./configure --host=${ARCH}-apple-darwin --without-openssl
 	fi
 
 	echo "--- Building"
@@ -95,14 +95,14 @@ then
 	mkdir build
 fi
 
-# i386 doesn't work 
-#ARCH="i386"   
-#SDK="iphonesimulator"
-#build $SDK $ARCH
+# i386 doesn't work (I think it now does)
+ARCH="i386"   
+SDK="iphonesimulator"
+build $SDK $ARCH
 
-#ARCH="x86_64"
-#SDK="iphonesimulator"
-#build $SDK $ARCH
+ARCH="x86_64"
+SDK="iphonesimulator"
+build $SDK $ARCH
 
 ARCH="armv7"
 SDK="iphoneos"
