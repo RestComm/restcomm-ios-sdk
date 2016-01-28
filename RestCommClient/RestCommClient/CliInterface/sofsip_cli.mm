@@ -290,8 +290,8 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   cli->cli_init = 1;
 
   // set default level to 9: to log everything
-  su_log_set_level(nua_log, 9);
-  su_log_set_level(nta_log, 9);
+  //su_log_set_level(nua_log, 9);
+  //su_log_set_level(nta_log, 9);
   //su_log_set_level(nea_log, 9);
   //su_log_set_level(nth_client_log, 9);
   //su_log_set_level(nth_server_log, 9);
@@ -299,7 +299,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   
   
   // set default level to 2: non-critical errors
-  su_log_set_level(iptsec_log, 9);
+  //su_log_set_level(iptsec_log, 9);
   //su_log_set_level(nea_log, 2);
   //su_log_set_level(nth_client_log, 2);
   //su_log_set_level(nth_server_log, 2);
