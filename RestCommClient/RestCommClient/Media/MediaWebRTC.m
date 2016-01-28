@@ -247,14 +247,25 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
 // Offer/Answer Constraints
 - (RTCMediaConstraints *)defaultOfferConstraints {
+    /*
     NSString * video = @"false";
     if (self.videoAllowed) {
         video = @"true";
     }
+    
     NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"],
-                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:video]];
+                                      [[RTCPair alloc] initWithKey:@"OfferToReceiveVideo" value:@"false"]];
+     */
+    
+    // Although odd, removing mandatory constraints completely seems the cleanest way to do. That, because
+    // if I leave offer to receive video, it seems to be triggering a video m-line to be added, which is bad
+    // when we are making an audio call. Seems that webrtc makes best choices whether on when we are adding
+    // a video media track to PeerConnection or not, and not based on these constraints which seem to be only
+    // about the receiving end, and not the whole media channel. I'll leave it around just in case though, until this gets properly tested
+    //NSArray *mandatoryConstraints = @[[[RTCPair alloc] initWithKey:@"OfferToReceiveAudio" value:@"true"]];
+    
     RTCMediaConstraints* constraints =
-    [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints
+    [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
                                           optionalConstraints:nil];
     return constraints;
 }
@@ -358,6 +369,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 }
 
 #pragma mark - Helpers
+// Not needed as we can access the full SDP (together with candidates) from PeerConnection.localDescription.description
+// Let's keep it around in case we need it in the future, plus regex handling is good to have around
+/*
 // from candidateless sdp stored at self.sdp and candidates stored at array, we construct a full sdp
 - (NSString*)outgoingUpdateSdpWithCandidates:(NSArray *)array
 {
@@ -413,6 +427,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 
     return completeMessage;
 }
+ */
 
 // remove candidate lines from the given sdp and return them as elements of an NSArray
 -(NSDictionary*)incomingFilterCandidatesFromSdp:(NSMutableString*)sdp
@@ -680,7 +695,8 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     if (!_candidatesGathered) {
         RCLogNotice("[MediaWebRTC candidateGatheringComplete] notifying signaling to send SDP");
         _candidatesGathered = YES;
-        [self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        //[self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
+        [self.mediaDelegate mediaController:self didCreateSdp:_peerConnection.localDescription.description isInitiator:_isInitiator];
     }
     else {
         RCLogNotice("[MediaWebRTC candidateGatheringComplete] already notified signaling; skipping");
