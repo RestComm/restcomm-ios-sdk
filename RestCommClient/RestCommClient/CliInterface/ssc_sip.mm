@@ -262,8 +262,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
                               
-                              TAG_IF(secure_contact.c_str(),
-                                     NUTAG_SIPS_URL(secure_contact.c_str())),
+                              //TAG_IF(secure_contact.c_str(),
+                              //       NUTAG_SIPS_URL(secure_contact.c_str())),
                               TAG_IF(cert_dir,
                                      NUTAG_CERTIFICATE_DIR(cert_dir)),
 
