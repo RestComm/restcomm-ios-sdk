@@ -93,7 +93,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  Initialize a new RCDevice object with parameters
  *
- *  @param parameters      Parameters
+ *  @param parameters      Parameters for the Device entity. Possible keys/values: <br>
+ *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
+ *    <b>password</b>: password for the client <br>
+ *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
+ *    <b>turn-username</b>: TURN username <br>
+ *    <b>turn-password</b>: TURN password <br>
+ *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
  *  @param delegate        Delegate of RCDevice
  *
  *  @return Newly initialized object
@@ -137,7 +143,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Create an outgoing connection to an endpoint
  *
- *  @param parameters Connections such as the endpoint we want to connect to
+ *  @param parameters Parameters for the outgoing connection. Possible keys/values: <br>
+ *    <b>username</b>: Who is the called number, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
+ *    <b>video-enabled</b>: Whether we want WebRTC video enabled or not <br>
+ *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br>
  *  @param delegate   The delegate object that will receive events when the connection state changes
  *
  *  @return An RCConnection object representing the new connection
@@ -147,8 +156,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Send an instant message to a an endpoint
  *
- *  @param parameters  Message parameters. Keys are: 'message' for content, 
- *                     'username' for recepient, 'sip-headers' for optional custom SIP headers
+ *  @param parameters  Message parameters. Possible keys/values are:  <br>
+ *    <b>username</b>: Who is the recepient of the text message, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
+ *    <b>message</b>: Content of the message <br>
+ *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br>
  *
  *  @return A boolean whether message was sent or not.
  */
@@ -162,7 +173,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Update RCDevice parameters
  *
- *  @param params Dictionary of key/value pairs of the parameters that will be updated
+ *  @param params Dictionary of key/value pairs of the parameters that will be updated: <br>
+ *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
+ *    <b>password</b>: password for the client <br>
+ *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
+ *    <b>turn-username</b>: TURN username <br>
+ *    <b>turn-password</b>: TURN password <br>
+ *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
  *
  *  @return If update of parameters was successful. Typical reason to fail is connectivity issues
  */

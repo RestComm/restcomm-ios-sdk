@@ -11,7 +11,7 @@
 	<body>
 		<header id="top_header">
 			<div id="library" class="hideInXcode">
-				<h1><a id="libraryTitle" href="../index.html">Restcomm iOS Client </a></h1>
+				<h1><a id="libraryTitle" href="../index.html">RestComm iOS Client </a></h1>
 				<a id="developerHome" href="../index.html">Telestax</a>
 			</div>
 			
@@ -48,6 +48,8 @@
 	<option value="//api/name/parameters">&nbsp;&nbsp;&nbsp;&nbsp;parameters</option>
 	
 	<option value="//api/name/state">&nbsp;&nbsp;&nbsp;&nbsp;state</option>
+	
+	<option value="//api/name/videoMuted">&nbsp;&nbsp;&nbsp;&nbsp;videoMuted</option>
 	
 	
 	
@@ -101,6 +103,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/parameters">parameters</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/state">state</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/videoMuted">videoMuted</a></span></li>
 	
 </ul></li>
 
@@ -170,13 +174,13 @@ control the connection.</p>
 
 <p>When an incoming connection arrives through <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingConnection:">[RCDeviceDelegate device:didReceiveIncomingConnection:]</a> it is considered RCConnectionStateConnecting until it is either
 accepted with [RCConnection accept] or rejected with <a href="#//api/name/reject">[RCConnection reject]</a>. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
-state (TODO: the media part is only implemented for outgoing connections; for incoming connections only the signaling in in place for now -we are working on that)</p>
+state.</p>
 
 <p>When an outgoing connection is created with <a href="../Classes/RCDevice.html#//api/name/connect:delegate:">[RCDevice connect:delegate:]</a> it starts with state RCConnectionStatePending. Once it starts ringing on the remote party it
 transitions to RCConnectionStateConnecting. When the remote party answers it, the RCConnection state transitions to RCConnectionStateConnected.</p>
 
 <p>Once an RCConnection (either incoming or outgoing) is established (i.e. RCConnectionStateConnected) media can start flowing over it. DTMF digits can be sent over to
-the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigits:]</a> (TODO: Not implemented yet). When done with the RCConnection you can disconnect it with <a href="#//api/name/disconnect">[RCConnection disconnect]</a>.</p>
+the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigits:]</a>. When done with the RCConnection you can disconnect it with <a href="#//api/name/disconnect">[RCConnection disconnect]</a>.</p>
 					</div>
 					
 					
@@ -219,6 +223,12 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/muted">&nbsp;&nbsp;muted</a></code>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/videoMuted">&nbsp;&nbsp;videoMuted</a></code>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -283,7 +293,7 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 	
     
 
-	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) id&lt;RCConnectionDelegate&gt; delegate</code></div>
+	<div class="method-subsection method-declaration"><code>@property (weak) id&lt;RCConnectionDelegate&gt; delegate</code></div>
 
     
 	
@@ -386,7 +396,7 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Connection parameters (<strong>Not Implemented yet</strong>)</p>
+		<p>Connection parameters</p>
 	</div>		
 	
     
@@ -441,6 +451,42 @@ the remote party using <a href="#//api/name/sendDigits:">[RCConnection sendDigit
 		<h4 class="method-subtitle">Discussion</h4>
 		<p>A new connection created by <a href="../Classes/RCDevice.html">RCDevice</a> starts off RCConnectionStatePending. It transitions to RCConnectionStateConnecting when it starts ringing. Once the remote party answers it it transitions to RCConnectionStateConnected. Finally, when disconnected it resets to RCConnectionStateDisconnected.</p>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">RCConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/videoMuted" title="videoMuted"></a>
+	<h3 class="subsubtitle method-title">videoMuted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Is connection&rsquo;s video currently <a href="#//api/name/muted">muted</a>? If a connection&rsquo;s video is <a href="#//api/name/muted">muted</a> the remote party cannot see the local party</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, getter=isVideoMuted) BOOL videoMuted</code></div>
+
+    
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -684,7 +730,7 @@ indicate whether we want to answer the call with webrtc video or audio only</p><
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Send DTMF tones over a connection that is in <a href="#//api/name/state">state</a> &lsquo;RCConnectionStateConnected&rsquo; (<strong>Not Implemented yet</strong>)</p>
+		<p>Send DTMF tones over a connection that is in <a href="#//api/name/state">state</a> &lsquo;RCConnectionStateConnected&rsquo;</p>
 	</div>		
 	
     
@@ -738,7 +784,7 @@ indicate whether we want to answer the call with webrtc video or audio only</p><
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-07-31)</span><br />
+						<p><span class="copyright">&copy; 2016 Telestax. All rights reserved. (Last updated: 2016-01-28)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 963)</a>.</span></p>
 						

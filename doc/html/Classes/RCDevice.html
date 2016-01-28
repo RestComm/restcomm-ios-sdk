@@ -11,7 +11,7 @@
 	<body>
 		<header id="top_header">
 			<div id="library" class="hideInXcode">
-				<h1><a id="libraryTitle" href="../index.html">Restcomm iOS Client </a></h1>
+				<h1><a id="libraryTitle" href="../index.html">RestComm iOS Client </a></h1>
 				<a id="developerHome" href="../index.html">Telestax</a>
 			</div>
 			
@@ -62,11 +62,15 @@
 	
 	<option value="//api/name/disconnectAll">&nbsp;&nbsp;&nbsp;&nbsp;- disconnectAll</option>
 	
+	<option value="//api/name/getParams">&nbsp;&nbsp;&nbsp;&nbsp;- getParams</option>
+	
 	<option value="//api/name/initWithCapabilityToken:delegate:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithCapabilityToken:delegate:</option>
+	
+	<option value="//api/name/initWithParams:delegate:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithParams:delegate:</option>
 	
 	<option value="//api/name/listen">&nbsp;&nbsp;&nbsp;&nbsp;- listen</option>
 	
-	<option value="//api/name/sendMessage:to:">&nbsp;&nbsp;&nbsp;&nbsp;- sendMessage:to:</option>
+	<option value="//api/name/sendMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- sendMessage:</option>
 	
 	<option value="//api/name/unlisten">&nbsp;&nbsp;&nbsp;&nbsp;- unlisten</option>
 	
@@ -122,11 +126,15 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/disconnectAll">disconnectAll</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/getParams">getParams</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithCapabilityToken:delegate:">initWithCapabilityToken:delegate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithParams:delegate:">initWithParams:delegate:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/listen">listen</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendMessage:to:">sendMessage:to:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendMessage:">sendMessage:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unlisten">unlisten</a></span></li>
 	
@@ -181,7 +189,7 @@ the new outgoing connection. From then on you can act on the new connection by a
 If there’s an incoming connection you will be notified by <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingConnection:">[RCDeviceDelegate device:didReceiveIncomingConnection:]</a> <a href="#//api/name/delegate">delegate</a> method. At that point you can use RCConnection methods to
 accept or reject the connection.</p>
 
-<p>As far as instant messages are concerned you can send a message using <a href="#//api/name/sendMessage:to:">[RCDevice sendMessage:to:]</a> and you will be notified of an incoming message
+<p>As far as instant messages are concerned you can send a message using [RCDevice sendMessage:to:] and you will be notified of an incoming message
 via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/delegate">delegate</a> method.</p>
 					</div>
 					
@@ -236,6 +244,12 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 	
 </li><li>
 	<span class="tooltip">
+		<code><a href="#//api/name/initWithParams:delegate:">&ndash;&nbsp;initWithParams:delegate:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
 		<code><a href="#//api/name/initWithCapabilityToken:delegate:">&ndash;&nbsp;initWithCapabilityToken:delegate:</a></code>
 	</span>
 	
@@ -260,13 +274,19 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 	
 </li><li>
 	<span class="tooltip">
+		<code><a href="#//api/name/getParams">&ndash;&nbsp;getParams</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
 		<code><a href="#//api/name/connect:delegate:">&ndash;&nbsp;connect:delegate:</a></code>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/sendMessage:to:">&ndash;&nbsp;sendMessage:to:</a></code>
+		<code><a href="#//api/name/sendMessage:">&ndash;&nbsp;sendMessage:</a></code>
 	</span>
 	
 	
@@ -542,7 +562,10 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>parameters</em></dt>
-			<dd><p>Connections such as the endpoint we want to connect to</p></dd>
+			<dd><p>Parameters for the outgoing connection. Possible keys/values: <br>
+<b>username</b>: Who is the called number, like <i>&lsquo;sip:+1235@cloud.restcomm.com&rsquo;</i> <br>
+<b>video-enabled</b>: Whether we want WebRTC video enabled or not <br>
+<b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br></p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -614,13 +637,54 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/getParams" title="getParams"></a>
+	<h3 class="subsubtitle method-title">getParams</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieve parameters</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSDictionary *)getParams</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>RCDevice parameters</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">RCDevice.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/initWithCapabilityToken:delegate:" title="initWithCapabilityToken:delegate:"></a>
 	<h3 class="subsubtitle method-title">initWithCapabilityToken:delegate:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Initialize a new RCDevice object</p>
+		<p>Initialize a new RCDevice object with capability token</p>
 	</div>		
 	
     
@@ -657,7 +721,74 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>Initialize a new RCDevice object</p>
+		<p>Initialize a new RCDevice object with capability token</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">RCDevice.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithParams:delegate:" title="initWithParams:delegate:"></a>
+	<h3 class="subsubtitle method-title">initWithParams:delegate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Initialize a new RCDevice object with parameters</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (id)initWithParams:(NSDictionary *)<em>parameters</em> delegate:(id&lt;RCDeviceDelegate&gt;)<em>delegate</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parameters</em></dt>
+			<dd><p>Parameters for the Device entity. Possible keys/values: <br>
+<b>aor</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br>
+<b>password</b>: password for the client <br>
+<b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i>. Leave empty if you want to disable TURN <br>
+<b>turn-username</b>: TURN username <br>
+<b>turn-password</b>: TURN password <br>
+<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>delegate</em></dt>
+			<dd><p>Delegate of RCDevice</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Newly initialized object</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Initialize a new RCDevice object with parameters</p>
 	</div>
 	
 	
@@ -711,8 +842,8 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/sendMessage:to:" title="sendMessage:to:"></a>
-	<h3 class="subsubtitle method-title">sendMessage:to:</h3>
+	<a name="//api/name/sendMessage:" title="sendMessage:"></a>
+	<h3 class="subsubtitle method-title">sendMessage:</h3>
 	
 	
 	
@@ -722,7 +853,7 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)sendMessage:(NSString *)<em>message</em> to:(NSDictionary *)<em>receiver</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (BOOL)sendMessage:(NSDictionary *)<em>parameters</em></code></div>
 
     
 	
@@ -730,18 +861,21 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>message</em></dt>
-			<dd><p>Message text</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>receiver</em></dt>
-			<dd><p>Message receiver</p></dd>
+			<dt><em>parameters</em></dt>
+			<dd><p>Message parameters. Possible keys/values are:  <br>
+<b>username</b>: Who is the recepient of the text message, like <i>&lsquo;sip:+1235@cloud.restcomm.com&rsquo;</i> <br>
+<b>message</b>: Content of the message <br>
+<b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br></p></dd>
 		</dl>
 		
 	</div>
 	
 	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A boolean whether message was sent or not.</p>
+	</div>
 	
 	
 	
@@ -855,7 +989,7 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)updateParams:(NSDictionary *)<em>params</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (BOOL)updateParams:(NSDictionary *)<em>params</em></code></div>
 
     
 	
@@ -864,12 +998,23 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>params</em></dt>
-			<dd><p>Dictionary of key/value pairs of the parameters that will be updated</p></dd>
+			<dd><p>Dictionary of key/value pairs of the parameters that will be updated: <br>
+<b>aor</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br>
+<b>password</b>: password for the client <br>
+<b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i>. Leave empty if you want to disable TURN <br>
+<b>turn-username</b>: TURN username <br>
+<b>turn-password</b>: TURN password <br>
+<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></p></dd>
 		</dl>
 		
 	</div>
 	
 	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>If update of parameters was successful. Typical reason to fail is connectivity issues</p>
+	</div>
 	
 	
 	
@@ -904,7 +1049,7 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2015 Telestax. All rights reserved. (Last updated: 2015-07-31)</span><br />
+						<p><span class="copyright">&copy; 2016 Telestax. All rights reserved. (Last updated: 2016-01-28)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 963)</a>.</span></p>
 						

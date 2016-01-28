@@ -57,13 +57,13 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  *
  *  When an incoming connection arrives through [RCDeviceDelegate device:didReceiveIncomingConnection:] it is considered RCConnectionStateConnecting until it is either
  *  accepted with [RCConnection accept] or rejected with [RCConnection reject]. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
- *  state (TODO: the media part is only implemented for outgoing connections; for incoming connections only the signaling in in place for now -we are working on that)
+ *  state.
  *
  *  When an outgoing connection is created with [RCDevice connect:delegate:] it starts with state RCConnectionStatePending. Once it starts ringing on the remote party it
  *  transitions to RCConnectionStateConnecting. When the remote party answers it, the RCConnection state transitions to RCConnectionStateConnected.
  *
  *  Once an RCConnection (either incoming or outgoing) is established (i.e. RCConnectionStateConnected) media can start flowing over it. DTMF digits can be sent over to 
- *  the remote party using [RCConnection sendDigits:] (TODO: Not implemented yet). When done with the RCConnection you can disconnect it with [RCConnection disconnect].
+ *  the remote party using [RCConnection sendDigits:]. When done with the RCConnection you can disconnect it with [RCConnection disconnect].
  */
 @interface RCConnection : NSObject<SipManagerConnectionDelegate>
 
@@ -140,7 +140,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 - (void)disconnect;
 
 /**
- *  @abstract Send DTMF tones over a connection that is in state 'RCConnectionStateConnected' (**Not Implemented yet**)
+ *  @abstract Send DTMF tones over a connection that is in state 'RCConnectionStateConnected'
  *
  *  @param digits A string of digits that will be sent
  */

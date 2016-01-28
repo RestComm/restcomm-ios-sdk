@@ -1,4 +1,0 @@
-Documentation set was installed to Xcode!
-
-Path: /Users/Antonis/Library/Developer/Shared/Documentation/DocSets/com.telestax.RestComm-iOS-Client.docset
-Time: 2014-11-02 19:22:41 +0000
