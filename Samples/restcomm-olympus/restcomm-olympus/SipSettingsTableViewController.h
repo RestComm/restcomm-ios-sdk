@@ -22,7 +22,7 @@
 #import <UIKit/UIKit.h>
 #import "RestCommClient.h"
 
-@interface SipSettingsTableViewController : UITableViewController
+@interface SipSettingsTableViewController : UITableViewController<UITextFieldDelegate>
 // owner is ViewController
 @property (weak) RCDevice * device;
 @end

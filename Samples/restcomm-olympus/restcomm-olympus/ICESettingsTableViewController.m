@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *turnPasswordText;
 @property (unsafe_unretained, nonatomic) IBOutlet UISlider *timeoutSlider;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *secondsLabel;
+@property UITextField * activeField;
 @end
 
 @implementation ICESettingsTableViewController
@@ -36,6 +37,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _activeField = nil;
+
+    _turnUrlText.delegate = self;
+    _turnUsernameText.delegate = self;
+    _turnPasswordText.delegate = self;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
     
@@ -48,8 +54,105 @@
                                            action:@selector(hideKeyBoard)];
     
     [self.view addGestureRecognizer:tapGesture];
+    [self registerForKeyboardNotifications];
     
     self.navigationItem.title = @"ICE Settings";
+}
+
+// Call this method somewhere in your view controller setup code.
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _activeField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _activeField = nil;
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    CGSize kbSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    UIEdgeInsets edgeInsets = [self.tableView contentInset];
+    edgeInsets.bottom += kbSize.height;
+    UIEdgeInsets scrollInsets = [self.tableView scrollIndicatorInsets];
+    scrollInsets.bottom += kbSize.height;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:scrollInsets];
+    }];
+    /*
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect aRect = self.tableView.bounds;
+    aRect.size.height -= kbSize.height;
+    CGRect activeRect = [_activeField convertRect:_activeField.frame toView:self.tableView];
+    
+    if (!CGRectContainsPoint(aRect, activeRect.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, activeRect.origin.y-kbSize.height+10);
+        [self.tableView setContentOffset:scrollPoint animated:YES];
+    }
+    */
+    /*
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your app might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
+        [self.tableView scrollRectToVisible:_activeField.frame animated:YES];
+    }
+     */
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    CGSize kbSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    UIEdgeInsets edgeInsets = [self.tableView contentInset];
+    edgeInsets.bottom -= kbSize.height;
+    UIEdgeInsets scrollInsets = [self.tableView scrollIndicatorInsets];
+    scrollInsets.bottom -= kbSize.height;
+    
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:scrollInsets];
+    }];
+    /*
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+     */
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -81,10 +184,10 @@
 
 - (void)hideKeyBoard
 {
-    // resign both to be sure
-    [self.turnUrlText resignFirstResponder];
-    [self.turnUsernameText resignFirstResponder];
-    [self.turnPasswordText resignFirstResponder];
+    // resign active first responder if available
+    if (_activeField) {
+        [_activeField resignFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning

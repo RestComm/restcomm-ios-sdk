@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
 @property (weak, nonatomic) IBOutlet UITextField *passwordText;
+@property UITextField * activeField;
 @end
 
 @implementation SipSettingsTableViewController
@@ -34,6 +35,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _activeField = nil;
+    _aorText.delegate = self;
+    _registrarText.delegate = self;
+    _passwordText.delegate = self;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
 
@@ -46,8 +52,67 @@
                                            action:@selector(hideKeyBoard)];
     
     [self.view addGestureRecognizer:tapGesture];
+    [self registerForKeyboardNotifications];
     
     self.navigationItem.title = @"SIP Settings";
+}
+
+// Call this method somewhere in your view controller setup code.
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _activeField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _activeField = nil;
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    CGSize kbSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    UIEdgeInsets edgeInsets = [self.tableView contentInset];
+    edgeInsets.bottom += kbSize.height;
+    UIEdgeInsets scrollInsets = [self.tableView scrollIndicatorInsets];
+    scrollInsets.bottom += kbSize.height;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:scrollInsets];
+    }];
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    CGSize kbSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    UIEdgeInsets edgeInsets = [self.tableView contentInset];
+    edgeInsets.bottom -= kbSize.height;
+    UIEdgeInsets scrollInsets = [self.tableView scrollIndicatorInsets];
+    scrollInsets.bottom -= kbSize.height;
+    
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.tableView setContentInset:edgeInsets];
+        [self.tableView setScrollIndicatorInsets:scrollInsets];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,9 +142,10 @@
 
 - (void)hideKeyBoard
 {
-    // resign both to be sure
-    [self.aorText resignFirstResponder];
-    [self.registrarText resignFirstResponder];
+    // resign active first responder if available
+    if (_activeField) {
+        [_activeField resignFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning
