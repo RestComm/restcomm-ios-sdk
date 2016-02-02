@@ -21,9 +21,11 @@
  */
 #import "AboutTableViewController.h"
 #import "common.h"
+#import "Utils.h"
 
 @interface AboutTableViewController()
 @property (weak, nonatomic) IBOutlet UILabel *versionLbl;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *githubHashLbl;
 @end
 
 @implementation AboutTableViewController
@@ -49,5 +51,6 @@
 {
     [super viewWillAppear:animated];
     self.versionLbl.text = [NSString stringWithUTF8String:SIP_USER_AGENT];
+    self.githubHashLbl.text = RestCommClientSDKLatestGitHash;
 }
 @end

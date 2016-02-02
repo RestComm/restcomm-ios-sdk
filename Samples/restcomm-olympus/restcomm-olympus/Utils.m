@@ -25,6 +25,8 @@
 
 @implementation Utils
 
+NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b394a7137eca";
+
 + (void) setupUserDefaults
 {
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!

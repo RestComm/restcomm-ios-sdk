@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const RestCommClientSDKLatestGitHash;
+
 @interface Utils : NSObject
 + (void) setupUserDefaults;
 + (NSArray*)contactForIndex:(int)index;
