@@ -187,6 +187,7 @@
         // incomind ringing
         self.statusLabel.text = @"Rejecting Call...";
         [self.pendingIncomingConnection reject];
+        //[self.pendingIncomingConnection ignore];
         self.pendingIncomingConnection = nil;
     }
     else {

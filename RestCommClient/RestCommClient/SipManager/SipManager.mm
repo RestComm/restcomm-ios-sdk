@@ -48,6 +48,7 @@ int read_pipe[2];
 @implementation SipManager
 @synthesize muted;
 @synthesize videoMuted;
+@synthesize speaker;
 // add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
 //static void addFdSourceToRunLoop(int fd)
 - (void) addFdSourceToRunLoop:(int)fd
@@ -188,17 +189,11 @@ int read_pipe[2];
         [self.connectionDelegate sipManagerDidReceiveIncomingCancelled:self];
     }
     else if (reply->rc == OUTGOING_CANCELLED) {
-        if (self.media) {
-            [self.media disconnect];
-            self.media = nil;
-        }
+        [self disconnectMedia];
         [self.connectionDelegate sipManagerDidReceiveOutgoingCancelled:self];
     }
     else if (reply->rc == OUTGOING_DECLINED) {
-        if (self.media) {
-            [self.media disconnect];
-            self.media = nil;
-        }
+        [self disconnectMedia];
         [self.connectionDelegate sipManagerDidReceiveOutgoingDeclined:self];
     }
     else if (reply->rc == REGISTER_SUCCESS) {
@@ -212,10 +207,7 @@ int read_pipe[2];
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == INVITE_ERROR) {
-        if (self.media) {
-            [self.media disconnect];
-            self.media = nil;
-        }
+        [self disconnectMedia];
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                        code:ERROR_SIGNALLING
                                                    userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
@@ -230,10 +222,7 @@ int read_pipe[2];
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
     else if (reply->rc == OUTGOING_BYE_RESPONSE || reply->rc == INCOMING_BYE) {
-        if (self.media) {
-            [self.media disconnect];
-            self.media = nil;
-        }
+        [self disconnectMedia];
         [self.connectionDelegate sipManagerDidReceiveBye:self];
     }
     else if (reply->rc == SIGNALLING_INITIALIZED) {
@@ -289,28 +278,10 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     RCLogNotice("[SipManager initWithDelegate]");
     self = [super init];
     if (self) {
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        NSError *error = nil;
-        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-                      withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
-                            error:&error]) {
-            // handle error
-            NSLog(@"Error setting AVAudioSession category");
-        }
-        
         self.activeCallParams = [[NSMutableDictionary alloc] init];
-        /*
-        if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
-                                         error:&error]) {
-            NSLog(@"Error overriding output to speaker");
-        }
-         */
+        
         self.videoAllowed = NO;
-        
-        if (![session setActive:YES error:&error]) {
-            NSLog(@"Error activating audio session");
-        }
-        
+
         _signallingInstances = 0;
         _signallingInstancesLock = [[NSRecursiveLock alloc] init];
         
@@ -338,15 +309,23 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 {
     NSDictionary *interuptionDict = notification.userInfo;
     NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
-    
+    RCLogNotice("[SipManager didSessionRouteChange], AudioSession change reason: %d", routeChangeReason);
     switch (routeChangeReason) {
         case AVAudioSessionRouteChangeReasonCategoryChange: {
             // Set speaker as default route
-            NSError* error;
-            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        }
+            //NSError* error;
+            //[[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
             break;
-            
+        }
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable: {
+            // headphones plugged in
+            //NSError* error;
+            //[[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverride error:&error];
+
+            break;
+        }
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            break;
         default:
             break;
     }
@@ -477,6 +456,8 @@ ssize_t pipeToSofia(const char * msg, int fd)
             [self.activeCallParams setObject:headers forKey:@"sip-headers"];
         }
         
+        [self initializeAudioSession];
+
         self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
         [self.media connect:nil sdp:nil isInitiator:YES withVideo:self.videoAllowed];
     }
@@ -492,6 +473,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (bool)answerWithVideo:(BOOL)video
 {
     self.videoAllowed = video;
+    [self initializeAudioSession];
     
     if (!self.media) {
         self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
@@ -636,16 +618,18 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
-- (bool)disconnectMedia
+- (BOOL)disconnectMedia
 {
+    BOOL status = NO;
     if (self.media) {
         [self.media disconnect];
         self.media = nil;
-        return true;
+        [self finalizeAudioSession];
+        status = YES;
     }
-    else {
-        return false;
-    }
+
+    [self finalizeAudioSession];
+    return status;
 }
 
 - (BOOL)getMuted {
@@ -678,5 +662,65 @@ ssize_t pipeToSofia(const char * msg, int fd)
     }
 }
 
+// enable or disable speaker (effectively disabling or enabling earpiece)
+- (void)setSpeaker:(BOOL)isSpeaker {
+    speaker = isSpeaker;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    
+    if (speaker == YES) {
+        if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
+                                        error:&error]) {
+            NSLog(@"Error overriding output to speaker");
+        }
+    }
+    else {
+        if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
+                                        error:&error]) {
+            NSLog(@"Error overriding none");
+        }
+    }
+    
+    return;
+}
+
+// Audio Session helpers
+- (BOOL)initializeAudioSession
+{
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+          //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
+                        error:&error]) {
+        // handle error
+        NSLog(@"Error setting AVAudioSession category");
+        return NO;
+    }
+    
+    if (![session setActive:YES error:&error]) {
+        NSLog(@"Error activating audio session");
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)finalizeAudioSession
+{
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    
+    if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
+                                    error:&error]) {
+        NSLog(@"Error overriding output to none");
+        return NO;
+    }
+
+    if (![session setActive:NO error:&error]) {
+        NSLog(@"Error activating audio session");
+        return NO;
+    }
+    
+    return YES;
+}
 
 @end

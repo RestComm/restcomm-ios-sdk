@@ -99,6 +99,10 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  */
 @property (nonatomic, getter = isVideoMuted) BOOL videoMuted;
 
+/**
+ *  @abstract Is speaker used for audio? If not the earpiece is used. Default is false
+ */
+@property (nonatomic, getter = isSpeaker) BOOL speaker;
 
 /**
  *  @abstract Initialize a new RCConnection object (Important: not to be used by the Application; this is for internal use)

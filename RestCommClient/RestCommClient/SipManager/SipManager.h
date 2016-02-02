@@ -44,13 +44,13 @@
 - (bool)shutdown:(BOOL)restart;
 - (bool)cli:(NSString*)cmd;
 - (bool)updateParams:(NSDictionary*)params;
-- (bool)disconnectMedia;
+- (BOOL)disconnectMedia;
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
 @property (weak) id<SipManagerConnectionDelegate> connectionDelegate;
 @property MediaWebRTC * media;
 @property NSMutableDictionary* params;
-@property (nonatomic) BOOL muted, videoMuted;
+@property (nonatomic) BOOL muted, videoMuted, speaker;
 @property BOOL videoAllowed;
 @end
 

@@ -43,6 +43,8 @@
 @synthesize state;
 @synthesize muted;
 @synthesize videoMuted;
+@synthesize speaker;
+
 
 NSString* const RCConnectionIncomingParameterFromKey = @"RCConnectionIncomingParameterFromKey";
 NSString* const RCConnectionIncomingParameterToKey = @"RCConnectionIncomingParameterToKey";
@@ -198,6 +200,15 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     // avoid endless loop
     videoMuted = isMuted;
     [self.sipManager setVideoMuted:isMuted];
+    
+}
+
+- (void)setSpeaker:(BOOL)isSpeaker
+{
+    RCLogNotice("[RCConnection setSpeaker]");
+    // avoid endless loop
+    speaker = isSpeaker;
+    [self.sipManager setSpeaker:isSpeaker];
     
 }
 
