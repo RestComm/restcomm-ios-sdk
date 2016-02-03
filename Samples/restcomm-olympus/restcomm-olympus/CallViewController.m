@@ -37,11 +37,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *callLabel;
 // signaling/media status to inform the user how call setup goes (like Android toasts)
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *speakerImage;
 
 @property ARDVideoCallView *videoCallView;
 @property RTCVideoTrack *remoteVideoTrack;
 @property RTCVideoTrack *localVideoTrack;
-@property BOOL isAudioMuted, isVideoMuted;
+@property BOOL isAudioMuted, isVideoMuted, isSpeakerEnabled;
 @property BOOL pendingError;
 @property NSTimer *durationTimer;
 @property int secondsElapsed;
@@ -57,12 +58,23 @@
     self.pendingError = NO;
     self.isVideoMuted = NO;
     self.isAudioMuted = NO;
+    self.isSpeakerEnabled = NO;
     
     self.videoCallView = [[ARDVideoCallView alloc] initWithFrame:self.view.frame];
     self.videoCallView.hidden = YES;
     self.durationLabel.hidden = YES;
     
     [self.view insertSubview:self.videoCallView belowSubview:self.hangupButton];
+    
+    // add gesture recognizer to the main view for the toggle speaker action
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                             initWithTarget:self action:@selector(tapGestureHandler:)];
+    
+    // Specify that the gesture must be a single tap
+    tapRecognizer.numberOfTapsRequired = 2;
+    
+    // Add the tap gesture recognizer to the view
+    [self.view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,6 +150,27 @@
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", username];
             self.statusLabel.text = @"Call received";
         }
+    }
+}
+
+- (IBAction)tapGestureHandler:(UITapGestureRecognizer *)recognizer {
+    // Get the location of the gesture
+    CGPoint location = [recognizer locationInView:self.view];
+    
+    // if we aren't in connected state it doesn't make any sense to mute
+    if (self.connection.state != RCConnectionStateConnected) {
+        return;
+    }
+    
+    if (!self.isSpeakerEnabled) {
+        self.speakerImage.hidden = NO;
+        self.connection.speaker = true;
+        self.isSpeakerEnabled = YES;
+    }
+    else {
+        self.speakerImage.hidden = YES;
+        self.connection.speaker = false;
+        self.isSpeakerEnabled = NO;
     }
 }
 

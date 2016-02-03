@@ -171,6 +171,9 @@
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
+		AECF5C201C6210D6002369F6 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */; };
+		AECF5C211C6210D6002369F6 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */; };
+		AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
@@ -390,6 +393,9 @@
 		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
+		AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50.png"; sourceTree = "<group>"; };
+		AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50@2x.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50@2x.png"; sourceTree = "<group>"; };
+		AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50@3x.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50@3x.png"; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-olympusTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-olympusTests-Info.plist"; sourceTree = "<group>"; };
 		AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-olympusTests.m"; sourceTree = "<group>"; };
@@ -563,6 +569,9 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */,
+				AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */,
+				AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */,
 				AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */,
 				AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */,
 				AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */,
@@ -840,6 +849,7 @@
 				AEA4961D1C2997F6000D9762 /* five-digit-74x74@2x.png in Resources */,
 				AEA496481C2997F6000D9762 /* settings-22x22.png in Resources */,
 				AEA4964B1C2997F6000D9762 /* settings-30x30@2x.png in Resources */,
+				AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */,
 				AEA4962D1C2997F6000D9762 /* icon-76x76@2x.png in Resources */,
 				AEA4962E1C2997F6000D9762 /* inapp-grey-icon-30x30.png in Resources */,
 				AEA4963A1C2997F6000D9762 /* message-30x30.png in Resources */,
@@ -876,6 +886,7 @@
 				AEA496271C2997F6000D9762 /* icon-29x29@2x.png in Resources */,
 				AEA496371C2997F6000D9762 /* keypad-50x50@2x.png in Resources */,
 				AEA4967E1C2997F6000D9762 /* star.wav in Resources */,
+				AECF5C211C6210D6002369F6 /* speaker-on-50x50@2x.png in Resources */,
 				AEA4961A1C2997F6000D9762 /* eight-digit-74x74.png in Resources */,
 				AEA4963D1C2997F6000D9762 /* message-local-square-43x43@2x.png in Resources */,
 				AEA496531C2997F6000D9762 /* splash-768x1024@2x.png in Resources */,
@@ -889,6 +900,7 @@
 				AEA4961F1C2997F6000D9762 /* four-digit-74x74@2x.png in Resources */,
 				AEA496251C2997F6000D9762 /* hash-digit-74x74@2x.png in Resources */,
 				AEA496801C2997F6000D9762 /* upload-dsym.sh in Resources */,
+				AECF5C201C6210D6002369F6 /* speaker-on-50x50.png in Resources */,
 				AEA496101C2997F6000D9762 /* audio-active-23x28@2x.png in Resources */,
 				AEA496261C2997F6000D9762 /* icon-29x29.png in Resources */,
 				AEA4963B1C2997F6000D9762 /* message-30x30@2x.png in Resources */,

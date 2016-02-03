@@ -1059,12 +1059,16 @@
                                     <segue destination="U5V-Cs-bs8" kind="presentation" identifier="invoke-keypad" id="cnN-tv-DWh"/>
                                 </connections>
                             </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker-on-50x50.png" translatesAutoresizingMaskIntoConstraints="NO" id="BH8-LM-4Pd">
+                                <rect key="frame" x="10" y="20" width="50" height="50"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eR0-ZP-EpQ" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="10" id="0mt-ea-HCX"/>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="3Fr-QV-cJ3"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="mkT-Ed-gcY" secondAttribute="bottom" constant="102" id="3Qk-5H-U2g"/>
+                            <constraint firstItem="BH8-LM-4Pd" firstAttribute="top" secondItem="4jx-Fg-Snj" secondAttribute="bottom" id="3T0-rN-anX"/>
                             <constraint firstItem="aAQ-mQ-imy" firstAttribute="centerX" secondItem="21Y-Pw-wBB" secondAttribute="centerX" id="3cl-oq-giJ"/>
                             <constraint firstAttribute="leadingMargin" secondItem="eR0-ZP-EpQ" secondAttribute="leading" constant="-10" id="4DB-vF-8S5"/>
                             <constraint firstItem="Nyi-ak-3Ea" firstAttribute="top" secondItem="SYM-OS-Mgf" secondAttribute="bottom" constant="8" id="4mw-HP-RHO"/>
@@ -1078,6 +1082,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" constant="89"/>
                             </constraint>
                             <constraint firstItem="SYM-OS-Mgf" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" id="9de-Ww-lh5"/>
+                            <constraint firstItem="BH8-LM-4Pd" firstAttribute="leading" secondItem="21Y-Pw-wBB" secondAttribute="leadingMargin" constant="-10" id="CWx-VL-VdV"/>
                             <constraint firstItem="aAQ-mQ-imy" firstAttribute="top" secondItem="4jx-Fg-Snj" secondAttribute="bottom" constant="79" id="DHb-0d-YxL"/>
                             <constraint firstItem="NXw-jq-zev" firstAttribute="top" secondItem="Nyi-ak-3Ea" secondAttribute="bottom" constant="20" id="FhY-g7-XxM"/>
                             <constraint firstItem="Hwt-xT-UGU" firstAttribute="top" secondItem="4jx-Fg-Snj" secondAttribute="bottom" constant="250" id="H5b-Lg-N6C">
@@ -1162,6 +1167,7 @@
                         <outlet property="keypadButton" destination="uuo-M2-q62" id="fEW-J4-Jja"/>
                         <outlet property="muteAudioButton" destination="mkT-Ed-gcY" id="GKF-5n-8SB"/>
                         <outlet property="muteVideoButton" destination="eR0-ZP-EpQ" id="qer-jF-6F2"/>
+                        <outlet property="speakerImage" destination="BH8-LM-4Pd" id="S4d-0u-CkA"/>
                         <outlet property="statusLabel" destination="Hwt-xT-UGU" id="bno-xb-uig"/>
                         <outlet property="videoButton" destination="SYM-OS-Mgf" id="0KZ-eM-snW"/>
                     </connections>
@@ -1733,6 +1739,7 @@
         <image name="restcomm-logo-call-139x58.png" width="139" height="58"/>
         <image name="seven-digit-74x74.png" width="74" height="74"/>
         <image name="six-digit-74x74.png" width="74" height="74"/>
+        <image name="speaker-on-50x50.png" width="50" height="50"/>
         <image name="star-digit-74x74.png" width="74" height="74"/>
         <image name="three-digit-74x74.png" width="74" height="74"/>
         <image name="two-digit-74x74.png" width="74" height="74"/>
