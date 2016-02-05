@@ -74,7 +74,7 @@ bool restartSignalling = false;
 extern su_log_t nua_log[];
 extern su_log_t nta_log[];
 
-//extern su_log_t iptsec_log[];
+extern su_log_t iptsec_log[];
 extern su_log_t nea_log[];
 extern su_log_t nth_client_log[];
 extern su_log_t nth_server_log[];
@@ -116,7 +116,7 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 static cli_t *global_cli_p = NULL;
 
 int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
-                const char * aor, const char * registrar)
+                const char * aor, const char * registrar, const char * certificate_dir)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -152,8 +152,10 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
         assert(res == 0);
         
         cli->cli_conf[0].ssc_aor = aor;
+        // or registrar is proxy too
         cli->cli_conf[0].ssc_registrar = registrar;
         cli->cli_conf[0].ssc_proxy = registrar;
+        cli->cli_conf[0].ssc_certdir = certificate_dir;
         if (registrar != NULL) {
           cli->cli_conf[0].ssc_register = true;
         }
@@ -295,15 +297,14 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   //su_log_set_level(nth_server_log, 9);
   //su_log_set_level(sresolv_log, 9);
   
-  /*
+  
   // set default level to 2: non-critical errors
-  su_log_set_level(iptsec_log, 2);
-  su_log_set_level(nea_log, 2);
-  su_log_set_level(nth_client_log, 2);
-  su_log_set_level(nth_server_log, 2);
-  su_log_set_level(soa_log, 2);
-  su_log_set_level(stun_log, 2);
-   */
+  //su_log_set_level(iptsec_log, 9);
+  //su_log_set_level(nea_log, 2);
+  //su_log_set_level(nth_client_log, 2);
+  //su_log_set_level(nth_server_log, 2);
+  //su_log_set_level(soa_log, 2);
+  //su_log_set_level(stun_log, 2);
 
   return 0;
 }

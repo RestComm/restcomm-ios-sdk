@@ -181,7 +181,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     string caps_str;
     char *userdomain = NULL;
     string contact, secure_contact;
-    const char *proxy = NULL, *registrar = NULL;
+    const char *proxy = NULL, *registrar = NULL, *cert_dir = NULL;
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -226,6 +226,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     if (conf->ssc_registrar && strcmp(conf->ssc_registrar, "")) {
         registrar = conf->ssc_registrar;
     }
+    if (conf->ssc_certdir && strcmp(conf->ssc_certdir, "")) {
+        cert_dir = conf->ssc_certdir;
+    }
     
     /* note: by default bind to a random port on all interfaces */
     if (conf->ssc_contact) {
@@ -236,18 +239,21 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact += [address UTF8String];
         contact += ":*;transport=tcp";
 
-        secure_contact = "sips:";
-        secure_contact += [address UTF8String];
-        secure_contact += ":*;transport=tls";
+        if (cert_dir) {
+            secure_contact = "sips:";
+            secure_contact += [address UTF8String];
+            secure_contact += ":*;transport=tls";
+        }
     }
     
-    RCLogNotice("Creating SIP stack -binding to: %s", contact.c_str());
+    RCLogNotice("Creating SIP stack -binding to: %s, cert dir: %s", contact.c_str(), cert_dir);
 
     /* step: launch the SIP stack */
     ssc->ssc_nua = nua_create(root,
                               priv_callback, ssc,
                               TAG_IF(conf->ssc_aor,
                                      SIPTAG_FROM_STR(conf->ssc_aor)),
+
                               // timeout timer
                               //NTATAG_SIP_T1X64(4000),
                               
@@ -258,9 +264,10 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
                               
-                              //TAG_IF(secure_contact.c_str(),
-                              //       NUTAG_SIPS_URL(secure_contact.c_str())),
-                              //NUTAG_CERTIFICATE_DIR("/tmp/"),
+                              TAG_IF(!secure_contact.empty(),
+                                     NUTAG_SIPS_URL(secure_contact.c_str())),
+                              TAG_IF(cert_dir,
+                                     NUTAG_CERTIFICATE_DIR(cert_dir)),
 
                               //NUTAG_M_PARAMS("transport=tcp"),
                               TAG_IF(conf->ssc_media_addr,
@@ -290,8 +297,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                        NUTAG_AUTOALERT(1),
                        NUTAG_SESSION_TIMER(0),
                        NUTAG_AUTOANSWER(0),
-                       TAG_IF(conf->ssc_certdir,
-                              NUTAG_CERTIFICATE_DIR(conf->ssc_certdir)),
+                       //TAG_IF(cert_dir,
+                       //       NUTAG_CERTIFICATE_DIR(cert_dir)),
                        TAG_NULL());
         //nua_get_params(ssc->ssc_nua, TAG_ANY(), TAG_NULL());
         SofiaReply reply(SIGNALLING_INITIALIZED, "");

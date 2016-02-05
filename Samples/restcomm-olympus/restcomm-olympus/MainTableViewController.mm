@@ -66,6 +66,8 @@
     self.isRegistered = NO;
     self.isInitialized = NO;
     
+    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
+
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
@@ -74,6 +76,7 @@
                        [Utils turnUrl], @"turn-url",  // leave empty to disable TURN
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
+                       [cafilePath stringByDeletingLastPathComponent], @"certificate-dir",  // leave empty to disable TLS for signaling
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
@@ -94,8 +97,6 @@
                                                                            target:self
                                                                            action:@selector(invokeSettings)];
     self.navigationItem.leftBarButtonItem = restcommIconButton;
-    
-
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];

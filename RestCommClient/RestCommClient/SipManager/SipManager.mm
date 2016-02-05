@@ -363,8 +363,10 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     
     // sofia has its own event loop, so we need to call it asynchronously
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // remember that in Objective-C, it is valid to send a message to nil, so in this case if certificate-dir doesn't exist as key
+        // then nill is returned and then when UTF8String is called on nil, it returns 0x0
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                    [[self.params objectForKey:@"registrar"] UTF8String]);
+                    [[self.params objectForKey:@"registrar"] UTF8String], [[self.params objectForKey:@"certificate-dir"] UTF8String]);
         
         [_signallingInstancesLock lock];
         _signallingInstances--;

@@ -26,7 +26,7 @@ EXTRA_DIST =	AUTHORS COPYING COPYRIGHTS ChangeLog.ext-trees \
 ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST += 	m4/sac-general.m4 m4/sac-coverage.m4 \
-		m4/sac-su2.m4 m4/sac-tport.m4 m4/sac-openssl.m4
+		m4/sac-su2.m4 m4/sac-tport.m4 m4/sac-boringssl.m4 
 
 EXTRA_DIST +=   docs/build_system.txt \
 		docs/devel_platform_notes.txt \
