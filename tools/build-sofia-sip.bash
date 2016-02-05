@@ -2,11 +2,19 @@
 #
 # Build sofia sip library for all architectures and combine all the libs to a universal library
 #
+# Function build() is ran once for each architecture and in the end the output .a files are combined and stored in directory 'build'
+#
+# Example: $ ./build-sofia-sip.bash -d <0|1> -v <0|1>
+# -d: add debug symbols to the build
+# -v: show the full CC commands (like compile and link flags) for troubleshooting
+#
 
 function build()
 {
 	SDK=$1
 	ARCH=$2
+	DEBUG=$3
+	VERBOSE=$4
 
 	echo "--- Building for: $SDK, $ARCH"
 
@@ -32,21 +40,27 @@ function build()
 
 	if [[ $SDK == "iphonesimulator" ]]
 	then
-		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/lib -lresolv -lssl -lcrypto" # -miphoneos-version-min=7.0"
+		# use boringssl instead of openssl
+		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
 	else
-		export LDFLAGS="-L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/lib -lresolv -lssl -lcrypto"
+		# use boringssl instead of openssl
+		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
 	fi
 
 	export ARCH
-	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/include"
-	# for debug
-	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/openssl-1.0.1i/include -g -O0" 
+	# for debug but use boringssl instead of openssl
+	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-build-scripts/ios/webrtc/src/third_party/boringssl/src/include" 
 
 	if [[ $SDK != "iphonesimulator" ]]
 	then
 		CFLAGS=${CFLAGS}" -DIOS_BUILD"
 	else
 		CFLAGS=${CFLAGS}" -miphoneos-version-min=7.0"
+	fi
+
+	if [ "$DEBUG" -eq 1 ]
+	then
+		CFLAGS=${CFLAGS}" -g -O0"
 	fi
 
 	export CFLAGS
@@ -67,19 +81,21 @@ function build()
 	echo "Using NM: $NM"
 	echo "Using RANLIB: $RANLIB"
 
-
 	echo "--- Configuring"
 	if [[ $SDK != "iphonesimulator" ]]
 	then 
-		# arm64 doesn't work here, although armv7 adn armv7s do. But arm covers us for armv7 and armv7s as well
-   	./configure --host=arm-apple-darwin --without-openssl
+   	./configure --host=arm-apple-darwin --with-boringssl 
 	else
-   	./configure --host=${ARCH}-apple-darwin --without-openssl
+   	./configure --host=${ARCH}-apple-darwin --with-boringssl
 	fi
 
 	echo "--- Building"
-   #make SOFIA_SILENT=""   # verbose
-   make 
+	if [ "$VERBOSE" -eq 0 ]
+	then
+   	make 
+	else
+   	make SOFIA_SILENT=""   # verbose
+	fi
 	
 	if [ $? -eq 0 ]
 	then
@@ -90,31 +106,62 @@ function build()
 	fi
 }
 
+# --------------- MAIN CODE --------------- #
+DEBUG=0
+VERBOSE=0
+
+while getopts ":d:v:" opt; do
+  case $opt in
+    d)
+		if [ $OPTARG -eq 1 ]
+		then
+			echo "--- Making a debug build"
+			let DEBUG=1
+		fi
+      ;;
+    v)
+		if [ $OPTARG -eq 1 ]
+		then
+			echo "--- Making a verbose build"
+			let VERBOSE=1
+		fi
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
 if [ ! -d "build" ] 
 then
 	mkdir build
 fi
 
-# i386 doesn't work (I think it now does)
 ARCH="i386"   
 SDK="iphonesimulator"
-build $SDK $ARCH
+build $SDK $ARCH $DEBUG $VERBOSE
 
 ARCH="x86_64"
 SDK="iphonesimulator"
-build $SDK $ARCH
+build $SDK $ARCH $DEBUG $VERBOSE
 
 ARCH="armv7"
 SDK="iphoneos"
-build $SDK $ARCH 
+build $SDK $ARCH $DEBUG $VERBOSE
 
-ARCH="armv7s"
-SDK="iphoneos"
-build $SDK $ARCH
+# this doesn't work for some reason
+#ARCH="armv7s"
+#SDK="iphoneos"
+#build $SDK $ARCH $DEBUG $VERBOSE
 
 ARCH="arm64"
 SDK="iphoneos"
-build $SDK $ARCH
+build $SDK $ARCH $DEBUG $VERBOSE
 
 echo "--- Creating universal library at build/"
 rm -f build/libsofia-sip-ua.a

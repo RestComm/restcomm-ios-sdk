@@ -239,9 +239,11 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact += [address UTF8String];
         contact += ":*;transport=tcp";
 
-        secure_contact = "sips:";
-        secure_contact += [address UTF8String];
-        secure_contact += ":*;transport=tls";
+        if (cert_dir) {
+            secure_contact = "sips:";
+            secure_contact += [address UTF8String];
+            secure_contact += ":*;transport=tls";
+        }
     }
     
     RCLogNotice("Creating SIP stack -binding to: %s, cert dir: %s", contact.c_str(), cert_dir);
@@ -262,8 +264,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
                               
-                              //TAG_IF(secure_contact.c_str(),
-                              //       NUTAG_SIPS_URL(secure_contact.c_str())),
+                              TAG_IF(!secure_contact.empty(),
+                                     NUTAG_SIPS_URL(secure_contact.c_str())),
                               TAG_IF(cert_dir,
                                      NUTAG_CERTIFICATE_DIR(cert_dir)),
 

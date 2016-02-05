@@ -166,8 +166,6 @@
 		AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA495FB1C2997F6000D9762 /* libTestFairy.a */; };
 		AEA496801C2997F6000D9762 /* upload-dsym.sh in Resources */ = {isa = PBXBuildFile; fileRef = AEA495FD1C2997F6000D9762 /* upload-dsym.sh */; };
 		AEA496811C2997F6000D9762 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495FF1C2997F6000D9762 /* Utils.m */; };
-		AEB5EB0C1C5A53820004669F /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB5EB001C58E5310004669F /* libcrypto.a */; };
-		AEB5EB0D1C5A53820004669F /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB5EB011C58E5310004669F /* libssl.a */; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
@@ -423,10 +421,8 @@
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
-				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
-				AEB5EB0D1C5A53820004669F /* libssl.a in Frameworks */,
-				AEB5EB0C1C5A53820004669F /* libcrypto.a in Frameworks */,
+				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
@@ -1203,7 +1199,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$SOURCE_ROOT/../../dependencies/packages/openssl-1.0.1i/lib",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
@@ -1243,7 +1238,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$SOURCE_ROOT/../../dependencies/packages/openssl-1.0.1i/lib",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
