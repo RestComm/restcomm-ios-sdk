@@ -1868,8 +1868,15 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     ssc_oper_t *op;
     bool registrarless = false;
     
-    //string resolved_registrar = resolveSipUri(registrar);
-
+    // check if a registration handle already exists and if so remove it to avoid the issue where:
+    // 1. user tries to register with wrong password after a previous registration is successful and is being refreshed periodically
+    // 2. even though password for last registration is wrong, previous registration is being refreshed and confuses the user that
+    // is left with the impression that no registration is occurring anymore since last was not successful (apart from that it causes
+    // the RCDevice state to be invalid)
+    if ((op = ssc_oper_find_by_method(ssc, sip_method_register))) {
+        ssc_oper_destroy(ssc, op);
+    }
+                                 
     // update proxy as well
     if (ssc->ssc_nua) {
         if (registrar && strcmp(registrar, "")) {
@@ -1906,7 +1913,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
         RCLogDebug("REGISTER %s - registering address to network", op->op_ident);
         nua_register(op->op_handle,
                      TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
-                     NUTAG_M_FEATURES("expires=100"),  // set to 100 so that it is sent around 40 - 70 secs (this is how sofia does it at nua_dialog_usage_set_refresh):w
+                     NUTAG_M_FEATURES("expires=100"),  // set to 100 so that it is sent around 40 - 70 secs (this is how sofia does it at nua_dialog_usage_set_refresh)
                      TAG_NULL());
     }
 
@@ -1960,7 +1967,6 @@ void ssc_r_register(int status, char const *phrase,
          */
         
     }
-    
 }
 
 void ssc_unregister(ssc_t *ssc, const char *registrar)
