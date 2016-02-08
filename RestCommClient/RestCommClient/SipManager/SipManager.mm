@@ -206,6 +206,13 @@ int read_pipe[2];
         
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
+    else if (reply->rc == REGISTER_ERROR_AUTHENTICATION) {
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                    code:ERROR_REGISTERING_AUTHENTICATION
+                                                userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
+        
+        [self.deviceDelegate sipManager:self didSignallingError:error];
+    }
     else if (reply->rc == INVITE_ERROR) {
         [self disconnectMedia];
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]

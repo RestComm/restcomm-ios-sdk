@@ -143,7 +143,13 @@
 // ---------- Delegate methods for RC Device
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
-    
+    // only alert if we have a change of the connectivity state
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
+                                                    message:error.localizedDescription
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 // optional

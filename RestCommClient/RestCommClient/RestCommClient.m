@@ -39,9 +39,13 @@
     if (self = [super init]) {
         self.errorDomain = @"RestcommClient-iOS-SDK";
         self.errors = @{
-                        @(ERROR_SIGNALLING) : @"Signalling error",
                         @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
                         @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
+                        @(ERROR_WEBRTC_ALREADY_INITIALIZED) : @"Webrtc media already initialized",
+                        @(ERROR_SIGNALLING) : @"Signalling error",
+                        @(ERROR_REGISTERING) : @"Error registering",
+                        @(ERROR_REGISTERING_AUTHENTICATION) : @"Error authenticating REGISTER",
+                        @(ERROR_SENDING_DIGITS) : @"Error sending DTMF Digits",
                         };
         initializeLogging();
     }
@@ -86,6 +90,12 @@
 - (NSString*)getVersion
 {
     return [NSString stringWithUTF8String:SIP_USER_AGENT];
+}
+
++ (NSString*)getErrorText:(int)errorCode
+{
+    RestCommClient * restCommClient = [RestCommClient sharedInstance];
+    return [restCommClient.errors objectForKey:[NSNumber numberWithInt:errorCode]];
 }
 
 @end

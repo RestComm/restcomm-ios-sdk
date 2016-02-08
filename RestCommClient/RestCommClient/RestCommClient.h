@@ -47,6 +47,7 @@ typedef enum {
     ERROR_WEBRTC_ALREADY_INITIALIZED,
     ERROR_SIGNALLING,
     ERROR_REGISTERING,
+    ERROR_REGISTERING_AUTHENTICATION,
     ERROR_SENDING_DIGITS,
 } errorCodes;
 
@@ -57,5 +58,7 @@ typedef enum {
 
 + (id)sharedInstance;
 - (void) setLogLevel:(RCLogLevel)level;
++ (NSString*)getErrorText:(int)errorCode;
+
 
 @end

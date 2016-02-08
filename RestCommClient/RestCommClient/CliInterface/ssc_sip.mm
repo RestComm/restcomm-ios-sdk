@@ -1933,8 +1933,14 @@ void ssc_r_register(int status, char const *phrase,
         ssc_oper_destroy(ssc, op);
         if (pending_registration) {
             RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
-            SofiaReply reply(REGISTER_ERROR, phrase);
-            reply.Send(ssc->ssc_output_fd);
+            if (status == 904) {
+                SofiaReply reply(REGISTER_ERROR_AUTHENTICATION, phrase);
+                reply.Send(ssc->ssc_output_fd);
+            }
+            else {
+                SofiaReply reply(REGISTER_ERROR, phrase);
+                reply.Send(ssc->ssc_output_fd);
+            }
         }
 
     }
