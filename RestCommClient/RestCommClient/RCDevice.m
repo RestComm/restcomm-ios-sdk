@@ -334,12 +334,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _state = RCDeviceStateOffline;
     }
     if (error.code == ERROR_REGISTERING_AUTHENTICATION) {
+        [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        _state = RCDeviceStateOffline;
+
         [self.delegate device:self didStopListeningForIncomingConnections:[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                                                                      code:ERROR_REGISTERING_AUTHENTICATION
                                                                                                  userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:(int)error.code]}]];
-        
-        [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
-        _state = RCDeviceStateOffline;
     }
 }
 
