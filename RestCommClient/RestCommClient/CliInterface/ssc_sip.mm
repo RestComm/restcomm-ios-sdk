@@ -254,8 +254,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(conf->ssc_aor,
                                      SIPTAG_FROM_STR(conf->ssc_aor)),
 
-                              // timeout timer
-                              //NTATAG_SIP_T1X64(4000),
+                              // timeout timer (SIP B Timer which defaults to 32 secs)
+                              NTATAG_SIP_T1X64(8000),
                               
                               TAG_IF(proxy,
                                      NUTAG_PROXY(proxy)),
@@ -821,14 +821,24 @@ void ssc_r_invite(int status, char const *phrase,
         }
         else if (status == 404) {
             // not found
-            SofiaReply reply(INVITE_ERROR, "Called party not found");
+            SofiaReply reply(ERROR_INVITE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_INVITE_NOT_FOUND] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else if (status == 904) {
+            // authentication error
+            SofiaReply reply(ERROR_INVITE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_INVITE_AUTHENTICATION] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else if (status == 408) {
+            // timeout error
+            SofiaReply reply(ERROR_INVITE_TIMEOUT, [[RestCommClient getErrorText:ERROR_INVITE_TIMEOUT] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else {
-            SofiaReply reply(INVITE_ERROR, "Generic INVITE error");
+            // generic error
+            SofiaReply reply(ERROR_INVITE_GENERIC, [[RestCommClient getErrorText:ERROR_INVITE_GENERIC] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
-        
     }
     if (status == 180) {
         // notify the client application that we are ringing
@@ -1495,11 +1505,21 @@ void ssc_r_message(int status, char const *phrase,
         ssc_store_pending_auth(ssc, op, sip, tags);
     }
     else if (status == 404) {
-        SofiaReply reply(MESSAGE_ERROR, "Receiving party not found");
+        SofiaReply reply(ERROR_MESSAGE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_MESSAGE_NOT_FOUND] UTF8String]);
+        reply.Send(ssc->ssc_output_fd);
+    }
+    else if (status == 904) {
+        // authentication error
+        SofiaReply reply(ERROR_MESSAGE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_MESSAGE_AUTHENTICATION] UTF8String]);
+        reply.Send(ssc->ssc_output_fd);
+    }
+    else if (status == 408) {
+        // timeout error
+        SofiaReply reply(ERROR_MESSAGE_TIMEOUT, [[RestCommClient getErrorText:ERROR_MESSAGE_TIMEOUT] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
     else {
-        SofiaReply reply(MESSAGE_ERROR, "Generic MESSAGE error");
+        SofiaReply reply(ERROR_MESSAGE_GENERIC, [[RestCommClient getErrorText:ERROR_MESSAGE_GENERIC] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
 }
@@ -1938,18 +1958,22 @@ void ssc_r_register(int status, char const *phrase,
         // Error
         RCLogError("REGISTER failed: %03d %s", status, phrase);
         ssc_oper_destroy(ssc, op);
-        //if (pending_registration) {
-            RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
-            if (status == 904) {
-                SofiaReply reply(REGISTER_ERROR_AUTHENTICATION, phrase);
-                reply.Send(ssc->ssc_output_fd);
-            }
-            else {
-                SofiaReply reply(REGISTER_ERROR, phrase);
-                reply.Send(ssc->ssc_output_fd);
-            }
-        //}
-
+        RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
+        if (status == 904) {
+            // authentication error
+            SofiaReply reply(ERROR_REGISTER_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_REGISTER_AUTHENTICATION] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else if (status == 408) {
+            // timeout error
+            SofiaReply reply(ERROR_REGISTER_TIMEOUT, [[RestCommClient getErrorText:ERROR_REGISTER_TIMEOUT] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else {
+            // generic error
+            SofiaReply reply(ERROR_REGISTER_GENERIC, [[RestCommClient getErrorText:ERROR_REGISTER_GENERIC] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
     }
     else if (status == 200) {
         RCLogDebug("Succesfully registered %s to network", ssc->ssc_address);

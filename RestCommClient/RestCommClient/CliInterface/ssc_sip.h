@@ -43,6 +43,7 @@ typedef struct ssc_conf_s ssc_conf_t;
 #include "ssc_oper.h"
 //#include "ssc_media.h"
 #include "ssc_media_simple.h"
+#include "RestCommClient.h"
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_header.h>
@@ -287,7 +288,22 @@ struct SofiaReply {
 
 // reply sent back to the iOS App via pipe
 enum SipMsgEnum {
-    REPLY_AUTH = 1,
+    // important need to map the errors that are user facing with RestCommClient.h:errorCodes, so that
+    // error handling at SipManager.mm:handleSofiaInput can cope
+    ERROR_INVITE_GENERIC = ERROR_CALLING_GENERIC,
+    ERROR_INVITE_NOT_FOUND = ERROR_CALLING_NOT_FOUND,
+    ERROR_INVITE_AUTHENTICATION = ERROR_CALLING_AUTHENTICATION,
+    ERROR_INVITE_TIMEOUT = ERROR_CALLING_TIMEOUT,
+    ERROR_MESSAGE_GENERIC = ERROR_TEXT_MESSAGING_GENERIC,
+    ERROR_MESSAGE_NOT_FOUND = ERROR_TEXT_MESSAGING_NOT_FOUND,
+    ERROR_MESSAGE_AUTHENTICATION = ERROR_TEXT_MESSAGING_AUTHENTICATION,
+    ERROR_MESSAGE_TIMEOUT = ERROR_TEXT_MESSAGING_TIMEOUT,
+    ERROR_REGISTER_GENERIC = ERROR_REGISTERING_GENERIC,
+    ERROR_REGISTER_AUTHENTICATION = ERROR_REGISTERING_AUTHENTICATION,
+    ERROR_REGISTER_TIMEOUT = ERROR_REGISTERING_TIMEOUT,
+    ERROR_DTMF_DIGITS = ERROR_SENDING_DIGITS,
+    
+    REPLY_AUTH = ERROR_CODES_MAX,
     INCOMING_CALL,
     INCOMING_MSG,
     OUTGOING_RINGING,
@@ -300,11 +316,6 @@ enum SipMsgEnum {
     INCOMING_CANCELLED,
     OUTGOING_DECLINED,
     OUTGOING_CANCELLED,
-    CALLED_PARTY_NOT_FOUND,
-    INVITE_ERROR,
-    MESSAGE_ERROR,
-    REGISTER_ERROR,
-    REGISTER_ERROR_AUTHENTICATION,
     REGISTER_SUCCESS,
 };
 

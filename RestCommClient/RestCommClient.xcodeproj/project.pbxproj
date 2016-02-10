@@ -47,7 +47,7 @@
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */; };
 		AEA6C4B219DB412A00BD2455 /* sofsip_cli.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.mm */; };
 		AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */; };
-		AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */; };
+		AEA6C4B519DB412A00BD2455 /* ssc_oper.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AA19DB412A00BD2455 /* ssc_oper.mm */; };
 		AEA6C4B619DB412A00BD2455 /* ssc_sip.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4AC19DB412A00BD2455 /* ssc_sip.mm */; };
 		AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4B019DB412A00BD2455 /* SipManager.mm */; };
 		AEC1221519728C850035B864 /* RestCommClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1221419728C850035B864 /* RestCommClient.h */; };
@@ -231,7 +231,7 @@
 		AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sofsip_cli.h; sourceTree = "<group>"; };
 		AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_input.cpp; sourceTree = "<group>"; };
 		AEA6C4A719DB412A00BD2455 /* ssc_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_input.h; sourceTree = "<group>"; };
-		AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ssc_oper.cpp; sourceTree = "<group>"; };
+		AEA6C4AA19DB412A00BD2455 /* ssc_oper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ssc_oper.mm; sourceTree = "<group>"; };
 		AEA6C4AB19DB412A00BD2455 /* ssc_oper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_oper.h; sourceTree = "<group>"; };
 		AEA6C4AC19DB412A00BD2455 /* ssc_sip.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ssc_sip.mm; sourceTree = "<group>"; };
 		AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssc_sip.h; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 				AEA6C4A519DB412A00BD2455 /* sofsip_cli.h */,
 				AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */,
 				AEA6C4A719DB412A00BD2455 /* ssc_input.h */,
-				AEA6C4AA19DB412A00BD2455 /* ssc_oper.cpp */,
+				AEA6C4AA19DB412A00BD2455 /* ssc_oper.mm */,
 				AEA6C4AB19DB412A00BD2455 /* ssc_oper.h */,
 				AEA6C4AC19DB412A00BD2455 /* ssc_sip.mm */,
 				AEA6C4AD19DB412A00BD2455 /* ssc_sip.h */,
@@ -724,7 +724,7 @@
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
 				AE3F71E71BA86896006B06E7 /* common.m in Sources */,
 				AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */,
-				AEA6C4B519DB412A00BD2455 /* ssc_oper.cpp in Sources */,
+				AEA6C4B519DB412A00BD2455 /* ssc_oper.mm in Sources */,
 				AEC12237197295A10035B864 /* RCConnection.m in Sources */,
 				AEA6C4B219DB412A00BD2455 /* sofsip_cli.mm in Sources */,
 				AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */,

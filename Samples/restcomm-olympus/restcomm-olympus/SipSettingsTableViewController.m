@@ -55,6 +55,9 @@
     [self registerForKeyboardNotifications];
     
     self.navigationItem.title = @"SIP Settings";
+    
+    // mail screen (i.e. contacts) should be at the bottom of the stack
+    self.delegate = [self.navigationController.viewControllers objectAtIndex:0];
 }
 
 // Call this method somewhere in your view controller setup code.
@@ -179,8 +182,9 @@
     }
         
     if (update) {
-        //SettingsNavigationController *settingsNavigationController = (SettingsNavigationController*)self.navigationController;
-        [self.device updateParams:params];
+        if ([self.device updateParams:params]) {
+            [self.delegate sipSettingsTableViewController:self didUpdateRegistrationWithString:self.registrarText.text];
+        }
     }
 }
 

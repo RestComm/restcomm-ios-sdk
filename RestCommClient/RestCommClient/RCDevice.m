@@ -279,13 +279,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
 }
 
+// returns YES if an actual registration was sent (the App can use that to properly convey state to the user
 - (BOOL) updateParams:(NSDictionary*)params
 {
     RCLogNotice("[RCDevice updateParams]");
 
     if (self.reachabilityStatus != NotReachable) {
-        [self.sipManager updateParams:params];
-        return YES;
+        if ([self.sipManager updateParams:params]) {
+            // if a REGISTER was sent update state to offline, cause we need a 200 OK to the registration to consider ourselves truly online
+            _state = RCDeviceStateOffline;
+            return YES;
+        }
     }
     return NO;
 }
@@ -329,17 +333,20 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
-    if (error.code == ERROR_REGISTERING) {
+    if (error.code == ERROR_REGISTERING_GENERIC || error.code == ERROR_REGISTERING_TIMEOUT) {
         [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
     }
     if (error.code == ERROR_REGISTERING_AUTHENTICATION) {
         [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
-
+        
+        [self.delegate device:self didStopListeningForIncomingConnections:error];
+        /*
         [self.delegate device:self didStopListeningForIncomingConnections:[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                                                                      code:ERROR_REGISTERING_AUTHENTICATION
                                                                                                  userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:(int)error.code]}]];
+         */
     }
 }
 

@@ -199,13 +199,14 @@ int read_pipe[2];
     else if (reply->rc == REGISTER_SUCCESS) {
         [self.deviceDelegate sipManagerDidRegisterSuccessfully:self];
     }
-    else if (reply->rc == REGISTER_ERROR) {
+    else if (reply->rc == ERROR_REGISTER_GENERIC || reply->rc == ERROR_REGISTER_AUTHENTICATION || reply->rc == ERROR_REGISTER_TIMEOUT) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                    code:ERROR_REGISTERING
+                                                    code:reply->rc
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
         
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
+    /*
     else if (reply->rc == REGISTER_ERROR_AUTHENTICATION) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:ERROR_REGISTERING_AUTHENTICATION
@@ -213,17 +214,20 @@ int read_pipe[2];
         
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
-    else if (reply->rc == INVITE_ERROR) {
+     */
+    else if (reply->rc == ERROR_INVITE_GENERIC || reply->rc == ERROR_INVITE_AUTHENTICATION || reply->rc == ERROR_INVITE_TIMEOUT ||
+             reply->rc == ERROR_INVITE_NOT_FOUND) {
         [self disconnectMedia];
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                       code:ERROR_SIGNALLING
+                                                       code:reply->rc
                                                    userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
 
         [self.connectionDelegate sipManager:self didSignallingError:error];
     }
-    else if (reply->rc == MESSAGE_ERROR) {
+    else if (reply->rc == ERROR_MESSAGE_GENERIC || reply->rc == ERROR_MESSAGE_AUTHENTICATION || reply->rc == ERROR_MESSAGE_TIMEOUT ||
+             reply->rc == ERROR_MESSAGE_NOT_FOUND) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                    code:ERROR_SIGNALLING
+                                                    code:reply->rc
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
         
         [self.deviceDelegate sipManager:self didSignallingError:error];
@@ -566,65 +570,91 @@ ssize_t pipeToSofia(const char * msg, int fd)
 }
 
 // update given params in the SIP stack
+// return true if an actual registration was sent and false if it didn't
 - (bool)updateParams:(NSDictionary*)params
 {
+    bool registrationOccured = false;
+    bool aorNeedsUpdate = false;
+    // if user is changing the AOR, we need to keep the old one so that we can un-REGISTER using the old first
+    //NSString *previousAor = [self.params objectForKey:@"aor"];
     NSString* cmd;
-    for (id key in params) {
-        if ([key isEqualToString:@"aor"]) {
-            cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:key]];
-            [self pipeToSofia:cmd];
-            // save key/value to local params dictionary for later use
-            [self.params setObject:[params objectForKey:key] forKey:key];
-        }
-        else if ([key isEqualToString:@"registrar"]) {
-            if ([[params objectForKey:key] isEqualToString:@""]) {
-                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
-                    // user requested unregister by passing empty string and previously was registered
-                    [self unregister:nil];
-                    //cmd = [NSString stringWithFormat:@"u"];
-                    //[self pipeToSofia:cmd];
-                }
-            }
-            else {
-                // user requested register
-                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
-                    // wasn't previously registraless
-                    if (![[params objectForKey:key] isEqualToString:[self.params objectForKey:key]]) {
-                        // user was previously registered and used a different registrar: need to unregister first
-                        [self unregister:nil];
-                        //cmd = [NSString stringWithFormat:@"u"];  //, %@" [params objectForKey:key]];
-                        //[self pipeToSofia:cmd];
-                    }
-                }
-                cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:key]];
-                [self pipeToSofia:cmd];
-            }
-            // save key/value to local params dictionary for later use
-            [self.params setObject:[params objectForKey:key] forKey:key];
-        }
-        else if ([key isEqualToString:@"password"]) {
-            [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
-        }
-        else if ([key isEqualToString:@"turn-url"]) {
-            [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
-        }
-        else if ([key isEqualToString:@"turn-username"]) {
-            [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
-        }
-        else if ([key isEqualToString:@"turn-password"]) {
-            [self.params setObject:[params objectForKey:@"turn-password"] forKey:@"turn-password"];
-        }
-        else if ([key isEqualToString:@"turn-candidate-timeout"]) {
-            [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
-        }
+    //for (id key in params) {
+    if ([params objectForKey:@"aor"]) {
+        aorNeedsUpdate = true;
     }
+    if ([params objectForKey:@"registrar"]) {
+        if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
+            if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                // user requested unregister by passing empty string and previously was registered
+                [self unregister:nil];
+                
+                // important: need to update the AOR *after* unregistration, or the un-REGISTER will have the wrong AOR
+                if ([params objectForKey:@"aor"]) {
+                    cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
+                    [self pipeToSofia:cmd];
+                    // save key/value to local params dictionary for later use
+                    [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
+                    aorNeedsUpdate = false;
+                }
+            }
+        }
+        else {
+            // user requested register
+            if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                // wasn't previously registraless
+                if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]]) {
+                    // user was previously registered and used a different registrar: need to unregister first
+                    [self unregister:nil];
+                }
+            }
+            
+            // important: need to update the AOR *after* unregistration, or the un-REGISTER will have the wrong AOR
+            if ([params objectForKey:@"aor"]) {
+                cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
+                [self pipeToSofia:cmd];
+                // save key/value to local params dictionary for later use
+                [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
+                aorNeedsUpdate = false;
+            }
+            
+            cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:@"registrar"]];
+            [self pipeToSofia:cmd];
+            registrationOccured = true;
+        }
+        // save key/value to local params dictionary for later use
+        [self.params setObject:[params objectForKey:@"registrar"] forKey:@"registrar"];
+    }
+    // in case no 'registrar' key exists on params and hence AOR is not already handled above, we need to update AOR
+    if (aorNeedsUpdate) {
+        cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
+        [self pipeToSofia:cmd];
+        // save key/value to local params dictionary for later use
+        [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
+        aorNeedsUpdate = false;
+    }
+    if ([params objectForKey:@"password"]) {
+        [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
+    }
+    if ([params objectForKey:@"turn-url"]) {
+        [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
+    }
+    if ([params objectForKey:@"turn-username"]) {
+        [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
+    }
+    if ([params objectForKey:@"turn-password"]) {
+        [self.params setObject:[params objectForKey:@"turn-password"] forKey:@"turn-password"];
+    }
+    if ([params objectForKey:@"turn-candidate-timeout"]) {
+        [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
+    }
+    //}
     // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
     if (params == nil) {
         cmd = [NSString stringWithFormat:@"r %@", [self.params objectForKey:@"registrar"]];
         [self pipeToSofia:cmd];
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
-    return true;
+    return registrationOccured;
 }
 
 - (BOOL)disconnectMedia

@@ -22,7 +22,14 @@
 #import <UIKit/UIKit.h>
 #import "RestCommClient.h"
 
+@protocol SipSettingsDelegate;
+
 @interface SipSettingsTableViewController : UITableViewController<UITextFieldDelegate>
 // owner is ViewController
 @property (weak) RCDevice * device;
+@property (weak) id<SipSettingsDelegate> delegate;
+@end
+
+@protocol SipSettingsDelegate <NSObject>
+- (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar;
 @end
