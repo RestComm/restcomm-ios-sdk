@@ -104,7 +104,8 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
     op->op_next = ssc->ssc_operations;
     op->op_prev_state = -1;
     op->op_ssc = ssc;
-    ssc->ssc_operations = op;      
+    ssc->ssc_operations = op;
+    op->password = NULL;
 
     if (method == sip_method_register)
       have_url = 0;
@@ -150,6 +151,22 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
 }
 
 /**
+ * Creates a new operation object with a password (applicable to REGISTER handles) and stores it the list of
+ * active operations for 'cli'.
+ */
+ssc_oper_t *ssc_oper_create_with_password(ssc_t *ssc,
+                            sip_method_t method,
+                            char const *name,
+                            char const *address,
+                            char const *password,
+                            tag_type_t tag, tag_value_t value, ...)
+{
+    ssc_oper_t *op = ssc_oper_create(ssc, method, name, address, tag, value);
+    op->password = su_strdup(ssc->ssc_home, password);
+    return op;
+}
+
+/**
  * Creates an operation handle and binds it to
  * an existing handle 'nh' (does not create a new nua 
  * handle with nua_handle()).
@@ -172,6 +189,7 @@ ssc_oper_t *ssc_oper_create_with_handle(ssc_t *ssc,
     nua_handle_bind(op->op_handle = nh, op);
     op->op_ident = sip_header_as_string(ssc->ssc_home, (sip_header_t*)from);
     op->op_ssc = ssc;
+    op->password = NULL;
   }
   else {
     RCLogDebug("%s: cannot create operation object for %s\n", 
@@ -217,6 +235,9 @@ void ssc_oper_destroy(ssc_t *ssc, ssc_oper_t *op)
 //#endif
   }
 
+  if (op->password) {
+     su_free(ssc->ssc_home, op->password);
+  }
   su_free(ssc->ssc_home, op);
 }
 

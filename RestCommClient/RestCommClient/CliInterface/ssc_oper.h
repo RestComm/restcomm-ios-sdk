@@ -89,6 +89,7 @@ struct ssc_oper_s {
   /** How this handle was used initially */
   sip_method_t  op_method;	/**< REGISTER, INVITE, MESSAGE, or SUBSCRIBE */
   char const   *op_method_name;
+  char         *password;
 
   enum op_callstate_t op_callstate;
   int           op_prev_state;     /**< Previous call state */
@@ -103,6 +104,12 @@ ssc_oper_t *ssc_oper_create(ssc_t *ssc,
 			    char const *name,
 			    char const *address,
 			    tag_type_t tag, tag_value_t value, ...);
+ssc_oper_t *ssc_oper_create_with_password(ssc_t *ssc,
+                                          sip_method_t method,
+                                          char const *name,
+                                          char const *address,
+                                          char const *password,
+                                          tag_type_t tag, tag_value_t value, ...);
 ssc_oper_t *ssc_oper_create_with_handle(ssc_t *ssc, 
 					sip_method_t method,
 					char const *name,

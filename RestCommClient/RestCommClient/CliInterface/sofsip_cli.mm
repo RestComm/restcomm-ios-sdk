@@ -116,7 +116,7 @@ static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 static cli_t *global_cli_p = NULL;
 
 int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
-                const char * aor, const char * registrar, const char * certificate_dir)
+                const char * aor, const char * password, const char * registrar, const char * certificate_dir)
 {
   cli_t cli[1] = {{{{sizeof(cli)}}}};
   int res = 0;
@@ -152,6 +152,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
         assert(res == 0);
         
         cli->cli_conf[0].ssc_aor = aor;
+        cli->cli_conf[0].ssc_password = password;
         // or registrar is proxy too
         cli->cli_conf[0].ssc_registrar = registrar;
         cli->cli_conf[0].ssc_proxy = registrar;
@@ -416,7 +417,7 @@ static void sofsip_handle_input_cb(char *input)
           sip_headers = strdup([[args objectForKey:@"sip-headers"] UTF8String]);
       }
 
-      ssc_invite(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"sdp"] UTF8String], sip_headers);
+      ssc_invite(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"sdp"] UTF8String], sip_headers);
     
       if (sip_headers) {
           free(sip_headers);
@@ -446,10 +447,10 @@ static void sofsip_handle_input_cb(char *input)
       NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
       
       if ([args objectForKey:@"sip-headers"]){
-          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"message"] UTF8String], [[args objectForKey:@"sip-headers"] UTF8String]);
+          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], [[args objectForKey:@"sip-headers"] UTF8String]);
       }
       else {
-          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
+          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
       }
   }
   else if (match("set")) {
@@ -471,11 +472,31 @@ static void sofsip_handle_input_cb(char *input)
     ssc_unpublish(cli->cli_ssc);
   }
   else if (match("r") || match("register")) {
-    /* XXX: give AOR as param, and optionally a different registrar */
-    ssc_register(cli->cli_ssc, rest);
+      /* XXX: give AOR as param, and optionally a different registrar */
+      NSError * error;
+      NSString * string = [NSString stringWithUTF8String:rest];
+      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+      
+      const char * aor = [[args objectForKey:@"aor"] UTF8String];
+      const char * password = [[args objectForKey:@"password"] UTF8String];
+      const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
+      
+      ssc_update(cli->cli_ssc, aor, password, registrar, false);
+      //ssc_register(cli->cli_ssc, rest);
   }
   else if (MATCH("u") || match("unregister")) {
-    ssc_unregister(cli->cli_ssc, rest);
+      NSError * error;
+      NSString * string = [NSString stringWithUTF8String:rest];
+      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+      
+      const char * aor = [[args objectForKey:@"aor"] UTF8String];
+      const char * password = [[args objectForKey:@"password"] UTF8String];
+      const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
+      
+      ssc_update(cli->cli_ssc, aor, password, registrar, true);
+    //ssc_unregister(cli->cli_ssc, rest);
   }
   else if (match("ref") || match("refer")) {
     ssc_input_set_prompt("Enter refer_to address: ");

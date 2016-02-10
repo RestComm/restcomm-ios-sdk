@@ -77,6 +77,7 @@ int read_pipe[2];
         NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"destination" ]
                                                                         forKey:@"destination"];
         [args setValue:sdpString forKey:@"sdp"];
+        [args setValue:[self.params objectForKey:@"password"] forKey:@"password"];
         
         // serialize sip-headers
         if ([self.activeCallParams objectForKey:@"sip-headers"]) {
@@ -377,7 +378,8 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         // remember that in Objective-C, it is valid to send a message to nil, so in this case if certificate-dir doesn't exist as key
         // then nill is returned and then when UTF8String is called on nil, it returns 0x0
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                    [[self.params objectForKey:@"registrar"] UTF8String], [[self.params objectForKey:@"certificate-dir"] UTF8String]);
+                    [[self.params objectForKey:@"password"] UTF8String], [[self.params objectForKey:@"registrar"] UTF8String],
+                    [[self.params objectForKey:@"certificate-dir"] UTF8String]);
         
         [_signallingInstancesLock lock];
         _signallingInstances--;
@@ -451,7 +453,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         }
         [args setValue:serializedHeaders forKey:@"sip-headers"];
     }
-    
+    [args setValue:[self.params objectForKey:@"password"] forKey:@"password"];
     NSString* cmd = [NSString stringWithFormat:@"m %@", [Utilities stringifyDictionary:args]];
     [self pipeToSofia:cmd];
     
@@ -574,28 +576,17 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (bool)updateParams:(NSDictionary*)params
 {
     bool registrationOccured = false;
-    bool aorNeedsUpdate = false;
-    // if user is changing the AOR, we need to keep the old one so that we can un-REGISTER using the old first
-    //NSString *previousAor = [self.params objectForKey:@"aor"];
-    NSString* cmd;
-    //for (id key in params) {
-    if ([params objectForKey:@"aor"]) {
-        aorNeedsUpdate = true;
-    }
     if ([params objectForKey:@"registrar"]) {
         if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
             if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
                 // user requested unregister by passing empty string and previously was registered
-                [self unregister:nil];
-                
-                // important: need to update the AOR *after* unregistration, or the un-REGISTER will have the wrong AOR
-                if ([params objectForKey:@"aor"]) {
-                    cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
-                    [self pipeToSofia:cmd];
-                    // save key/value to local params dictionary for later use
-                    [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
-                    aorNeedsUpdate = false;
-                }
+                NSDictionary * updatedParams = @{
+                                                 //@"registrar" : [self.params objectForKey:@"registrar"],
+                                                 @"password" : [self.params objectForKey:@"password"],
+                                                 };
+                NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
+                [self pipeToSofia:cmd];
+                //[self unregister:nil];
             }
         }
         else {
@@ -604,36 +595,28 @@ ssize_t pipeToSofia(const char * msg, int fd)
                 // wasn't previously registraless
                 if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]]) {
                     // user was previously registered and used a different registrar: need to unregister first
-                    [self unregister:nil];
+                    NSDictionary * updatedParams = @{
+                                                     //@"registrar" : [self.params objectForKey:@"registrar"],
+                                                     @"password" : [self.params objectForKey:@"password"],
+                                                     };
+                    NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
+                    [self pipeToSofia:cmd];
+
+                    //[self unregister:nil];
                 }
             }
             
-            // important: need to update the AOR *after* unregistration, or the un-REGISTER will have the wrong AOR
-            if ([params objectForKey:@"aor"]) {
-                cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
-                [self pipeToSofia:cmd];
-                // save key/value to local params dictionary for later use
-                [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
-                aorNeedsUpdate = false;
-            }
-            
-            cmd = [NSString stringWithFormat:@"r %@", [params objectForKey:@"registrar"]];
+            NSDictionary * updatedParams = @{
+                                             @"aor" : [params objectForKey:@"aor"],
+                                             @"registrar" : [params objectForKey:@"registrar"],
+                                             @"password" : [params objectForKey:@"password"],
+                                             };
+            NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
             [self pipeToSofia:cmd];
             registrationOccured = true;
         }
         // save key/value to local params dictionary for later use
         [self.params setObject:[params objectForKey:@"registrar"] forKey:@"registrar"];
-    }
-    // in case no 'registrar' key exists on params and hence AOR is not already handled above, we need to update AOR
-    if (aorNeedsUpdate) {
-        cmd = [NSString stringWithFormat:@"addr %@", [params objectForKey:@"aor"]];
-        [self pipeToSofia:cmd];
-        // save key/value to local params dictionary for later use
-        [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
-        aorNeedsUpdate = false;
-    }
-    if ([params objectForKey:@"password"]) {
-        [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
     }
     if ([params objectForKey:@"turn-url"]) {
         [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
@@ -647,10 +630,13 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([params objectForKey:@"turn-candidate-timeout"]) {
         [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
     }
-    //}
     // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
     if (params == nil) {
-        cmd = [NSString stringWithFormat:@"r %@", [self.params objectForKey:@"registrar"]];
+        NSDictionary * updatedParams = @{
+                                         @"registrar" : [self.params objectForKey:@"registrar"],
+                                         };
+
+        NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
         [self pipeToSofia:cmd];
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);

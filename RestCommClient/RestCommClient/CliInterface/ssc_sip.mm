@@ -288,7 +288,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_NULL());
     
     if (conf->ssc_register)
-        ssc_register(ssc, conf->ssc_registrar);
+        ssc_register(ssc, conf->ssc_registrar, conf->ssc_password);
     
     if (ssc->ssc_nua) {
         nua_set_params(ssc->ssc_nua,
@@ -410,9 +410,16 @@ void ssc_store_pending_auth(ssc_t *self, ssc_oper_t *op, sip_t const *sip, tagi_
             self->ssc_auth_req_cb (self, authitem, self->ssc_cb_context);
     }
     
+    if (op->password) {
+        ssc_auth(self, op->password);
+    }
+    else {
+        RCLogError("Error: operation password is NULL during authentication, bailing");
+    }
+    
     // notify the client application that they should provide credentials
-    SofiaReply reply(REPLY_AUTH, "auth");
-    reply.Send(self->ssc_output_fd);
+    //SofiaReply reply(REPLY_AUTH, "auth");
+    //reply.Send(self->ssc_output_fd);
 }
 
 
@@ -722,7 +729,7 @@ void ssc_list(ssc_t *ssc)
  * @param ssc context pointer
  * @param destination SIP URI
  */
-void ssc_invite(ssc_t *ssc, const char *destination, const char * sdp, const char *headers)
+void ssc_invite(ssc_t *ssc, const char *destination, const char *password, const char * sdp, const char *headers)
 {
     /* enable this to not allow second outgoing call on top of the first
     int check_states = opc_pending | opc_complete | opc_sent | opc_active;
@@ -732,7 +739,7 @@ void ssc_invite(ssc_t *ssc, const char *destination, const char * sdp, const cha
     }
      */
 
-    ssc_oper_t *op = ssc_oper_create(ssc, SIP_METHOD_INVITE, destination, TAG_END());
+    ssc_oper_t *op = ssc_oper_create_with_password(ssc, SIP_METHOD_INVITE, destination, password, TAG_END());
     if (op) {
         /* SDP O/A note:
          *  - before issuing nua_invite(), we activate the media
@@ -1471,9 +1478,9 @@ void ssc_r_options(int status, char const *phrase,
         ssc_store_pending_auth(ssc, op, sip, tags);
 }
 
-void ssc_message(ssc_t *ssc, const char *destination, const char *msg, const char * headers)
+void ssc_message(ssc_t *ssc, const char *destination, const char *password, const char *msg, const char * headers)
 {
-    ssc_oper_t *op = ssc_oper_create(ssc, SIP_METHOD_MESSAGE, destination,
+    ssc_oper_t *op = ssc_oper_create_with_password(ssc, SIP_METHOD_MESSAGE, destination, password,
                                      TAG_END());
     
     if (op) {
@@ -1882,7 +1889,22 @@ void ssc_r_unsubscribe(int status, char const *phrase,
     ssc_oper_destroy(ssc, op);
 }
 
-void ssc_register(ssc_t *ssc, const char *registrar)
+// Update settings like AOR, password, registrar
+void ssc_update(ssc_t *ssc, const char *aor, const char *password, const char *registrar, const bool unregister)
+{
+    if (aor) {
+        ssc_set_public_address(ssc, aor);
+    }
+    
+    if (!unregister) {
+        ssc_register(ssc, registrar, password);
+    }
+    else {
+        ssc_unregister(ssc, registrar, password);
+    }
+}
+
+void ssc_register(ssc_t *ssc, const char *registrar, const char * password)
 {
     char *address;
     ssc_oper_t *op;
@@ -1929,7 +1951,7 @@ void ssc_register(ssc_t *ssc, const char *registrar)
     
     address = su_strdup(ssc->ssc_home, ssc->ssc_address);
     
-    if ((op = ssc_oper_create(ssc, SIP_METHOD_REGISTER, address, TAG_END()))) {
+    if ((op = ssc_oper_create_with_password(ssc, SIP_METHOD_REGISTER, address, password, TAG_END()))) {
         RCLogDebug("REGISTER %s - registering address to network", op->op_ident);
         nua_register(op->op_handle,
                      TAG_IF(registrar, NUTAG_REGISTRAR(registrar)),
@@ -1945,7 +1967,7 @@ void ssc_r_register(int status, char const *phrase,
                     nua_handle_t *nh, ssc_oper_t *op, sip_t const *sip,
                     tagi_t tags[])
 {
-    sip_contact_t *m = sip ? sip->sip_contact : NULL;
+    //sip_contact_t *m = sip ? sip->sip_contact : NULL;
     
     RCLogDebug("REGISTER: %03d %s", status, phrase);
     
@@ -1993,7 +2015,7 @@ void ssc_r_register(int status, char const *phrase,
     }
 }
 
-void ssc_unregister(ssc_t *ssc, const char *registrar)
+void ssc_unregister(ssc_t *ssc, const char *registrar, const char *password)
 {
     ssc_oper_t *op;
     
@@ -2012,7 +2034,7 @@ void ssc_unregister(ssc_t *ssc, const char *registrar)
     }
     else {
         char *address = su_strdup(ssc->ssc_home, ssc->ssc_address);
-        op = ssc_oper_create(ssc, SIP_METHOD_REGISTER, address, TAG_END());
+        op = ssc_oper_create_with_password(ssc, SIP_METHOD_REGISTER, address, password, TAG_END());
         su_free(ssc->ssc_home, address);
         
         if (op) {

@@ -125,6 +125,7 @@ struct ssc_conf_s {
   const char   *ssc_media_impl;	/**< Media address (hostname, IP address) */
   const char   *ssc_proxy;	/**< SIP outbound proxy (SIP URI) */
   const char   *ssc_registrar;	/**< SIP registrar (SIP URI) */
+  const char   *ssc_password;	/**< SIP password for authentication (SIP URI) */
   const char   *ssc_stun_server;/**< STUN server address (hostname, IP address) */
   bool      ssc_autoanswer; /**< Whether to autoanswer to calls */
   bool      ssc_register;	/**< Whether to register at startup */
@@ -149,7 +150,7 @@ void ssc_bye(ssc_t *ssc);
 void ssc_cancel(ssc_t *ssc);
 void ssc_hold(ssc_t *ssc, char *destination, int hold);
 void ssc_info(ssc_t *ssc, const char *msg);
-void ssc_invite(ssc_t *ssc, const char *destination, const char * sdp, const char *headers);
+void ssc_invite(ssc_t *ssc, const char *destination, const char *password, const char * sdp, const char *headers);
 //#if HAVE_MEDIA_WEBRTC_IMPL
 void ssc_webrtc_sdp(void* op_context, char *sdp);
 void ssc_webrtc_sdp_called(void* op_context, char *sdp);
@@ -157,11 +158,12 @@ void ssc_webrtc_sdp_called(void* op_context, char *sdp);
 void ssc_list(ssc_t *ssc);
 void ssc_media_describe(ssc_t *ssc, char *rest);
 void ssc_media_event(ssc_t *ssc, char *rest);
-void ssc_message(ssc_t *ssc, const char *destination, const char *msg, const char * headers);
+void ssc_message(ssc_t *ssc, const char *destination, const char *password, const char *msg, const char * headers);
 void ssc_options(ssc_t *ssc, char *destination);
 void ssc_refer(ssc_t *ssc, const char *destination, const char *to_address);
-void ssc_register(ssc_t *ssc, const char *registrar);
-void ssc_unregister(ssc_t *ssc, const char *registrar);
+void ssc_update(ssc_t *ssc, const char *aor, const char *password, const char *registrar, const bool unregister);
+void ssc_register(ssc_t *ssc, const char *registrar, const char * password);
+void ssc_unregister(ssc_t *ssc, const char *registrar, const char *password);
 void ssc_param(ssc_t *cli, char *param, char *s);
 void ssc_publish(ssc_t *ssc, const char *note);
 void ssc_unpublish(ssc_t *ssc);
