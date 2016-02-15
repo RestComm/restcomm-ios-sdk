@@ -473,30 +473,39 @@ static void sofsip_handle_input_cb(char *input)
   }
   else if (match("r") || match("register")) {
       /* XXX: give AOR as param, and optionally a different registrar */
-      NSError * error;
-      NSString * string = [NSString stringWithUTF8String:rest];
-      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-      
-      const char * aor = [[args objectForKey:@"aor"] UTF8String];
-      const char * password = [[args objectForKey:@"password"] UTF8String];
-      const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
-      
-      ssc_update(cli->cli_ssc, aor, password, registrar, false);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          const char * aor = [[args objectForKey:@"aor"] UTF8String];
+          const char * password = [[args objectForKey:@"password"] UTF8String];
+          const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
+          
+          ssc_update(cli->cli_ssc, aor, password, registrar, false);
+      }
+      else {
+          ssc_update(cli->cli_ssc, NULL, NULL, NULL, false);
+      }
       //ssc_register(cli->cli_ssc, rest);
   }
   else if (MATCH("u") || match("unregister")) {
-      NSError * error;
-      NSString * string = [NSString stringWithUTF8String:rest];
-      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-      
-      const char * aor = [[args objectForKey:@"aor"] UTF8String];
-      const char * password = [[args objectForKey:@"password"] UTF8String];
-      const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
-      
-      ssc_update(cli->cli_ssc, aor, password, registrar, true);
-    //ssc_unregister(cli->cli_ssc, rest);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          const char * aor = [[args objectForKey:@"aor"] UTF8String];
+          const char * password = [[args objectForKey:@"password"] UTF8String];
+          const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
+          
+          ssc_update(cli->cli_ssc, aor, password, registrar, true);
+      }
+      else {
+          ssc_update(cli->cli_ssc, NULL, NULL, NULL, true);
+      }
   }
   else if (match("ref") || match("refer")) {
     ssc_input_set_prompt("Enter refer_to address: ");
