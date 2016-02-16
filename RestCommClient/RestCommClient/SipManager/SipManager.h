@@ -70,6 +70,7 @@ typedef enum {
 - (void)sipManagerDidReceiveCall:(SipManager *)sipManager from:(NSString*)from;
 - (void)sipManagerDidRegisterSuccessfully:(SipManager *)sipManager;
 - (void)sipManagerWillUnregister:(SipManager *)sipManager;
+// fires when signaling facilities are initialized (either registrar-less mode or not)
 - (void)sipManagerDidInitializedSignalling:(SipManager *)sipManager;
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error;
 @end

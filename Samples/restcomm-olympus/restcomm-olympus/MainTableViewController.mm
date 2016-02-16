@@ -86,39 +86,12 @@
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
-    /*
-    // check if RCDevice managed to connect with restcomm and update restcomm status icon
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
-                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [activityView startAnimating];
-    UIBarButtonItem *barIndicator = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-
-    NSMutableArray * itemsArray = [[NSMutableArray alloc] init];
-
-    NSString * imageName = @"inapp-icon-30x30.png";
-     */
     if (self.device.state == RCDeviceStateOffline) {
         [self updateConnectivityStatus:RCConnectivityStatusNone withText:@""];
-        //imageName = @"inapp-grey-icon-30x30.png";
-        //[itemsArray addObject:barIndicator];
     }
     else {
         [self updateConnectivityStatus:RCConnectivityStatusWiFi withText:@""];
     }
-    
-    //self.previousConnectivityStatus = RCConnectivityStatusWiFi;
-    
-    /*
-    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
-    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
-    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                                                            style:UIBarButtonItemStylePlain
-                                                                           target:self
-                                                                           action:@selector(invokeSettings)];
-    [itemsArray insertObject:restcommIconButton atIndex:0];
-    //self.navigationItem.leftBarButtonItem = restcommIconButton;
-    self.navigationItem.leftBarButtonItems = itemsArray;
-     */
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
@@ -140,7 +113,7 @@
 // ---------- UI events
 - (void)register:(NSNotification *)notification
 {
-    if (self.device && self.isInitialized && !self.isRegistered) {
+    if (self.device && self.isInitialized /*&& !self.isRegistered*/) {
         /*
         if (self.device.state == RCDeviceStateOffline) {
             [self.device listen];
@@ -148,6 +121,13 @@
          */
         [self register];
     }
+    /*
+    else {
+        if (!self.isRegistered) {
+            [self.device listen];
+        }
+    }
+     */
 }
 
 - (void)register
@@ -186,12 +166,14 @@
 // optional
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
-    
+    self.isInitialized = YES;
+    self.isRegistered = YES;
+
+    [self updateConnectivityStatus:RCConnectivityStatusWiFi withText:nil];
 }
 
 - (void)deviceDidInitializeSignaling:(RCDevice *)device
 {
-    //[self register];
     self.isInitialized = YES;
     self.isRegistered = YES;
 }
@@ -254,52 +236,6 @@
 - (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)status
 {
     [self updateConnectivityStatus:status withText:nil];
-    
-    /*
-    NSString * imageName = @"inapp-icon-30x30.png";
-    
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
-                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [activityView startAnimating];
-    UIBarButtonItem *barIndicator = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-    
-    NSMutableArray * itemsArray = [[NSMutableArray alloc] init];
-    
-    NSString * text = nil;
-    if (status == RCConnectivityStatusNone) {
-        text = @"Lost connectivity";
-        imageName = @"inapp-grey-icon-30x30.png";
-        [itemsArray addObject:barIndicator];
-    }
-    if (status == RCConnectivityStatusWiFi) {
-        text = @"Reestablished connectivity (Wifi)";
-    }
-    if (status == RCConnectivityStatusCellular) {
-        text = @"Reestablished connectivity (Cellular)";
-    }
-    
-    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
-    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                                                            style:UIBarButtonItemStylePlain
-                                                                           target:self
-                                                                           action:@selector(invokeSettings)];
-    
-    [itemsArray insertObject:restcommIconButton atIndex:0];
-    
-    //self.navigationItem.leftBarButtonItem = restcommIconButton;
-    self.navigationItem.leftBarButtonItems = itemsArray;
-    
-    if (status != self.previousConnectivityStatus) {
-        // only alert if we have a change of the connectivity state
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
-                                                        message:text
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        self.previousConnectivityStatus = status;
-    }
-     */
 }
 
 - (void)updateConnectivityStatus:(RCConnectivityStatus)status withText:(NSString *)text

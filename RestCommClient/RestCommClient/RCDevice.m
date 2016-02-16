@@ -148,8 +148,10 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     RCLogNotice("[RCDevice listen], state: %d", _state);
     if (_state == RCDeviceStateOffline) {
         NetworkStatus status = [_internetReachable currentReachabilityStatus];
+        RCLogNotice("[RCDevice listen], status: %d", status);
         if (self.reachabilityStatus != NotReachable) {
             // we are reachable
+            BOOL notifyApp = NO;
 
             // start signalling eventLoop (i.e. Sofia)
             [self.sipManager eventLoop];
@@ -158,19 +160,25 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                 ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
+                notifyApp = YES;
             }
             
             if (status != self.reachabilityStatus) {
                 // reachability status changed, notify application
                 RCLogNotice("[RCDevice listen] Reachability state has changed from: %d to: %d", self.reachabilityStatus, status);
-                [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
                 self.reachabilityStatus = status;
+                notifyApp = YES;
             }
-            [self.delegate deviceDidStartListeningForIncomingConnections:self];
+            if (notifyApp) {
+                [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:status] afterDelay:0.0];
+                //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
+            }
+            //[self.delegate deviceDidStartListeningForIncomingConnections:self];
         }
         else {
             RCLogError("[RCDevice listen] No internet connectivity");
-            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
+            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:status] afterDelay:0.0];
+            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
         }
     }
     else if (_state == RCDeviceStateReady) {
@@ -197,7 +205,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)asyncConnectivityUpdate:(NSNumber*)status
 {
-    [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status.intValue];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status.intValue];
+    }
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
@@ -309,7 +319,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
         if (state == UpdateParamsStateReestablishedRegistrarless) {
             _state = RCDeviceStateReady;
-            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:self.reachabilityStatus] afterDelay:0.0];
+            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
         }
 
     }
@@ -348,19 +359,25 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     RCLogNotice("[RCDevice sipManagerDidInitializedSignalling]");
 
-    [self.delegate deviceDidInitializeSignaling:self];
-    [self.delegate deviceDidStartListeningForIncomingConnections:self];
+    //[self.delegate deviceDidInitializeSignaling:self];
+    if (![self.sipManager.params objectForKey:@"registrar"] ||
+        ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+        // when in registrar-less mode, if signaling is initialized we can notify the App that we are ready, right away (no need for registration to succeed)
+        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+    }
 }
 
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
     if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
-        [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.0];
+        //[self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
     }
     if (error.code == ERROR_REGISTER_AUTHENTICATION) {
-        [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.0];
+        //[self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
         
         [self.delegate device:self didStopListeningForIncomingConnections:error];
@@ -376,7 +393,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     if (_state == RCDeviceStateOffline) {
         _state = RCDeviceStateReady;
-        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+        //[self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:self.reachabilityStatus] afterDelay:0.0];
+        [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
 
@@ -411,14 +429,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)checkNetworkStatus:(NSNotification *)notice
 {
     NetworkStatus newStatus = [_internetReachable currentReachabilityStatus];
-    RCLogNotice("[RCDevice checkNetworkStatus] Reachability update: %d", (int)newStatus);
+    RCLogNotice("[RCDevice checkNetworkStatus] New reachability status: %d, RCDevice state: %d", (int)newStatus, (int)_state);
     
     if (newStatus == NotReachable && _state != RCDeviceStateOffline) {
         RCLogNotice("[RCDevice checkNetworkStatus] action: no connectivity");
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
-        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
+        //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
         return;
     }
     
@@ -428,7 +447,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             [self.sipManager shutdown:YES];
             self.reachabilityStatus = newStatus;
-            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
+            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
             return;
         }
     }
@@ -442,7 +462,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
             // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
             _state = RCDeviceStateReady;
-            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
+            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
         }
     }
     
