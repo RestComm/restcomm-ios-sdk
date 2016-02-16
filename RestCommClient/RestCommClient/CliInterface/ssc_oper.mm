@@ -162,7 +162,9 @@ ssc_oper_t *ssc_oper_create_with_password(ssc_t *ssc,
                             tag_type_t tag, tag_value_t value, ...)
 {
     ssc_oper_t *op = ssc_oper_create(ssc, method, name, address, tag, value);
-    op->password = su_strdup(ssc->ssc_home, password);
+    if (op) {
+        op->password = su_strdup(ssc->ssc_home, password);
+    }
     return op;
 }
 

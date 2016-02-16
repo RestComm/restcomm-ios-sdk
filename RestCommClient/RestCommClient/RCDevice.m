@@ -170,10 +170,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
         else {
             RCLogError("[RCDevice listen] No internet connectivity");
+            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
         }
     }
     else if (_state == RCDeviceStateReady) {
-        [self.sipManager updateParams:nil];
+        [self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
@@ -190,7 +191,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         [self.delegate device:self didStopListeningForIncomingConnections:nil];
+        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.5];
     }
+}
+
+- (void)asyncConnectivityUpdate:(NSNumber*)status
+{
+    [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status.intValue];
 }
 
 - (void)updateCapabilityToken:(NSString*)capabilityToken
@@ -285,11 +292,26 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     RCLogNotice("[RCDevice updateParams]");
 
     if (self.reachabilityStatus != NotReachable) {
-        if ([self.sipManager updateParams:params]) {
+        BOOL deviceIsOnline = NO;
+        if (_state != RCDeviceStateOffline) {
+            deviceIsOnline = YES;
+        }
+        
+        BOOL networkIsOnline = NO;
+        if (_reachabilityStatus != NotReachable) {
+            networkIsOnline = YES;
+        }
+        UpdateParamsState state = [self.sipManager updateParams:params deviceIsOnline:deviceIsOnline networkIsOnline:networkIsOnline];
+        if (state == UpdateParamsStateSentRegister){
             // if a REGISTER was sent update state to offline, cause we need a 200 OK to the registration to consider ourselves truly online
             _state = RCDeviceStateOffline;
             return YES;
         }
+        if (state == UpdateParamsStateReestablishedRegistrarless) {
+            _state = RCDeviceStateReady;
+            [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+        }
+
     }
     return NO;
 }
@@ -333,11 +355,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
-    if (error.code == ERROR_REGISTERING_GENERIC || error.code == ERROR_REGISTERING_TIMEOUT) {
+    if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
         [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
     }
-    if (error.code == ERROR_REGISTERING_AUTHENTICATION) {
+    if (error.code == ERROR_REGISTER_AUTHENTICATION) {
         [self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
         _state = RCDeviceStateOffline;
         
@@ -423,6 +445,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
         }
     }
+    
+    self.reachabilityStatus = newStatus;
     
     /*
     NetworkStatus hostStatus = [_hostReachable currentReachabilityStatus];

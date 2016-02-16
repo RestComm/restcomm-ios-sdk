@@ -768,12 +768,15 @@ void ssc_invite(ssc_t *ssc, const char *destination, const char *password, const
         }
         
         priv_media_state_cb(ssc->ssc_media, ssc->ssc_media->sm_state, op);
-
+    }
+    else {
+        SofiaReply reply(ERROR_SIP_INVITE_SIP_URI_INVALID, [[RestCommClient getErrorText:ERROR_SIP_INVITE_SIP_URI_INVALID] UTF8String]);
+        reply.Send(ssc->ssc_output_fd);
     }
 }
 
 /**
- * Callback that triggers the second phase of 
+ * Callback that triggers the second phase of
  * ssc_invite() for WebRTC. When WebRTC module is ready with full SDP
  * (including ICE candidates), it calls this via the pipe interface to 
  * set the local sdp and activate media
@@ -828,22 +831,22 @@ void ssc_r_invite(int status, char const *phrase,
         }
         else if (status == 404) {
             // not found
-            SofiaReply reply(ERROR_INVITE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_INVITE_NOT_FOUND] UTF8String]);
+            SofiaReply reply(ERROR_SIP_INVITE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_SIP_INVITE_NOT_FOUND] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else if (status == 904) {
             // authentication error
-            SofiaReply reply(ERROR_INVITE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_INVITE_AUTHENTICATION] UTF8String]);
+            SofiaReply reply(ERROR_SIP_INVITE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_SIP_INVITE_AUTHENTICATION] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else if (status == 408) {
             // timeout error
-            SofiaReply reply(ERROR_INVITE_TIMEOUT, [[RestCommClient getErrorText:ERROR_INVITE_TIMEOUT] UTF8String]);
+            SofiaReply reply(ERROR_SIP_INVITE_TIMEOUT, [[RestCommClient getErrorText:ERROR_SIP_INVITE_TIMEOUT] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else {
             // generic error
-            SofiaReply reply(ERROR_INVITE_GENERIC, [[RestCommClient getErrorText:ERROR_INVITE_GENERIC] UTF8String]);
+            SofiaReply reply(ERROR_SIP_INVITE_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_INVITE_GENERIC] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
     }
@@ -1493,6 +1496,9 @@ void ssc_message(ssc_t *ssc, const char *destination, const char *password, cons
                     SIPTAG_PAYLOAD_STR(msg),
                     TAG_END());
     }
+    else {
+        SofiaReply reply(ERROR_SIP_MESSAGE_URI_INVALID, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_URI_INVALID] UTF8String]);
+    }
 }
 
 void ssc_r_message(int status, char const *phrase,
@@ -1512,21 +1518,21 @@ void ssc_r_message(int status, char const *phrase,
         ssc_store_pending_auth(ssc, op, sip, tags);
     }
     else if (status == 404) {
-        SofiaReply reply(ERROR_MESSAGE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_MESSAGE_NOT_FOUND] UTF8String]);
+        SofiaReply reply(ERROR_SIP_MESSAGE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_NOT_FOUND] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
     else if (status == 904) {
         // authentication error
-        SofiaReply reply(ERROR_MESSAGE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_MESSAGE_AUTHENTICATION] UTF8String]);
+        SofiaReply reply(ERROR_SIP_MESSAGE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_AUTHENTICATION] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
     else if (status == 408) {
         // timeout error
-        SofiaReply reply(ERROR_MESSAGE_TIMEOUT, [[RestCommClient getErrorText:ERROR_MESSAGE_TIMEOUT] UTF8String]);
+        SofiaReply reply(ERROR_SIP_MESSAGE_TIMEOUT, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_TIMEOUT] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
     else {
-        SofiaReply reply(ERROR_MESSAGE_GENERIC, [[RestCommClient getErrorText:ERROR_MESSAGE_GENERIC] UTF8String]);
+        SofiaReply reply(ERROR_SIP_MESSAGE_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_GENERIC] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
 }
@@ -1958,6 +1964,9 @@ void ssc_register(ssc_t *ssc, const char *registrar, const char * password)
                      NUTAG_M_FEATURES("expires=100"),  // set to 100 so that it is sent around 40 - 70 secs (this is how sofia does it at nua_dialog_usage_set_refresh)
                      TAG_NULL());
     }
+    else {
+        SofiaReply reply(ERROR_SIP_REGISTER_URI_INVALID, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_URI_INVALID] UTF8String]);
+    }
 
     su_free(ssc->ssc_home, address);
 }
@@ -1980,7 +1989,7 @@ void ssc_r_register(int status, char const *phrase,
         // Error
         RCLogError("REGISTER failed: %03d %s", status, phrase);
         ssc_oper_destroy(ssc, op);
-        RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
+        //RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
         if (status == 904) {
             // authentication error
             SofiaReply reply(ERROR_REGISTER_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_REGISTER_AUTHENTICATION] UTF8String]);

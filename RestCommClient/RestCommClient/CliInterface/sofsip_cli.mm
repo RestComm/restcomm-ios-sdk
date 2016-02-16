@@ -380,15 +380,24 @@ static void sofsip_handle_input_cb(char *input)
   cli->cli_prompt = 0;
 
   if (match("a") || match("answer")) {
-    NSError * error;
-    NSString * string = [NSString stringWithUTF8String:rest];
-    NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-
-    ssc_answer(cli->cli_ssc, (char *)[[args objectForKey:@"sdp"] UTF8String], SIP_200_OK);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          ssc_answer(cli->cli_ssc, (char *)[[args objectForKey:@"sdp"] UTF8String], SIP_200_OK);
+      }
   }
   else if (match("addr")) {
-    ssc_set_public_address(cli->cli_ssc, rest);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          ssc_set_public_address(cli->cli_ssc, [[args objectForKey:@"aor"] UTF8String]);
+      }
   }
   else if (match("b") || match("bye")) {
     ssc_bye(cli->cli_ssc);
@@ -406,21 +415,23 @@ static void sofsip_handle_input_cb(char *input)
     sofsip_help(cli);
   }
   else if (match("i") || match("invite")) {
-      NSError * error;
-      NSString * string = [NSString stringWithUTF8String:rest];
-      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-      
-      // SIP headers might or might not be there
-      char * sip_headers = NULL;
-      if ([args objectForKey:@"sip-headers"]) {
-          sip_headers = strdup([[args objectForKey:@"sip-headers"] UTF8String]);
-      }
-
-      ssc_invite(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"sdp"] UTF8String], sip_headers);
-    
-      if (sip_headers) {
-          free(sip_headers);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          // SIP headers might or might not be there
+          char * sip_headers = NULL;
+          if ([args objectForKey:@"sip-headers"]) {
+              sip_headers = strdup([[args objectForKey:@"sip-headers"] UTF8String]);
+          }
+          
+          ssc_invite(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"sdp"] UTF8String], sip_headers);
+          
+          if (sip_headers) {
+              free(sip_headers);
+          }
       }
   }
   else if (match("info")) {
@@ -441,16 +452,18 @@ static void sofsip_handle_input_cb(char *input)
     ssc_list(cli->cli_ssc);
   }
   else if (match("m") || match("message")) {
-      NSError * error;
-      NSString * string = [NSString stringWithUTF8String:rest];
-      NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-      NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-      
-      if ([args objectForKey:@"sip-headers"]){
-          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], [[args objectForKey:@"sip-headers"] UTF8String]);
-      }
-      else {
-          ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
+      if (rest) {
+          NSError * error;
+          NSString * string = [NSString stringWithUTF8String:rest];
+          NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+          NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+          
+          if ([args objectForKey:@"sip-headers"]){
+              ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], [[args objectForKey:@"sip-headers"] UTF8String]);
+          }
+          else {
+              ssc_message(cli->cli_ssc, [[args objectForKey:@"destination"] UTF8String], [[args objectForKey:@"password"] UTF8String], [[args objectForKey:@"message"] UTF8String], NULL);
+          }
       }
   }
   else if (match("set")) {

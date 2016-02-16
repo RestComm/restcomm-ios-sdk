@@ -37,12 +37,15 @@
 
 @interface MainTableViewController ()
 @property RCConnectivityStatus previousConnectivityStatus;
+@property UIAlertView *alert;
 @end
 
 @implementation MainTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _alert = nil;
     
     UIColor *logoOrange = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
     UIBarButtonItem * editButton = [self editButtonItem];
@@ -138,9 +141,11 @@
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized && !self.isRegistered) {
+        /*
         if (self.device.state == RCDeviceStateOffline) {
             [self.device listen];
         }
+         */
         [self register];
     }
 }
@@ -164,13 +169,17 @@
 {
     // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
     if (error) {
+        if (_alert) {
+            [_alert dismissWithClickedButtonIndex:0 animated:NO];
+            _alert = nil;
+        }
         // only alert if we have a change of the connectivity state
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
+        _alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
                                                         message:error.localizedDescription
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
-        [alert show];
+        [_alert show];
     }
 }
 

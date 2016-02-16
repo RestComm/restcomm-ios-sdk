@@ -200,7 +200,8 @@ int read_pipe[2];
     else if (reply->rc == REGISTER_SUCCESS) {
         [self.deviceDelegate sipManagerDidRegisterSuccessfully:self];
     }
-    else if (reply->rc == ERROR_REGISTER_GENERIC || reply->rc == ERROR_REGISTER_AUTHENTICATION || reply->rc == ERROR_REGISTER_TIMEOUT) {
+    else if (reply->rc == ERROR_REGISTER_GENERIC || reply->rc == ERROR_REGISTER_AUTHENTICATION || reply->rc == ERROR_REGISTER_TIMEOUT ||
+             reply->rc == ERROR_SIP_REGISTER_URI_INVALID) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:reply->rc
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
@@ -216,8 +217,8 @@ int read_pipe[2];
         [self.deviceDelegate sipManager:self didSignallingError:error];
     }
      */
-    else if (reply->rc == ERROR_INVITE_GENERIC || reply->rc == ERROR_INVITE_AUTHENTICATION || reply->rc == ERROR_INVITE_TIMEOUT ||
-             reply->rc == ERROR_INVITE_NOT_FOUND) {
+    else if (reply->rc == ERROR_SIP_INVITE_GENERIC || reply->rc == ERROR_SIP_INVITE_AUTHENTICATION || reply->rc == ERROR_SIP_INVITE_TIMEOUT ||
+             reply->rc == ERROR_SIP_INVITE_NOT_FOUND || reply->rc == ERROR_SIP_INVITE_SIP_URI_INVALID) {
         [self disconnectMedia];
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                        code:reply->rc
@@ -225,8 +226,8 @@ int read_pipe[2];
 
         [self.connectionDelegate sipManager:self didSignallingError:error];
     }
-    else if (reply->rc == ERROR_MESSAGE_GENERIC || reply->rc == ERROR_MESSAGE_AUTHENTICATION || reply->rc == ERROR_MESSAGE_TIMEOUT ||
-             reply->rc == ERROR_MESSAGE_NOT_FOUND) {
+    else if (reply->rc == ERROR_SIP_MESSAGE_GENERIC || reply->rc == ERROR_SIP_MESSAGE_AUTHENTICATION || reply->rc == ERROR_SIP_MESSAGE_TIMEOUT ||
+             reply->rc == ERROR_SIP_MESSAGE_NOT_FOUND || reply->rc == ERROR_SIP_MESSAGE_URI_INVALID) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:reply->rc
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
@@ -573,27 +574,37 @@ ssize_t pipeToSofia(const char * msg, int fd)
 
 // update given params in the SIP stack
 // return true if an actual registration was sent and false if it didn't
-- (bool)updateParams:(NSDictionary*)params
+- (UpdateParamsState)updateParams:(NSDictionary*)params deviceIsOnline:(BOOL)deviceIsOnline
+     networkIsOnline:(BOOL)networkIsOnline
 {
-    bool registrationOccured = false;
+    UpdateParamsState state = UpdateParamsStateUnassigned;
+    BOOL aorUpdated = NO;
     if ([params objectForKey:@"registrar"]) {
         if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
+            // registrar-less
             if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
-                // user requested unregister by passing empty string and previously was registered
-                NSDictionary * updatedParams = @{
-                                                 //@"registrar" : [self.params objectForKey:@"registrar"],
-                                                 @"password" : [self.params objectForKey:@"password"],
-                                                 };
-                NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
-                [self pipeToSofia:cmd];
-                //[self unregister:nil];
+                if (deviceIsOnline) {
+                    // user requested unregister by passing empty string and previously was registered
+                    NSDictionary * updatedParams = @{
+                                                     //@"registrar" : [self.params objectForKey:@"registrar"],
+                                                     @"password" : [self.params objectForKey:@"password"],
+                                                     };
+                    NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
+                    [self pipeToSofia:cmd];
+                }
+                else {
+                    // transitioning to registrar-less from non registrar-less when previously we had network connectivity while offline (because register failed)
+                    if (networkIsOnline) {
+                        state = UpdateParamsStateReestablishedRegistrarless;
+                    }
+                }
             }
         }
         else {
             // user requested register
             if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
                 // wasn't previously registraless
-                if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]]) {
+                if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]] && deviceIsOnline) {
                     // user was previously registered and used a different registrar: need to unregister first
                     NSDictionary * updatedParams = @{
                                                      //@"registrar" : [self.params objectForKey:@"registrar"],
@@ -601,8 +612,6 @@ ssize_t pipeToSofia(const char * msg, int fd)
                                                      };
                     NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
                     [self pipeToSofia:cmd];
-
-                    //[self unregister:nil];
                 }
             }
             
@@ -613,10 +622,27 @@ ssize_t pipeToSofia(const char * msg, int fd)
                                              };
             NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
             [self pipeToSofia:cmd];
-            registrationOccured = true;
+            state = UpdateParamsStateSentRegister;
+            aorUpdated = YES;
         }
         // save key/value to local params dictionary for later use
         [self.params setObject:[params objectForKey:@"registrar"] forKey:@"registrar"];
+    }
+    if ([params objectForKey:@"aor"]) {
+        [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
+
+        // only update AOR if it hasn't been updated in the register above
+        if (!aorUpdated) {
+            NSDictionary * updatedParams = @{
+                                             @"aor" : [params objectForKey:@"aor"],
+                                             };
+            
+            NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:updatedParams]];
+            [self pipeToSofia:cmd];
+        }
+    }
+    if ([params objectForKey:@"password"]) {
+        [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
     }
     if ([params objectForKey:@"turn-url"]) {
         [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
@@ -640,7 +666,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         [self pipeToSofia:cmd];
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);
-    return registrationOccured;
+    return state;
 }
 
 - (BOOL)disconnectMedia

@@ -26,6 +26,15 @@
 @protocol SipManagerDeviceDelegate;
 @protocol SipManagerConnectionDelegate;
 
+/**
+ * Device State
+ */
+typedef enum {
+    UpdateParamsStateUnassigned,
+    UpdateParamsStateSentRegister,
+    UpdateParamsStateReestablishedRegistrarless,
+} UpdateParamsState;
+
 @interface SipManager : NSObject<MediaDelegate>
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate;
 - (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params;
@@ -43,7 +52,8 @@
 - (bool)sendDtmfDigits:(NSString*)dtmf;
 - (bool)shutdown:(BOOL)restart;
 - (bool)cli:(NSString*)cmd;
-- (bool)updateParams:(NSDictionary*)params;
+- (UpdateParamsState)updateParams:(NSDictionary*)params deviceIsOnline:(BOOL)deviceIsOnline
+     networkIsOnline:(BOOL)networkIsOnline;
 - (BOOL)disconnectMedia;
 
 @property (weak) id<SipManagerDeviceDelegate> deviceDelegate;
