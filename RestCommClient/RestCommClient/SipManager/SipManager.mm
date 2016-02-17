@@ -675,7 +675,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (self.media) {
         [self.media disconnect];
         self.media = nil;
-        [self finalizeAudioSession];
+        //[self finalizeAudioSession];
         status = YES;
     }
 
