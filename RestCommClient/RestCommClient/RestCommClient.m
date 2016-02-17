@@ -57,6 +57,7 @@
                         @(ERROR_REGISTER_TIMEOUT) : @"Registration with Restcomm timed out",
                         @(ERROR_REGISTER_URI_INVALID) : @"Register URI is invalid",
                         @(ERROR_SENDING_DIGITS) : @"Error sending DTMF Digits",
+                        @(ERROR_LOST_CONNECTIVITY) : @"Lost connectivity with Restcomm",
                         };
         initializeLogging();
     }

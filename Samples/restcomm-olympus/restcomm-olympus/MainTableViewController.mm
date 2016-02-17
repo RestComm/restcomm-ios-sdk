@@ -36,7 +36,7 @@
 #import "Utils.h"
 
 @interface MainTableViewController ()
-@property RCConnectivityStatus previousConnectivityStatus;
+@property RCDeviceConnectivityType previousConnectivityStatus;
 @property UIAlertView *alert;
 @end
 
@@ -87,10 +87,10 @@
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
     if (self.device.state == RCDeviceStateOffline) {
-        [self updateConnectivityStatus:RCConnectivityStatusNone withText:@""];
+        [self updateConnectivityStatus:self.device.connectivityType withText:@""];
     }
     else {
-        [self updateConnectivityStatus:RCConnectivityStatusWiFi withText:@""];
+        [self updateConnectivityStatus:self.device.connectivityType withText:@""];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -149,6 +149,9 @@
 {
     // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
     if (error) {
+        [self updateConnectivityStatus:device.connectivityType withText:error.localizedDescription];
+        
+        /*
         if (_alert) {
             [_alert dismissWithClickedButtonIndex:0 animated:NO];
             _alert = nil;
@@ -160,6 +163,7 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [_alert show];
+         */
     }
 }
 
@@ -169,14 +173,16 @@
     self.isInitialized = YES;
     self.isRegistered = YES;
 
-    [self updateConnectivityStatus:RCConnectivityStatusWiFi withText:nil];
+    [self updateConnectivityStatus:device.connectivityType withText:nil];
 }
 
+/*
 - (void)deviceDidInitializeSignaling:(RCDevice *)device
 {
     self.isInitialized = YES;
     self.isRegistered = YES;
 }
+ */
 
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
@@ -232,13 +238,14 @@
 {
     
 }
-
+/*
 - (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)status
 {
     [self updateConnectivityStatus:status withText:nil];
 }
+ */
 
-- (void)updateConnectivityStatus:(RCConnectivityStatus)status withText:(NSString *)text
+- (void)updateConnectivityStatus:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
     NSString * imageName = @"inapp-icon-30x30.png";
 
@@ -250,15 +257,15 @@
     NSMutableArray * itemsArray = [[NSMutableArray alloc] init];
 
     NSString * defaultText = nil;
-    if (status == RCConnectivityStatusNone) {
+    if (status == RCDeviceConnectivityTypeNone) {
         defaultText = @"Lost connectivity";
         imageName = @"inapp-grey-icon-30x30.png";
         [itemsArray addObject:barIndicator];
     }
-    if (status == RCConnectivityStatusWiFi) {
+    if (status == RCDeviceConnectivityTypeWifi) {
         defaultText = @"Reestablished connectivity (Wifi)";
     }
-    if (status == RCConnectivityStatusCellular) {
+    if (status == RCDeviceConnectivityTypeCellularData) {
         defaultText = @"Reestablished connectivity (Cellular)";
     }
     
@@ -306,7 +313,7 @@
 // User requested new registration in 'Settings'
 - (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
 {
-    [self updateConnectivityStatus:RCConnectivityStatusNone withText:@""];
+    [self updateConnectivityStatus:RCDeviceConnectivityTypeNone withText:@""];
     
     // need to show that we are working on it
     //[self device:nil didReceiveConnectivityUpdate:RCConnectivityStatusNone];

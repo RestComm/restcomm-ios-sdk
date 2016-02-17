@@ -36,6 +36,15 @@ typedef enum {
 	RCDeviceStateBusy  /**< Device is busy */
 } RCDeviceState;
 
+/**
+ * Connectivity Type
+ */
+typedef enum {
+    RCDeviceConnectivityTypeNone = 0,
+    RCDeviceConnectivityTypeWifi,  /**< Device is connected via Wifi (given that RCDeviceState is Ready or Busy) */
+    RCDeviceConnectivityTypeCellularData,  /**< Device is connected via Cellular Data (given that RCDeviceState is Ready or Busy) */
+} RCDeviceConnectivityType;
+
 extern NSString* const RCDeviceCapabilityIncomingKey;
 extern NSString* const RCDeviceCapabilityOutgoingKey;
 extern NSString* const RCDeviceCapabilityExpirationKey;
@@ -64,6 +73,11 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @abstract Device state
  */
 @property (nonatomic) RCDeviceState state;
+
+/**
+ *  @abstract Device connectivity type, given that RCDeviceState is Ready or Busy
+ */
+@property (nonatomic) RCDeviceConnectivityType connectivityType;
 
 /**
  *  @abstract Device capabilities (**Not Implemented yet**)

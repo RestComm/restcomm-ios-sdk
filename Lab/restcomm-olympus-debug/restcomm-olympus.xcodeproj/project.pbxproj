@@ -788,6 +788,11 @@
 				TargetAttributes = {
 					AE79D31519BC8DAD0023306C = {
 						DevelopmentTeam = H9PG74NSQT;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					AE79D33919BC8DAE0023306C = {
 						TestTargetID = AE79D31519BC8DAD0023306C;

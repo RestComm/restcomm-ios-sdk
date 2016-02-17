@@ -95,7 +95,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         RCLogNotice("[RCDevice initWithParams]");
 
         // reachability
-        self.reachabilityStatus = NotReachable;
         self.hostActive = NO;
         // check for internet connection
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
@@ -106,6 +105,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _hostReachable = [Reachability reachabilityWithHostName:@"www.google.com"];
         [_hostReachable startNotifier];
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
+        self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
         
         self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
 
@@ -167,23 +167,27 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                 // reachability status changed, notify application
                 RCLogNotice("[RCDevice listen] Reachability state has changed from: %d to: %d", self.reachabilityStatus, status);
                 self.reachabilityStatus = status;
+                self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
                 notifyApp = YES;
             }
             if (notifyApp) {
-                [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:status] afterDelay:0.0];
-                //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
+                if (status != NotReachable) {
+                    // we are reachable
+                    [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+                }
+                else {
+                    [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+                }
             }
-            //[self.delegate deviceDidStartListeningForIncomingConnections:self];
         }
         else {
             RCLogError("[RCDevice listen] No internet connectivity");
-            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:status] afterDelay:0.0];
-            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status];
+            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         }
     }
     else if (_state == RCDeviceStateReady) {
         [self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
-        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+        [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
     }
 }
 
@@ -198,15 +202,31 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self.sipManager unregister:nil];
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
-        [self.delegate device:self didStopListeningForIncomingConnections:nil];
-        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.5];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
     }
 }
 
-- (void)asyncConnectivityUpdate:(NSNumber*)status
++ (RCDeviceConnectivityType)networkStatus2ConnectivityType:(NetworkStatus)status
 {
+    // right now those 2 enums are one to one, but let's keep the conversion in case the values change at some point
+    return (RCDeviceConnectivityType)status;
+}
+
+- (void)asyncDeviceDidStartListeningForIncomingConnections
+{
+    RCLogError("[RCDevice asyncDeviceDidStartListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        [self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)status.intValue];
+        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+    }
+}
+
+- (void)asyncDeviceDidStopListeningForIncomingConnections
+{
+    RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        [self.delegate device:self didStopListeningForIncomingConnections:[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                                                                     code:ERROR_LOST_CONNECTIVITY
+                                                                                                 userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}]];
     }
 }
 
@@ -319,8 +339,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
         if (state == UpdateParamsStateReestablishedRegistrarless) {
             _state = RCDeviceStateReady;
-            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:self.reachabilityStatus] afterDelay:0.0];
-            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)self.reachabilityStatus];
+            [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         }
 
     }
@@ -371,21 +390,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
     if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
-        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.0];
-        //[self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         _state = RCDeviceStateOffline;
     }
     if (error.code == ERROR_REGISTER_AUTHENTICATION) {
-        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:RCConnectivityStatusNone] afterDelay:0.0];
-        //[self.delegate device:self didReceiveConnectivityUpdate:RCConnectivityStatusNone];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         _state = RCDeviceStateOffline;
         
         [self.delegate device:self didStopListeningForIncomingConnections:error];
-        /*
-        [self.delegate device:self didStopListeningForIncomingConnections:[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                                                                     code:ERROR_REGISTERING_AUTHENTICATION
-                                                                                                 userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:(int)error.code]}]];
-         */
     }
 }
 
@@ -393,7 +405,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     if (_state == RCDeviceStateOffline) {
         _state = RCDeviceStateReady;
-        //[self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:self.reachabilityStatus] afterDelay:0.0];
+        [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
@@ -431,13 +443,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     NetworkStatus newStatus = [_internetReachable currentReachabilityStatus];
     RCLogNotice("[RCDevice checkNetworkStatus] New reachability status: %d, RCDevice state: %d", (int)newStatus, (int)_state);
     
-    if (newStatus == NotReachable && _state != RCDeviceStateOffline) {
+    if (newStatus == NotReachable && (_state != RCDeviceStateOffline || self.reachabilityStatus != NotReachable)) {
         RCLogNotice("[RCDevice checkNetworkStatus] action: no connectivity");
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
-        [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
-        //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+        self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         return;
     }
     
@@ -447,8 +459,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             [self.sipManager shutdown:YES];
             self.reachabilityStatus = newStatus;
-            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
-            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+            self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+            [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
             return;
         }
     }
@@ -458,16 +470,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
         [self.sipManager eventLoop];
         self.reachabilityStatus = newStatus;
+        self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
         if (![self.sipManager.params objectForKey:@"registrar"] ||
             ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
             // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
             _state = RCDeviceStateReady;
-            [self performSelector:@selector(asyncConnectivityUpdate:) withObject:[NSNumber numberWithInt:newStatus] afterDelay:0.0];
-            //[self.delegate device:self didReceiveConnectivityUpdate:(RCConnectivityStatus)newStatus];
+            [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         }
     }
     
     self.reachabilityStatus = newStatus;
+    self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
     
     /*
     NetworkStatus hostStatus = [_hostReachable currentReachabilityStatus];
