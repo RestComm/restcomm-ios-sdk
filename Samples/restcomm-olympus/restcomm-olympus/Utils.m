@@ -32,8 +32,8 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
                                     @"is-first-time" : @YES,
-                                    @"sip-identification" : @"antonis",  //@"sip:ios-sdk@cloud.restcomm.com",
-                                    @"sip-password" : @"1234",
+                                    @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
+                                    @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
                                     @"turn-url" : @"https://computeengineondemand.appspot.com/turn",
                                     @"turn-username" : @"iapprtc",

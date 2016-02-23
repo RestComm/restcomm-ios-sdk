@@ -176,13 +176,13 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                     [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
                 }
                 else {
-                    [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+                    [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
                 }
             }
         }
         else {
             RCLogError("[RCDevice listen] No internet connectivity");
-            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
         }
     }
     else if (_state == RCDeviceStateReady) {
@@ -202,7 +202,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [self.sipManager unregister:nil];
         [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
     }
 }
 
@@ -220,13 +220,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
 }
 
-- (void)asyncDeviceDidStopListeningForIncomingConnections
+- (void)asyncDeviceDidStopListeningForIncomingConnections:(NSError*)error
 {
-    RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
+    RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %dconnectivity type: %d", self.state, self.connectivityType);
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        [self.delegate device:self didStopListeningForIncomingConnections:[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                                                                     code:ERROR_LOST_CONNECTIVITY
-                                                                                                 userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}]];
+        if (error == nil) {
+            error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                               code:ERROR_LOST_CONNECTIVITY
+                                           userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
+        }
+        //NSLog(@"------ Delegate: %p, Self: %p", self.delegate, self);
+        [self.delegate device:self didStopListeningForIncomingConnections:error];
     }
 }
 
@@ -382,7 +386,8 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     if (![self.sipManager.params objectForKey:@"registrar"] ||
         ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
         // when in registrar-less mode, if signaling is initialized we can notify the App that we are ready, right away (no need for registration to succeed)
-        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+        //[self.delegate deviceDidStartListeningForIncomingConnections:self];
+        [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
     }
 }
 
@@ -390,14 +395,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
     if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
         _state = RCDeviceStateOffline;
     }
     if (error.code == ERROR_REGISTER_AUTHENTICATION) {
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         _state = RCDeviceStateOffline;
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
         
-        [self.delegate device:self didStopListeningForIncomingConnections:error];
+        //[self.delegate device:self didStopListeningForIncomingConnections:error];
     }
 }
 
@@ -406,7 +411,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     if (_state == RCDeviceStateOffline) {
         _state = RCDeviceStateReady;
         [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
-        [self.delegate deviceDidStartListeningForIncomingConnections:self];
+        //[self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
 
@@ -449,7 +454,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
         return;
     }
     

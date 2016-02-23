@@ -147,7 +147,7 @@ int read_pipe[2];
         NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
 
-        [self.deviceDelegate sipManagerDidReceiveCall:self from:[args objectForKey:@"sip-uri"]];
+        [self.deviceDelegate sipManagerDidReceiveCall:self from:[Utilities usernameFromUri:[args objectForKey:@"sip-uri"]]];
         [self.activeCallParams setObject:[args objectForKey:@"sdp"] forKey:@"sdp"];
 
         // This logic was for when media processing started when INVITE arrived for incoming calls
@@ -184,7 +184,7 @@ int read_pipe[2];
         NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
         NSString* username = [whole componentsSeparatedByString:@"|"][0];
         NSString* msg = [whole componentsSeparatedByString:@"|"][1];
-        [self.deviceDelegate sipManager:self didReceiveMessageWithData:msg from:username];
+        [self.deviceDelegate sipManager:self didReceiveMessageWithData:msg from:[Utilities usernameFromUri:username]];
     }
     else if (reply->rc == INCOMING_CANCELLED) {
         [self.connectionDelegate sipManagerDidReceiveIncomingCancelled:self];
@@ -577,6 +577,10 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     // TODO: this is a very simplistic way, need to elaborate on it
     NSString * fullUri = original;
+
+    if ([original isEqualToString:@""]) {
+        return @"";
+    }
     if (![original containsString:@"sip:"]) {
         fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, domain];
     }
@@ -587,6 +591,10 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (NSString*) convert2FullDomain:(NSString*)original
 {
     NSString * fullUri = original;
+
+    if ([original isEqualToString:@""]) {
+        return @"";
+    }
     if (![original containsString:@"sip:"]) {
         fullUri = [NSString stringWithFormat:@"sip:%@", original];
     }
@@ -636,10 +644,20 @@ ssize_t pipeToSofia(const char * msg, int fd)
                 }
             }
             
+            NSString * aor = @"";
+            if ([params objectForKey:@"aor"]) {
+                aor = [params objectForKey:@"aor"];
+            }
+
+            NSString * password = @"";
+            if ([params objectForKey:@"password"]) {
+                password = [params objectForKey:@"password"];
+            }
+
             NSDictionary * updatedParams = @{
-                                             @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[params objectForKey:@"registrar"]],
+                                             @"aor" : [self convert2FullURI:aor andDomain:[params objectForKey:@"registrar"]],
                                              @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
-                                             @"password" : [params objectForKey:@"password"],
+                                             @"password" : password,
                                              };
             NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
             [self pipeToSofia:cmd];

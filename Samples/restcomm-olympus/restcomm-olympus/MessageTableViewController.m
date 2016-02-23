@@ -23,7 +23,7 @@
 
 #import "MessageTableViewController.h"
 #import "InputAccessoryProxyView.h"
-#import "Utilities.h"
+//#import "Utilities.h"
 #import "LocalMessageTableViewCell.h"
 #import "RemoteMessageTableViewCell.h"
 #import "Utils.h"
@@ -68,7 +68,7 @@
         self.navigationItem.title = [self.parameters objectForKey:@"alias"];
     }
     else {
-        self.navigationItem.title = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+        self.navigationItem.title = [self.parameters objectForKey:@"username"];
     }
     
     self.messages = [[Utils messagesForSipUri:[self.parameters objectForKey:@"username"]] mutableCopy];
@@ -184,10 +184,10 @@
 // helpers
 - (void)appendToDialog:(NSString*)msg sender:(NSString*)sender
 {
-    NSString *username = [Utilities usernameFromUri:sender];
+    //NSString *username = [Utilities usernameFromUri:sender];
     // TODO: update the window title with the chat peer (do it once only)
     NSString * type = @"local";
-    if (![username isEqualToString:@"Me"]) {
+    if (![sender isEqualToString:@"Me"]) {
         type = @"remote";
         // check if the remote party already exists and if not add it
         int index = [Utils indexForContact:[self.parameters objectForKey:@"username"]];
@@ -200,9 +200,9 @@
             [alert show];
 
             // not existing
-            [Utils addContact:[NSArray arrayWithObjects:username, sender, nil]];
+            [Utils addContact:[NSArray arrayWithObjects:sender, sender, nil]];
             
-            [self.delegate messageViewController:self didAddContactWithAlias:username
+            [self.delegate messageViewController:self didAddContactWithAlias:sender
                                           sipUri:sender];
         }
     }

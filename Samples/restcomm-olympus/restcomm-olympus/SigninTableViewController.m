@@ -40,6 +40,9 @@
         //NSArray * viewControllers = [NSArray arrayWithObjects:mainViewController, nil];
         //[self.navigationController setViewControllers:viewControllers];
     }
+    self.usernameText.text = [Utils sipIdentification];
+    self.passwordText.text = [Utils sipPassword];
+    self.domainText.text = [Utils sipRegistrar];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +65,16 @@
 */
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
+    if ([self.usernameText.text isEqualToString:@""] || [self.domainText.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
+                                                        message:@"Username and Domain fields are mandatory"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return NO;
+    }
+ 
     return YES;
 }
 

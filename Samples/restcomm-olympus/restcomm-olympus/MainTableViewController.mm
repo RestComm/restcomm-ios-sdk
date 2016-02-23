@@ -36,7 +36,7 @@
 #import "Utils.h"
 
 @interface MainTableViewController ()
-@property RCDeviceConnectivityType previousConnectivityStatus;
+@property RCDeviceState previousDeviceState;
 @property UIAlertView *alert;
 @end
 
@@ -87,10 +87,14 @@
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
     if (self.device.state == RCDeviceStateOffline) {
-        [self updateConnectivityStatus:self.device.connectivityType withText:@""];
+        [self updateConnectivityStatus:self.device.state
+                   andConnectivityType:self.device.connectivityType
+                              withText:@""];
     }
     else {
-        [self updateConnectivityStatus:self.device.connectivityType withText:@""];
+        [self updateConnectivityStatus:self.device.state
+                   andConnectivityType:self.device.connectivityType
+                              withText:@""];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -147,23 +151,12 @@
 // ---------- Delegate methods for RC Device
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
+    //NSLog(@"------ didStopListeningForIncomingConnections: error: %p", error);
     // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
     if (error) {
-        [self updateConnectivityStatus:device.connectivityType withText:error.localizedDescription];
-        
-        /*
-        if (_alert) {
-            [_alert dismissWithClickedButtonIndex:0 animated:NO];
-            _alert = nil;
-        }
-        // only alert if we have a change of the connectivity state
-        _alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
-                                                        message:error.localizedDescription
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [_alert show];
-         */
+        [self updateConnectivityStatus:device.state
+                   andConnectivityType:device.connectivityType
+                              withText:error.localizedDescription];
     }
 }
 
@@ -173,7 +166,9 @@
     self.isInitialized = YES;
     self.isRegistered = YES;
 
-    [self updateConnectivityStatus:device.connectivityType withText:nil];
+    [self updateConnectivityStatus:device.state
+               andConnectivityType:device.connectivityType
+                          withText:nil];
 }
 
 /*
@@ -245,8 +240,9 @@
 }
  */
 
-- (void)updateConnectivityStatus:(RCDeviceConnectivityType)status withText:(NSString *)text
+- (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
+    //NSLog(@"------ updateConnectivityStatus: status: %d, text: %@", status, text);
     NSString * imageName = @"inapp-icon-30x30.png";
 
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
@@ -257,16 +253,18 @@
     NSMutableArray * itemsArray = [[NSMutableArray alloc] init];
 
     NSString * defaultText = nil;
-    if (status == RCDeviceConnectivityTypeNone) {
+    if (state == RCDeviceStateOffline) {
         defaultText = @"Lost connectivity";
         imageName = @"inapp-grey-icon-30x30.png";
         [itemsArray addObject:barIndicator];
     }
-    if (status == RCDeviceConnectivityTypeWifi) {
-        defaultText = @"Reestablished connectivity (Wifi)";
-    }
-    if (status == RCDeviceConnectivityTypeCellularData) {
-        defaultText = @"Reestablished connectivity (Cellular)";
+    if (state != RCDeviceStateOffline) {
+        if (status == RCDeviceConnectivityTypeWifi) {
+            defaultText = @"Reestablished connectivity (Wifi)";
+        }
+        if (status == RCDeviceConnectivityTypeCellularData) {
+            defaultText = @"Reestablished connectivity (Cellular)";
+        }
     }
     
     if (!text) {
@@ -284,7 +282,9 @@
     //self.navigationItem.leftBarButtonItem = restcommIconButton;
     self.navigationItem.leftBarButtonItems = itemsArray;
 
-    if (![text isEqualToString:@""] && status != self.previousConnectivityStatus) {
+    //if (![text isEqualToString:@""] && status != self.previousConnectivityStatus) {
+    if (![text isEqualToString:@""] ||
+        (![text isEqualToString:@""] && status != self.previousDeviceState)) {
         // only alert if we have a change of the connectivity state
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
                                                         message:text
@@ -293,7 +293,7 @@
                                               otherButtonTitles:nil];
         [alert show];
     }
-    self.previousConnectivityStatus = status;
+    self.previousDeviceState = state;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -313,7 +313,9 @@
 // User requested new registration in 'Settings'
 - (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
 {
-    [self updateConnectivityStatus:RCDeviceConnectivityTypeNone withText:@""];
+    [self updateConnectivityStatus:RCDeviceStateOffline
+               andConnectivityType:RCDeviceConnectivityTypeNone
+                          withText:@""];
     
     // need to show that we are working on it
     //[self device:nil didReceiveConnectivityUpdate:RCConnectivityStatusNone];
