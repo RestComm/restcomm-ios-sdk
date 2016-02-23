@@ -378,8 +378,8 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // remember that in Objective-C, it is valid to send a message to nil, so in this case if certificate-dir doesn't exist as key
         // then nill is returned and then when UTF8String is called on nil, it returns 0x0
-        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self.params objectForKey:@"aor"] UTF8String],
-                    [[self.params objectForKey:@"password"] UTF8String], [[self.params objectForKey:@"registrar"] UTF8String],
+        sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self convert2FullURI:[self.params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]] UTF8String],
+                    [[self.params objectForKey:@"password"] UTF8String], [[self convert2FullDomain:[self.params objectForKey:@"registrar"]] UTF8String],
                     [[self.params objectForKey:@"certificate-dir"] UTF8String]);
         
         [_signallingInstancesLock lock];
@@ -444,7 +444,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 // the whole pipe communication channel will be removed
 - (bool)message:(NSString*)msg to:(NSString*)recipient customHeaders:(NSDictionary*)headers
 {
-    NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:recipient, @"destination",
+    NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObjectsAndKeys:[self convert2FullURI:recipient andDomain:[self.params objectForKey:@"registrar"]], @"destination",
                            msg, @"message", nil];
     if (headers) {
         NSMutableString *serializedHeaders = [NSMutableString string];
@@ -467,7 +467,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     // INVITE has been requested need to initialize WebRTC first
     if (!self.media) {
         [self.activeCallParams removeAllObjects];
-        [self.activeCallParams setObject:recipient forKey:@"destination"];
+        [self.activeCallParams setObject:[self convert2FullURI:recipient andDomain:[self.params objectForKey:@"registrar"]] forKey:@"destination"];
         if (headers) {
             [self.activeCallParams setObject:headers forKey:@"sip-headers"];
         }
@@ -572,6 +572,27 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return true;
 }
 
+// take a short destination of the form 'bob' and create full SIP URI out of it: 'sip:bob@<domain>'
+- (NSString*) convert2FullURI:(NSString*)original andDomain:(NSString*)domain
+{
+    // TODO: this is a very simplistic way, need to elaborate on it
+    NSString * fullUri = original;
+    if (![original containsString:@"sip:"]) {
+        fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, domain];
+    }
+    return fullUri;
+}
+
+// take a short domain of the form 'cloud.restcomm.com' and create full SIP domain out of it: 'sip:cloud.restcomm.com'
+- (NSString*) convert2FullDomain:(NSString*)original
+{
+    NSString * fullUri = original;
+    if (![original containsString:@"sip:"]) {
+        fullUri = [NSString stringWithFormat:@"sip:%@", original];
+    }
+    return fullUri;
+}
+
 // update given params in the SIP stack
 // return true if an actual registration was sent and false if it didn't
 - (UpdateParamsState)updateParams:(NSDictionary*)params deviceIsOnline:(BOOL)deviceIsOnline
@@ -616,8 +637,8 @@ ssize_t pipeToSofia(const char * msg, int fd)
             }
             
             NSDictionary * updatedParams = @{
-                                             @"aor" : [params objectForKey:@"aor"],
-                                             @"registrar" : [params objectForKey:@"registrar"],
+                                             @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[params objectForKey:@"registrar"]],
+                                             @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
                                              @"password" : [params objectForKey:@"password"],
                                              };
             NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
@@ -634,7 +655,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         // only update AOR if it hasn't been updated in the register above
         if (!aorUpdated) {
             NSDictionary * updatedParams = @{
-                                             @"aor" : [params objectForKey:@"aor"],
+                                             @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]],
                                              };
             
             NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:updatedParams]];
@@ -659,7 +680,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
     if (params == nil) {
         NSDictionary * updatedParams = @{
-                                         @"registrar" : [self.params objectForKey:@"registrar"],
+                                         @"registrar" : [self convert2FullDomain:[self.params objectForKey:@"registrar"]],
                                          };
 
         NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];

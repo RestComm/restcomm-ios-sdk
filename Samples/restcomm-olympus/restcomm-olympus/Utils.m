@@ -31,24 +31,25 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
-                                    @"placeholder-bool" : @YES,
-                                    @"sip-identification" : @"sip:ios-sdk@cloud.restcomm.com",
+                                    @"is-first-time" : @YES,
+                                    @"sip-identification" : @"antonis",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"1234",
-                                    @"sip-registrar" : @"",
+                                    @"sip-registrar" : @"cloud.restcomm.com",
                                     @"turn-url" : @"https://computeengineondemand.appspot.com/turn",
                                     @"turn-username" : @"iapprtc",
                                     @"turn-password" : @"4080218913",
-                                    @"turn-candidate-timeout" : @"5",                                    @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
+                                    @"turn-candidate-timeout" : @"5",
+                                    @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
-                                        @[@"Play App", @"sip:+1234@cloud.restcomm.com"],
-                                        @[@"Say App", @"sip:+1235@cloud.restcomm.com"],
-                                        @[@"Gather App", @"sip:+1236@cloud.restcomm.com"],
-                                        @[@"Conference Admin App", @"sip:+1311@cloud.restcomm.com"],
-                                        @[@"Conference App", @"sip:+1310@cloud.restcomm.com"],
+                                        @[@"Play App", @"+1234"],  //@"sip:+1234@cloud.restcomm.com"],
+                                        @[@"Say App", @"+1235"],  //@"sip:+1235@cloud.restcomm.com"],
+                                        @[@"Gather App", @"+1236"],  //@"sip:+1236@cloud.restcomm.com"],
+                                        @[@"Conference Admin App", @"+1311"],  //@"sip:+1311@cloud.restcomm.com"],
+                                        @[@"Conference App", @"+1310"],  //@"sip:+1310@cloud.restcomm.com"],
                                         ],
                                     @"chat-history" :   // a dictionary of chat histories (key is remote party full sip URI)
                                     @{
-                                        @"sip:alice@cloud.restcomm.com" : @[
+                                        @"alice" : @[  //@"sip:alice@cloud.restcomm.com" : @[
                                                 @{
                                                     @"text" : @"Hello Alice",
                                                     @"type" : @"local",
@@ -62,7 +63,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                                     @"type" : @"local",
                                                     },
                                                 ],
-                                        @"sip:bob@cloud.restcomm.com" : @[
+                                        @"bob" : @[  //@"sip:bob@cloud.restcomm.com" : @[
                                                 @{
                                                     @"text" : @"Is Bob around?",
                                                     @"type" : @"local",
@@ -198,6 +199,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     return [appDefaults stringForKey:@"turn-candidate-timeout"];
 }
 
++ (BOOL)isFirstTime
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:@"is-first-time"] boolValue];
+}
+
 + (int)contactCount
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -330,6 +337,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     [appDefaults setObject:turnCandidateTimeout forKey:@"turn-candidate-timeout"];
+}
+
++ (void)updateIsFirstTime:(BOOL)isFirstTime
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSNumber numberWithBool:isFirstTime] forKey:@"is-first-time"];
 }
 
 

@@ -56,8 +56,8 @@
     
     self.navigationItem.title = @"SIP Settings";
     
-    // mail screen (i.e. contacts) should be at the bottom of the stack
-    self.delegate = [self.navigationController.viewControllers objectAtIndex:0];
+    // main screen (i.e. contacts) should be at index 1 of the stack (index 0 is the signin screen that however only shows up the first time; the rest of the times it just pushes the contacts screen right away and isn't visible at all)
+    self.delegate = [self.navigationController.viewControllers objectAtIndex:1];
 }
 
 // Call this method somewhere in your view controller setup code.

@@ -482,7 +482,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="mGK-PW-hGH" kind="relationship" relationship="rootViewController" id="aA7-51-SNo"/>
+                        <segue destination="xFk-Dj-QQv" kind="relationship" relationship="rootViewController" id="mIt-6o-9qB"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bGh-fx-qc6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1414,7 +1414,7 @@
         <!--Contacts-->
         <scene sceneID="h89-Id-fUC">
             <objects>
-                <tableViewController id="mGK-PW-hGH" customClass="MainTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="contacts-controller" id="mGK-PW-hGH" customClass="MainTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="BB7-3e-WnX">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1718,6 +1718,114 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pN2-4h-q0X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-45" y="-750"/>
+        </scene>
+        <!--Olympus Sign In-->
+        <scene sceneID="a3w-Od-PCu">
+            <objects>
+                <tableViewController storyboardIdentifier="signin-controller" id="xFk-Dj-QQv" customClass="SigninTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="iN7-XL-DbP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection headerTitle="Username" footerTitle="User identity, like Bob" id="df9-l8-2gN">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ctU-nQ-35h">
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctU-nQ-35h" id="cUO-JC-90Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="bob" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wiR-vZ-N6H">
+                                                    <rect key="frame" x="8" y="8" width="584" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="wiR-vZ-N6H" secondAttribute="bottom" constant="-2.5" id="Ubg-Wm-rsW"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="wiR-vZ-N6H" secondAttribute="trailing" id="cfr-pf-gwx"/>
+                                                <constraint firstAttribute="topMargin" secondItem="wiR-vZ-N6H" secondAttribute="top" id="tFp-5B-jq4"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="wiR-vZ-N6H" secondAttribute="leading" id="wVK-pd-6CB"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Password" footerTitle="Password for authentication with Restcomm" id="gJ6-Es-qeh">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="EKK-Ow-vcS">
+                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EKK-Ow-vcS" id="FJO-i7-GFb">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ctv-gL-8Zw">
+                                                    <rect key="frame" x="8" y="9" width="584" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="ctv-gL-8Zw" secondAttribute="trailing" id="PtQ-r2-63c"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="ctv-gL-8Zw" secondAttribute="bottom" constant="-3" id="brY-6X-YkB"/>
+                                                <constraint firstItem="ctv-gL-8Zw" firstAttribute="top" secondItem="FJO-i7-GFb" secondAttribute="topMargin" constant="1" id="v8j-fa-kpl"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="ctv-gL-8Zw" secondAttribute="leading" id="zGn-2B-Q9b"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Domain" footerTitle="Domain for your Restcomm instance, like cloud.restcomm.com" id="rEQ-bo-ufB">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="emL-0q-JIF">
+                                        <rect key="frame" x="0.0" y="335" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emL-0q-JIF" id="fH0-Zt-U0J">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="cloud.restcomm.com" placeholder="cloud.restcomm.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ih4-3S-yb9">
+                                                    <rect key="frame" x="8" y="10" width="584" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="Ih4-3S-yb9" secondAttribute="leading" id="9T6-o8-ncW"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Ih4-3S-yb9" secondAttribute="trailing" id="AAV-cv-xcW"/>
+                                                <constraint firstItem="Ih4-3S-yb9" firstAttribute="top" secondItem="fH0-Zt-U0J" secondAttribute="topMargin" constant="2" id="mHw-IK-bPh"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Ih4-3S-yb9" secondAttribute="bottom" constant="-4" id="spT-rK-A9K"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="xFk-Dj-QQv" id="rD9-xl-b0c"/>
+                            <outlet property="delegate" destination="xFk-Dj-QQv" id="3RO-T0-hJ7"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Olympus Sign In" id="5MP-5y-zav">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="LNv-Wn-2wc">
+                            <color key="tintColor" red="0.8901960784313725" green="0.26666666666666666" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="mGK-PW-hGH" kind="show" identifier="invoke-contacts" id="Rmd-L7-wwt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="domainText" destination="Ih4-3S-yb9" id="XjP-ai-9YP"/>
+                        <outlet property="passwordText" destination="ctv-gL-8Zw" id="LTK-YV-592"/>
+                        <outlet property="usernameText" destination="wiR-vZ-N6H" id="aMR-tC-Yi2"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gIe-gV-gGs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-45" y="-99"/>
         </scene>
     </scenes>
     <resources>

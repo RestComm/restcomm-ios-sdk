@@ -41,6 +41,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSString*)turnUsername;
 + (NSString*)turnPassword;
 + (NSString*)turnCandidateTimeout;
++ (BOOL)isFirstTime;
 
 + (void)updateSipIdentification:(NSString*)sipIdentification;
 + (void)updateSipPassword:(NSString*)sipPassword;
@@ -49,6 +50,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (void)updateTurnUsername:(NSString*)turnUsername;
 + (void)updateTurnPassword:(NSString*)turnPassword;
 + (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout;
++ (void)updateIsFirstTime:(BOOL)isFirstTime;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;

@@ -171,6 +171,7 @@
 		AEC39AE21A5AE05D00B155E4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE11A5AE05D00B155E4 /* CoreMedia.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
+		AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECA05521C7772F800EB9737 /* SigninTableViewController.m */; };
 		AECF5C201C6210D6002369F6 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */; };
 		AECF5C211C6210D6002369F6 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */; };
 		AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */; };
@@ -397,6 +398,8 @@
 		AEC39AE41A5AE11100B155E4 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		AECA05511C7772F800EB9737 /* SigninTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninTableViewController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SigninTableViewController.h"; sourceTree = "<group>"; };
+		AECA05521C7772F800EB9737 /* SigninTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninTableViewController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SigninTableViewController.m"; sourceTree = "<group>"; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50.png"; sourceTree = "<group>"; };
 		AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50@2x.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50@2x.png"; sourceTree = "<group>"; };
@@ -561,6 +564,8 @@
 				AEA495DB1C2997F6000D9762 /* main.m */,
 				AEA495DC1C2997F6000D9762 /* MainNavigationController.h */,
 				AEA495DD1C2997F6000D9762 /* MainNavigationController.m */,
+				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
+				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
 				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
 				AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */,
 				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
@@ -1027,6 +1032,7 @@
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,
 				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
+				AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
 				AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */,
 				AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */,
