@@ -19,8 +19,10 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
+
 #import "ICESettingsTableViewController.h"
 #import "MainNavigationController.h"
+#import "ICESettingsNavigationController.h"
 #import "Utils.h"
 
 @interface ICESettingsTableViewController ()
@@ -31,6 +33,9 @@
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *secondsLabel;
 @property UITextField * activeField;
 @end
+
+/* Note that the reason we are using a separate Navigation Controller for this controller is that there's an issue with iOS and Bar Button items don't show right when on a modal controller
+ */
 
 @implementation ICESettingsTableViewController
 
@@ -55,6 +60,8 @@
     
     [self.view addGestureRecognizer:tapGesture];
     [self registerForKeyboardNotifications];
+    
+    self.device = ((ICESettingsNavigationController*)self.navigationController).device;
     
     self.navigationItem.title = @"ICE Settings";
 }
@@ -176,11 +183,13 @@
     [super viewWillDisappear:animated];
 }
 
+/*
 - (IBAction)backPressed
 {
     //[self dismissViewControllerAnimated:YES completion:nil]; // ios 6
     [self update];
 }
+ */
 
 - (void)hideKeyBoard
 {
@@ -211,6 +220,29 @@
     [params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
 
     [self.device updateParams:params];
+}
+
+- (IBAction)cancelPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)savePressed:(id)sender
+{
+    /*
+    if ([self.aorText.text isEqualToString:@""] || [self.registrarText.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
+                                                        message:@"Username and Domain fields are mandatory"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+     */
+    [self update];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)sliderChanged:(id)sender

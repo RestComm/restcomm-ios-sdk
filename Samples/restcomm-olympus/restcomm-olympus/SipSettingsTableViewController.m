@@ -21,6 +21,7 @@
  */
 #import "SipSettingsTableViewController.h"
 #import "MainNavigationController.h"
+#import "SIPSettingsNavigationController.h"
 #import "Utils.h"
 
 @interface SipSettingsTableViewController ()
@@ -56,8 +57,11 @@
     
     self.navigationItem.title = @"SIP Settings";
     
+    self.device = ((SIPSettingsNavigationController*)self.navigationController).device;
     // main screen (i.e. contacts) should be at index 1 of the stack (index 0 is the signin screen that however only shows up the first time; the rest of the times it just pushes the contacts screen right away and isn't visible at all)
-    self.delegate = [self.navigationController.viewControllers objectAtIndex:1];
+    SIPSettingsNavigationController * settingsNavigationController = (SIPSettingsNavigationController*)self.navigationController;
+    // remember that the SettingsNavigationController has as parent another Navigation Controller the root one
+    self.delegate = [settingsNavigationController.navigationController.viewControllers objectAtIndex:1];
 }
 
 // Call this method somewhere in your view controller setup code.
@@ -137,11 +141,13 @@
     [super viewWillDisappear:animated];
 }
 
+/*
 - (IBAction)backPressed
 {
     //[self dismissViewControllerAnimated:YES completion:nil]; // ios 6
     [self update];
 }
+ */
 
 - (void)hideKeyBoard
 {
@@ -186,6 +192,35 @@
             [self.delegate sipSettingsTableViewController:self didUpdateRegistrationWithString:self.registrarText.text];
         }
     }
+}
+- (IBAction)savePressed:(id)sender
+{
+    if ([self.aorText.text isEqualToString:@""] || [self.registrarText.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
+                                                        message:@"Username and Domain fields are mandatory"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    if ([self.aorText.text containsString:@"sip:"] || [self.aorText.text containsString:@"@"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
+                                                        message:@"Please avoid using a SIP URI for Username. User a plain username instead, like 'bob' or 'alice'"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+
+    [self update];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)cancelPressed:(id)sender {
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotate

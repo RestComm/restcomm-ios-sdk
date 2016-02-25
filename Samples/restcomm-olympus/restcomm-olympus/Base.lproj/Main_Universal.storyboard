@@ -20,7 +20,7 @@
                             <tableViewSection headerTitle="Username" footerTitle="Username, like 'bob'" id="gUk-PS-iMr">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zMd-S6-3Bo">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMd-S6-3Bo" id="Tce-CD-syV">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -39,7 +39,7 @@
                             <tableViewSection headerTitle="Password" footerTitle="Password for authentication with Restcomm" id="fav-pi-aop">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="VOq-3s-3it">
-                                        <rect key="frame" x="0.0" y="160" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VOq-3s-3it" id="gr9-VR-b3z">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -58,7 +58,7 @@
                             <tableViewSection headerTitle="Domain" footerTitle="Domain for your Restcomm instance, like 'cloud.restcomm.com'" id="e03-Nj-qx5">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="iCd-aL-NGt">
-                                        <rect key="frame" x="0.0" y="271" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="335" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iCd-aL-NGt" id="3SG-3w-hny">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -80,6 +80,20 @@
                             <outlet property="delegate" destination="zeM-0b-Nxo" id="OlA-1J-QOC"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="z4X-dr-ZCF">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="72g-pJ-yex">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="cancelPressed:" destination="zeM-0b-Nxo" id="DJg-lg-KAP"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="lKZ-ut-Yhh">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="savePressed:" destination="zeM-0b-Nxo" id="mo1-Is-FUo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="aorText" destination="eeT-HX-HJn" id="jIH-Sc-TRk"/>
                         <outlet property="passwordText" destination="FEk-ci-Zii" id="nUd-rC-GjO"/>
@@ -88,7 +102,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z48-uq-mHv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="767" y="649"/>
+            <point key="canvasLocation" x="1579" y="649"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="uZs-gT-pg2">
@@ -102,7 +116,7 @@
                             <tableViewSection headerTitle="TURN URL" footerTitle="Leave empty to disable TURN" id="mlL-ci-LXb">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZYW-8D-gpd">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZYW-8D-gpd" id="cu2-5n-32X">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -138,7 +152,7 @@
                             <tableViewSection headerTitle="TURN Username" id="aH6-lN-Nqu">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8ba-lf-S0e">
-                                        <rect key="frame" x="0.0" y="160" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8ba-lf-S0e" id="EQj-ob-GXB">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -163,7 +177,7 @@
                             <tableViewSection headerTitle="TURN Password" id="dUW-hv-kJ0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ekh-T3-iEN">
-                                        <rect key="frame" x="0.0" y="254" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="318" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekh-T3-iEN" id="Hdp-CX-n1E">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -188,7 +202,7 @@
                             <tableViewSection headerTitle="TURN candidates timeout" footerTitle="How long to wait for ICE candidates when TURN is enabled" id="Ind-e6-FBc">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eq1-i0-FiD">
-                                        <rect key="frame" x="0.0" y="348" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="412" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eq1-i0-FiD" id="kgr-7b-i9w">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -247,6 +261,20 @@
                             <outlet property="delegate" destination="5hQ-UP-sNc" id="c68-WB-Gfj"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="InL-JX-5JP">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="DfI-HG-0lu">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="cancelPressed:" destination="5hQ-UP-sNc" id="GkR-la-bqu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Q7b-Wo-LMj">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="savePressed:" destination="5hQ-UP-sNc" id="uSe-u9-utY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="secondsLabel" destination="w6y-vF-0cb" id="QED-5F-WAe"/>
                         <outlet property="timeoutSlider" destination="zu3-lb-RJs" id="X65-J1-9pw"/>
@@ -257,7 +285,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pr3-TY-YEH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1506" y="649"/>
+            <point key="canvasLocation" x="1579" y="1357"/>
         </scene>
         <!--About Table View Controller-->
         <scene sceneID="SrI-ds-FjP">
@@ -378,7 +406,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zYN-XP-mzl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="693" y="1362"/>
+            <point key="canvasLocation" x="767" y="2112"/>
         </scene>
         <!--Settings Table View Controller-->
         <scene sceneID="zew-4v-gIk">
@@ -411,7 +439,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="zeM-0b-Nxo" kind="show" identifier="invoke-sip-settings" id="3XI-Z7-p42"/>
+                                            <segue destination="aVL-kl-b3j" kind="modal" identifier="invoke-sip-settings" id="3XI-Z7-p42"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="7n1-bC-Cyb">
@@ -434,7 +462,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="5hQ-UP-sNc" kind="show" identifier="invoke-ice-settings" id="8XP-Ag-C4b"/>
+                                            <segue destination="e0P-Rc-ZAp" kind="modal" identifier="invoke-ice-settings" id="8XP-Ag-C4b"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="OC6-Ul-DvT">
@@ -471,7 +499,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ee-Wt-sYt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-45" y="649"/>
+            <point key="canvasLocation" x="-45" y="972"/>
         </scene>
         <!--Main Navigation Controller-->
         <scene sceneID="NXj-Th-fCB">
@@ -1726,7 +1754,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="iN7-XL-DbP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Username" footerTitle="Username, like 'bob'" id="df9-l8-2gN">
                                 <cells>
@@ -1826,6 +1854,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gIe-gV-gGs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-45" y="-99"/>
+        </scene>
+        <!--Settings Navigation Controller-->
+        <scene sceneID="ell-D7-Exk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aVL-kl-b3j" customClass="SIPSettingsNavigationController" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vke-47-IG3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="zeM-0b-Nxo" kind="relationship" relationship="rootViewController" id="t18-iD-epW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AJt-YD-AxY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="767" y="649"/>
+        </scene>
+        <!--Settings Navigation Controller-->
+        <scene sceneID="cgr-RV-zOv">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="e0P-Rc-ZAp" customClass="ICESettingsNavigationController" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1s4-R3-kUs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="5hQ-UP-sNc" kind="relationship" relationship="rootViewController" id="fbh-OO-V5b"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ecy-Rj-JYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="767" y="1357"/>
         </scene>
     </scenes>
     <resources>

@@ -74,6 +74,16 @@
         [alert show];
         return NO;
     }
+    
+    if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
+                                                        message:@"Please avoid using a SIP URI for Username. User a plain username instead, like 'bob' or 'alice'"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return NO;
+    }
  
     return YES;
 }

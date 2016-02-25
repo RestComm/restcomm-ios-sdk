@@ -23,8 +23,13 @@
 #import "SettingsTableViewController.h"
 #import "SipSettingsTableViewController.h"
 #import "ICESettingsTableViewController.h"
+#import "SIPSettingsNavigationController.h"
+#import "ICESettingsNavigationController.h"
 
 @implementation SettingsTableViewController
+
+/* Note that the reason we are using a separate Navigation Controller for this controller is that there's an issue with iOS and Bar Button items don't show right when on a modal controller
+ */
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,21 +56,12 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"invoke-sip-settings"]) {
-        SipSettingsTableViewController * sipSettingsTableViewController = [segue destinationViewController];
-        sipSettingsTableViewController.device = self.device;
+        SIPSettingsNavigationController * settingsNavigationController = [segue destinationViewController];
+        settingsNavigationController.device = self.device;
     }
     if ([segue.identifier isEqualToString:@"invoke-ice-settings"]) {
-        ICESettingsTableViewController * ICESettingsTableViewController = [segue destinationViewController];
-        ICESettingsTableViewController.device = self.device;
+        ICESettingsNavigationController * settingsNavigationController = [segue destinationViewController];
+        settingsNavigationController.device = self.device;
     }
-
-    /*
-    if ([segue.identifier isEqualToString:@"invoke-message-controller"]) {
-        MessageViewController *callViewController = [segue destinationViewController];
-        callViewController.device = self.device;
-        callViewController.parameters = [[NSMutableDictionary alloc] init];
-        [callViewController.parameters setObject:self.sipUriText.text forKey:@"username"];
-    }
-     */
 }
 @end
