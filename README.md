@@ -15,7 +15,7 @@ Reference Documentation
 
 Appledoc style reference documentation can be found at:
 
-http://mobicents.github.io/restcomm-ios-sdk/doc/html/
+http://restcomm.github.io/restcomm-ios-sdk/doc/html/
 
 OS/Hardware requirements
 ================
@@ -29,11 +29,11 @@ Here's the .ipa for the Olympus Restcomm iOS App utilizing the RestComm Client S
 
 Want to Contribute ? 
 ========
-[See our Contributors Guide](https://github.com/Mobicents/RestComm/wiki/Contribute-to-RestComm)
+[See our Contributors Guide](https://github.com/Restcomm/Restcomm-Connect/wiki/Contribute-to-RestComm)
 
 Issue Tracking and Roadmap
 ========
-[Issue Tracker](https://github.com/Mobicents/restcomm-ios-sdk/issues)
+[Issue Tracker](https://github.com/restcomm/restcomm-ios-sdk/issues)
 
 
 Questions ?
