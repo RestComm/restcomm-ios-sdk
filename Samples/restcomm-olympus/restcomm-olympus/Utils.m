@@ -32,6 +32,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
                                     @"is-first-time" : @YES,
+                                    @"pending-interapp-uri" : @"",  // has another app sent us a URL to call?
                                     @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
@@ -157,6 +158,21 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     return -1;
 }
 
++ (NSString*)sipUri2Alias:(NSString*)sipUri
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
+    
+    for (int i = 0; i < [contacts count]; i++) {
+        NSArray * contact = [contacts objectAtIndex:i];
+        if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
+            return [contact objectAtIndex:0];
+        }
+    }
+    
+    return @"";
+}
+
 + (NSString*)sipIdentification
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -203,6 +219,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     return [[appDefaults stringForKey:@"is-first-time"] boolValue];
+}
+
++ (NSString*)pendingInterappUri
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:@"pending-interapp-uri"];
 }
 
 + (int)contactCount
@@ -345,6 +367,45 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     [appDefaults setObject:[NSNumber numberWithBool:isFirstTime] forKey:@"is-first-time"];
 }
 
++ (void)updatePendingInterappUri:(NSString*)uri
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:uri forKey:@"pending-interapp-uri"];
+}
+
++ (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri
+{
+    /* Here are the possible URLs we need to handle here:
+     * sip://bob@telestax.com
+     * restcomm-sip://bob@telestax.com
+     * tel://+1235
+     * restcomm-tel://+1235@telestax.com
+     * client://bob
+     * restcomm-client://bob
+     * Important note: the browser only recognizes URLs starting with 'scheme://', not 'scheme:'
+     */
+
+    //NSLog(@"convertInterappUri2RestcommUri URL scheme:%@", [uri scheme]);
+    //NSLog(@"convertInterappUri2RestcommUri URL host:%@", [uri host]);
+    //NSLog(@"convertInterappUri2RestcommUri URL query: %@", [uri query]);
+    NSLog(@"convertInterappUri2RestcommUri URL absolute string: %@", [uri absoluteString]);
+
+    NSString * final = nil;
+    if ([[uri scheme] containsString:@"sip"]) {
+        // either 'sip' or 'restcomm-sip'
+        // normalize 'restcomm-sip' and replace with 'sip'
+        NSString * normalized = [[uri absoluteString] stringByReplacingOccurrencesOfString:@"restcomm-sip" withString:@"sip"];
+        // also replace '://' with ':' so that the SIP stack can understand it
+        final = [normalized stringByReplacingOccurrencesOfString:@"://" withString:@":"];
+    }
+    else {
+        // either 'tel', 'restcomm-tel', 'client' or 'restcomm-client'. Return just the host part, like 'bob' or '1235' that the Restcomm SDK can handle
+        final = [NSString stringWithFormat:@"%@", [uri host]];
+    }
+    
+    NSLog(@"convertInterappUri2RestcommUri after conversion: %@", final);
+    return final;
+}
 
 /*
 + (void) setGenericType:(NSString*)type forLevel:(NSNumber*)level withValue:(NSNumber*)value updateType:(NSString*)updateType

@@ -22,12 +22,14 @@
 
 #import "AppDelegate.h"
 #import "Utils.h"
+#import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"application:didFinishLaunchingWithOptions");
     // register the preference defaults early with default values
     [Utils setupUserDefaults];
 
@@ -68,6 +70,22 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
+{
+    NSLog(@"application:willFinishLaunchingWithOptions");
+
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    NSLog(@"application:openURL:");
+    [Utils updatePendingInterappUri:[Utils convertInterappUri2RestcommUri:url]];
+    
+    return YES;
 }
 
 @end

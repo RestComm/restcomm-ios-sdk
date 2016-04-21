@@ -29,6 +29,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSArray*)contactForIndex:(int)index;
 //+ (int)indexForContact:(NSString*)alias;
 // if contact is not found returns -1
++ (NSString*)sipUri2Alias:(NSString*)sipUri;
 + (int)indexForContact:(NSString*)sipUri;
 + (int)contactCount;
 + (void)addContact:(NSArray*)contact;
@@ -42,6 +43,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSString*)turnPassword;
 + (NSString*)turnCandidateTimeout;
 + (BOOL)isFirstTime;
++ (NSString*)pendingInterappUri;
 
 + (void)updateSipIdentification:(NSString*)sipIdentification;
 + (void)updateSipPassword:(NSString*)sipPassword;
@@ -51,7 +53,9 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (void)updateTurnPassword:(NSString*)turnPassword;
 + (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout;
 + (void)updateIsFirstTime:(BOOL)isFirstTime;
++ (void)updatePendingInterappUri:(NSString*)uri;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
++ (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
 @end

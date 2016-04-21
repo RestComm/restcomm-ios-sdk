@@ -169,6 +169,33 @@
     [self updateConnectivityStatus:device.state
                andConnectivityType:device.connectivityType
                           withText:nil];
+    
+    NSString * pendingInterapUri = [Utils pendingInterappUri];
+    if (pendingInterapUri && ![pendingInterapUri isEqualToString:@""]) {
+        // we have a request from another iOS to make a call to the passed URI
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+        
+        // setup call view controller
+        //CallViewController *callViewController = [[CallViewController alloc] init];
+        callViewController.delegate = self;
+        callViewController.device = self.device;
+        callViewController.parameters = [[NSMutableDictionary alloc] init];
+        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+        // search through the contacts if the given URI is known and if so use its alias, if not just use the URI
+        NSString * alias = [Utils sipUri2Alias:pendingInterapUri];
+        if ([alias isEqualToString:@""]) {
+            alias = pendingInterapUri;
+        }
+        [callViewController.parameters setObject:alias forKey:@"alias"];
+        [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+        
+        [self presentViewController:callViewController animated:YES completion:nil];
+        
+        // clear it so that it doesn't pop again
+        [Utils updatePendingInterappUri:@""];
+    }
 }
 
 /*
@@ -218,6 +245,13 @@
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"] forKey:@"username"];
+    // try to 'resolve' the from to the contact name if we do have a contact for that
+    NSString * alias = [Utils sipUri2Alias:[connection.parameters objectForKey:@"from"]];
+    if ([alias isEqualToString:@""]) {
+        alias = [connection.parameters objectForKey:@"from"];
+    }
+    [callViewController.parameters setObject:alias forKey:@"alias"];
+
     //NSString *username = [Utilities usernameFromUri:sender];
     // TODO: change this once I implement the incoming call caller id
     //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];

@@ -24,8 +24,71 @@
 	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-sip</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-sip</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-tel</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-tel</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-client</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.sip</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sip</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.tel</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tel</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>client</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>BETA4#9</string>
+	<string>BETA4#10</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

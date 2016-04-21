@@ -214,7 +214,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)asyncDeviceDidStartListeningForIncomingConnections
 {
-    RCLogError("[RCDevice asyncDeviceDidStartListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
+    RCLogNotice("[RCDevice asyncDeviceDidStartListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
@@ -222,7 +222,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)asyncDeviceDidStopListeningForIncomingConnections:(NSError*)error
 {
-    RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %dconnectivity type: %d", self.state, self.connectivityType);
+    if (error) {
+        RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
+    }
+    else {
+        RCLogNotice("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
+    }
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         if (error == nil) {
             error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]

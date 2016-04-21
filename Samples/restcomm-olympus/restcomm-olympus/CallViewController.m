@@ -129,7 +129,7 @@
             }
             
             //NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
-            self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:@"username"]];
+            self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:@"alias"]];
             self.statusLabel.text = @"Initiating Call...";
             // *** SIP custom headers: uncomment this to use SIP custom headers
             //[self.parameters setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
@@ -147,7 +147,7 @@
         }
         if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
             //NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
-            self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"username"]];
+            self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
             self.statusLabel.text = @"Call received";
         }
     }

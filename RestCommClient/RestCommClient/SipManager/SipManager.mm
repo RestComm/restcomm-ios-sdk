@@ -581,9 +581,17 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([original isEqualToString:@""]) {
         return @"";
     }
-    if (![original containsString:@"sip:"]) {
-        fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, domain];
+    if ([original containsString:@"tel:"]) {
+        // if tel-uri don't alter it
+        return fullUri;
     }
+    if ([original containsString:@"sip:"]) {
+        return fullUri;
+    }
+    
+    // on any other case build full SIP URI using sip: prefix and appending the domain
+    fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, domain];
+
     return fullUri;
 }
 
