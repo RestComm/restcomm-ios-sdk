@@ -399,11 +399,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
     RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+    /* I think this is not needed, let's keep it around for a while though in case I'm forgetting something
     if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
         _state = RCDeviceStateOffline;
     }
-    if (error.code == ERROR_REGISTER_AUTHENTICATION) {
+     */
+    if (error.code == ERROR_REGISTER_AUTHENTICATION || error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT ||
+        error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE) {
         _state = RCDeviceStateOffline;
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
         

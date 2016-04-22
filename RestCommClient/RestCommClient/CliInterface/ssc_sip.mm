@@ -834,7 +834,7 @@ void ssc_r_invite(int status, char const *phrase,
             SofiaReply reply(ERROR_SIP_INVITE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_SIP_INVITE_NOT_FOUND] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
-        else if (status == 904) {
+        else if (status == 403) {
             // authentication error
             SofiaReply reply(ERROR_SIP_INVITE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_SIP_INVITE_AUTHENTICATION] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
@@ -1521,7 +1521,7 @@ void ssc_r_message(int status, char const *phrase,
         SofiaReply reply(ERROR_SIP_MESSAGE_NOT_FOUND, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_NOT_FOUND] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
-    else if (status == 904) {
+    else if (status == 403) {
         // authentication error
         SofiaReply reply(ERROR_SIP_MESSAGE_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_AUTHENTICATION] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
@@ -1921,9 +1921,11 @@ void ssc_register(ssc_t *ssc, const char *registrar, const char * password)
     // 2. even though password for last registration is wrong, previous registration is being refreshed and confuses the user that
     // is left with the impression that no registration is occurring anymore since last was not successful (apart from that it causes
     // the RCDevice state to be invalid)
+    /*
     if ((op = ssc_oper_find_by_method(ssc, sip_method_register))) {
         ssc_oper_destroy(ssc, op);
     }
+     */
                                  
     // update proxy as well
     if (ssc->ssc_nua) {
@@ -1990,19 +1992,24 @@ void ssc_r_register(int status, char const *phrase,
         RCLogError("REGISTER failed: %03d %s", status, phrase);
         ssc_oper_destroy(ssc, op);
         //RCLogNotice("Got failed REGISTER response but silencing it since another registration has been successfully handled afterwards");
-        if (status == 904) {
+        if (status == 403) {
             // authentication error
-            SofiaReply reply(ERROR_REGISTER_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_REGISTER_AUTHENTICATION] UTF8String]);
+            SofiaReply reply(ERROR_SIP_REGISTER_AUTHENTICATION, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_AUTHENTICATION] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else if (status == 408) {
             // timeout error
-            SofiaReply reply(ERROR_REGISTER_TIMEOUT, [[RestCommClient getErrorText:ERROR_REGISTER_TIMEOUT] UTF8String]);
+            SofiaReply reply(ERROR_SIP_REGISTER_TIMEOUT, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_TIMEOUT] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
+        else if (status == 503) {
+            // timeout error
+            SofiaReply reply(ERROR_SIP_REGISTER_SERVICE_UNAVAILABLE, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_SERVICE_UNAVAILABLE] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
         else {
             // generic error
-            SofiaReply reply(ERROR_REGISTER_GENERIC, [[RestCommClient getErrorText:ERROR_REGISTER_GENERIC] UTF8String]);
+            SofiaReply reply(ERROR_SIP_REGISTER_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_GENERIC] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
     }

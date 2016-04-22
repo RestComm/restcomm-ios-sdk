@@ -1352,7 +1352,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="Username" footerTitle="For example: &quot;Bob&quot;" id="eLk-Cc-sZF">
+                            <tableViewSection headerTitle="Contact Name" footerTitle="For example: 'Daily Conference'" id="eLk-Cc-sZF">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="DG0-Xm-87p">
                                         <rect key="frame" x="0.0" y="114" width="600" height="44"/>
@@ -1377,7 +1377,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="SIP URI" footerTitle="For example: &quot;sip:alice@telestax.com&quot;. Uniquely identifies the contact" id="EwX-f7-I8o">
+                            <tableViewSection headerTitle="Restcomm Number or Client" footerTitle="For example: '+1235' or 'bob'" id="EwX-f7-I8o">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BgX-a7-w0Y">
                                         <rect key="frame" x="0.0" y="224" width="600" height="44"/>

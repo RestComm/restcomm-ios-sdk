@@ -201,7 +201,7 @@ int read_pipe[2];
         [self.deviceDelegate sipManagerDidRegisterSuccessfully:self];
     }
     else if (reply->rc == ERROR_REGISTER_GENERIC || reply->rc == ERROR_REGISTER_AUTHENTICATION || reply->rc == ERROR_REGISTER_TIMEOUT ||
-             reply->rc == ERROR_SIP_REGISTER_URI_INVALID) {
+             reply->rc == ERROR_SIP_REGISTER_URI_INVALID || reply->rc == ERROR_REGISTER_SERVICE_UNAVAILABLE) {
         NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                     code:reply->rc
                                                 userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
