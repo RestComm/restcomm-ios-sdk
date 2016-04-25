@@ -352,6 +352,7 @@
         label.textAlignment = NSTextAlignmentCenter;
         //yourLabel.center = toastView.center;
         //[yourLabel.layer setCornerRadius:30.0f];
+         
 
         
         //[self.view addSubview:toastView];

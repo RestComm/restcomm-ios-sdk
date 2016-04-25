@@ -582,8 +582,13 @@ ssize_t pipeToSofia(const char * msg, int fd)
         return @"";
     }
     if ([original containsString:@"tel:"]) {
+        // TODO: remove hack: once tel-uri is implemented in Retscomm side remove this
+        return [NSString stringWithFormat:@"%@@%@", [original stringByReplacingOccurrencesOfString:@"tel:" withString:@"sip:"], domain];
+        
+        
+        // TODO: add correct code: once tel-uri is implemented add this
         // if tel-uri don't alter it
-        return fullUri;
+        //return fullUri;
     }
     if ([original containsString:@"sip:"]) {
         return fullUri;
