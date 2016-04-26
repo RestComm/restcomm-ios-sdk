@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */; };
 		AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */; };
 		AE3E52C61C57BB7B0057F5D0 /* agent.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C41C57BB7B0057F5D0 /* agent.pem */; };
@@ -215,6 +216,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToastController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ToastController.h"; sourceTree = "<group>"; };
+		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ToastController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ToastController.m"; sourceTree = "<group>"; };
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-ios-armeabi_v7a-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
 		AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
@@ -569,6 +572,8 @@
 				AEA495D81C2997F6000D9762 /* KeypadViewController.m */,
 				AEA495D91C2997F6000D9762 /* LocalMessageTableViewCell.h */,
 				AEA495DA1C2997F6000D9762 /* LocalMessageTableViewCell.m */,
+				AE155F521CCF8658002F404E /* ToastController.h */,
+				AE155F531CCF8658002F404E /* ToastController.m */,
 				AEA495DB1C2997F6000D9762 /* main.m */,
 				AEA495DC1C2997F6000D9762 /* MainNavigationController.h */,
 				AEA495DD1C2997F6000D9762 /* MainNavigationController.m */,
@@ -1042,6 +1047,7 @@
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,
 				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
+				AE155F541CCF8658002F404E /* ToastController.m in Sources */,
 				AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
 				AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */,

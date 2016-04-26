@@ -54,7 +54,7 @@
                         @(ERROR_TEXT_MESSAGE_URI_INVALID) : @"Text message recipient URI is invalid",
                         @(ERROR_REGISTER_GENERIC) : @"Registration generic error",
                         @(ERROR_REGISTER_AUTHENTICATION) : @"Error authenticating with Restcomm",
-                        @(ERROR_REGISTER_SERVICE_UNAVAILABLE) : @"Error connecting to Restcomm; service unavailable",
+                        @(ERROR_REGISTER_SERVICE_UNAVAILABLE) : @"Error connecting to Restcomm: service unavailable",
                         @(ERROR_REGISTER_TIMEOUT) : @"Registration with Restcomm timed out",
                         @(ERROR_REGISTER_URI_INVALID) : @"Register URI is invalid",
                         @(ERROR_SENDING_DIGITS) : @"Error sending DTMF Digits",

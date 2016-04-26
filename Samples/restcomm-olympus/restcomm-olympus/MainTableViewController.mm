@@ -31,6 +31,7 @@
 #import "ContactDetailsTableViewController.h"
 #import "ContactUpdateTableViewController.h"
 
+#import "ToastController.h"
 #import "RestCommClient.h"
 #import "Utilities.h"
 #import "Utils.h"
@@ -321,49 +322,17 @@
         (![text isEqualToString:@""] && status != self.previousDeviceState)) {
         
         // only alert if we have a change of the connectivity state
+        /*
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
                                                         message:text
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
+         */
         
-        ////////
-        /*
-        UIView *toastView = [[UIView alloc] initWithFrame: CGRectMake ( 0, 0, 300, 40)];
-        [toastView.layer setCornerRadius:15.0f];
-        [toastView setBackgroundColor:[UIColor grayColor]];
-        //toastView.layer.borderWidth = 1.0;
-        //toastView.layer.borderColor = [UIColor blackColor].CGColor;
-        toastView.center = self.view.center;
-        toastView.layer.shadowColor = [UIColor blackColor].CGColor;
-        toastView.layer.shadowOffset = CGSizeMake(-2, 3);
-        toastView.layer.shadowOpacity = 0.7;
-        toastView.layer.shadowRadius = 3.0;
-
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 270, 40)];
-        [label setTextColor:[UIColor whiteColor]];
-        // wrap if needed
-        label.numberOfLines = 2;
-        //[yourLabel setBackgroundColor:[UIColor blackColor]];
-        [label setFont:[UIFont fontWithName: @"System" size: 10.0f]];
-        //[label setText:@"Hello there! Trying to figure out how long this can be. And it seems to be doing fine so far."];
-        [label setText:text];
-        label.textAlignment = NSTextAlignmentCenter;
-        //yourLabel.center = toastView.center;
-        //[yourLabel.layer setCornerRadius:30.0f];
-         
-
-        
-        //[self.view addSubview:toastView];
-        [[[UIApplication sharedApplication] keyWindow] addSubview:toastView];
-        [toastView addSubview:label];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [toastView removeFromSuperview];
-        });
-        */
-        ////////
+        // Let's use toast notifications now that we implemented them
+        [[ToastController sharedInstance] showToastWithText:text withDuration:2.0];
     }
     self.previousDeviceState = state;
 }
