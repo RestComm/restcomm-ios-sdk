@@ -186,8 +186,16 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
     }
     else if (_state == RCDeviceStateReady) {
-        [self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
-        [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        if (![self.sipManager.params objectForKey:@"registrar"] ||
+            ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+            // registraless; no registration will occur, hence we need to manually notify the app right away
+            [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        }
+        else {
+            [self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
+        }
+        //[self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        //[self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
     }
 }
 
@@ -480,15 +488,18 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
         _state == RCDeviceStateOffline) {
-        RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
-        [self.sipManager eventLoop];
-        self.reachabilityStatus = newStatus;
-        self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
-        if (![self.sipManager.params objectForKey:@"registrar"] ||
-            ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
-            // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
-            _state = RCDeviceStateReady;
-            [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+            // don't allow to go on-line while in the background (added this to fix the issue in listen() when opening app while already on-line where no notification was sent when registration succeeded)
+            RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
+            [self.sipManager eventLoop];
+            self.reachabilityStatus = newStatus;
+            self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+            if (![self.sipManager.params objectForKey:@"registrar"] ||
+                ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+                // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
+                _state = RCDeviceStateReady;
+                [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
+            }
         }
     }
     

@@ -621,6 +621,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     UpdateParamsState state = UpdateParamsStateUnassigned;
     BOOL aorUpdated = NO;
+    if (params) {
     if ([params objectForKey:@"registrar"]) {
         if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
             // registrar-less
@@ -708,10 +709,12 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([params objectForKey:@"turn-candidate-timeout"]) {
         [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
     }
+}
     // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
-    if (params == nil) {
+    else {
         NSDictionary * updatedParams = @{
                                          @"registrar" : [self convert2FullDomain:[self.params objectForKey:@"registrar"]],
+                                         @"password" : [self.params objectForKey:@"password"],
                                          };
 
         NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
