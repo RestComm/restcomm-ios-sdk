@@ -622,101 +622,101 @@ ssize_t pipeToSofia(const char * msg, int fd)
     UpdateParamsState state = UpdateParamsStateUnassigned;
     BOOL aorUpdated = NO;
     if (params) {
-    if ([params objectForKey:@"registrar"]) {
-        if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
-            // registrar-less
-            if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
-                if (deviceIsOnline) {
-                    // user requested unregister by passing empty string and previously was registered
-                    NSDictionary * updatedParams = @{
-                                                     //@"registrar" : [self.params objectForKey:@"registrar"],
-                                                     @"password" : [self.params objectForKey:@"password"],
-                                                     };
-                    NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
-                    [self pipeToSofia:cmd];
-                }
-                else {
-                    // transitioning to registrar-less from non registrar-less when previously we had network connectivity while offline (because register failed)
-                    if (networkIsOnline) {
-                        state = UpdateParamsStateReestablishedRegistrarless;
+        if ([params objectForKey:@"registrar"]) {
+            if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
+                // registrar-less
+                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                    if (deviceIsOnline) {
+                        // user requested unregister by passing empty string and previously was registered
+                        NSDictionary * updatedParams = @{
+                                                         //@"registrar" : [self.params objectForKey:@"registrar"],
+                                                         @"password" : [self.params objectForKey:@"password"],
+                                                         };
+                        NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
+                        [self pipeToSofia:cmd];
+                    }
+                    else {
+                        // transitioning to registrar-less from non registrar-less when previously we had network connectivity while offline (because register failed)
+                        if (networkIsOnline) {
+                            state = UpdateParamsStateReestablishedRegistrarless;
+                        }
                     }
                 }
             }
-        }
-        else {
-            // user requested register
-            if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
-                // wasn't previously registraless
-                if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]] && deviceIsOnline) {
-                    // user was previously registered and used a different registrar: need to unregister first
-                    NSDictionary * updatedParams = @{
-                                                     //@"registrar" : [self.params objectForKey:@"registrar"],
-                                                     @"password" : [self.params objectForKey:@"password"],
-                                                     };
-                    NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
-                    [self pipeToSofia:cmd];
+            else {
+                // user requested register
+                if (![[self.params objectForKey:@"registrar"] isEqualToString:@""]) {
+                    // wasn't previously registraless
+                    if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]] && deviceIsOnline) {
+                        // user was previously registered and used a different registrar: need to unregister first
+                        NSDictionary * updatedParams = @{
+                                                         //@"registrar" : [self.params objectForKey:@"registrar"],
+                                                         @"password" : [self.params objectForKey:@"password"],
+                                                         };
+                        NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
+                        [self pipeToSofia:cmd];
+                    }
                 }
+                
+                NSString * aor = @"";
+                if ([params objectForKey:@"aor"]) {
+                    aor = [params objectForKey:@"aor"];
+                }
+                
+                NSString * password = @"";
+                if ([params objectForKey:@"password"]) {
+                    password = [params objectForKey:@"password"];
+                }
+                
+                NSDictionary * updatedParams = @{
+                                                 @"aor" : [self convert2FullURI:aor andDomain:[params objectForKey:@"registrar"]],
+                                                 @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
+                                                 @"password" : password,
+                                                 };
+                NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
+                [self pipeToSofia:cmd];
+                state = UpdateParamsStateSentRegister;
+                aorUpdated = YES;
             }
-            
-            NSString * aor = @"";
-            if ([params objectForKey:@"aor"]) {
-                aor = [params objectForKey:@"aor"];
-            }
-
-            NSString * password = @"";
-            if ([params objectForKey:@"password"]) {
-                password = [params objectForKey:@"password"];
-            }
-
-            NSDictionary * updatedParams = @{
-                                             @"aor" : [self convert2FullURI:aor andDomain:[params objectForKey:@"registrar"]],
-                                             @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
-                                             @"password" : password,
-                                             };
-            NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
-            [self pipeToSofia:cmd];
-            state = UpdateParamsStateSentRegister;
-            aorUpdated = YES;
+            // save key/value to local params dictionary for later use
+            [self.params setObject:[params objectForKey:@"registrar"] forKey:@"registrar"];
         }
-        // save key/value to local params dictionary for later use
-        [self.params setObject:[params objectForKey:@"registrar"] forKey:@"registrar"];
-    }
-    if ([params objectForKey:@"aor"]) {
-        [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
-
-        // only update AOR if it hasn't been updated in the register above
-        if (!aorUpdated) {
-            NSDictionary * updatedParams = @{
-                                             @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]],
-                                             };
+        if ([params objectForKey:@"aor"]) {
+            [self.params setObject:[params objectForKey:@"aor"] forKey:@"aor"];
             
-            NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:updatedParams]];
-            [self pipeToSofia:cmd];
+            // only update AOR if it hasn't been updated in the register above
+            if (!aorUpdated) {
+                NSDictionary * updatedParams = @{
+                                                 @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]],
+                                                 };
+                
+                NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:updatedParams]];
+                [self pipeToSofia:cmd];
+            }
+        }
+        if ([params objectForKey:@"password"]) {
+            [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
+        }
+        if ([params objectForKey:@"turn-url"]) {
+            [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
+        }
+        if ([params objectForKey:@"turn-username"]) {
+            [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
+        }
+        if ([params objectForKey:@"turn-password"]) {
+            [self.params setObject:[params objectForKey:@"turn-password"] forKey:@"turn-password"];
+        }
+        if ([params objectForKey:@"turn-candidate-timeout"]) {
+            [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
         }
     }
-    if ([params objectForKey:@"password"]) {
-        [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
-    }
-    if ([params objectForKey:@"turn-url"]) {
-        [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
-    }
-    if ([params objectForKey:@"turn-username"]) {
-        [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
-    }
-    if ([params objectForKey:@"turn-password"]) {
-        [self.params setObject:[params objectForKey:@"turn-password"] forKey:@"turn-password"];
-    }
-    if ([params objectForKey:@"turn-candidate-timeout"]) {
-        [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
-    }
-}
-    // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
     else {
+        // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
         NSDictionary * updatedParams = @{
                                          @"registrar" : [self convert2FullDomain:[self.params objectForKey:@"registrar"]],
                                          @"password" : [self.params objectForKey:@"password"],
                                          };
-
+        
         NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
         [self pipeToSofia:cmd];
     }
