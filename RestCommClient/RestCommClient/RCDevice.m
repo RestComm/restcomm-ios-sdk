@@ -92,7 +92,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         // init logging + set logging level
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
-        RCLogNotice("[RCDevice initWithParams]");
+        RCLogNotice("[RCDevice initWithParams: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
 
         // reachability
         self.hostActive = NO;
@@ -294,7 +294,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 //- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
 - (BOOL)sendMessage:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCDevice message: %s\nto: %s]", [[parameters objectForKey:@"message"] UTF8String], [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCDevice sendMessage: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
     if (_state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         return NO;
@@ -336,7 +336,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 // returns YES if an actual registration was sent (the App can use that to properly convey state to the user
 - (BOOL) updateParams:(NSDictionary*)params
 {
-    RCLogNotice("[RCDevice updateParams]");
+    RCLogNotice("[RCDevice updateParams: %s]", [[Utilities stringifyDictionary:params] UTF8String]);
 
     if (self.reachabilityStatus != NotReachable) {
         BOOL deviceIsOnline = NO;

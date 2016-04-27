@@ -56,6 +56,10 @@
 + (NSString*)stringifyDictionary:(NSDictionary*)dictionary
 {
     NSError *error;
+    if (dictionary == nil) {
+        return @"";
+    }
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];

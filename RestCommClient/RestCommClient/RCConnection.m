@@ -58,7 +58,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
               andState:(RCConnectionState)connectionState
          andParameters:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCConnection initWithDelegate]");
+    RCLogNotice("[RCConnection initWithDelegate: ... andIncoming:%d andState:%d andParameters:%s]", incoming, connectionState, [[Utilities stringifyDictionary:parameters] UTF8String]);
     
     self = [super init];
     if (self) {
