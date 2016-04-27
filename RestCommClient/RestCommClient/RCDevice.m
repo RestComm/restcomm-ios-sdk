@@ -208,10 +208,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         }
 
         [self.sipManager unregister:nil];
-        [self.sipManager shutdown:NO];
         _state = RCDeviceStateOffline;
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
     }
+    
+    // need to shut down sofia even if we are already offline. Remember that we are deemed offline even if sofia is up but REGISTER has failed. And we want to make sure Sofia stops on unlisten()
+    [self.sipManager shutdown:NO];
 }
 
 + (RCDeviceConnectivityType)networkStatus2ConnectivityType:(NetworkStatus)status
@@ -476,14 +478,14 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if ((self.reachabilityStatus == ReachableViaWiFi && newStatus == ReachableViaWWAN) ||
         (self.reachabilityStatus == ReachableViaWWAN && newStatus == ReachableViaWiFi)) {
-        if (_state != RCDeviceStateOffline) {
+        //if (_state != RCDeviceStateOffline) {
             RCLogNotice("[RCDevice checkNetworkStatus] action: switch between wifi and mobile");
             [self.sipManager shutdown:YES];
             self.reachabilityStatus = newStatus;
             self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
             [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
             return;
-        }
+        //}
     }
     
     if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
