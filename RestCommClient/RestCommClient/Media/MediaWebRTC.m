@@ -65,7 +65,7 @@
 #import "RestCommClient.h"
 
 #import "common.h"
-#import "Utilities.h"
+#import "RCUtilities.h"
 
 @implementation MediaWebRTC
 

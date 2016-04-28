@@ -1163,7 +1163,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1205,7 +1204,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1233,7 +1231,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependecies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
@@ -1272,7 +1270,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependecies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";

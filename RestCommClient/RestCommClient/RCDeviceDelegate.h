@@ -23,7 +23,6 @@
 /** @file RCDeviceDelegate.h */
 
 #import "RCDevice.h"
-#import "Reachability/Reachability.h"
 
 @class RCDevice;
 @class RCConnection;
@@ -31,9 +30,9 @@
 
 // map RCConnectivityStatus enum with Reachability.h:NerworkStatus enum 1-1
 typedef enum : NSInteger {
-    RCConnectivityStatusNone = NotReachable,  // no restcomm connectivity either we have no internet connectivity or couldn't register to restcomm (or both)
-    RCConnectivityStatusWiFi = ReachableViaWiFi,  // restcomm reachable and online via Wifi (or if in registrarless mode we don't register with restcomm; we just know that we have internet connectivity)
-    RCConnectivityStatusCellular = ReachableViaWWAN,  // restcomm reachable and online via cellular (same as above for registraless)
+    RCConnectivityStatusNone = 0,  // no restcomm connectivity either we have no internet connectivity or couldn't register to restcomm (or both)
+    RCConnectivityStatusWiFi,  // restcomm reachable and online via Wifi (or if in registrarless mode we don't register with restcomm; we just know that we have internet connectivity)
+    RCConnectivityStatusCellular,  // restcomm reachable and online via cellular (same as above for registraless)
 } RCConnectivityStatus;
 
 /**
@@ -89,7 +88,7 @@ typedef enum : NSInteger {
  *
  *  @param device  Device of interest
  */
-- (void)deviceDidInitializeSignaling:(RCDevice *)device;
+//- (void)deviceDidInitializeSignaling:(RCDevice *)device;
 
 /**
  *  @abstract RCDevice received presence update (**Not implemented yet**)

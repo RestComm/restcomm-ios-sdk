@@ -71,6 +71,7 @@ typedef enum {
 // Restcomm SDK version
 @property NSString * version;
 
++ (NSString*)getVersion;
 + (id)sharedInstance;
 - (void) setLogLevel:(RCLogLevel)level;
 + (NSString*)getErrorText:(int)errorCode;

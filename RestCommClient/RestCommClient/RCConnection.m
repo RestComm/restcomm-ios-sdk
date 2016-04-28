@@ -25,7 +25,7 @@
 #import "RCConnection.h"
 #import "SipManager.h"
 #import "RTCVideoTrack.h"
-#import "Utilities.h"
+#import "RCUtilities.h"
 
 #include "common.h"
 #include "RestCommClient.h"

@@ -48,12 +48,13 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <netinet/in.h>
+#import "RCDeviceDelegate.h"
 
 
 typedef enum : NSInteger {
-	NotReachable = 0,
-	ReachableViaWiFi,
-	ReachableViaWWAN
+	NotReachable = RCConnectivityStatusNone,
+	ReachableViaWiFi = RCConnectivityStatusWiFi,
+	ReachableViaWWAN = RCConnectivityStatusCellular,
 } NetworkStatus;
 
 

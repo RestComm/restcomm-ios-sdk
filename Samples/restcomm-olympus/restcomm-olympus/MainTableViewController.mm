@@ -30,7 +30,7 @@
 
 #import "ToastController.h"
 #import "RestCommClient.h"
-#import "Utilities.h"
+#import "RCUtilities.h"
 #import "Utils.h"
 
 @interface MainTableViewController ()

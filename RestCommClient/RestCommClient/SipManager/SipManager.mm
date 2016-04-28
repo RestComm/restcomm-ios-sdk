@@ -32,7 +32,7 @@
 
 #import "RestCommClient.h"
 #import "SipManager.h"
-#import "Utilities.h"
+#import "RCUtilities.h"
 #import "common.h"
 
 // those are used both in the context of SipManager class and outside (i.e. C callbacks); lets make them global

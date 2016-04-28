@@ -100,7 +100,7 @@
     setLogLevel(aslLevel);
 }
 
-- (NSString*)getVersion
++ (NSString*)getVersion
 {
     return [NSString stringWithUTF8String:SIP_USER_AGENT];
 }

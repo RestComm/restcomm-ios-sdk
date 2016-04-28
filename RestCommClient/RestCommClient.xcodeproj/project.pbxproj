@@ -38,12 +38,13 @@
 		AE04E5961B0B724900F9F8A3 /* RCDeviceDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223E197295F90035B864 /* RCDeviceDelegate.h */; };
 		AE04E5971B0B724900F9F8A3 /* RCPresenceEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12241197296110035B864 /* RCPresenceEvent.h */; };
 		AE3F71E71BA86896006B06E7 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71E61BA86896006B06E7 /* common.m */; };
+		AE46DE0C1CD2585700359F74 /* RCUtilities.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE934CF81BA2CC0A007635A3 /* RCUtilities.h */; };
 		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
 		AE5821E51A8B968500578A7B /* ARDCEODTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */; };
 		AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821E61A8B98A700578A7B /* ARDUtilities.m */; };
 		AE5821EB1A8B991800578A7B /* RTCICEServer+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */; };
 		AE7880141B738F7F00205C26 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7880131B738F7F00205C26 /* Reachability.m */; };
-		AE934CFA1BA2CC0A007635A3 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE934CF91BA2CC0A007635A3 /* Utilities.m */; };
+		AE934CFA1BA2CC0A007635A3 /* RCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AE934CF91BA2CC0A007635A3 /* RCUtilities.m */; };
 		AEA6C4B119DB412A00BD2455 /* sdp_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A219DB412A00BD2455 /* sdp_utils.cpp */; };
 		AEA6C4B219DB412A00BD2455 /* sofsip_cli.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A419DB412A00BD2455 /* sofsip_cli.mm */; };
 		AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEA6C4A619DB412A00BD2455 /* ssc_input.cpp */; };
@@ -83,6 +84,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AE46DE0C1CD2585700359F74 /* RCUtilities.h in CopyFiles */,
 				AE04E5931B0B724900F9F8A3 /* RCConnection.h in CopyFiles */,
 				AE04E5941B0B724900F9F8A3 /* RCDevice.h in CopyFiles */,
 				AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */,
@@ -110,8 +112,8 @@
 		AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCICEServer+JSON.m"; sourceTree = "<group>"; };
 		AE7880121B738F7F00205C26 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		AE7880131B738F7F00205C26 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		AE934CF81BA2CC0A007635A3 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
-		AE934CF91BA2CC0A007635A3 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		AE934CF81BA2CC0A007635A3 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
+		AE934CF91BA2CC0A007635A3 /* RCUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtilities.m; sourceTree = "<group>"; };
 		AEA6C42A19DB411100BD2455 /* sres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres.h; sourceTree = "<group>"; };
 		AEA6C42B19DB411100BD2455 /* sres_async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_async.h; sourceTree = "<group>"; };
 		AEA6C42C19DB411100BD2455 /* sres_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_cache.h; sourceTree = "<group>"; };
@@ -566,8 +568,8 @@
 				AEC1223F197295F90035B864 /* RCDeviceDelegate.m */,
 				AEC12241197296110035B864 /* RCPresenceEvent.h */,
 				AEC12242197296110035B864 /* RCPresenceEvent.m */,
-				AE934CF81BA2CC0A007635A3 /* Utilities.h */,
-				AE934CF91BA2CC0A007635A3 /* Utilities.m */,
+				AE934CF81BA2CC0A007635A3 /* RCUtilities.h */,
+				AE934CF91BA2CC0A007635A3 /* RCUtilities.m */,
 				AEC1221219728C850035B864 /* Supporting Files */,
 			);
 			path = RestCommClient;
@@ -707,7 +709,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\nmkdir -p \"${BUILD_DIR}/build-i386\"\nmkdir -p \"${BUILD_DIR}/build-x86_64\"\nmkdir -p \"${BUILD_DIR}/build-arm64\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos -arch armv7 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos -arch arm64 BUILD_DIR=\"${BUILD_DIR}/build-arm64\" BUILD_ROOT=\"${BUILD_ROOT}/build-arm64\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator -arch x86_64 BUILD_DIR=\"${BUILD_DIR}/build-x86_64\" BUILD_ROOT=\"${BUILD_ROOT}/build-x86_64\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}/build-i386\" BUILD_ROOT=\"${BUILD_ROOT}/build-i386\"\n\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-arm64/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-x86_64/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-i386/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n##lipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-i386/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Copy the final deliverables to our project as well so that Apps depending on them will find them (splitting it to 2 commands because wildcards don't seem to be understood)\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${SOURCE_ROOT}/../dependencies/packages/RestCommClientLib/\"\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/include\" \"${SOURCE_ROOT}/../dependencies/packages/RestCommClientLib/\"";
+			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\nmkdir -p \"${BUILD_DIR}/build-i386\"\nmkdir -p \"${BUILD_DIR}/build-x86_64\"\nmkdir -p \"${BUILD_DIR}/build-arm64\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos -arch armv7 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos -arch arm64 BUILD_DIR=\"${BUILD_DIR}/build-arm64\" BUILD_ROOT=\"${BUILD_ROOT}/build-arm64\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator -arch x86_64 BUILD_DIR=\"${BUILD_DIR}/build-x86_64\" BUILD_ROOT=\"${BUILD_ROOT}/build-x86_64\"\nxcodebuild -target RestCommClient ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}/build-i386\" BUILD_ROOT=\"${BUILD_ROOT}/build-i386\"\n\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-arm64/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-x86_64/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-i386/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n##lipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/build-i386/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Copy the final deliverables to our project as well so that Apps depending on them will find them (splitting it to 2 commands because wildcards don't seem to be understood)\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${SOURCE_ROOT}/../dependencies/packages/RestCommClientLib/\"\n# For some reason xcode understands /* below as comment which isn't the case\n# the 'from' in the cp below must not be inside quotes as it uses the wildcard char, and wildcard char doesn't work there\ncp -R ${UNIVERSAL_OUTPUTFOLDER}/include/RestCommClient/* \"${SOURCE_ROOT}/../dependencies/packages/RestCommClientLib/include\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -720,7 +722,7 @@
 				AEA6C4B319DB412A00BD2455 /* ssc_input.cpp in Sources */,
 				AE5821E81A8B98A800578A7B /* ARDUtilities.m in Sources */,
 				AEA6C4B719DB412A00BD2455 /* SipManager.mm in Sources */,
-				AE934CFA1BA2CC0A007635A3 /* Utilities.m in Sources */,
+				AE934CFA1BA2CC0A007635A3 /* RCUtilities.m in Sources */,
 				AEC12243197296110035B864 /* RCPresenceEvent.m in Sources */,
 				AE3F71E71BA86896006B06E7 /* common.m in Sources */,
 				AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */,

@@ -30,7 +30,7 @@
 #import <AVFoundation/AVFoundation.h>   // sounds
 
 #include "common.h"
-#include "Utilities.h"
+#include "RCUtilities.h"
 
 @interface RCDevice ()
 // private stuff

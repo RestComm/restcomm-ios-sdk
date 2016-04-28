@@ -78,7 +78,7 @@
 #include "ssc_sip.h"
 #include "ssc_oper.h"
 #include "common.h"
-#include "Utilities.h"
+#include "RCUtilities.h"
 
 /* Globals
  * ------------------- */
