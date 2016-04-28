@@ -20,7 +20,7 @@
  *
  */
 #import "AboutTableViewController.h"
-#import "common.h"
+#import "RestCommClient.h"
 #import "Utils.h"
 
 @interface AboutTableViewController()
@@ -50,7 +50,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.versionLbl.text = [NSString stringWithUTF8String:SIP_USER_AGENT];
+    self.versionLbl.text = [RestCommClient getVersion];
     self.githubHashLbl.text = RestCommClientSDKLatestGitHash;
 }
 @end

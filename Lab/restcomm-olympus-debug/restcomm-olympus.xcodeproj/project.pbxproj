@@ -1159,11 +1159,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1200,11 +1196,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
@@ -1240,7 +1232,6 @@
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -1279,7 +1270,6 @@
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
 				ONLY_ACTIVE_ARCH = NO;
