@@ -42,6 +42,7 @@ typedef enum {
 } RCLogLevel;
 
 typedef enum {
+    RESTCOMM_CLIENT_SUCCESS = 0,
     ERROR_WEBRTC_SDP,
     ERROR_WEBRTC_ICE,
     ERROR_WEBRTC_ALREADY_INITIALIZED,

@@ -20,9 +20,6 @@
  *
  */
 
-//#include <unistd.h>
-
-//#import "ViewController.h"
 #import "MainNavigationController.h"
 #import "SettingsTableViewController.h"
 #import "CallViewController.h"
@@ -108,31 +105,12 @@
 }
 
 
-- (void)hideKeyBoard
-{
-    // resign both to be sure
-    //[self.sipMessageText resignFirstResponder];
-    //[self.sipUriText resignFirstResponder];
-}
-
 // ---------- UI events
 - (void)register:(NSNotification *)notification
 {
-    if (self.device && self.isInitialized /*&& !self.isRegistered*/) {
-        /*
-        if (self.device.state == RCDeviceStateOffline) {
-            [self.device listen];
-        }
-         */
+    if (self.device && self.isInitialized) {
         [self register];
     }
-    /*
-    else {
-        if (!self.isRegistered) {
-            [self.device listen];
-        }
-    }
-     */
 }
 
 - (void)register
@@ -199,14 +177,6 @@
     }
 }
 
-/*
-- (void)deviceDidInitializeSignaling:(RCDevice *)device
-{
-    self.isInitialized = YES;
-    self.isRegistered = YES;
-}
- */
-
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
@@ -253,7 +223,6 @@
     }
     [callViewController.parameters setObject:alias forKey:@"alias"];
 
-    //NSString *username = [Utilities usernameFromUri:sender];
     // TODO: change this once I implement the incoming call caller id
     //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
     
@@ -268,12 +237,6 @@
 {
     
 }
-/*
-- (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)status
-{
-    [self updateConnectivityStatus:status withText:nil];
-}
- */
 
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
@@ -314,10 +277,8 @@
     
     [itemsArray insertObject:restcommIconButton atIndex:0];
     
-    //self.navigationItem.leftBarButtonItem = restcommIconButton;
     self.navigationItem.leftBarButtonItems = itemsArray;
 
-    //if (![text isEqualToString:@""] && status != self.previousConnectivityStatus) {
     if (![text isEqualToString:@""] ||
         (![text isEqualToString:@""] && status != self.previousDeviceState)) {
         
@@ -331,7 +292,7 @@
         [alert show];
          */
         
-        // Let's use toast notifications now that we implemented them
+        // Let's use toast notifications that are much more suitable now that we implemented them
         [[ToastController sharedInstance] showToastWithText:text withDuration:2.0];
     }
     self.previousDeviceState = state;
@@ -357,44 +318,7 @@
     [self updateConnectivityStatus:RCDeviceStateOffline
                andConnectivityType:RCDeviceConnectivityTypeNone
                           withText:@""];
-    
-    // need to show that we are working on it
-    //[self device:nil didReceiveConnectivityUpdate:RCConnectivityStatusNone];
-    
-    /*
-    NSString * imageName = @"inapp-grey-icon-30x30.png";
-    // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
-    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                                                            style:UIBarButtonItemStylePlain
-                                                                           target:self
-                                                                           action:@selector(invokeSettings)];
-    // old code:
-    //self.navigationItem.leftBarButtonItem = restcommIconButton;
-    
-
-    ///////
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
-                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [activityView startAnimating];
-    UIBarButtonItem *barIndicator = [[UIBarButtonItem alloc]
-                                           initWithCustomView:activityView];
-
-    self.navigationItem.leftBarButtonItem = nil;
-    //self.navigationItem.leftBarButtonItems = [[NSArray alloc] initWithObjects:restcommIconButton, barIndicator, nil];
-     */
 }
-
-/* DEBUG
-- (IBAction)start:(id)sender
-{
-    [self.device startSofia];
-}
-
-- (IBAction)stop:(id)sender
-{
-    [self.device stopSofia];
-}
- */
 
 - (void)invokeRestcomm
 {
@@ -461,13 +385,6 @@
 
 #pragma mark - Table view data source
 
-/* No need to implement, we only have one section
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 0;
-}
- */
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     return [Utils contactCount];
@@ -522,15 +439,6 @@
     [[self navigationController] pushViewController:contactDetailsViewController animated:YES];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -544,30 +452,5 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -1166,10 +1166,10 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7 x86_64";
+				VALID_ARCHS = "arm64 armv7 x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -1208,11 +1208,11 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 x86_64";
+				VALID_ARCHS = "arm64 armv7 x86_64 i386";
 			};
 			name = Release;
 		};
@@ -1245,12 +1245,12 @@
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64";
+				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1284,11 +1284,12 @@
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64";
+				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -176,13 +176,21 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
                     [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
                 }
                 else {
-                    [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
+                    NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                       code:ERROR_LOST_CONNECTIVITY
+                                                   userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
+
+                    [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
                 }
             }
         }
         else {
             RCLogError("[RCDevice listen] No internet connectivity");
-            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
+            NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                               code:ERROR_LOST_CONNECTIVITY
+                                           userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
+
+            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
         }
     }
     else if (_state == RCDeviceStateReady) {
@@ -209,12 +217,31 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
         [self.sipManager unregister:nil];
         _state = RCDeviceStateOffline;
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
+        NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                           code:ERROR_LOST_CONNECTIVITY
+                                       userInfo:@{NSLocalizedDescriptionKey : @"" }];
+
+        // important: in this case we are calling asyncDeviceDidStopListeningForIncomingConnections synchronously
+        // because we want the App to get a chance to update UI before it goes to the background
+        [self asyncDeviceDidStopListeningForIncomingConnections:error];
+        //[self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
     }
     
     // need to shut down sofia even if we are already offline. Remember that we are deemed offline even if sofia is up but REGISTER has failed. And we want to make sure Sofia stops on unlisten()
     [self.sipManager shutdown:NO];
+    
+    // DEBUG
+    //[self performSelector:@selector(asyncSuspend) withObject:nil afterDelay:1.0];
 }
+
+/* DEBUG
+- (void)asyncSuspend
+{
+    RCLogNotice("----- Trying to suspend the App");
+    UIApplication *app = [UIApplication sharedApplication];
+    [app performSelector:@selector(suspend)];
+}
+ */
 
 + (RCDeviceConnectivityType)networkStatus2ConnectivityType:(NetworkStatus)status
 {
@@ -232,18 +259,20 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)asyncDeviceDidStopListeningForIncomingConnections:(NSError*)error
 {
-    if (error) {
+    if (error && error.code != RESTCOMM_CLIENT_SUCCESS) {
         RCLogError("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
     }
     else {
         RCLogNotice("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
     }
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        /*
         if (error == nil) {
             error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                code:ERROR_LOST_CONNECTIVITY
                                            userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
         }
+         */
         //NSLog(@"------ Delegate: %p, Self: %p", self.delegate, self);
         [self.delegate device:self didStopListeningForIncomingConnections:error];
     }
@@ -354,6 +383,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         if (state == UpdateParamsStateSentRegister){
             // if a REGISTER was sent update state to offline, cause we need a 200 OK to the registration to consider ourselves truly online
             _state = RCDeviceStateOffline;
+            NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                               code:RESTCOMM_CLIENT_SUCCESS
+                                           userInfo:@{NSLocalizedDescriptionKey : @"Trying to register with Restcomm" }];
+
+            [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
             return YES;
         }
         if (state == UpdateParamsStateReestablishedRegistrarless) {
@@ -472,7 +506,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         _state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
-        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];
+        NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                           code:ERROR_LOST_CONNECTIVITY
+                                       userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
+
+        [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
         return;
     }
     
