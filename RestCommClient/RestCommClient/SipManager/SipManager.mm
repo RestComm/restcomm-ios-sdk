@@ -353,7 +353,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 // initialize sofia
 - (bool)eventLoop
 {
-    RCLogNotice("[SipManager eventLoop]");
+    RCLogNotice("[SipManager eventLoop: %s]", [[Utilities stringifyDictionary:self.params] UTF8String]);
     [_signallingInstancesLock lock];
     if (_signallingInstances > 0) {
         RCLogNotice("[SipManager eventLoop] another instance already running; bailing");

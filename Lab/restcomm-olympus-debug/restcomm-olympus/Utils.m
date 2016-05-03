@@ -36,7 +36,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                     @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
-                                    @"turn-url" : @"https://computeengineondemand.appspot.com/turn",
+                                    @"turn-url" : @"",  // TODO: disabling for now until I have time to work on #374. Old value was @"https://computeengineondemand.appspot.com/turn",
                                     @"turn-username" : @"iapprtc",
                                     @"turn-password" : @"4080218913",
                                     @"turn-candidate-timeout" : @"5",
