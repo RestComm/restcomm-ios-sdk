@@ -102,5 +102,7 @@ typedef enum {
 - (void)mediaController:(MediaWebRTC *)mediaController didError:(NSError*)error;
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveLocalVideoTrack:(RTCVideoTrack *)videoTrack;
 - (void)mediaController:(MediaWebRTC *)mediaController didReceiveRemoteVideoTrack:(RTCVideoTrack *)videoTrack;
+- (void)mediaController:(MediaWebRTC *)mediaController didIceConnectAsInitiator:(BOOL)initiator;
+
 //- (void)peerDisconnected:(MediaWebRTC *)media withData:(NSString *)data;
 @end

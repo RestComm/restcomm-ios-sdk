@@ -582,6 +582,9 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[Utilities stringifyDictionary:userInfo] UTF8String]);
             [self.mediaDelegate mediaController:self didError:sdpError];
         }
+        if (newState == RTCICEConnectionConnected) {
+            [self.mediaDelegate mediaController:self didIceConnectAsInitiator:_isInitiator];
+        }
     });
 }
 

@@ -130,6 +130,16 @@ int read_pipe[2];
     [self.connectionDelegate sipManager:self didReceiveRemoteVideo:videoTrack];
 }
 
+- (void)mediaController:(MediaWebRTC *)mediaController didIceConnectAsInitiator:(BOOL)initiator;
+{
+    if (initiator) {
+        [self.connectionDelegate sipManagerDidReceiveOutgoingEstablished:self];
+    }
+    else {
+        [self.connectionDelegate sipManagerDidReceiveIncomingEstablished:self];
+    }
+}
+
 // notice that we can make this an Objective-C method as well, if we want
 - (int)handleSofiaInput:(struct SofiaReply *) reply fd:(int) fd
 {
@@ -173,12 +183,12 @@ int read_pipe[2];
         [self.connectionDelegate sipManagerDidReceiveOutgoingRinging:self];
     }
     else if (reply->rc == OUTGOING_ESTABLISHED) {
-        [self.connectionDelegate sipManagerDidReceiveOutgoingEstablished:self];
+        //[self.connectionDelegate sipManagerDidReceiveOutgoingEstablished:self];
         // call is established, send the SDP over to WebRTC
         [self.media processSignalingMessage:reply->text.c_str() type:kARDSignalingMessageTypeAnswer];
     }
     else if (reply->rc == INCOMING_ESTABLISHED) {
-        [self.connectionDelegate sipManagerDidReceiveIncomingEstablished:self];
+        //[self.connectionDelegate sipManagerDidReceiveIncomingEstablished:self];
     }
     else if (reply->rc == INCOMING_MSG) {
         NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
