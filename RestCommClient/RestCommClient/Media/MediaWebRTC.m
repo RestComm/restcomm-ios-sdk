@@ -571,16 +571,22 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 - (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC iceConnectionChanged:%d]", newState);
-        if (newState == RTCICEConnectionFailed) {
-
+        if (newState == RTCICEConnectionFailed || newState == RTCICEConnectionDisconnected) {
+            NSString * errorMsg;
+            if (newState == RTCICEConnectionFailed) {
+                errorMsg = @"iceConnectionChanged: ICE connection failed";
+            }
+            else {
+                errorMsg = @"iceConnectionChanged: ICE connection disconnected";
+            }
             NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey: @"iceConnectionChanged: ICE connection failed",
+                                       NSLocalizedDescriptionKey: errorMsg,
                                        };
-            NSError *sdpError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+            NSError *iceError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                            code:ERROR_WEBRTC_ICE
                                                        userInfo:userInfo];
             RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[Utilities stringifyDictionary:userInfo] UTF8String]);
-            [self.mediaDelegate mediaController:self didError:sdpError];
+            [self.mediaDelegate mediaController:self didError:iceError];
         }
         if (newState == RTCICEConnectionConnected) {
             [self.mediaDelegate mediaController:self didIceConnectAsInitiator:_isInitiator];
