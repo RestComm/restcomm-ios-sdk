@@ -826,9 +826,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -864,7 +864,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Release;
 		};
@@ -883,11 +883,11 @@
 					$SOURCE_ROOT/../dependencies/packages/webrtc/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -910,7 +910,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Release;
 		};
@@ -953,6 +953,7 @@
 		AED6CCA11B0C9E9800DC1A55 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;

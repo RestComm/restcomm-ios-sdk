@@ -381,7 +381,7 @@
 				ORGANIZATIONNAME = TeleStax;
 				TargetAttributes = {
 					AE79D31519BC8DAD0023306C = {
-						DevelopmentTeam = 9LT3282HAP;
+						DevelopmentTeam = H9PG74NSQT;
 					};
 					AE79D33919BC8DAE0023306C = {
 						TestTargetID = AE79D31519BC8DAD0023306C;
@@ -585,7 +585,7 @@
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient/SipManager,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -656,10 +656,10 @@
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-helloworld";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -691,7 +691,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "restcomm-helloworld";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

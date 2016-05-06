@@ -68,7 +68,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
@@ -245,7 +245,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
             secure_contact += ":*;transport=tls";
         }
     }
-    
+
     RCLogNotice("Creating SIP stack -binding to: %s, cert dir: %s", contact.c_str(), cert_dir);
 
     /* step: launch the SIP stack */
@@ -261,8 +261,11 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      NUTAG_PROXY(proxy)),
                               TAG_IF(registrar,
                                      NUTAG_REGISTRAR(registrar)),
+                              
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
+                              //TAG_IF("sip:192.168.2.39:*;transport=tcp",
+                              //       NUTAG_URL("sip:192.168.2.39:*;transport=tcp")),
                               
                               TAG_IF(!secure_contact.empty(),
                                      NUTAG_SIPS_URL(secure_contact.c_str())),

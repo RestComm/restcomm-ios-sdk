@@ -656,7 +656,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             return;
         }
         
-        RCLogNotice("[MediaWebRTC didCreateSessionDescription], sdp: %@", sdp.description);
+        RCLogDebug("[MediaWebRTC didCreateSessionDescription], sdp: %s", [sdp.description UTF8String]);
         [_peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
 

@@ -316,6 +316,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
         [RTCPeerConnectionFactory initializeSSL];
+        
     }
     return self;
 }
