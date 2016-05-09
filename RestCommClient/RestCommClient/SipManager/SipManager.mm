@@ -479,14 +479,16 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (!self.media) {
         [self.activeCallParams removeAllObjects];
         [self.activeCallParams setObject:[self convert2FullURI:recipient andDomain:[self.params objectForKey:@"registrar"]] forKey:@"destination"];
+        [self.activeCallParams setObject:@(YES) forKey:@"initiator"];
         if (headers) {
             [self.activeCallParams setObject:headers forKey:@"sip-headers"];
         }
         
-        [self initializeAudioSession];
+        [self permissionFsm:@"" type:@"request" status:NO];
+        //[self initializeAudioSession];
 
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
-        [self.media connect:nil sdp:nil isInitiator:YES withVideo:self.videoAllowed];
+        //self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
+        //[self.media connect:nil sdp:nil isInitiator:YES withVideo:self.videoAllowed];
     }
     else {
         // media already initialized, cannot continue
@@ -500,8 +502,12 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (bool)answerWithVideo:(BOOL)video
 {
     self.videoAllowed = video;
-    [self initializeAudioSession];
+    [self.activeCallParams setObject:@(NO) forKey:@"initiator"];
     
+    [self permissionFsm:@"" type:@"request" status:NO];
+    
+    /*
+    [self initializeAudioSession];
     if (!self.media) {
         self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
         [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"] isInitiator:NO withVideo:self.videoAllowed];
@@ -509,6 +515,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     else {
         return false;
     }
+     */
 
     // This logic was for when media processing started when INVITE arrived for incoming calls
     // (as opposed to when we press answer as it is now). Let's keep it around since we'll be
@@ -522,6 +529,97 @@ ssize_t pipeToSofia(const char * msg, int fd)
     }
     */
     return true;
+}
+
+- (void)handleCall
+{
+    if (!self.media) {
+        [self initializeAudioSession];
+        
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
+        [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"]
+                isInitiator:[[self.activeCallParams objectForKey:@"initiator"] boolValue]
+                  withVideo:self.videoAllowed];
+    }
+    else {
+        // TODO: notify App
+        RCLogWarn("[SipManager handleCall] MediaWebRTC already initialized");
+    }
+}
+
+// FSM to handle state changes for permissions
+- (void)permissionFsm:(NSString*)mediaType type:(NSString*)type status:(BOOL)status
+{
+    RCLogNotice("[SipManager permissionFsm:%s type: %s status:%d]", [mediaType UTF8String], [type UTF8String], status);
+    if ([type isEqualToString:@"request"]) {
+        // entry point
+        if ([mediaType isEqualToString:@""]) {
+            [self requestPermission:AVMediaTypeAudio];
+        }
+    }
+    else {
+        // first check for audio
+        if ([mediaType isEqualToString:AVMediaTypeAudio]) {
+            if (!status) {
+                // audio was rejected, return error and bail
+                NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                               code:ERROR_MEDIA_PERMISSION_DENIED
+                                                           userInfo:@{ NSLocalizedDescriptionKey: @"Permission denied for microphone, cannot continue call" }];
+
+                [self.connectionDelegate sipManager:self didMediaError:error];
+                return;
+            }
+            // call is video, ask permission for video as well
+            if (self.videoAllowed) {
+                [self requestPermission:AVMediaTypeVideo];
+            }
+            else {
+                [self handleCall];
+            }
+        }
+        // if video call, second check for video
+        if ([mediaType isEqualToString:AVMediaTypeVideo]) {
+            if (!status) {
+                // video was rejected, fallback to audio call
+                NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                            code:ERROR_MEDIA_PERMISSION_DENIED
+                                                        userInfo:@{ NSLocalizedDescriptionKey: @"Permission denied for camera, cannot continue video call" }];
+                
+                [self.connectionDelegate sipManager:self didMediaError:error];
+                return;
+            }
+
+            [self handleCall];
+        }
+    }
+}
+
+- (BOOL)requestPermission:(NSString*)mediaType
+{
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+    if (authStatus == AVAuthorizationStatusAuthorized) {
+        [self permissionFsm:mediaType type:@"response" status:YES];
+    }
+    else if (authStatus == AVAuthorizationStatusNotDetermined) {
+        // not determined yet; need to ask for permission
+        [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+            if (granted) {
+                [self permissionFsm:mediaType type:@"response" status:YES];
+            }
+            else {
+                [self permissionFsm:mediaType type:@"response" status:NO];
+            }
+        }];
+    }
+    else if (authStatus == AVAuthorizationStatusRestricted) {
+        // already denied from previous session
+        [self permissionFsm:mediaType type:@"response" status:NO];
+    }
+    else {
+        [self permissionFsm:mediaType type:@"response" status:NO];
+    }
+    
+    return NO;
 }
 
 - (bool)decline
@@ -788,13 +886,13 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (speaker == YES) {
         if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
                                         error:&error]) {
-            NSLog(@"Error overriding output to speaker");
+            RCLogError("Error overriding output to speaker");
         }
     }
     else {
         if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
                                         error:&error]) {
-            NSLog(@"Error overriding none");
+            RCLogError("Error overriding none");
         }
     }
     
@@ -810,12 +908,12 @@ ssize_t pipeToSofia(const char * msg, int fd)
           //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
                         error:&error]) {
         // handle error
-        NSLog(@"Error setting AVAudioSession category");
+        RCLogError("Error setting AVAudioSession category");
         return NO;
     }
     
     if (![session setActive:YES error:&error]) {
-        NSLog(@"Error activating audio session");
+        RCLogError("Error activating audio session");
         return NO;
     }
     return YES;
@@ -828,12 +926,12 @@ ssize_t pipeToSofia(const char * msg, int fd)
     
     if (![session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
                                     error:&error]) {
-        NSLog(@"Error overriding output to none");
+        RCLogError("Error overriding output to none");
         return NO;
     }
 
     if (![session setActive:NO error:&error]) {
-        NSLog(@"Error activating audio session");
+        RCLogError("Error activating audio session");
         return NO;
     }
     

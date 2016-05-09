@@ -42,6 +42,7 @@
                         @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
                         @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
                         @(ERROR_WEBRTC_ALREADY_INITIALIZED) : @"Webrtc media already initialized",
+                        @(ERROR_MEDIA_PERMISSION_DENIED) : @"Permission denied for microphone/camera",
                         @(ERROR_CALL_GENERIC) : @"Generic call error",
                         @(ERROR_CALL_NOT_FOUND) : @"Called party not found",
                         @(ERROR_CALL_AUTHENTICATION) : @"Error authenticating user for the call",

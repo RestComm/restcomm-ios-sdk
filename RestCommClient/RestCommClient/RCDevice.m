@@ -42,6 +42,9 @@
 // notice that owner of the connection is the App, not us
 @property RCConnection * currentConnection;
 @property AVAudioPlayer * messagePlayer;
+// keep the call context between
+//- (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
+//@property NSDictionary * callContext;
 
 // reachability
 @property Reachability* internetReachable;
