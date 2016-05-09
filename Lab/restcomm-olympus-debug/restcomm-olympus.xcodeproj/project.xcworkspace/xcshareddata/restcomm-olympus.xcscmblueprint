@@ -5,17 +5,24 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "C9515563FCCB6E03492535E0732AB0EDB73E0628" : 0,
+    "8FFACF9194D48576A22F6F0C4F6B4F0BA1ABFC64" : 0,
     "B4C2C0FE344BB97778628C9FFABFBFF08173FC50" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "61F10F0A-E052-4F61-A6A1-56790853E92D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "C9515563FCCB6E03492535E0732AB0EDB73E0628" : "webrtc-build-scripts\/",
+    "8FFACF9194D48576A22F6F0C4F6B4F0BA1ABFC64" : "webrtc-checkout\/src\/",
     "B4C2C0FE344BB97778628C9FFABFBFF08173FC50" : "restcomm-ios-sdk\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "restcomm-olympus",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Lab\/restcomm-olympus-debug\/restcomm-olympus.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/chromium.googlesource.com\/external\/webrtc.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8FFACF9194D48576A22F6F0C4F6B4F0BA1ABFC64"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Mobicents\/restcomm-ios-sdk.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",

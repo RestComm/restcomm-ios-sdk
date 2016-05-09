@@ -880,7 +880,8 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/../dependencies/packages/sofia-sip-1.12.11/include/sofia-sip-1.12",
-					$SOURCE_ROOT/../dependencies/packages/webrtc/include,
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/webrtc/sdk/objc/Framework/Headers/WebRTC",
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/webrtc/sdk/objc/Framework/Headers",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
@@ -903,7 +904,8 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$SOURCE_ROOT/../dependencies/packages/sofia-sip-1.12.11/include/sofia-sip-1.12",
-					$SOURCE_ROOT/../dependencies/packages/webrtc/include,
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/webrtc/sdk/objc/Framework/Headers/WebRTC",
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/webrtc/sdk/objc/Framework/Headers",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;

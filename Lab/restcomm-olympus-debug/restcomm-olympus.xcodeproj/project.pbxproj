@@ -24,7 +24,6 @@
 /* Begin PBXBuildFile section */
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */; };
-		AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */; };
 		AE3E52C61C57BB7B0057F5D0 /* agent.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C41C57BB7B0057F5D0 /* agent.pem */; };
 		AE3E52C71C57BB7B0057F5D0 /* cafile.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C51C57BB7B0057F5D0 /* cafile.pem */; };
 		AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */; };
@@ -178,6 +177,8 @@
 		AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
+		AEE35B081CE077250047B790 /* libWebRTC-12607-ios-armeabi_v7a-Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE35B071CE077250047B790 /* libWebRTC-12607-ios-armeabi_v7a-Debug.a */; };
+		AEE35B0A1CE084EB0047B790 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE35B091CE084EB0047B790 /* libicucore.tbd */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
 		AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
@@ -413,6 +414,8 @@
 		AED0B0621A0976F8008A6057 /* restcomm-olympusTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-olympusTests-Info.plist"; sourceTree = "<group>"; };
 		AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-olympusTests.m"; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
+		AEE35B071CE077250047B790 /* libWebRTC-12607-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-12607-ios-armeabi_v7a-Debug.a"; path = "../../../webrtc-checkout/src/out_ios/libWebRTC-12607-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
+		AEE35B091CE084EB0047B790 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		AEEC4D191CDB72A500598566 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIPSettingsNavigationController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SIPSettingsNavigationController.h"; sourceTree = "<group>"; };
 		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIPSettingsNavigationController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SIPSettingsNavigationController.m"; sourceTree = "<group>"; };
@@ -441,10 +444,11 @@
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
-				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
+				AEE35B081CE077250047B790 /* libWebRTC-12607-ios-armeabi_v7a-Debug.a in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
+				AEE35B0A1CE084EB0047B790 /* libicucore.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +508,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEE35B091CE084EB0047B790 /* libicucore.tbd */,
+				AEE35B071CE077250047B790 /* libWebRTC-12607-ios-armeabi_v7a-Debug.a */,
 				AEEC4D191CDB72A500598566 /* libc++.tbd */,
 				AEB5EB0A1C5A536C0004669F /* libsofia-sip-ua.a */,
 				AEB5EB001C58E5310004669F /* libcrypto.a */,
@@ -1228,7 +1234,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1237,6 +1242,7 @@
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/out_ios",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -1268,7 +1274,6 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1277,6 +1282,7 @@
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
+					"/Users/antonis/Documents/telestax/code/webrtc-checkout/src/out_ios",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";

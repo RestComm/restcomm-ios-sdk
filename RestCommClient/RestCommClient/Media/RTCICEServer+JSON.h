@@ -25,9 +25,9 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "RTCICEServer.h"
+#import "RTCIceServer.h"
 
-@interface RTCICEServer (JSON)
+@interface RTCIceServer (JSON)
 
 + (RTCICEServer *)serverFromJSONDictionary:(NSDictionary *)dictionary;
 // CEOD provides different JSON, and this parses that.
