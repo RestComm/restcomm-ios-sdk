@@ -50,6 +50,7 @@
 #import <Foundation/Foundation.h>
 #import "RTCPeerConnectionFactory.h"
 #import "ARDCEODTURNClient.h"
+#import "XirsysTURNClient.h"
 #import "RTCPeerConnectionDelegate.h"
 #import "RTCSessionDescriptionDelegate.h"
 

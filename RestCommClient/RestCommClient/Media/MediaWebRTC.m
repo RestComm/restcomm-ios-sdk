@@ -70,9 +70,10 @@
 @implementation MediaWebRTC
 
 // TODO: update these properly
-static NSString *kARDTurnRequestUrl = @"https://computeengineondemand.appspot.com/turn?username=iapprtc&key=4080218913";
+//static NSString *kARDTurnRequestUrl = @"https://computeengineondemand.appspot.com/turn?username=iapprtc&key=4080218913";
 //static NSString *kARDTurnRequestUrl = @"https://service.xirsys.com/ice?ident=atsakiridis&secret=4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7&domain=cloud.restcomm.com&application=default&room=default&secure=1";
 static NSString *kARDDefaultSTUNServerUrl = @"stun:stun.l.google.com:19302";
+//static NSString *kARDDefaultSTUNServerUrl = @"stun:turn01.uswest.xirsys.com";
 static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 //static NSInteger kARDAppClientErrorUnknown = -1;
 //static NSInteger kARDAppClientErrorRoomFull = -2;
@@ -129,22 +130,30 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     // If TURN url is empty then it means that we want TURN disabled
     if (![[_parameters objectForKey:@"turn-url"] isEqualToString:@""]) {
         //NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
+        /* Uncomment to use google's TURN servers (had issues with those by the way with huge delays)
         NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?username=%@&key=%@",
                                                       [_parameters objectForKey:@"turn-url"],
                                                       [_parameters objectForKey:@"turn-username"],
                                                       [_parameters objectForKey:@"turn-password"]]];
-
-        _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
+         _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
+         */
+        NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
+                                                      [_parameters objectForKey:@"turn-url"],
+                                                      [_parameters objectForKey:@"turn-username"],
+                                                      [_parameters objectForKey:@"turn-password"],
+                                                      [_parameters objectForKey:@"registrar"]]];
+        
+        _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
         
         __weak MediaWebRTC *weakSelf = self;
-        // IMPORTANT: this only works with Google's TURN servers, when we replace it with our own we should add similar functionality that will parse the TURN servers
         [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
                                                            NSError *error) {
             if (error) {
-                NSLog(@"Error retrieving TURN servers: %@", error);
+                RCLogError("Error retrieving TURN servers: %d", error);
             }
             //NSArray * array = @[ [NSURL URLWithString:@""]];
             MediaWebRTC *strongSelf = weakSelf;
+            [strongSelf.iceServers removeAllObjects];
             [strongSelf.iceServers addObjectsFromArray:turnServers];
             strongSelf.isTurnComplete = YES;
             [strongSelf startSignalingIfReady:sdp];
@@ -620,12 +629,15 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         // and when TURN is enabled, in order for 'candidates gathered' event to fire, we first need to get the SDP answer's
         // candidates (when we are initiator) from the peer and that will never happen unless we first send the SDP offer.
         if ([_iceCandidates count] == 1) {
+            
+            /*
             // default is 5 seconds
             float timeout = 5.0;
             if ([_parameters objectForKey:@"turn-candidate-timeout"]) {
                 timeout = [[_parameters objectForKey:@"turn-candidate-timeout"] floatValue];
             }
             [self performSelector:@selector(candidateGatheringComplete) withObject:nil afterDelay:timeout];
+             */
         }
     });
 }

@@ -32,5 +32,6 @@
 + (RTCICEServer *)serverFromJSONDictionary:(NSDictionary *)dictionary;
 // CEOD provides different JSON, and this parses that.
 + (NSArray *)serversFromCEODJSONDictionary:(NSDictionary *)dictionary;
-
+// Parse Xirsys-formatted servers
++ (NSArray *)serverFromXirsysArray:(NSArray *)array;
 @end

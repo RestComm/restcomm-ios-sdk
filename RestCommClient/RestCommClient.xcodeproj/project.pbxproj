@@ -37,6 +37,7 @@
 		AE04E5951B0B724900F9F8A3 /* RCConnectionDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223B197295EA0035B864 /* RCConnectionDelegate.h */; };
 		AE04E5961B0B724900F9F8A3 /* RCDeviceDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC1223E197295F90035B864 /* RCDeviceDelegate.h */; };
 		AE04E5971B0B724900F9F8A3 /* RCPresenceEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AEC12241197296110035B864 /* RCPresenceEvent.h */; };
+		AE0E50C81CE1072200EF5AC6 /* XirsysTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0E50C71CE1072200EF5AC6 /* XirsysTURNClient.m */; };
 		AE3F71E71BA86896006B06E7 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3F71E61BA86896006B06E7 /* common.m */; };
 		AE46DE0C1CD2585700359F74 /* RCUtilities.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE934CF81BA2CC0A007635A3 /* RCUtilities.h */; };
 		AE5821DD1A8AB2A100578A7B /* MediaWebRTC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5821DC1A8AB2A100578A7B /* MediaWebRTC.m */; };
@@ -98,6 +99,8 @@
 
 /* Begin PBXFileReference section */
 		AE03DEDD1A98E4D2000280E4 /* cli_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cli_common.h; sourceTree = "<group>"; };
+		AE0E50C61CE1072200EF5AC6 /* XirsysTURNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XirsysTURNClient.h; sourceTree = "<group>"; };
+		AE0E50C71CE1072200EF5AC6 /* XirsysTURNClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XirsysTURNClient.m; sourceTree = "<group>"; };
 		AE1AB97D19EA7FB20002ECFA /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE3F71E61BA86896006B06E7 /* common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
 		AE4B58A41BA2A2DD0052D80B /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
@@ -302,6 +305,8 @@
 				AE5821EA1A8B991800578A7B /* RTCICEServer+JSON.m */,
 				AE5821E61A8B98A700578A7B /* ARDUtilities.m */,
 				AE5821E71A8B98A700578A7B /* ARDUtilities.h */,
+				AE0E50C61CE1072200EF5AC6 /* XirsysTURNClient.h */,
+				AE0E50C71CE1072200EF5AC6 /* XirsysTURNClient.m */,
 				AE5821E21A8B968500578A7B /* ARDCEODTURNClient.h */,
 				AE5821E31A8B968500578A7B /* ARDCEODTURNClient.m */,
 				AE5821E41A8B968500578A7B /* ARDTURNClient.h */,
@@ -736,6 +741,7 @@
 				AEA6C4B619DB412A00BD2455 /* ssc_sip.mm in Sources */,
 				AEC1223A197295CC0035B864 /* RCDevice.m in Sources */,
 				AEC1221719728C850035B864 /* RestCommClient.m in Sources */,
+				AE0E50C81CE1072200EF5AC6 /* XirsysTURNClient.m in Sources */,
 				AE7880141B738F7F00205C26 /* Reachability.m in Sources */,
 				AEC12240197295F90035B864 /* RCDeviceDelegate.m in Sources */,
 			);

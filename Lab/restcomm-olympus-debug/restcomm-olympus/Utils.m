@@ -36,10 +36,10 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                     @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
-                                    @"turn-url" : @"",  // TODO: disabling for now until I have time to work on #374. Old value was @"https://computeengineondemand.appspot.com/turn",
-                                    @"turn-username" : @"iapprtc",
-                                    @"turn-password" : @"4080218913",
-                                    @"turn-candidate-timeout" : @"5",
+                                    @"turn-url" : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
+                                    @"turn-username" : @"atsakiridis",  // @"iapprtc",
+                                    @"turn-password" : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
+                                    //@"turn-candidate-timeout" : @"5",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
                                         @[@"Play App", @"+1234"],  //@"sip:+1234@cloud.restcomm.com"],

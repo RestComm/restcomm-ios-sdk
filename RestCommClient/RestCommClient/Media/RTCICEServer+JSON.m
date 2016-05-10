@@ -26,6 +26,7 @@
  */
 
 #import "RTCICEServer+JSON.h"
+#import "common.h"
 
 static NSString const *kRTCICEServerUsernameKey = @"username";
 static NSString const *kRTCICEServerPasswordKey = @"password";
@@ -59,6 +60,22 @@ static NSString const *kRTCICEServerCredentialKey = @"credential";
     [servers addObject:server];
   }
   return servers;
+}
+
++ (NSArray *)serverFromXirsysArray:(NSArray *)array {
+    NSMutableArray *iceServers = [[NSMutableArray alloc] init];
+    for (NSDictionary *iceServerDictionary in array) {
+        NSString *url = iceServerDictionary[@"url"];
+        NSString *username = iceServerDictionary[@"username"];
+        NSString *credential = iceServerDictionary[@"credential"];
+        username = username ? username : @"";
+        credential = credential ? credential : @"";
+        RCLogNotice("[RTCICEServer serverFromXirsysArray] adding ICE server, url: %s, username: %s", [url UTF8String], [username UTF8String]);
+        [iceServers addObject:[[RTCICEServer alloc] initWithURI:[NSURL URLWithString:url]
+                                                       username:username
+                                                       password:credential]];
+    }
+    return iceServers;
 }
 
 @end
