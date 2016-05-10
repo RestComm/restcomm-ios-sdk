@@ -809,6 +809,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
         if ([params objectForKey:@"turn-url"]) {
             [self.params setObject:[params objectForKey:@"turn-url"] forKey:@"turn-url"];
         }
+        if ([params objectForKey:@"turn-enabled"]) {
+            [self.params setObject:[params objectForKey:@"turn-enabled"] forKey:@"turn-enabled"];
+        }
         if ([params objectForKey:@"turn-username"]) {
             [self.params setObject:[params objectForKey:@"turn-username"] forKey:@"turn-username"];
         }

@@ -36,6 +36,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                     @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
+                                    @"turn-enabled" : @YES,
                                     @"turn-url" : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
                                     @"turn-username" : @"atsakiridis",  // @"iapprtc",
                                     @"turn-password" : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
@@ -191,6 +192,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     return [appDefaults stringForKey:@"sip-registrar"];
 }
 
++ (BOOL)turnEnabled
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:@"turn-enabled"] boolValue];
+}
+
 + (NSString*)turnUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -335,6 +342,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     [appDefaults setObject:sipRegistrar forKey:@"sip-registrar"];
+}
+
++ (void)updateTurnEnabled:(BOOL)turnEnabled
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:@(turnEnabled) forKey:@"turn-enabled"];
 }
 
 + (void)updateTurnUrl:(NSString*)turnUrl

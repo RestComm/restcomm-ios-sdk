@@ -112,20 +112,47 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
+                            <tableViewSection footerTitle="Turn on/off TURN. When off only host and reflexive candidates are used." id="aSt-fw-gu3">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UsZ-Rf-Bb8">
+                                        <rect key="frame" x="0.0" y="99" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UsZ-Rf-Bb8" id="pOE-aD-Q5z">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable TURN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eic-We-dGX">
+                                                    <rect key="frame" x="8" y="12" width="102" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HuG-yY-fCG">
+                                                    <rect key="frame" x="543" y="7" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="switchChanged:" destination="5hQ-UP-sNc" eventType="valueChanged" id="OQ0-1o-cXo"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Eic-We-dGX" firstAttribute="centerY" secondItem="pOE-aD-Q5z" secondAttribute="centerY" id="3bc-Af-dAs"/>
+                                                <constraint firstItem="HuG-yY-fCG" firstAttribute="centerY" secondItem="pOE-aD-Q5z" secondAttribute="centerY" id="V56-9j-Box"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="HuG-yY-fCG" secondAttribute="trailing" id="qIp-Kf-Abv"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="Eic-We-dGX" secondAttribute="leading" id="qJc-9Z-7TJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="TURN URL" footerTitle="Leave empty to disable TURN" id="mlL-ci-LXb">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZYW-8D-gpd">
-                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="210" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZYW-8D-gpd" id="cu2-5n-32X">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dIa-g6-tP1">
-                                                    <rect key="frame" x="8" y="6" width="584" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="https://turn.server/turn" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NCN-1W-ycr">
                                                     <rect key="frame" x="8" y="6" width="584" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -151,7 +178,7 @@
                             <tableViewSection headerTitle="TURN Username" id="aH6-lN-Nqu">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8ba-lf-S0e">
-                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="320" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8ba-lf-S0e" id="EQj-ob-GXB">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -176,7 +203,7 @@
                             <tableViewSection headerTitle="TURN Password" id="dUW-hv-kJ0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ekh-T3-iEN">
-                                        <rect key="frame" x="0.0" y="318" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="414" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekh-T3-iEN" id="Hdp-CX-n1E">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -194,62 +221,6 @@
                                                 <constraint firstAttribute="leadingMargin" secondItem="xmh-CZ-7Ow" secondAttribute="leading" id="eco-4c-L32"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="xmh-CZ-7Ow" secondAttribute="trailing" id="mjF-ah-HHf"/>
                                             </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="TURN candidates timeout" footerTitle="How long to wait for ICE candidates when TURN is enabled" id="Ind-e6-FBc">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eq1-i0-FiD">
-                                        <rect key="frame" x="0.0" y="412" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eq1-i0-FiD" id="kgr-7b-i9w">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="0.0" maxValue="60" translatesAutoresizingMaskIntoConstraints="NO" id="zu3-lb-RJs">
-                                                    <rect key="frame" x="6" y="10" width="194" height="31"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="190" id="pyU-hf-UnH"/>
-                                                    </constraints>
-                                                    <connections>
-                                                        <action selector="sliderChanged:" destination="5hQ-UP-sNc" eventType="valueChanged" id="lJ5-RS-CcO"/>
-                                                    </connections>
-                                                </slider>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="5" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6y-vF-0cb">
-                                                    <rect key="frame" x="500" y="14" width="21" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="seconds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMy-aJ-8ze">
-                                                    <rect key="frame" x="527" y="14" width="65" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="w6y-vF-0cb" secondAttribute="trailing" constant="71" id="0Js-ZY-SBP"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="FMy-aJ-8ze" secondAttribute="trailing" id="6JZ-a9-We2"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="zu3-lb-RJs" secondAttribute="bottom" constant="-4" id="8bj-nP-Vc8"/>
-                                                <constraint firstItem="FMy-aJ-8ze" firstAttribute="leading" secondItem="w6y-vF-0cb" secondAttribute="trailing" constant="6" id="8mp-OX-dTa"/>
-                                                <constraint firstItem="FMy-aJ-8ze" firstAttribute="top" secondItem="kgr-7b-i9w" secondAttribute="topMargin" constant="6" id="Acc-UY-7at"/>
-                                                <constraint firstItem="w6y-vF-0cb" firstAttribute="top" secondItem="kgr-7b-i9w" secondAttribute="topMargin" constant="6" id="DqC-Rr-urQ"/>
-                                                <constraint firstItem="zu3-lb-RJs" firstAttribute="top" secondItem="kgr-7b-i9w" secondAttribute="topMargin" constant="2" id="FQC-1k-ASN"/>
-                                                <constraint firstItem="w6y-vF-0cb" firstAttribute="top" secondItem="kgr-7b-i9w" secondAttribute="topMargin" constant="6" id="FyU-E4-SUG"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="w6y-vF-0cb" secondAttribute="bottom" constant="1" id="Uzf-ns-0KP"/>
-                                                <constraint firstItem="FMy-aJ-8ze" firstAttribute="leading" secondItem="kgr-7b-i9w" secondAttribute="leadingMargin" constant="519" id="ea2-Ip-OhP"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="zu3-lb-RJs" secondAttribute="leading" id="lPk-Hs-UvK"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="FMy-aJ-8ze" secondAttribute="bottom" constant="1" id="ybb-jN-7gb"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="0Js-ZY-SBP"/>
-                                                    <exclude reference="DqC-Rr-urQ"/>
-                                                    <exclude reference="ea2-Ip-OhP"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -275,8 +246,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="secondsLabel" destination="w6y-vF-0cb" id="QED-5F-WAe"/>
-                        <outlet property="timeoutSlider" destination="zu3-lb-RJs" id="X65-J1-9pw"/>
+                        <outlet property="switchOnOff" destination="HuG-yY-fCG" id="8yo-sD-xXt"/>
                         <outlet property="turnPasswordText" destination="xmh-CZ-7Ow" id="diD-Ui-hDr"/>
                         <outlet property="turnUrlText" destination="NCN-1W-ycr" id="rE4-ci-6YU"/>
                         <outlet property="turnUsernameText" destination="mwV-Sx-IJw" id="MOD-eZ-dlZ"/>

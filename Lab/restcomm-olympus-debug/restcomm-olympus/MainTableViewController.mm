@@ -73,7 +73,8 @@
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                       [Utils turnUrl], @"turn-url",  // leave empty to disable TURN
+                       [Utils turnUrl], @"turn-enabled",
+                       [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
                        [cafilePath stringByDeletingLastPathComponent], @"certificate-dir",  // leave empty to disable TLS for signaling

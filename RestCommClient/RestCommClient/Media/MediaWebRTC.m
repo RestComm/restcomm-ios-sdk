@@ -127,8 +127,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     
     [self configure];
 
-    // If TURN url is empty then it means that we want TURN disabled
-    if (![[_parameters objectForKey:@"turn-url"] isEqualToString:@""]) {
+    if ([[_parameters objectForKey:@"turn-enabled"] boolValue]) {
         //NSURL *turnRequestURL = [NSURL URLWithString:kARDTurnRequestUrl];
         /* Uncomment to use google's TURN servers (had issues with those by the way with huge delays)
         NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?username=%@&key=%@",
