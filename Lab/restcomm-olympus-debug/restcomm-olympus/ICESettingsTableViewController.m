@@ -29,9 +29,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *turnUrlText;
 @property (weak, nonatomic) IBOutlet UITextField *turnUsernameText;
 @property (weak, nonatomic) IBOutlet UITextField *turnPasswordText;
-@property (unsafe_unretained, nonatomic) IBOutlet UISlider *timeoutSlider;
+//@property (unsafe_unretained, nonatomic) IBOutlet UISlider *timeoutSlider;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *secondsLabel;
 @property UITextField * activeField;
+@property (weak, nonatomic) IBOutlet UISwitch *switchOnOff;
 @end
 
 /* Note that the reason we are using a separate Navigation Controller for this controller is that there's an issue with iOS and Bar Button items don't show right when on a modal controller
@@ -167,8 +168,11 @@
     self.turnUrlText.text = [Utils turnUrl];
     self.turnUsernameText.text = [Utils turnUsername];
     self.turnPasswordText.text = [Utils turnPassword];
-    [self.timeoutSlider setValue:[[Utils turnCandidateTimeout] floatValue]];
+    //[self.timeoutSlider setValue:[[Utils turnCandidateTimeout] floatValue]];
     self.secondsLabel.text = [Utils turnCandidateTimeout];
+    [self.switchOnOff setOn:[Utils turnEnabled] animated:NO];
+    
+    [self updateUIBasedOnSwitch];
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;
@@ -210,14 +214,16 @@
     // TODO: proper way to do this is to update only when a value has changed compared to the value when ICE Settings screen was opened
     // For now let's save always
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
+    [Utils updateTurnEnabled:self.switchOnOff.on];
+    [params setObject:@(self.switchOnOff.on) forKey:@"turn-enabled"];
     [Utils updateTurnUrl:self.turnUrlText.text];
     [params setObject:self.turnUrlText.text forKey:@"turn-url"];
     [Utils updateTurnUsername:self.turnUsernameText.text];
     [params setObject:self.turnUsernameText.text forKey:@"turn-username"];
     [Utils updateTurnPassword:self.turnPasswordText.text];
     [params setObject:self.turnPasswordText.text forKey:@"turn-password"];
-    [Utils updateTurnCandidateTimeout:self.secondsLabel.text];
-    [params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
+    //[Utils updateTurnCandidateTimeout:self.secondsLabel.text];
+    //[params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
 
     [self.device updateParams:params];
 }
@@ -245,10 +251,38 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)switchChanged:(id)sender {
+    [self updateUIBasedOnSwitch];
+}
+
+- (void)updateUIBasedOnSwitch
+{
+    if (self.switchOnOff.on) {
+        [self.turnUrlText setEnabled:YES];
+        self.turnUrlText.alpha = 1.0;
+        [self.turnUsernameText setEnabled:YES];
+        self.turnUsernameText.alpha = 1.0;
+        [self.turnPasswordText setEnabled:YES];
+        self.turnPasswordText.alpha = 1.0;
+    }
+    else {
+        float disabledAlpha = 0.5;
+        [self.turnUrlText setEnabled:NO];
+        self.turnUrlText.alpha = disabledAlpha;
+        //[self.turnUrlText setUserInteractionEnabled:NO];
+        [self.turnUsernameText setEnabled:NO];
+        self.turnUsernameText.alpha = disabledAlpha;
+        [self.turnPasswordText setEnabled:NO];
+        self.turnPasswordText.alpha = disabledAlpha;
+    }
+}
+
+/*
 - (IBAction)sliderChanged:(id)sender
 {
     self.secondsLabel.text = [NSString stringWithFormat:@"%d", (int)self.timeoutSlider.value];
 }
+ */
 
 - (BOOL)shouldAutorotate
 {

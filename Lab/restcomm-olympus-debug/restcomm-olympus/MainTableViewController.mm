@@ -73,7 +73,7 @@
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                       [Utils turnUrl], @"turn-enabled",
+                       @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",

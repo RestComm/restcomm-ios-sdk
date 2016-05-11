@@ -121,11 +121,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable TURN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eic-We-dGX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable TURN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eic-We-dGX">
                                                     <rect key="frame" x="8" y="12" width="102" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="102" id="MaQ-E9-TQy"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="MaQ-E9-TQy"/>
+                                                        </mask>
+                                                    </variation>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HuG-yY-fCG">
                                                     <rect key="frame" x="543" y="7" width="51" height="31"/>
@@ -136,10 +144,24 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Eic-We-dGX" firstAttribute="centerY" secondItem="pOE-aD-Q5z" secondAttribute="centerY" id="3bc-Af-dAs"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="Eic-We-dGX" secondAttribute="leading" id="Ovg-Wl-4G4"/>
                                                 <constraint firstItem="HuG-yY-fCG" firstAttribute="centerY" secondItem="pOE-aD-Q5z" secondAttribute="centerY" id="V56-9j-Box"/>
+                                                <constraint firstItem="Eic-We-dGX" firstAttribute="leading" secondItem="pOE-aD-Q5z" secondAttribute="leadingMargin" id="Wvq-Zs-EP8"/>
+                                                <constraint firstItem="Eic-We-dGX" firstAttribute="centerY" secondItem="pOE-aD-Q5z" secondAttribute="centerY" id="YF4-l7-rzc"/>
+                                                <constraint firstItem="Eic-We-dGX" firstAttribute="top" secondItem="pOE-aD-Q5z" secondAttribute="topMargin" constant="4" id="mI4-Nd-JPQ"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="HuG-yY-fCG" secondAttribute="trailing" id="qIp-Kf-Abv"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="Eic-We-dGX" secondAttribute="leading" id="qJc-9Z-7TJ"/>
+                                                <constraint firstItem="Eic-We-dGX" firstAttribute="centerY" secondItem="HuG-yY-fCG" secondAttribute="centerY" id="yeU-85-Wje"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="3bc-Af-dAs"/>
+                                                    <exclude reference="Wvq-Zs-EP8"/>
+                                                    <exclude reference="mI4-Nd-JPQ"/>
+                                                    <exclude reference="qJc-9Z-7TJ"/>
+                                                    <exclude reference="yeU-85-Wje"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
