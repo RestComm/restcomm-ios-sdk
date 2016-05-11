@@ -594,7 +594,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     // Furthermore, this method is called each time there is a redirect so reinitializing it
     // also serves to clear it
     NSLog(@"HTTP start");
-
+    
     
     self.httpData = [[NSMutableData alloc] init];
 }
@@ -602,7 +602,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     // append the new data to the instance variable you declared
     NSLog(@"HTTP append");
-
+    
     [self.httpData appendData:data];
 }
 
@@ -629,7 +629,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     if ([challenge previousFailureCount] == 0) {
         NSLog(@"HTTP - received authentication challenge");
         NSURLCredential *newCredential = [NSURLCredential credentialWithUser:@"administrator@company.com"
-                                                                    password:@"el@m0ynte"
+                                                                    password:@"MyPassword"
                                                                  persistence:NSURLCredentialPersistenceForSession];
         NSLog(@"HTTP - credential created");
         [[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
@@ -642,7 +642,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 -(void)dial
 {
-    
     // Create the request.
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.2.5:8080/restcomm/2012-04-24/Accounts/ACae6e420f425248d6a26948c17a9e2acf/Calls.json"]];
     

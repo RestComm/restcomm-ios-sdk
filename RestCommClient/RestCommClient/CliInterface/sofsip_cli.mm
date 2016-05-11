@@ -82,6 +82,8 @@ extern su_log_t nth_server_log[];
 extern su_log_t sresolv_log[];
 //extern su_log_t stun_log[];
 
+extern bool stackIsShuttingDown;
+
 struct cli_s {
   su_home_t     cli_home[1];	/**< Our memory home */
   void         *cli_main;      /**< Pointer to mainloop */
@@ -537,6 +539,13 @@ static void sofsip_handle_input_cb(char *input)
   else if (match("qr")) {
       restartSignalling = true;
       ssc_shutdown(cli->cli_ssc);
+  }
+  else if (match("mr")) {
+      // mark for restart if currently shutting down
+      RCLogError("sofsip_handle_input_cb(), marking for restart, stackIsShuttingDown: %d", stackIsShuttingDown);
+      if (stackIsShuttingDown) {
+          restartSignalling = true;
+      }
   }
   else if (command[strcspn(command, " \t\n\r=")] == '=') {
     /* Test assignment: foo=bar  */

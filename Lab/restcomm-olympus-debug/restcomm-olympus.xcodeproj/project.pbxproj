@@ -414,10 +414,10 @@
 		AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-olympusTests.m"; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
 		AEEC4D191CDB72A500598566 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIPSettingsNavigationController.h; path = "SIPSettingsNavigationController.h"; sourceTree = "<group>"; };
-		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIPSettingsNavigationController.m; path = "SIPSettingsNavigationController.m"; sourceTree = "<group>"; };
-		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICESettingsNavigationController.h; path = "ICESettingsNavigationController.h"; sourceTree = "<group>"; };
-		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICESettingsNavigationController.m; path = "ICESettingsNavigationController.m"; sourceTree = "<group>"; };
+		AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIPSettingsNavigationController.h; sourceTree = "<group>"; };
+		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIPSettingsNavigationController.m; sourceTree = "<group>"; };
+		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsNavigationController.h; sourceTree = "<group>"; };
+		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -467,8 +467,7 @@
 				AE3E52C41C57BB7B0057F5D0 /* agent.pem */,
 				AE3E52C51C57BB7B0057F5D0 /* cafile.pem */,
 			);
-			name = cert;
-			path = "cert";
+			path = cert;
 			sourceTree = "<group>";
 		};
 		AE5669091BE903C700C66789 /* Products */ = {

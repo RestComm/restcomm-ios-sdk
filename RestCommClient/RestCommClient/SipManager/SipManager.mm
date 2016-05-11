@@ -369,6 +369,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     if (_signallingInstances > 0) {
         RCLogNotice("[SipManager eventLoop] another instance already running; bailing");
         [_signallingInstancesLock unlock];
+        [self markForRestartIfShuttingDown];
         return false;
     }
     else {
@@ -660,6 +661,14 @@ ssize_t pipeToSofia(const char * msg, int fd)
     
     return true;
     
+}
+
+- (bool)markForRestartIfShuttingDown
+{
+    NSString* cmd = [NSString stringWithFormat:@"mr"];
+    [self pipeToSofia:cmd];
+    
+    return true;
 }
 
 - (bool)shutdown:(BOOL)restart

@@ -83,7 +83,14 @@
 /* Globals
  * ------------------- */
 static struct SofiaReply sofiaReply;
-//static int pending_registration = false;
+// Indication of whether sofia stack is currently shutting down. This is needed for the edge scenario
+// where the user leaves and re-enters the App very quickly and the previous shutdown doesn't have time
+// to complete until the App is reopened and from then on stays disconnected and not able to handle requests.
+//
+// With this global var we keep whether we are currently shutting down and if so if a new stack is requested
+// we mark it so that it is restarted after the previous stack is shutdown
+bool stackIsShuttingDown = false;
+
 
 /* Function prototypes
  * ------------------- */
@@ -182,6 +189,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     char *userdomain = NULL;
     string contact, secure_contact;
     const char *proxy = NULL, *registrar = NULL, *cert_dir = NULL;
+    stackIsShuttingDown = false;
     
     ssc = (ssc_t *)su_zalloc(home, sizeof(*ssc));
 
@@ -2363,6 +2371,8 @@ void ssc_shutdown(ssc_t *ssc)
     RCLogDebug("%s: quitting (this can take some time)", ssc->ssc_name);
     
     nua_shutdown(ssc->ssc_nua);
+    
+    stackIsShuttingDown = true;
 }
 
 string resolveSipUri(string uri)
