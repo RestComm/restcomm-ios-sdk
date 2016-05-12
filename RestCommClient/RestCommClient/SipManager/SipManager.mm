@@ -178,6 +178,14 @@ int read_pipe[2];
         }
          */
     }
+    else if (reply->rc == ERROR_INITIALIZING_SIGNALING) {
+        // we have an incoming call, we need to ring
+        NSError *error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                    code:reply->rc
+                                                userInfo:@{NSLocalizedDescriptionKey : @(reply->text.c_str())}];
+
+        [self.deviceDelegate sipManager:self didSignallingError:error];
+    }
     else if (reply->rc == OUTGOING_RINGING) {
         // we have an incoming call, we need to ring
         [self.connectionDelegate sipManagerDidReceiveOutgoingRinging:self];

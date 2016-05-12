@@ -460,7 +460,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
      */
     if (error.code == ERROR_REGISTER_AUTHENTICATION || error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT ||
-        error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE) {
+        error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE || error.code == ERROR_INITIALIZING_SIGNALING) {
         _state = RCDeviceStateOffline;
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
         

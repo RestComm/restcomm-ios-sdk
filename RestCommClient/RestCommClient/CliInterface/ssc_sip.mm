@@ -220,10 +220,15 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     
     NSString * address = [Utilities getPrimaryIPAddress];
     if ([address isEqualToString:@""]) {
+        int outputFd = ssc->ssc_output_fd;
         RCLogError("No valid interface to bind to with nua_create()");
         ssc_destroy(ssc);
         ssc = NULL;
         su_free(home, userdomain);
+
+        SofiaReply reply(ERROR_SIP_INITIALIZING_SIGNALING, "Error initializing signaling: no valid network interface to bind to");
+        reply.Send(outputFd);
+
         return ssc;
     }
     
