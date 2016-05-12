@@ -613,6 +613,11 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             }
             else {
                 RCLogError("[MediaWebRTC iceGatheringChanged:], state Complete but no candidates collected");
+                
+                NSError *iceError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                               code:ERROR_WEBRTC_ICE
+                                                           userInfo:@{ NSLocalizedDescriptionKey: @"ICEGatheringState 'complete' but no candidates collected" }];
+                [self.mediaDelegate mediaController:self didError:iceError];
             }
         }
     });
@@ -667,7 +672,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             return;
         }
         
-        RCLogDebug("[MediaWebRTC didCreateSessionDescription], sdp: %s", [sdp.description UTF8String]);
+        //RCLogDebug("[MediaWebRTC didCreateSessionDescription], sdp: %s", [sdp.description UTF8String]);
         [_peerConnection setLocalDescriptionWithDelegate:self
                                       sessionDescription:sdp];
 

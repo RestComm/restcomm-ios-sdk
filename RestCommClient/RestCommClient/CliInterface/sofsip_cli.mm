@@ -80,7 +80,7 @@ extern su_log_t nth_client_log[];
 extern su_log_t nth_server_log[];
 //extern su_log_t soa_log[];
 extern su_log_t sresolv_log[];
-//extern su_log_t stun_log[];
+extern su_log_t stun_log[];
 
 extern bool stackIsShuttingDown;
 
@@ -271,6 +271,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   conf->ssc_registrar = getenv("SOFSIP_REGISTRAR");
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
+  //conf->ssc_stun_server = "stun.l.google.com:19302";
 
   for (i = 1; i < ac; i++) {
     if (av[i] && av[i][0] != '-') {
@@ -299,6 +300,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   //su_log_set_level(nth_client_log, 9);
   //su_log_set_level(nth_server_log, 9);
   //su_log_set_level(sresolv_log, 9);
+  //su_log_set_level(stun_log, 9);
   
   
   // set default level to 2: non-critical errors

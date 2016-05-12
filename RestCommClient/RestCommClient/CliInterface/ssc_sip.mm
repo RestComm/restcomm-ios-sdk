@@ -246,11 +246,13 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = "sip:";
         contact += [address UTF8String];
         contact += ":*;transport=tcp";
+        //contact +=  ":5090;transport=tcp";
 
         if (cert_dir) {
             secure_contact = "sips:";
             secure_contact += [address UTF8String];
             secure_contact += ":*;transport=tls";
+            //secure_contact +=  ":5091;transport=tls";
         }
     }
 
@@ -283,9 +285,9 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               //NUTAG_M_PARAMS("transport=tcp"),
                               TAG_IF(conf->ssc_media_addr,
                                      NUTAG_MEDIA_ADDRESS(conf->ssc_media_addr)),
-                              /* note: use of STUN for signaling disabled */
-                              /* TAG_IF(conf->ssc_stun_server, STUNTAG_SERVER(conf->ssc_stun_server)), */
-                              /* TAG_IF(userdomain, STUNTAG_DOMAIN(userdomain)), */
+                              // note: use of STUN for signaling disabled
+                              //TAG_IF(conf->ssc_stun_server, STUNTAG_SERVER(conf->ssc_stun_server)),
+                              //TAG_IF(userdomain, STUNTAG_DOMAIN(userdomain)),
                               
                               /* Used in OPTIONS */
                               TAG_IF(caps_str.c_str(),
@@ -308,6 +310,8 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                        NUTAG_AUTOALERT(1),
                        NUTAG_SESSION_TIMER(0),
                        NUTAG_AUTOANSWER(0),
+                       //TAG_IF("64.233.184.127", STUNTAG_SERVER("64.233.184.127")),
+                       //TAG_IF("stun.l.google.com", STUNTAG_DOMAIN("stun.l.google.com")),
                        //TAG_IF(cert_dir,
                        //       NUTAG_CERTIFICATE_DIR(cert_dir)),
                        TAG_NULL());

@@ -255,7 +255,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 - (void)asyncDeviceDidStartListeningForIncomingConnections
 {
     RCLogNotice("[RCDevice asyncDeviceDidStartListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
     }
 }
@@ -268,7 +268,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     else {
         RCLogNotice("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
     }
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
         /*
         if (error == nil) {
             error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
@@ -512,15 +512,18 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if (newStatus == NotReachable && (_state != RCDeviceStateOffline || self.reachabilityStatus != NotReachable)) {
         RCLogNotice("[RCDevice checkNetworkStatus] action: no connectivity");
-        [self.sipManager shutdown:NO];
-        _state = RCDeviceStateOffline;
+        //[self.sipManager shutdown:NO];
+        //_state = RCDeviceStateOffline;
         self.reachabilityStatus = newStatus;
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+        /*
         NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                            code:ERROR_LOST_CONNECTIVITY
                                        userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
 
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
+         */
+        [self unlisten];
         return;
     }
     
@@ -538,18 +541,22 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     if ((newStatus == ReachableViaWiFi || newStatus == ReachableViaWWAN) &&
         _state == RCDeviceStateOffline) {
-        if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
             // don't allow to go on-line while in the background (added this to fix the issue in listen() when opening app while already on-line where no notification was sent when registration succeeded)
             RCLogNotice("[RCDevice checkNetworkStatus] action: wifi/mobile available");
-            [self.sipManager eventLoop];
+            
+            //[self.sipManager eventLoop];
             self.reachabilityStatus = newStatus;
             self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+            /*
             if (![self.sipManager.params objectForKey:@"registrar"] ||
                 ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
                 [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
             }
+             */
+            [self listen];
         }
     }
     
