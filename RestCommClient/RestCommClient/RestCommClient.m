@@ -41,6 +41,7 @@
         self.errors = @{
                         @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
                         @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
+                        @(ERROR_WEBRTC_TURN) : @"Error retrieving TURN servers",
                         @(ERROR_WEBRTC_ALREADY_INITIALIZED) : @"Webrtc media already initialized",
                         @(ERROR_MEDIA_PERMISSION_DENIED) : @"Permission denied for microphone/camera",
                         @(ERROR_CALL_GENERIC) : @"Generic call error",

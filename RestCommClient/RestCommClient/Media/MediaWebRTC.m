@@ -140,7 +140,8 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
                                                       [_parameters objectForKey:@"turn-url"],
                                                       [_parameters objectForKey:@"turn-username"],
                                                       [_parameters objectForKey:@"turn-password"],
-                                                      [_parameters objectForKey:@"registrar"]]];
+                                                      @"cloud.restcomm.com"]];
+
         
         _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
         
@@ -148,10 +149,14 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
                                                            NSError *error) {
             if (error) {
-                RCLogError("Error retrieving TURN servers: %d", error);
+                RCLogError([error.localizedDescription UTF8String]);
+                [self.mediaDelegate mediaController:self didError:error];
+                return;
             }
             //NSArray * array = @[ [NSURL URLWithString:@""]];
             MediaWebRTC *strongSelf = weakSelf;
+            // Need to remove the single object that we prepopulate manually which is the STUN server,
+            // because with Xirsys the STUN server is returned in the list of TURN servers
             [strongSelf.iceServers removeAllObjects];
             [strongSelf.iceServers addObjectsFromArray:turnServers];
             strongSelf.isTurnComplete = YES;

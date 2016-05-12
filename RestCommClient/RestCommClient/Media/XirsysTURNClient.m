@@ -63,10 +63,9 @@
                         if ([status integerValue] != 200) {
                             NSError *responseError =
                             [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                             // TODO: update error code once I get this working
-                                                       code:100
+                                                       code:ERROR_WEBRTC_TURN
                                                    userInfo:@{
-                                                              NSLocalizedDescriptionKey: @"Bad TURN response.",
+                                                              NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error retrieving TURN servers: %@. Check your TURN service or disable TURN altogether", [dict objectForKey:@"e"]],
                                                               }];
                             completionHandler(turnServers, responseError);
                             return;
