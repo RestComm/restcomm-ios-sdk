@@ -52,7 +52,7 @@
     self.connection = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 // ---------- UI events
@@ -62,11 +62,10 @@
         NSLog(@"Connection already ongoing");
         return;
     }
-    
 
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
-    [self.parameters setObject:@"sip:1235@cloud.restcomm.com" forKey:@"username"];
+    [self.parameters setObject:@"sip:+1235@cloud.restcomm.com" forKey:@"username"];
 
     // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];
@@ -93,24 +92,7 @@
 
 - (void)register:(NSNotification *)notification
 {
-    /*
-    if (self.device && self.isInitialized && !self.isRegistered) {
-        [self register];
-    }
-     */
-    if (self.device && self.isInitialized && !self.isRegistered) {
-        if (self.device.state == RCDeviceStateOffline) {
-            [self.device listen];
-        }
-        [self register];
-    }
-}
-
-- (void)register
-{
-    // update our parms
-    [self.device updateParams:self.parameters];
-    self.isRegistered = YES;
+    [self.device listen];
 }
 
 - (void)unregister:(NSNotification *)notification
@@ -131,7 +113,6 @@
 // optional
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
-    
 }
 
 // received incoming message
@@ -149,13 +130,6 @@
 {
     
 }
-
-- (void)deviceDidInitializeSignaling:(RCDevice *)device
-{
-    [self register];
-    self.isInitialized = YES;
-}
-
 
 // ---------- Delegate methods for RC Connection
 // not implemented yet
