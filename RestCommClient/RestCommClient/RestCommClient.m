@@ -62,6 +62,8 @@
                         @(ERROR_SENDING_DIGITS) : @"Error sending DTMF Digits",
                         @(ERROR_LOST_CONNECTIVITY) : @"Lost connectivity with Restcomm",
                         @(ERROR_INITIALIZING_SIGNALING) : @"Error initializing signaling: no valid network interface to bind to",
+                        @(ERROR_SECURE_SIGNALLING) : @"Error setting up secure signaling",
+
                         };
         initializeLogging();
     }

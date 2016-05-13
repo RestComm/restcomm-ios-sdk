@@ -42,9 +42,6 @@
 // notice that owner of the connection is the App, not us
 @property RCConnection * currentConnection;
 @property AVAudioPlayer * messagePlayer;
-// keep the call context between
-//- (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
-//@property NSDictionary * callContext;
 
 // reachability
 @property Reachability* internetReachable;
@@ -97,6 +94,17 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
         RCLogNotice("[RCDevice initWithParams: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
 
+        if ([parameters objectForKey:@"signaling-secure"] && [[parameters objectForKey:@"signaling-secure"] boolValue]) {
+            if (![parameters objectForKey:@"signaling-certificate-dir"] ||
+                ([parameters objectForKey:@"signaling-certificate-dir"] && [[parameters objectForKey:@"signaling-certificate-dir"] isEqualToString:@""])) {
+                NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                             code:ERROR_SECURE_SIGNALLING
+                                                         userInfo:@{NSLocalizedDescriptionKey : @"Secure signaling mode specified, but certificate dir is missing" }];
+                
+                [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
+            }
+        }
+        
         // reachability
         self.hostActive = NO;
         // check for internet connection
@@ -205,8 +213,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         else {
             [self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
         }
-        //[self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
-        //[self.sipManager updateParams:nil deviceIsOnline:YES networkIsOnline:YES];
     }
 }
 
@@ -227,24 +233,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         // important: in this case we are calling asyncDeviceDidStopListeningForIncomingConnections synchronously
         // because we want the App to get a chance to update UI before it goes to the background
         [self asyncDeviceDidStopListeningForIncomingConnections:error];
-        //[self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
     }
     
     // need to shut down sofia even if we are already offline. Remember that we are deemed offline even if sofia is up but REGISTER has failed. And we want to make sure Sofia stops on unlisten()
     [self.sipManager shutdown:NO];
-    
-    // DEBUG
-    //[self performSelector:@selector(asyncSuspend) withObject:nil afterDelay:1.0];
 }
-
-/* DEBUG
-- (void)asyncSuspend
-{
-    RCLogNotice("----- Trying to suspend the App");
-    UIApplication *app = [UIApplication sharedApplication];
-    [app performSelector:@selector(suspend)];
-}
- */
 
 + (RCDeviceConnectivityType)networkStatus2ConnectivityType:(NetworkStatus)status
 {
@@ -269,14 +262,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         RCLogNotice("[RCDevice asyncDeviceDidStopListeningForIncomingConnections], device state: %d connectivity type: %d", self.state, self.connectivityType);
     }
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
-        /*
-        if (error == nil) {
-            error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                               code:ERROR_LOST_CONNECTIVITY
-                                           userInfo:@{NSLocalizedDescriptionKey : [RestCommClient getErrorText:ERROR_LOST_CONNECTIVITY]}];
-        }
-         */
-        //NSLog(@"------ Delegate: %p, Self: %p", self.delegate, self);
         [self.delegate device:self didStopListeningForIncomingConnections:error];
     }
 }
@@ -441,11 +426,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 {
     RCLogNotice("[RCDevice sipManagerDidInitializedSignalling]");
 
-    //[self.delegate deviceDidInitializeSignaling:self];
     if (![self.sipManager.params objectForKey:@"registrar"] ||
         ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
         // when in registrar-less mode, if signaling is initialized we can notify the App that we are ready, right away (no need for registration to succeed)
-        //[self.delegate deviceDidStartListeningForIncomingConnections:self];
         [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
     }
 }
@@ -463,8 +446,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE || error.code == ERROR_INITIALIZING_SIGNALING) {
         _state = RCDeviceStateOffline;
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
-        
-        //[self.delegate device:self didStopListeningForIncomingConnections:error];
     }
 }
 

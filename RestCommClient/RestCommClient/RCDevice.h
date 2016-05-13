@@ -110,10 +110,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param parameters      Parameters for the Device entity. Possible keys/values: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
  *    <b>password</b>: password for the client <br>
+ *    <b>turn-enabled</b>: should TURN be enabled <br>
  *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
  *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
+ *    <b>signaling-secure</b>: Should signaling traffic be encrypted. For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
+ *    <b>signaling-certificate-dir</d>: Directory where files agent.pem and cafile.pem are installed inside the App bundle. agent.pem is the client/server cert containing key and certificate (in that order) to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *  @param delegate        Delegate of RCDevice
  *
  *  @return Newly initialized object
