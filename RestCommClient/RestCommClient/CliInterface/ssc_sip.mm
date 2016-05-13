@@ -279,8 +279,6 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               
                               TAG_IF(contact.c_str(),
                                      NUTAG_URL(contact.c_str())),
-                              //TAG_IF("sip:192.168.2.39:*;transport=tcp",
-                              //       NUTAG_URL("sip:192.168.2.39:*;transport=tcp")),
                               
                               TAG_IF(!secure_contact.empty(),
                                      NUTAG_SIPS_URL(secure_contact.c_str())),

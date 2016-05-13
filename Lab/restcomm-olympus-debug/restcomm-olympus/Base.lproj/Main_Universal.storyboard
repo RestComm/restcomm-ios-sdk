@@ -73,6 +73,35 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Security" footerTitle="Encrypt signaling traffic" id="yJV-Rd-6sd">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="i8l-mS-lId">
+                                        <rect key="frame" x="0.0" y="445" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i8l-mS-lId" id="834-Tg-OaL">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable TLS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TdV-Np-Nen">
+                                                    <rect key="frame" x="8" y="13" width="77" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YZN-VX-XpS">
+                                                    <rect key="frame" x="543" y="7" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TdV-Np-Nen" firstAttribute="centerY" secondItem="834-Tg-OaL" secondAttribute="centerY" id="OoM-k1-V5F"/>
+                                                <constraint firstItem="YZN-VX-XpS" firstAttribute="centerY" secondItem="834-Tg-OaL" secondAttribute="centerY" id="ayp-fo-Xdn"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YZN-VX-XpS" secondAttribute="trailing" id="dJd-TA-0Ju"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="TdV-Np-Nen" secondAttribute="leading" id="yG2-yI-F0b"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="zeM-0b-Nxo" id="8gu-ZW-KEQ"/>
@@ -97,6 +126,7 @@
                         <outlet property="aorText" destination="eeT-HX-HJn" id="jIH-Sc-TRk"/>
                         <outlet property="passwordText" destination="FEk-ci-Zii" id="nUd-rC-GjO"/>
                         <outlet property="registrarText" destination="uNs-LZ-bvv" id="ura-cy-XUB"/>
+                        <outlet property="secureEnabledSwitch" destination="YZN-VX-XpS" id="ZiB-hd-llF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z48-uq-mHv" userLabel="First Responder" sceneMemberID="firstResponder"/>

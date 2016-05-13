@@ -547,6 +547,7 @@ static void sofsip_handle_input_cb(char *input)
       RCLogError("sofsip_handle_input_cb(), marking for restart, stackIsShuttingDown: %d", stackIsShuttingDown);
       if (stackIsShuttingDown) {
           restartSignalling = true;
+          stackIsShuttingDown = false;
       }
   }
   else if (command[strcspn(command, " \t\n\r=")] == '=') {

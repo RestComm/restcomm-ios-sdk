@@ -45,6 +45,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSString*)turnCandidateTimeout;
 + (BOOL)isFirstTime;
 + (NSString*)pendingInterappUri;
++ (BOOL)signalingSecure;
 
 + (void)updateSipIdentification:(NSString*)sipIdentification;
 + (void)updateSipPassword:(NSString*)sipPassword;
@@ -56,6 +57,7 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout;
 + (void)updateIsFirstTime:(BOOL)isFirstTime;
 + (void)updatePendingInterappUri:(NSString*)uri;
++ (void)updateSignalingSecure:(BOOL)signalingSecure;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;

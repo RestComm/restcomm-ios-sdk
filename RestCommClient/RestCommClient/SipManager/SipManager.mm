@@ -400,7 +400,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         // then nill is returned and then when UTF8String is called on nil, it returns 0x0
         sofsip_loop(NULL, 0, write_pipe[0], read_pipe[1], [[self convert2FullURI:[self.params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]] UTF8String],
                     [[self.params objectForKey:@"password"] UTF8String], [[self convert2FullDomain:[self.params objectForKey:@"registrar"]] UTF8String],
-                    [[self.params objectForKey:@"certificate-dir"] UTF8String]);
+                    [[self.params objectForKey:@"signaling-certificate-dir"] UTF8String]);
         
         [_signallingInstancesLock lock];
         _signallingInstances--;
@@ -702,41 +702,85 @@ ssize_t pipeToSofia(const char * msg, int fd)
 - (NSString*) convert2FullURI:(NSString*)original andDomain:(NSString*)domain
 {
     // TODO: this is a very simplistic way, need to elaborate on it
-    NSString * fullUri = original;
+    NSString * fullUri;
 
+    // if empty don't touch
     if ([original isEqualToString:@""]) {
         return @"";
     }
-    if ([original containsString:@"tel:"]) {
-        // TODO: remove hack: once tel-uri is implemented in Retscomm side remove this
-        return [NSString stringWithFormat:@"%@@%@", [original stringByReplacingOccurrencesOfString:@"tel:" withString:@"sip:"], domain];
-        
-        
-        // TODO: add correct code: once tel-uri is implemented add this
-        // if tel-uri don't alter it
-        //return fullUri;
+    else if ([original containsString:@"sip:"] || [original containsString:@"sips:"]) {
+        // if already full URI don't touch
+        fullUri = original;
     }
-    if ([original containsString:@"sip:"]) {
-        return fullUri;
+    else {
+        // if domain has 'sip:' prefix we need to remove it
+        NSString * normalizedDomain = [[domain stringByReplacingOccurrencesOfString:@"sip:" withString:@""] stringByReplacingOccurrencesOfString:@"sips:" withString:@""];
+        
+        // handle teluri
+        if ([original containsString:@"tel:"]) {
+            // TODO: remove hack: once tel-uri is implemented in Retscomm side remove this
+            fullUri = [NSString stringWithFormat:@"%@@%@", [original stringByReplacingOccurrencesOfString:@"tel:" withString:@"sip:"], normalizedDomain];
+            
+            
+            // TODO: add correct code: once tel-uri is implemented add this
+            // if tel-uri don't alter it
+            //return fullUri;
+        }
+        else {
+            // on any other case build full SIP URI using sip/s: prefix and appending the domain
+            
+            // if original domain is 'sips:' need to generate sips URI
+            if (domain && [domain containsString:@"sips:"]) {
+                fullUri = [NSString stringWithFormat:@"sips:%@@%@", original, normalizedDomain];
+            }
+            else {
+                fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, normalizedDomain];
+            }
+        }
     }
     
-    // on any other case build full SIP URI using sip: prefix and appending the domain
-    fullUri = [NSString stringWithFormat:@"sip:%@@%@", original, domain];
-
+    // Convert to sips if needed based on the RCDevice param 'signaling-secure'. Although when using registrar this isn't needed
+    // as Sofia decides based on registrar SIP-URI (and if sips uses secure signaling for all communications), when using registrar-less the sip uris here decide on that.
+    // TODO: when tel-uri is fixed in restcomm side and we change the code in TODO above, we also need to handle secure tel-uri as well here
+    if ([self.params objectForKey:@"signaling-secure"] && [[self.params objectForKey:@"signaling-secure"] boolValue] == YES) {
+        fullUri = [fullUri stringByReplacingOccurrencesOfString:@"sip:" withString:@"sips:"];
+    }
+    else {
+        fullUri = [fullUri stringByReplacingOccurrencesOfString:@"sips:" withString:@"sip:"];
+    }
+    
+    RCLogNotice("[SipManager convert2FullURI], after conversion: %s", [fullUri UTF8String]);
+    
     return fullUri;
 }
 
 // take a short domain of the form 'cloud.restcomm.com' and create full SIP domain out of it: 'sip:cloud.restcomm.com'
 - (NSString*) convert2FullDomain:(NSString*)original
 {
-    NSString * fullUri = original;
-
+    NSString * fullUri;
+    
+    //NSString * fullUri = original;
     if ([original isEqualToString:@""]) {
         return @"";
     }
-    if (![original containsString:@"sip:"]) {
+    else if ([original containsString:@"sip:"] || [original containsString:@"sips:"]) {
+        fullUri = original;
+    }
+    else {
         fullUri = [NSString stringWithFormat:@"sip:%@", original];
     }
+
+    // Convert to sips if needed based on the RCDevice param 'signaling-secure'.
+    // Sofia decides based on registrar SIP-URI (and if sips uses secure signaling for all communications)
+    if ([self.params objectForKey:@"signaling-secure"] && [[self.params objectForKey:@"signaling-secure"] boolValue] == YES) {
+        fullUri = [fullUri stringByReplacingOccurrencesOfString:@"sip:" withString:@"sips:"];
+    }
+    else {
+        fullUri = [fullUri stringByReplacingOccurrencesOfString:@"sips:" withString:@"sip:"];
+    }
+    
+    RCLogNotice("[SipManager convert2FullDomain], after conversion: %s", [fullUri UTF8String]);
+    
     return fullUri;
 }
 
@@ -746,8 +790,43 @@ ssize_t pipeToSofia(const char * msg, int fd)
      networkIsOnline:(BOOL)networkIsOnline
 {
     UpdateParamsState state = UpdateParamsStateUnassigned;
+    // keep in a dictionary all actions we want executed in Sofia, to allow for simpler logic
+    NSMutableDictionary * actionsDictionary = [[NSMutableDictionary alloc] init];
     BOOL aorUpdated = NO;
     if (params) {
+        // this needs to go first as we will be consulting it in various checks
+        if ([params objectForKey:@"signaling-secure"]) {
+            if ([[params objectForKey:@"signaling-secure"] boolValue] != [[self.params objectForKey:@"signaling-secure"] boolValue]) {
+                // if signaling-secure setting has been updated we need to unregister and re-register
+                NSDictionary * unregisterParams = @{
+                                                 @"password" : [self.params objectForKey:@"password"],
+                                                 };
+                
+                [actionsDictionary setObject:unregisterParams forKey:@"unregister"];
+                
+                NSString * aor = @"";
+                if ([params objectForKey:@"aor"]) {
+                    aor = [params objectForKey:@"aor"];
+                }
+                
+                NSString * password = @"";
+                if ([params objectForKey:@"password"]) {
+                    password = [params objectForKey:@"password"];
+                }
+
+                NSDictionary * registerParams = @{
+                                                 @"aor" : [self convert2FullURI:aor andDomain:[params objectForKey:@"registrar"]],
+                                                 @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
+                                                 @"password" : password,
+                                                 };
+                [actionsDictionary setObject:registerParams forKey:@"register"];
+
+                [self.params setObject:[params objectForKey:@"signaling-secure"] forKey:@"signaling-secure"];
+                state = UpdateParamsStateSentRegister;
+                aorUpdated = YES;
+            }
+        }
+
         if ([params objectForKey:@"registrar"]) {
             if ([[params objectForKey:@"registrar"] isEqualToString:@""]) {
                 // registrar-less
@@ -755,11 +834,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
                     if (deviceIsOnline) {
                         // user requested unregister by passing empty string and previously was registered
                         NSDictionary * updatedParams = @{
-                                                         //@"registrar" : [self.params objectForKey:@"registrar"],
                                                          @"password" : [self.params objectForKey:@"password"],
                                                          };
-                        NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
-                        [self pipeToSofia:cmd];
+                        [actionsDictionary setObject:updatedParams forKey:@"unregister"];
                     }
                     else {
                         // transitioning to registrar-less from non registrar-less when previously we had network connectivity while offline (because register failed)
@@ -776,11 +853,10 @@ ssize_t pipeToSofia(const char * msg, int fd)
                     if (![[params objectForKey:@"registrar"] isEqualToString:[self.params objectForKey:@"registrar"]] && deviceIsOnline) {
                         // user was previously registered and used a different registrar: need to unregister first
                         NSDictionary * updatedParams = @{
-                                                         //@"registrar" : [self.params objectForKey:@"registrar"],
                                                          @"password" : [self.params objectForKey:@"password"],
                                                          };
-                        NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:updatedParams]];
-                        [self pipeToSofia:cmd];
+                        
+                        [actionsDictionary setObject:updatedParams forKey:@"unregister"];
                     }
                 }
                 
@@ -799,8 +875,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
                                                  @"registrar" : [self convert2FullDomain:[params objectForKey:@"registrar"]],
                                                  @"password" : password,
                                                  };
-                NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
-                [self pipeToSofia:cmd];
+                [actionsDictionary setObject:updatedParams forKey:@"register"];
                 state = UpdateParamsStateSentRegister;
                 aorUpdated = YES;
             }
@@ -816,10 +891,25 @@ ssize_t pipeToSofia(const char * msg, int fd)
                                                  @"aor" : [self convert2FullURI:[params objectForKey:@"aor"] andDomain:[self.params objectForKey:@"registrar"]],
                                                  };
                 
-                NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:updatedParams]];
-                [self pipeToSofia:cmd];
+                [actionsDictionary setObject:updatedParams forKey:@"address"];
             }
         }
+        
+        // execute actual actions in correct order: first unregister, then register, then address
+        if ([actionsDictionary objectForKey:@"unregister"]) {
+            NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"unregister"]]];
+            [self pipeToSofia:cmd];
+        }
+        if ([actionsDictionary objectForKey:@"register"]) {
+            NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"register"]]];
+            [self pipeToSofia:cmd];
+        }
+        if ([actionsDictionary objectForKey:@"address"]) {
+            NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"address"]]];
+            [self pipeToSofia:cmd];
+        }
+        
+            
         if ([params objectForKey:@"password"]) {
             [self.params setObject:[params objectForKey:@"password"] forKey:@"password"];
         }

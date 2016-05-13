@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *registrarText;
 @property (weak, nonatomic) IBOutlet UITextField *passwordText;
 @property UITextField * activeField;
+@property (weak, nonatomic) IBOutlet UISwitch *secureEnabledSwitch;
 @end
 
 @implementation SipSettingsTableViewController
@@ -126,7 +127,8 @@
 {
     self.aorText.text = [Utils sipIdentification];
     self.registrarText.text = [Utils sipRegistrar];
-    self.passwordText.text = [Utils sipPassword]; 
+    self.passwordText.text = [Utils sipPassword];
+    [self.secureEnabledSwitch setOn:[Utils signalingSecure] animated:NO];
     // Latest:
     //UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style: UIBarButtonItemStyleBordered target:self action:@selector(backPressed)];
     //self.navigationItem.leftBarButtonItem = backButton;
@@ -166,31 +168,28 @@
 - (void)update
 {
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
+
     // always update registrar to make sure registraless is handled properly
-    bool update = true;
     [params setObject:@"" forKey:@"registrar"];
     [Utils updateSipRegistrar:self.registrarText.text];
+
     if (![self.aorText.text isEqualToString:@""]) {
         [params setObject:self.aorText.text forKey:@"aor"];
         [Utils updateSipIdentification:self.aorText.text];
-        //update = true;
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        //[params setObject:[NSString stringWithFormat:@"sip:%@", self.registrarText.text] forKey:@"registrar"];
         [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:@"registrar"];
-        //[Utils updateSipRegistrar:self.registrarText.text];
-        //update = true;
     }
     if (![self.passwordText.text isEqualToString:@""]) {
         [params setObject:self.passwordText.text forKey:@"password"];
         [Utils updateSipPassword:self.passwordText.text];
-        //update = true;
     }
-        
-    if (update) {
-        if ([self.device updateParams:params]) {
-            [self.delegate sipSettingsTableViewController:self didUpdateRegistrationWithString:self.registrarText.text];
-        }
+    
+    [params setObject:@(self.secureEnabledSwitch.on) forKey:@"signaling-secure"];
+    [Utils updateSignalingSecure:self.secureEnabledSwitch.on];
+    
+    if ([self.device updateParams:params]) {
+        [self.delegate sipSettingsTableViewController:self didUpdateRegistrationWithString:self.registrarText.text];
     }
 }
 - (IBAction)savePressed:(id)sender
@@ -207,7 +206,7 @@
     
     if ([self.aorText.text containsString:@"sip:"] || [self.aorText.text containsString:@"@"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
-                                                        message:@"Please avoid using a SIP URI for Username. User a plain username instead, like 'bob' or 'alice'"
+                                                        message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];

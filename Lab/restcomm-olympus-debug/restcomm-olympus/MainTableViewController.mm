@@ -77,7 +77,8 @@
                        [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
-                       [cafilePath stringByDeletingLastPathComponent], @"certificate-dir",  // leave empty to disable TLS for signaling
+                       @([Utils signalingSecure]), @"signaling-secure",
+                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];

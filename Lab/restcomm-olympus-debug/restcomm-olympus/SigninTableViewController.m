@@ -77,7 +77,7 @@
     
     if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
-                                                        message:@"Please avoid using a SIP URI for Username. User a plain username instead, like 'bob' or 'alice'"
+                                                        message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
