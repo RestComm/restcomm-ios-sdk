@@ -56,7 +56,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
  *  control the connection.
  *
  *  When an incoming connection arrives through [RCDeviceDelegate device:didReceiveIncomingConnection:] it is considered RCConnectionStateConnecting until it is either
- *  accepted with [RCConnection accept] or rejected with [RCConnection reject]. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
+ *  accepted with [RCConnection accept:] or rejected with [RCConnection reject]. Once the connection is accepted the RCConnection transitions to RCConnectionStateConnected
  *  state.
  *
  *  When an outgoing connection is created with [RCDevice connect:delegate:] it starts with state RCConnectionStatePending. Once it starts ringing on the remote party it

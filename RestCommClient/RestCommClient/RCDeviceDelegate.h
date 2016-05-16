@@ -49,7 +49,6 @@ typedef enum : NSInteger {
  */
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error;
 
-@optional
 /**
  *  @abstract RCDevice started listening for incoming connections
  *
@@ -66,14 +65,6 @@ typedef enum : NSInteger {
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection;
 
 /**
- *  @abstract RCDevice received presence update (**Not implemented yet**)
- *
- *  @param device        Device of interest
- *  @param presenceEvent Presence event
- */
-- (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent;
-
-/**
  *  @abstract RCDevice received incoming instant message
  *
  *  @param device  Device of interest
@@ -82,21 +73,23 @@ typedef enum : NSInteger {
  */
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params;
 
-@optional
-/**
- *  @abstract RCDevice finished initializing signalling
- *
- *  @param device  Device of interest
- */
-//- (void)deviceDidInitializeSignaling:(RCDevice *)device;
-
+//@optional
 /**
  *  @abstract RCDevice received presence update (**Not implemented yet**)
  *
  *  @param device        Device of interest
  *  @param presenceEvent Presence event
  */
-- (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)deviceState;
+//- (void)device:(RCDevice *)device didReceiveConnectivityUpdate:(RCConnectivityStatus)deviceState;
+
+@optional
+/**
+ *  @abstract RCDevice received presence update (**Not implemented yet**)
+ *
+ *  @param device        Device of interest
+ *  @param presenceEvent Presence event
+ */
+- (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent;
 
 @end
 

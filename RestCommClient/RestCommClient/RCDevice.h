@@ -65,8 +65,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  If there’s an incoming connection you will be notified by [RCDeviceDelegate device:didReceiveIncomingConnection:] delegate method. At that point you can use RCConnection methods to
  *  accept or reject the connection.
  *
- *  As far as instant messages are concerned you can send a message using [RCDevice sendMessage:to:] and you will be notified of an incoming message 
- *  via [RCDeviceDelegate device:didReceiveIncomingMessage:] delegate method.
+ *  As far as instant messages are concerned you can send a message using [RCDevice sendMessage:] and you will be notified of an incoming message
+ *  via [RCDeviceDelegate device:didReceiveIncomingMessage:withParams:] delegate method.
  */
 @interface RCDevice : NSObject<SipManagerDeviceDelegate, NSURLConnectionDelegate>
 /**
@@ -115,8 +115,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
  *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
- *    <b>signaling-secure</b>: Should signaling traffic be encrypted. For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
- *    <b>signaling-certificate-dir</d>: Directory where files agent.pem and cafile.pem are installed inside the App bundle. agent.pem is the client/server cert containing key and certificate (in that order) to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
+ *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
+ *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *  @param delegate        Delegate of RCDevice
  *
  *  @return Newly initialized object
@@ -193,10 +193,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param params Dictionary of key/value pairs of the parameters that will be updated: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
  *    <b>password</b>: password for the client <br>
+ *    <b>turn-enabled</b>: should TURN be enabled <br>
  *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
  *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
+ *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
+ *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *
  *  @return If update of parameters was successful. Typical reason to fail is connectivity issues
  */

@@ -41,6 +41,8 @@
 	
 	<option value="//api/name/capabilities">&nbsp;&nbsp;&nbsp;&nbsp;capabilities</option>
 	
+	<option value="//api/name/connectivityType">&nbsp;&nbsp;&nbsp;&nbsp;connectivityType</option>
+	
 	<option value="//api/name/delegate">&nbsp;&nbsp;&nbsp;&nbsp;delegate</option>
 	
 	<option value="//api/name/disconnectSoundEnabled">&nbsp;&nbsp;&nbsp;&nbsp;disconnectSoundEnabled</option>
@@ -103,6 +105,8 @@
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/capabilities">capabilities</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectivityType">connectivityType</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/delegate">delegate</a></span></li>
 	
@@ -189,8 +193,8 @@ the new outgoing connection. From then on you can act on the new connection by a
 If there’s an incoming connection you will be notified by <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingConnection:">[RCDeviceDelegate device:didReceiveIncomingConnection:]</a> <a href="#//api/name/delegate">delegate</a> method. At that point you can use RCConnection methods to
 accept or reject the connection.</p>
 
-<p>As far as instant messages are concerned you can send a message using [RCDevice sendMessage:to:] and you will be notified of an incoming message
-via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/delegate">delegate</a> method.</p>
+<p>As far as instant messages are concerned you can send a message using <a href="#//api/name/sendMessage:">[RCDevice sendMessage:]</a> and you will be notified of an incoming message
+via <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingMessage:withParams:">[RCDeviceDelegate device:didReceiveIncomingMessage:withParams:]</a> <a href="#//api/name/delegate">delegate</a> method.</p>
 					</div>
 					
 					
@@ -209,6 +213,12 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/state">&nbsp;&nbsp;state</a></code>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connectivityType">&nbsp;&nbsp;connectivityType</a></code>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -328,6 +338,42 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
     
 
 	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSDictionary *capabilities</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">RCDevice.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connectivityType" title="connectivityType"></a>
+	<h3 class="subsubtitle method-title">connectivityType</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Device connectivity type, given that RCDeviceState is Ready or Busy</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic) RCDeviceConnectivityType connectivityType</code></div>
 
     
 	
@@ -762,10 +808,13 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 			<dd><p>Parameters for the Device entity. Possible keys/values: <br>
 <b>aor</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br>
 <b>password</b>: password for the client <br>
+<b>turn-enabled</b>: should TURN be enabled <br>
 <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i>. Leave empty if you want to disable TURN <br>
 <b>turn-username</b>: TURN username <br>
 <b>turn-password</b>: TURN password <br>
-<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></p></dd>
+<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br>
+<b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the &lsquo;signaling-certificate-dir&rsquo; below should be provided as well <br>
+<b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -1001,10 +1050,13 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 			<dd><p>Dictionary of key/value pairs of the parameters that will be updated: <br>
 <b>aor</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br>
 <b>password</b>: password for the client <br>
+<b>turn-enabled</b>: should TURN be enabled <br>
 <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i>. Leave empty if you want to disable TURN <br>
 <b>turn-username</b>: TURN username <br>
 <b>turn-password</b>: TURN password <br>
-<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></p></dd>
+<b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br>
+<b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the &lsquo;signaling-certificate-dir&rsquo; below should be provided as well <br>
+<b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs</p></dd>
 		</dl>
 		
 	</div>
@@ -1049,7 +1101,7 @@ via [RCDeviceDelegate device:didReceiveIncomingMessage:] <a href="#//api/name/de
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2016 Telestax. All rights reserved. (Last updated: 2016-01-28)</span><br />
+						<p><span class="copyright">&copy; 2016 Telestax. All rights reserved. (Last updated: 2016-05-16)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 963)</a>.</span></p>
 						

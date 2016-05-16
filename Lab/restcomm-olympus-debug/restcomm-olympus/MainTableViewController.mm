@@ -235,12 +235,6 @@
                      completion:nil];
 }
 
-// not implemented yet
-- (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent
-{
-    
-}
-
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
     //NSLog(@"------ updateConnectivityStatus: status: %d, text: %@", status, text);

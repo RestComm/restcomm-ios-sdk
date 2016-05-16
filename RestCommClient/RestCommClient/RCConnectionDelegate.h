@@ -42,7 +42,6 @@
  */
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error;
 
-@optional
 /**
  *  @abstract Emitted when an RCConnection start to connect
  *
