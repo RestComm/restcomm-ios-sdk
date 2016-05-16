@@ -94,17 +94,6 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
         RCLogNotice("[RCDevice initWithParams: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
 
-        if ([parameters objectForKey:@"signaling-secure"] && [[parameters objectForKey:@"signaling-secure"] boolValue]) {
-            if (![parameters objectForKey:@"signaling-certificate-dir"] ||
-                ([parameters objectForKey:@"signaling-certificate-dir"] && [[parameters objectForKey:@"signaling-certificate-dir"] isEqualToString:@""])) {
-                NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                             code:ERROR_SECURE_SIGNALLING
-                                                         userInfo:@{NSLocalizedDescriptionKey : @"Secure signaling mode specified, but certificate dir is missing" }];
-                
-                [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
-            }
-        }
-        
         // reachability
         self.hostActive = NO;
         // check for internet connection
@@ -443,7 +432,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     }
      */
     if (error.code == ERROR_REGISTER_AUTHENTICATION || error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT ||
-        error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE || error.code == ERROR_INITIALIZING_SIGNALING) {
+        error.code == ERROR_REGISTER_SERVICE_UNAVAILABLE || error.code == ERROR_INITIALIZING_SIGNALING || error.code == ERROR_SECURE_SIGNALLING) {
         _state = RCDeviceStateOffline;
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:error afterDelay:0.0];
     }

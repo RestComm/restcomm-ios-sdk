@@ -385,6 +385,18 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         [_signallingInstancesLock unlock];
     }
 
+    if ([self.params objectForKey:@"signaling-secure"] && [[self.params objectForKey:@"signaling-secure"] boolValue]) {
+        if (![self.params objectForKey:@"signaling-certificate-dir"] ||
+            ([self.params objectForKey:@"signaling-certificate-dir"] && [[self.params objectForKey:@"signaling-certificate-dir"] isEqualToString:@""])) {
+            NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                         code:ERROR_SECURE_SIGNALLING
+                                                     userInfo:@{NSLocalizedDescriptionKey : @"Secure signaling mode specified, but certificate dir is missing" }];
+            
+            [self.deviceDelegate sipManager:self didSignallingError:error];
+            return false;
+        }
+    }
+
     if (pipe(write_pipe) == -1 || pipe(read_pipe) == -1) {
         perror("pipe");
         exit(EXIT_FAILURE);
