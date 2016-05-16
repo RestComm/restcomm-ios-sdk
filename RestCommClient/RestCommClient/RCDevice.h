@@ -110,8 +110,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param parameters      Parameters for the Device entity. Possible keys/values: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
  *    <b>password</b>: password for the client <br>
- *    <b>turn-enabled</b>: should TURN be enabled <br>
- *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
+ *    <b>turn-enabled</b>: should TURN be enabled? <br>
+ *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
  *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
@@ -193,8 +193,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param params Dictionary of key/value pairs of the parameters that will be updated: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
  *    <b>password</b>: password for the client <br>
- *    <b>turn-enabled</b>: should TURN be enabled <br>
- *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>. Leave empty if you want to disable TURN <br>
+ *    <b>turn-enabled</b>: should TURN be enabled? <br>
+ *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i>
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
  *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
