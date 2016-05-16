@@ -161,7 +161,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
@@ -173,6 +172,7 @@
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
+				AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
 				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
 				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
