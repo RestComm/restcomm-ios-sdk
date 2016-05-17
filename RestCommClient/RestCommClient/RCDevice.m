@@ -92,7 +92,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         // init logging + set logging level
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
-        RCLogNotice("[RCDevice initWithParams: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
+        RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
 
         // reachability
         self.hostActive = NO;
@@ -267,7 +267,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
-    RCLogNotice("[RCDevice connect: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCDevice connect: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
     if (_state != RCDeviceStateReady) {
         if (_state == RCDeviceStateBusy) {
             RCLogError("Error connecting: RCDevice is busy");
@@ -302,7 +302,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 //- (void)sendMessage:(NSString*)message to:(NSDictionary*)parameters
 - (BOOL)sendMessage:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCDevice sendMessage: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCDevice sendMessage: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
     if (_state == RCDeviceStateOffline) {
         NSLog(@"Error connecting: RCDevice is offline; consider calling [RCDevice listen]");
         return NO;
@@ -344,7 +344,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 // returns YES if an actual registration was sent (the App can use that to properly convey state to the user
 - (BOOL) updateParams:(NSDictionary*)params
 {
-    RCLogNotice("[RCDevice updateParams: %s]", [[Utilities stringifyDictionary:params] UTF8String]);
+    RCLogNotice("[RCDevice updateParams: %s]", [[RCUtilities stringifyDictionary:params] UTF8String]);
 
     if (self.reachabilityStatus != NotReachable) {
         BOOL deviceIsOnline = NO;
@@ -424,7 +424,7 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
-    RCLogNotice("[RCDevice didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+    RCLogNotice("[RCDevice didSignallingError: %s]", [[RCUtilities stringifyDictionary:[error userInfo]] UTF8String]);
     /* I think this is not needed, let's keep it around for a while though in case I'm forgetting something
     if (error.code == ERROR_REGISTER_GENERIC || error.code == ERROR_REGISTER_TIMEOUT) {
         [self performSelector:@selector(asyncDeviceDidStopListeningForIncomingConnections:) withObject:nil afterDelay:0.0];

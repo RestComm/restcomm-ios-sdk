@@ -22,9 +22,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utilities : NSObject
+@interface RCUtilities : NSObject
 + (NSString*)usernameFromUri:(NSString*)uri;
 + (NSString*)stringifyDictionary:(NSDictionary*)dictionary;
 + (NSDictionary*)getIPAddresses;
 + (NSString*)getPrimaryIPAddress;
++ (BOOL)string:(NSString*)string containsString:(NSString*)containedString;
 @end

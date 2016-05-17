@@ -89,7 +89,7 @@ int read_pipe[2];
             [args setValue:serializedHeaders forKey:@"sip-headers"];
         }
 
-        NSString* cmd = [NSString stringWithFormat:@"i %@", [Utilities stringifyDictionary:args]];
+        NSString* cmd = [NSString stringWithFormat:@"i %@", [RCUtilities stringifyDictionary:args]];
         [self pipeToSofia:cmd];
     }
     else {
@@ -102,13 +102,13 @@ int read_pipe[2];
         if ([self.activeCallParams objectForKey:@"incoming-call-was-answered"]) {
             NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"sdp"]
                                                                             forKey:@"sdp"];
-            [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
+            [self pipeToSofia:[NSString stringWithFormat:@"a %@", [RCUtilities stringifyDictionary:args]]];
         }
          */
         NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:sdpString
                                                                         forKey:@"sdp"];
 
-        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
+        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [RCUtilities stringifyDictionary:args]]];
     }
 }
 
@@ -157,7 +157,7 @@ int read_pipe[2];
         NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
 
-        [self.deviceDelegate sipManagerDidReceiveCall:self from:[Utilities usernameFromUri:[args objectForKey:@"sip-uri"]]];
+        [self.deviceDelegate sipManagerDidReceiveCall:self from:[RCUtilities usernameFromUri:[args objectForKey:@"sip-uri"]]];
         [self.activeCallParams setObject:[args objectForKey:@"sdp"] forKey:@"sdp"];
 
         // This logic was for when media processing started when INVITE arrived for incoming calls
@@ -202,7 +202,7 @@ int read_pipe[2];
         NSString* whole = [NSString stringWithCString:reply->text.c_str() encoding:NSUTF8StringEncoding];
         NSString* username = [whole componentsSeparatedByString:@"|"][0];
         NSString* msg = [whole componentsSeparatedByString:@"|"][1];
-        [self.deviceDelegate sipManager:self didReceiveMessageWithData:msg from:[Utilities usernameFromUri:username]];
+        [self.deviceDelegate sipManager:self didReceiveMessageWithData:msg from:[RCUtilities usernameFromUri:username]];
     }
     else if (reply->rc == INCOMING_CANCELLED) {
         [self.connectionDelegate sipManagerDidReceiveIncomingCancelled:self];
@@ -372,7 +372,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 // initialize sofia
 - (bool)eventLoop
 {
-    RCLogNotice("[SipManager eventLoop: %s]", [[Utilities stringifyDictionary:self.params] UTF8String]);
+    RCLogNotice("[SipManager eventLoop: %s]", [[RCUtilities stringifyDictionary:self.params] UTF8String]);
     [_signallingInstancesLock lock];
     if (_signallingInstances > 0) {
         RCLogNotice("[SipManager eventLoop] another instance already running; bailing");
@@ -487,7 +487,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         [args setValue:serializedHeaders forKey:@"sip-headers"];
     }
     [args setValue:[self.params objectForKey:@"password"] forKey:@"password"];
-    NSString* cmd = [NSString stringWithFormat:@"m %@", [Utilities stringifyDictionary:args]];
+    NSString* cmd = [NSString stringWithFormat:@"m %@", [RCUtilities stringifyDictionary:args]];
     [self pipeToSofia:cmd];
     
     return true;
@@ -546,7 +546,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([self.activeCallParams objectForKey:@"incoming-call-gathering-complete"]) {
         NSMutableDictionary * args = [NSMutableDictionary dictionaryWithObject:[self.activeCallParams objectForKey:@"sdp"]
                                                                         forKey:@"sdp"];
-        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [Utilities stringifyDictionary:args]]];
+        [self pipeToSofia:[NSString stringWithFormat:@"a %@", [RCUtilities stringifyDictionary:args]]];
     }
     */
     return true;
@@ -720,7 +720,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([original isEqualToString:@""]) {
         return @"";
     }
-    else if ([original containsString:@"sip:"] || [original containsString:@"sips:"]) {
+    else if ([RCUtilities string:original containsString:@"sip:"] || [RCUtilities string:original containsString:@"sips:"]) {
         // if already full URI don't touch
         fullUri = original;
     }
@@ -729,7 +729,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         NSString * normalizedDomain = [[domain stringByReplacingOccurrencesOfString:@"sip:" withString:@""] stringByReplacingOccurrencesOfString:@"sips:" withString:@""];
         
         // handle teluri
-        if ([original containsString:@"tel:"]) {
+        if ([RCUtilities string:original containsString:@"tel:"]) {
             // TODO: remove hack: once tel-uri is implemented in Retscomm side remove this
             fullUri = [NSString stringWithFormat:@"%@@%@", [original stringByReplacingOccurrencesOfString:@"tel:" withString:@"sip:"], normalizedDomain];
             
@@ -742,7 +742,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
             // on any other case build full SIP URI using sip/s: prefix and appending the domain
             
             // if original domain is 'sips:' need to generate sips URI
-            if (domain && [domain containsString:@"sips:"]) {
+            if (domain && [RCUtilities string:domain containsString:@"sips:"]) {
                 fullUri = [NSString stringWithFormat:@"sips:%@@%@", original, normalizedDomain];
             }
             else {
@@ -775,7 +775,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if ([original isEqualToString:@""]) {
         return @"";
     }
-    else if ([original containsString:@"sip:"] || [original containsString:@"sips:"]) {
+    else if ([RCUtilities string:original containsString:@"sip:"] || [RCUtilities string:original containsString:@"sips:"]) {
         fullUri = original;
     }
     else {
@@ -909,15 +909,15 @@ ssize_t pipeToSofia(const char * msg, int fd)
         
         // execute actual actions in correct order: first unregister, then register, then address
         if ([actionsDictionary objectForKey:@"unregister"]) {
-            NSString* cmd = [NSString stringWithFormat:@"u %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"unregister"]]];
+            NSString* cmd = [NSString stringWithFormat:@"u %@", [RCUtilities stringifyDictionary:[actionsDictionary objectForKey:@"unregister"]]];
             [self pipeToSofia:cmd];
         }
         if ([actionsDictionary objectForKey:@"register"]) {
-            NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"register"]]];
+            NSString* cmd = [NSString stringWithFormat:@"r %@", [RCUtilities stringifyDictionary:[actionsDictionary objectForKey:@"register"]]];
             [self pipeToSofia:cmd];
         }
         if ([actionsDictionary objectForKey:@"address"]) {
-            NSString* cmd = [NSString stringWithFormat:@"addr %@", [Utilities stringifyDictionary:[actionsDictionary objectForKey:@"address"]]];
+            NSString* cmd = [NSString stringWithFormat:@"addr %@", [RCUtilities stringifyDictionary:[actionsDictionary objectForKey:@"address"]]];
             [self pipeToSofia:cmd];
         }
         
@@ -948,7 +948,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
                                          @"password" : [self.params objectForKey:@"password"],
                                          };
         
-        NSString* cmd = [NSString stringWithFormat:@"r %@", [Utilities stringifyDictionary:updatedParams]];
+        NSString* cmd = [NSString stringWithFormat:@"r %@", [RCUtilities stringifyDictionary:updatedParams]];
         [self pipeToSofia:cmd];
     }
     //NSLog(@"key=%@ value=%@", key, [params objectForKey:key]);

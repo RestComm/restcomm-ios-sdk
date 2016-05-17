@@ -128,7 +128,7 @@
                 self.isVideoCall = NO;
             }
             
-            //NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
             self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:@"alias"]];
             self.statusLabel.text = @"Initiating Call...";
             // *** SIP custom headers: uncomment this to use SIP custom headers
@@ -146,7 +146,7 @@
             }
         }
         if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
-            //NSString *username = [Utilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
             self.statusLabel.text = @"Call received";
         }

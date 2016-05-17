@@ -218,7 +218,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc->ssc_address = su_strdup(home, conf->ssc_aor);
     ssc->ssc_autoanswer = conf->ssc_autoanswer;
     
-    NSString * address = [Utilities getPrimaryIPAddress];
+    NSString * address = [RCUtilities getPrimaryIPAddress];
     if ([address isEqualToString:@""]) {
         int outputFd = ssc->ssc_output_fd;
         RCLogError("No valid interface to bind to with nua_create()");
@@ -980,7 +980,7 @@ void ssc_i_invite(nua_t *nua, ssc_t *ssc,
                                           [NSString stringWithUTF8String:sip->sip_payload->pl_data], @"sdp", nil];
 
                 // notify the client application that they should answer
-                SofiaReply reply(INCOMING_CALL, [[Utilities stringifyDictionary:message] UTF8String]);
+                SofiaReply reply(INCOMING_CALL, [[RCUtilities stringifyDictionary:message] UTF8String]);
                 reply.Send(ssc->ssc_output_fd);
             }
         }

@@ -22,6 +22,7 @@
 #import "SipSettingsTableViewController.h"
 #import "MainNavigationController.h"
 #import "SIPSettingsNavigationController.h"
+#import "RCUtilities.h"
 #import "Utils.h"
 
 @interface SipSettingsTableViewController ()
@@ -204,7 +205,7 @@
         return;
     }
     
-    if ([self.aorText.text containsString:@"sip:"] || [self.aorText.text containsString:@"@"]) {
+    if ([RCUtilities string:self.aorText.text containsString:@"sip:"] || [RCUtilities string:self.aorText.text containsString:@"@"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
                                                         message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
                                                        delegate:self

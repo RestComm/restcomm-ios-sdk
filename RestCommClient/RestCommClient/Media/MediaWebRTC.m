@@ -598,7 +598,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             NSError *iceError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                            code:ERROR_WEBRTC_ICE
                                                        userInfo:userInfo];
-            RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[Utilities stringifyDictionary:userInfo] UTF8String]);
+            RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[RCUtilities stringifyDictionary:userInfo] UTF8String]);
             [self.mediaDelegate mediaController:self didError:iceError];
         }
         if (newState == RTCICEConnectionConnected) {
@@ -664,7 +664,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC didCreateSessionDescription]");
         if (error) {
-            RCLogError("[MediaWebRTC didCreateSessionDescription] Failed to create session description. Error: %s", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+            RCLogError("[MediaWebRTC didCreateSessionDescription] Failed to create session description. Error: %s", [[RCUtilities stringifyDictionary:[error userInfo]] UTF8String]);
             [self disconnect];
 
             NSDictionary *userInfo = @{
@@ -695,7 +695,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC didSetSessionDescriptionWithError]");
         if (error) {
-            RCLogError("[MediaWebRTC didSetSessionDescriptionWithError] Failed to set session description. Error: %s", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+            RCLogError("[MediaWebRTC didSetSessionDescriptionWithError] Failed to set session description. Error: %s", [[RCUtilities stringifyDictionary:[error userInfo]] UTF8String]);
 
             [self disconnect];
             NSDictionary *userInfo = @{
