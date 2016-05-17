@@ -49,6 +49,7 @@
 
 #include "common.h"
 #import "RCUtilities.h"
+#include "sofsip_cli.h"
 
 typedef struct cli_s cli_t;
 
@@ -116,6 +117,19 @@ static void sofsip_auth_req_cb (ssc_t *ssc, const ssc_auth_item_t *authitem, voi
 static void sofsip_event_cb (ssc_t *ssc, nua_event_t event, void *pointer);
 
 static cli_t *global_cli_p = NULL;
+//ssc_conf_t current_conf;
+NSMutableDictionary * conf = [[NSMutableDictionary alloc] init];
+
+@implementation SofiaConf
++ (void)dictionary:(NSMutableDictionary*)dictionary guardedSetObject:(NSObject*)object forKey:(NSString*)key
+{
+    if (object) {
+        [dictionary setObject:object forKey:key];
+    }
+}
+
+@end
+
 
 int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
                 const char * aor, const char * password, const char * registrar, const char * certificate_dir)
@@ -137,6 +151,33 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
   cli->cli_input_fd = input_fd;
   cli->cli_output_fd = output_fd;
 
+  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:aor] forKey:@"aor"];
+  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:password] forKey:@"password"];
+  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:registrar] forKey:@"registrar"];
+  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:registrar] forKey:@"proxy"];
+  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:certificate_dir] forKey:@"certificate-dir"];
+  if (registrar != NULL) {
+     [SofiaConf dictionary:conf guardedSetObject:@(YES) forKey:@"register"];
+  }
+  else {
+     [SofiaConf dictionary:conf guardedSetObject:@(NO) forKey:@"register"];
+  }
+  
+  /*
+  current_conf.ssc_aor = aor;
+  current_conf.ssc_password = password;
+  // or registrar is proxy too
+  current_conf.ssc_registrar = registrar;
+  current_conf.ssc_proxy = registrar;
+  current_conf.ssc_certdir = certificate_dir;
+  if (registrar != NULL) {
+      current_conf.ssc_register = true;
+  }
+  else {
+      current_conf.ssc_register = false;
+  }
+  */
+
   while (1) {
         /* step: initialize sofia su OS abstraction layer */
         su_init();
@@ -152,19 +193,16 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
         /* step: parse command line arguments and initialize app event loop */
         res = sofsip_init(cli, ac, av);
         assert(res == 0);
-        
-        cli->cli_conf[0].ssc_aor = aor;
-        cli->cli_conf[0].ssc_password = password;
+      
+        //cli->cli_conf[0] = current_conf;
+      
+        cli->cli_conf[0].ssc_aor = [[conf objectForKey:@"aor"] UTF8String];
+        cli->cli_conf[0].ssc_password = [[conf objectForKey:@"password"] UTF8String];
         // or registrar is proxy too
-        cli->cli_conf[0].ssc_registrar = registrar;
-        cli->cli_conf[0].ssc_proxy = registrar;
-        cli->cli_conf[0].ssc_certdir = certificate_dir;
-        if (registrar != NULL) {
-          cli->cli_conf[0].ssc_register = true;
-        }
-        else {
-          cli->cli_conf[0].ssc_register = false;
-        }
+        cli->cli_conf[0].ssc_registrar = [[conf objectForKey:@"registrar"] UTF8String];
+        cli->cli_conf[0].ssc_proxy = [[conf objectForKey:@"proxy"] UTF8String];
+        cli->cli_conf[0].ssc_certdir = [[conf objectForKey:@"certificate-dir"] UTF8String];
+        cli->cli_conf[0].ssc_register = [[conf objectForKey:@"register"] boolValue];
       
         /* step: create ssc signaling and media subsystem instance */
         cli->cli_ssc = ssc_create(cli->cli_home, cli->cli_root, cli->cli_conf, cli->cli_input_fd, cli->cli_output_fd);
@@ -400,6 +438,7 @@ static void sofsip_handle_input_cb(char *input)
           NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
           NSDictionary * args = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
           
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"aor"] forKey:@"aor"];
           ssc_set_public_address(cli->cli_ssc, [[args objectForKey:@"aor"] UTF8String]);
       }
   }
@@ -500,9 +539,26 @@ static void sofsip_handle_input_cb(char *input)
           const char * password = [[args objectForKey:@"password"] UTF8String];
           const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
           
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"aor"] forKey:@"aor"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"password"] forKey:@"password"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"registrar"] forKey:@"registrar"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"registrar"] forKey:@"proxy"];
+          if (registrar != NULL) {
+              [SofiaConf dictionary:conf guardedSetObject:@(YES) forKey:@"register"];
+          }
+          else {
+              [SofiaConf dictionary:conf guardedSetObject:@(NO) forKey:@"register"];
+          }
+
           ssc_update(cli->cli_ssc, aor, password, registrar, false);
       }
       else {
+          [conf removeObjectForKey:@"aor"];
+          [conf removeObjectForKey:@"password"];
+          [conf removeObjectForKey:@"registrar"];
+          [conf removeObjectForKey:@"proxy"];
+          [conf setObject:@(NO) forKey:@"register"];
+          
           ssc_update(cli->cli_ssc, NULL, NULL, NULL, false);
       }
       //ssc_register(cli->cli_ssc, rest);
@@ -518,9 +574,26 @@ static void sofsip_handle_input_cb(char *input)
           const char * password = [[args objectForKey:@"password"] UTF8String];
           const char * registrar = [[args objectForKey:@"registrar"] UTF8String];
           
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"aor"] forKey:@"aor"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"password"] forKey:@"password"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"registrar"] forKey:@"registrar"];
+          [SofiaConf dictionary:conf guardedSetObject:[args objectForKey:@"registrar"] forKey:@"proxy"];
+          if (registrar != NULL) {
+              [SofiaConf dictionary:conf guardedSetObject:@(YES) forKey:@"register"];
+          }
+          else {
+              [SofiaConf dictionary:conf guardedSetObject:@(NO) forKey:@"register"];
+          }
+
           ssc_update(cli->cli_ssc, aor, password, registrar, true);
       }
       else {
+          [conf removeObjectForKey:@"aor"];
+          [conf removeObjectForKey:@"password"];
+          [conf removeObjectForKey:@"registrar"];
+          [conf removeObjectForKey:@"proxy"];
+          [conf setObject:@(NO) forKey:@"register"];
+
           ssc_update(cli->cli_ssc, NULL, NULL, NULL, true);
       }
   }

@@ -23,6 +23,11 @@
 #ifndef HAVE_SOFSIP_CLI_J
 #define HAVE_SOFSIP_CLI_J
 
+@interface SofiaConf : NSObject
++ (void)dictionary:(NSMutableDictionary*)dictionary guardedSetObject:(NSObject*)object forKey:(NSString*)key;
+@end
+
 int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
                 const char * aor, const char * password, const char * registrar, const char * certificate_dir);
 #endif
+
