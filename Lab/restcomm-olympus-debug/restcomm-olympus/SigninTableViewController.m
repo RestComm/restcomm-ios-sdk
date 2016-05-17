@@ -9,6 +9,7 @@
 #import "SigninTableViewController.h"
 #import "MainTableViewController.h"
 #import "Utils.h"
+#import "RCUtilities.h"
 
 @interface SigninTableViewController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *usernameText;
@@ -64,13 +65,6 @@
 }
 */
 
-// Helper to implement containsString for iOS 7.0 as well
-+ (BOOL)string:(NSString*)string containsString:(NSString*)containedString
-{
-    NSRange range = [string rangeOfString:containedString];
-    return range.length != 0;
-}
-
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
     if ([self.usernameText.text isEqualToString:@""] || [self.domainText.text isEqualToString:@""]) {
@@ -84,7 +78,7 @@
     }
     
     //if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
-    if ([SigninTableViewController string:self.usernameText.text containsString:@"sip:"] || [SigninTableViewController string:self.usernameText.text containsString:@"@"]) {
+    if ([RCUtilities string:self.usernameText.text containsString:@"sip:"] || [RCUtilities string:self.usernameText.text containsString:@"@"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
                                                         message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
                                                        delegate:self

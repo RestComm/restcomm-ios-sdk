@@ -22,6 +22,7 @@
 
 
 #import "Utils.h"
+#import "RCUtilities.h"
 
 @implementation Utils
 
@@ -418,7 +419,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     NSLog(@"convertInterappUri2RestcommUri URL absolute string: %@", [uri absoluteString]);
 
     NSString * final = nil;
-    if ([[uri scheme] containsString:@"sip"]) {
+    if ([RCUtilities string:[uri scheme] containsString:@"sip"]) {
         // either 'sip' or 'restcomm-sip'
         // normalize 'restcomm-sip' and replace with 'sip'
         NSString * normalized = [[uri absoluteString] stringByReplacingOccurrencesOfString:@"restcomm-sip" withString:@"sip"];

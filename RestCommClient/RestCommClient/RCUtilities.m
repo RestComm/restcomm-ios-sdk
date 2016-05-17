@@ -35,7 +35,7 @@
 #define IP_ADDR_IPv6            @"ipv6"
 
 
-@implementation Utilities
+@implementation RCUtilities
 
 + (NSString*)usernameFromUri:(NSString*)uri
 {
@@ -64,7 +64,7 @@
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];
     if (error) {
-        RCLogError("[Utilities stringifyDictionary] Error");
+        RCLogError("[RCUtilities stringifyDictionary] Error");
         return @"";
     }
 
@@ -115,7 +115,7 @@
 // are available we want to use wifi
 + (NSString *)getPrimaryIPAddress
 {
-    NSDictionary * addresses = [Utilities getIPAddresses];
+    NSDictionary * addresses = [RCUtilities getIPAddresses];
     // prefer wifi over cellular. TODO: need to add ipv6 logic if we want to support it
     NSArray * preference = @[WIFI@"/"IP_ADDR_IPv4, ETH_OVER_THUNDERBOLT@"/"IP_ADDR_IPv4, IOS_CELLULAR@"/"IP_ADDR_IPv4];
     
@@ -125,6 +125,13 @@
         }
     }
     return @"";
+}
+
+// Helper to implement containsString for iOS 7.0 as well
++ (BOOL)string:(NSString*)string containsString:(NSString*)containedString
+{
+    NSRange range = [string rangeOfString:containedString];
+    return range.length != 0;
 }
 
 @end

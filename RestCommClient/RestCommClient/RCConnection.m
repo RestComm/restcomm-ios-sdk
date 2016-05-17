@@ -58,7 +58,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
               andState:(RCConnectionState)connectionState
          andParameters:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCConnection initWithDelegate: ... andIncoming:%d andState:%d andParameters:%s]", incoming, connectionState, [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCConnection initWithDelegate: ... andIncoming:%d andState:%d andParameters:%s]", incoming, connectionState, [[RCUtilities stringifyDictionary:parameters] UTF8String]);
     
     self = [super init];
     if (self) {
@@ -87,7 +87,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)accept:(NSDictionary*)parameters
 {
-    RCLogNotice("[RCConnection accept: %s]", [[Utilities stringifyDictionary:parameters] UTF8String]);
+    RCLogNotice("[RCConnection accept: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
     
     if (self.isIncoming && self.state == RCConnectionStateConnecting) {
         BOOL videoAllowed = NO;
@@ -342,14 +342,14 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
 
 - (void)sipManager:(SipManager*)sipManager didMediaError:(NSError *)error
 {
-    RCLogNotice("[RCConnection didMediaError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+    RCLogNotice("[RCConnection didMediaError: %s]", [[RCUtilities stringifyDictionary:[error userInfo]] UTF8String]);
     [self disconnect];
     [self.delegate connection:self didFailWithError:error];
 }
 
 - (void)sipManager:(SipManager*)sipManager didSignallingError:(NSError *)error
 {
-    RCLogNotice("[RCConnection didSignallingError: %s]", [[Utilities stringifyDictionary:[error userInfo]] UTF8String]);
+    RCLogNotice("[RCConnection didSignallingError: %s]", [[RCUtilities stringifyDictionary:[error userInfo]] UTF8String]);
     [self disconnect];
     [self.delegate connection:self didFailWithError:error];
 }
