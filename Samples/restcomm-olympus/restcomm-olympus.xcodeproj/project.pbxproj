@@ -23,6 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
+		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
+		AE20DA851CE31EC200695925 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */; };
+		AE20DA861CE31EC200695925 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA831CE31EC200695925 /* speaker-on-50x50@3x.png */; };
 		AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */; };
 		AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */; };
 		AE3E52C61C57BB7B0057F5D0 /* agent.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C41C57BB7B0057F5D0 /* agent.pem */; };
@@ -32,11 +35,11 @@
 		AE49514B1C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */; };
 		AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
+		AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5669101BE903C800C66789 /* libRestCommClient.a */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
 		AE65E3A31A6BC68F00C0CB1B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A21A6BC68F00C0CB1B /* CoreAudio.framework */; };
 		AE65E3A41A6BC6A900C0CB1B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */; };
-		AE6870F11CD2409F00D92890 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */; };
 		AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7880091B738E3300205C26 /* SystemConfiguration.framework */; };
 		AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
@@ -173,9 +176,6 @@
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
 		AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECA05521C7772F800EB9737 /* SigninTableViewController.m */; };
-		AECF5C201C6210D6002369F6 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */; };
-		AECF5C211C6210D6002369F6 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */; };
-		AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
@@ -185,6 +185,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AE56690F1BE903C800C66789 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AEC1220C19728C850035B864;
+			remoteInfo = RestCommClient;
+		};
+		AE5669111BE903C800C66789 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AEC1221C19728C850035B864;
+			remoteInfo = RestCommClientTests;
+		};
+		AE5669131BE903FB00C66789 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AEC1220B19728C850035B864;
+			remoteInfo = RestCommClient;
+		};
 		AE79D33F19BC8DAE0023306C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE79D30E19BC8DAD0023306C /* Project object */;
@@ -195,27 +216,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToastController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ToastController.h"; sourceTree = "<group>"; };
-		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ToastController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ToastController.m"; sourceTree = "<group>"; };
+		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
+		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
+		AE20DA811CE31EC200695925 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50.png"; sourceTree = "<group>"; };
+		AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50@2x.png"; sourceTree = "<group>"; };
+		AE20DA831CE31EC200695925 /* speaker-on-50x50@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50@3x.png"; sourceTree = "<group>"; };
 		AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-ios-armeabi_v7a-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
 		AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
-		AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICESettingsTableViewController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsTableViewController.h"; sourceTree = "<group>"; };
-		AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICESettingsTableViewController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsTableViewController.m"; sourceTree = "<group>"; };
+		AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsTableViewController.h; sourceTree = "<group>"; };
+		AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsTableViewController.m; sourceTree = "<group>"; };
 		AE3E52AB1C569E700057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../../webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE3E52AD1C569F230057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366.a"; sourceTree = "<group>"; };
 		AE3E52C41C57BB7B0057F5D0 /* agent.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = agent.pem; sourceTree = "<group>"; };
 		AE3E52C51C57BB7B0057F5D0 /* cafile.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cafile.pem; sourceTree = "<group>"; };
 		AE402E2A1C525C6D00B0AD06 /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
-		AE47F0ED1C7F456D0054772C /* SipSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SipSettingsTableViewController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SipSettingsTableViewController.h"; sourceTree = "<group>"; };
-		AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SipSettingsTableViewController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SipSettingsTableViewController.m"; sourceTree = "<group>"; };
+		AE47F0ED1C7F456D0054772C /* SipSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipSettingsTableViewController.h; sourceTree = "<group>"; };
+		AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipSettingsTableViewController.m; sourceTree = "<group>"; };
 		AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58.png"; sourceTree = "<group>"; };
 		AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58@2x.png"; sourceTree = "<group>"; };
 		AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
 		AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE5821E01A8AB79400578A7B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -381,20 +406,18 @@
 		AEC39AE41A5AE11100B155E4 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
 		AEC39AE51A5AE11100B155E4 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../RestCommClient/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
-		AECA05511C7772F800EB9737 /* SigninTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninTableViewController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SigninTableViewController.h"; sourceTree = "<group>"; };
-		AECA05521C7772F800EB9737 /* SigninTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninTableViewController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SigninTableViewController.m"; sourceTree = "<group>"; };
+		AECA05511C7772F800EB9737 /* SigninTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigninTableViewController.h; sourceTree = "<group>"; };
+		AECA05521C7772F800EB9737 /* SigninTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigninTableViewController.m; sourceTree = "<group>"; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
-		AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50.png"; sourceTree = "<group>"; };
-		AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50@2x.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50@2x.png"; sourceTree = "<group>"; };
-		AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "speaker-on-50x50@3x.png"; path = "../../../../Samples/restcomm-olympus/restcomm-olympus/img/speaker-on-50x50@3x.png"; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-olympusTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-olympusTests-Info.plist"; sourceTree = "<group>"; };
 		AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "restcomm-olympusTests.m"; sourceTree = "<group>"; };
 		AED9718919E98DB9000F7A8E /* readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.markdown; sourceTree = "<group>"; };
-		AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIPSettingsNavigationController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SIPSettingsNavigationController.h"; sourceTree = "<group>"; };
-		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIPSettingsNavigationController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/SIPSettingsNavigationController.m"; sourceTree = "<group>"; };
-		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICESettingsNavigationController.h; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsNavigationController.h"; sourceTree = "<group>"; };
-		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICESettingsNavigationController.m; path = "../../../Samples/restcomm-olympus/restcomm-olympus/ICESettingsNavigationController.m"; sourceTree = "<group>"; };
+		AEEC4D191CDB72A500598566 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIPSettingsNavigationController.h; sourceTree = "<group>"; };
+		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIPSettingsNavigationController.m; sourceTree = "<group>"; };
+		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsNavigationController.h; sourceTree = "<group>"; };
+		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,7 +439,7 @@
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
 				AE79D31E19BC8DAD0023306C /* UIKit.framework in Frameworks */,
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
-				AE6870F11CD2409F00D92890 /* libRestCommClient.a in Frameworks */,
+				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
 				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
@@ -444,13 +467,22 @@
 				AE3E52C41C57BB7B0057F5D0 /* agent.pem */,
 				AE3E52C51C57BB7B0057F5D0 /* cafile.pem */,
 			);
-			name = cert;
-			path = "../../../Samples/restcomm-olympus/restcomm-olympus/cert";
+			path = cert;
+			sourceTree = "<group>";
+		};
+		AE5669091BE903C700C66789 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE5669101BE903C800C66789 /* libRestCommClient.a */,
+				AE5669121BE903C800C66789 /* RestCommClientTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
+				AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
 				AEA495651C2997F6000D9762 /* restcomm-olympus */,
@@ -471,6 +503,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEEC4D191CDB72A500598566 /* libc++.tbd */,
 				AEB5EB0A1C5A536C0004669F /* libsofia-sip-ua.a */,
 				AEB5EB001C58E5310004669F /* libcrypto.a */,
 				AEB5EB011C58E5310004669F /* libssl.a */,
@@ -574,9 +607,9 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
-				AECF5C1D1C6210D6002369F6 /* speaker-on-50x50.png */,
-				AECF5C1E1C6210D6002369F6 /* speaker-on-50x50@2x.png */,
-				AECF5C1F1C6210D6002369F6 /* speaker-on-50x50@3x.png */,
+				AE20DA811CE31EC200695925 /* speaker-on-50x50.png */,
+				AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */,
+				AE20DA831CE31EC200695925 /* speaker-on-50x50@3x.png */,
 				AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */,
 				AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */,
 				AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */,
@@ -740,6 +773,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AE5669141BE903FB00C66789 /* PBXTargetDependency */,
 			);
 			name = "restcomm-olympus";
 			productName = "restcomm-olympus";
@@ -797,6 +831,12 @@
 			mainGroup = AE79D30D19BC8DAD0023306C;
 			productRefGroup = AE79D31719BC8DAD0023306C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AE5669091BE903C700C66789 /* Products */;
+					ProjectRef = AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AE79D31519BC8DAD0023306C /* restcomm-olympus */,
@@ -805,6 +845,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AE5669101BE903C800C66789 /* libRestCommClient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestCommClient.a;
+			remoteRef = AE56690F1BE903C800C66789 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE5669121BE903C800C66789 /* RestCommClientTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestCommClientTests.xctest;
+			remoteRef = AE5669111BE903C800C66789 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AE79D31419BC8DAD0023306C /* Resources */ = {
@@ -829,13 +886,13 @@
 				AEA496621C2997F6000D9762 /* zero-digit-74x74.png in Resources */,
 				AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */,
 				AEA4960F1C2997F6000D9762 /* answer-video-50x50@2x.png in Resources */,
+				AE20DA861CE31EC200695925 /* speaker-on-50x50@3x.png in Resources */,
 				AEA4960C1C2997F6000D9762 /* answer-audio-50x50.png in Resources */,
 				AEA496121C2997F6000D9762 /* audio-active-50x50@2x.png in Resources */,
 				AEA496201C2997F6000D9762 /* hangup-73x73.png in Resources */,
 				AEA4961D1C2997F6000D9762 /* five-digit-74x74@2x.png in Resources */,
 				AEA496481C2997F6000D9762 /* settings-22x22.png in Resources */,
 				AEA4964B1C2997F6000D9762 /* settings-30x30@2x.png in Resources */,
-				AECF5C221C6210D6002369F6 /* speaker-on-50x50@3x.png in Resources */,
 				AEA4962D1C2997F6000D9762 /* icon-76x76@2x.png in Resources */,
 				AEA4962E1C2997F6000D9762 /* inapp-grey-icon-30x30.png in Resources */,
 				AEA4963A1C2997F6000D9762 /* message-30x30.png in Resources */,
@@ -861,6 +918,7 @@
 				AEA4965E1C2997F6000D9762 /* video-call-30x30@2x.png in Resources */,
 				AEA4964E1C2997F6000D9762 /* six-digit-74x74.png in Resources */,
 				AEA496411C2997F6000D9762 /* nine-digit-74x74@2x.png in Resources */,
+				AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */,
 				AEA4960A1C2997F6000D9762 /* InfoPlist.strings in Resources */,
 				AEA4967A1C2997F6000D9762 /* dtmf9.wav in Resources */,
 				AEA496321C2997F6000D9762 /* inapp-icon-30x30.png in Resources */,
@@ -872,7 +930,6 @@
 				AEA496271C2997F6000D9762 /* icon-29x29@2x.png in Resources */,
 				AEA496371C2997F6000D9762 /* keypad-50x50@2x.png in Resources */,
 				AEA4967E1C2997F6000D9762 /* star.wav in Resources */,
-				AECF5C211C6210D6002369F6 /* speaker-on-50x50@2x.png in Resources */,
 				AEA4961A1C2997F6000D9762 /* eight-digit-74x74.png in Resources */,
 				AEA4963D1C2997F6000D9762 /* message-local-square-43x43@2x.png in Resources */,
 				AEA496531C2997F6000D9762 /* splash-768x1024@2x.png in Resources */,
@@ -887,7 +944,6 @@
 				AEA4961F1C2997F6000D9762 /* four-digit-74x74@2x.png in Resources */,
 				AEA496251C2997F6000D9762 /* hash-digit-74x74@2x.png in Resources */,
 				AEA496801C2997F6000D9762 /* upload-dsym.sh in Resources */,
-				AECF5C201C6210D6002369F6 /* speaker-on-50x50.png in Resources */,
 				AEA496101C2997F6000D9762 /* audio-active-23x28@2x.png in Resources */,
 				AEA496261C2997F6000D9762 /* icon-29x29.png in Resources */,
 				AEA4963B1C2997F6000D9762 /* message-30x30@2x.png in Resources */,
@@ -901,6 +957,7 @@
 				AEA496141C2997F6000D9762 /* audio-call-30x30@2x.png in Resources */,
 				AEA496701C2997F6000D9762 /* calling.mp3 in Resources */,
 				AEA4961C1C2997F6000D9762 /* five-digit-74x74.png in Resources */,
+				AE20DA851CE31EC200695925 /* speaker-on-50x50@2x.png in Resources */,
 				AEA4965D1C2997F6000D9762 /* video-call-30x30.png in Resources */,
 				AEA4967B1C2997F6000D9762 /* message.mp3 in Resources */,
 				AEA496751C2997F6000D9762 /* dtmf4.wav in Resources */,
@@ -1020,6 +1077,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE5669141BE903FB00C66789 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestCommClient;
+			targetProxy = AE5669131BE903FB00C66789 /* PBXContainerItemProxy */;
+		};
 		AE79D34019BC8DAE0023306C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AE79D31519BC8DAD0023306C /* restcomm-olympus */;
@@ -1069,7 +1131,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1100,11 +1162,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				USE_HEADERMAP = YES;
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -1114,7 +1176,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1141,9 +1203,9 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 x86_64 i386";
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 			};
 			name = Release;
 		};
@@ -1153,6 +1215,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1164,7 +1228,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
@@ -1172,16 +1236,16 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
+				USE_HEADERMAP = YES;
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1192,6 +1256,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1203,7 +1269,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
+					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
@@ -1211,7 +1277,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
-					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib,
 					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 				);
@@ -1220,7 +1285,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "$(ARCHS_STANDARD) x86_64 i386";
+				USE_HEADERMAP = YES;
+				VALID_ARCHS = "$(ARCHS_STANDARD_32_BIT) x86_64 i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

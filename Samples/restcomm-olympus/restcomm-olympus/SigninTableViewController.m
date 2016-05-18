@@ -9,6 +9,7 @@
 #import "SigninTableViewController.h"
 #import "MainTableViewController.h"
 #import "Utils.h"
+#import "RCUtilities.h"
 
 @interface SigninTableViewController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *usernameText;
@@ -63,6 +64,7 @@
     return 0;
 }
 */
+
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
     if ([self.usernameText.text isEqualToString:@""] || [self.domainText.text isEqualToString:@""]) {
@@ -75,9 +77,10 @@
         return NO;
     }
     
-    if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
+    //if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
+    if ([RCUtilities string:self.usernameText.text containsString:@"sip:"] || [RCUtilities string:self.usernameText.text containsString:@"@"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
-                                                        message:@"Please avoid using a SIP URI for Username. User a plain username instead, like 'bob' or 'alice'"
+                                                        message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];

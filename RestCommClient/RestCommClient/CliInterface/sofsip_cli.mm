@@ -74,6 +74,7 @@ bool restartSignalling = false;
 // let's reference nua & nta module global log facilities to be able to update their levels
 extern su_log_t nua_log[];
 extern su_log_t nta_log[];
+extern su_log_t tport_log[];
 
 extern su_log_t iptsec_log[];
 extern su_log_t nea_log[];
@@ -310,6 +311,9 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   conf->ssc_certdir = getenv("SOFSIP_CERTDIR");
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
   //conf->ssc_stun_server = "stun.l.google.com:19302";
+  
+  // log all SIP transport messages in the console. TODO: need to make this configurable
+  setenv("TPORT_LOG", "1", 1);
 
   for (i = 1; i < ac; i++) {
     if (av[i] && av[i][0] != '-') {
@@ -339,6 +343,7 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   //su_log_set_level(nth_server_log, 9);
   //su_log_set_level(sresolv_log, 9);
   //su_log_set_level(stun_log, 9);
+  //su_log_set_level(tport_log, 9);
   
   
   // set default level to 2: non-critical errors

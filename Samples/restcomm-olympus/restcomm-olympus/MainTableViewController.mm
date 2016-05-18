@@ -73,10 +73,12 @@
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                       [Utils turnUrl], @"turn-url",  // leave empty to disable TURN
+                       @([Utils turnEnabled]), @"turn-enabled",
+                       [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
-                       [cafilePath stringByDeletingLastPathComponent], @"certificate-dir",  // leave empty to disable TLS for signaling
+                       @([Utils signalingSecure]), @"signaling-secure",
+                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
@@ -96,7 +98,8 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -191,7 +194,7 @@
         [messageViewController.parameters setObject:message forKey:@"message-text"];
         [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
         [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
-        [messageViewController.parameters setObject:[Utilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
+        [messageViewController.parameters setObject:[RCUtilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
         
         messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController pushViewController:messageViewController animated:YES];
@@ -230,12 +233,6 @@
     [self presentViewController:callViewController
                        animated:YES
                      completion:nil];
-}
-
-// not implemented yet
-- (void)device:(RCDevice *)device didReceivePresenceUpdate:(RCPresenceEvent *)presenceEvent
-{
-    
 }
 
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text

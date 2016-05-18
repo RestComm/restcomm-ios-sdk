@@ -22,6 +22,7 @@
 
 
 #import "Utils.h"
+#import "RCUtilities.h"
 
 @implementation Utils
 
@@ -31,15 +32,18 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
-                                    @"is-first-time" : @YES,
+                                    @"is-first-time" : @(YES),
                                     @"pending-interapp-uri" : @"",  // has another app sent us a URL to call?
                                     @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     @"sip-password" : @"",
                                     @"sip-registrar" : @"cloud.restcomm.com",
-                                    @"turn-url" : @"https://computeengineondemand.appspot.com/turn",
-                                    @"turn-username" : @"iapprtc",
-                                    @"turn-password" : @"4080218913",
-                                    @"turn-candidate-timeout" : @"5",
+                                    @"turn-enabled" : @(YES),
+                                    @"turn-url" : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
+                                    @"turn-username" : @"atsakiridis",  // @"iapprtc",
+                                    @"turn-password" : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
+                                    @"signaling-secure" : @(NO),  // by default signaling is not secure
+                                    @"signaling-certificate-dir" : @"",
+                                    //@"turn-candidate-timeout" : @"5",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
                                     @[
                                         @[@"Play App", @"+1234"],  //@"sip:+1234@cloud.restcomm.com"],
@@ -191,6 +195,18 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     return [appDefaults stringForKey:@"sip-registrar"];
 }
 
++ (BOOL)turnEnabled
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:@"turn-enabled"] boolValue];
+}
+
++ (BOOL)signalingSecure
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:@"signaling-secure"] boolValue];
+}
+
 + (NSString*)turnUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -337,6 +353,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     [appDefaults setObject:sipRegistrar forKey:@"sip-registrar"];
 }
 
++ (void)updateTurnEnabled:(BOOL)turnEnabled
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:@(turnEnabled) forKey:@"turn-enabled"];
+}
+
 + (void)updateTurnUrl:(NSString*)turnUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -373,6 +395,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     [appDefaults setObject:uri forKey:@"pending-interapp-uri"];
 }
 
++ (void)updateSignalingSecure:(BOOL)signalingSecure
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:@(signalingSecure) forKey:@"signaling-secure"];
+}
+
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri
 {
     /* Here are the possible URLs we need to handle here:
@@ -391,7 +419,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     NSLog(@"convertInterappUri2RestcommUri URL absolute string: %@", [uri absoluteString]);
 
     NSString * final = nil;
-    if ([[uri scheme] containsString:@"sip"]) {
+    if ([RCUtilities string:[uri scheme] containsString:@"sip"]) {
         // either 'sip' or 'restcomm-sip'
         // normalize 'restcomm-sip' and replace with 'sip'
         NSString * normalized = [[uri absoluteString] stringByReplacingOccurrencesOfString:@"restcomm-sip" withString:@"sip"];
@@ -406,6 +434,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     NSLog(@"convertInterappUri2RestcommUri after conversion: %@", final);
     return final;
 }
+
 
 /*
 + (void) setGenericType:(NSString*)type forLevel:(NSNumber*)level withValue:(NSNumber*)value updateType:(NSString*)updateType

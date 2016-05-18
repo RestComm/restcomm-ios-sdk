@@ -23,7 +23,7 @@
 
 #import "MessageTableViewController.h"
 #import "InputAccessoryProxyView.h"
-//#import "Utilities.h"
+//#import "RCUtilities.h"
 #import "LocalMessageTableViewCell.h"
 #import "RemoteMessageTableViewCell.h"
 #import "Utils.h"
@@ -184,7 +184,7 @@
 // helpers
 - (void)appendToDialog:(NSString*)msg sender:(NSString*)sender
 {
-    //NSString *username = [Utilities usernameFromUri:sender];
+    //NSString *username = [RCUtilities usernameFromUri:sender];
     // TODO: update the window title with the chat peer (do it once only)
     NSString * type = @"local";
     if (![sender isEqualToString:@"Me"]) {
