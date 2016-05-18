@@ -375,9 +375,9 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     else {
         // no connectivity, let's keep the params around by overwriting Sip Mananger params for the keys found in params which carry actual values
         for (id key in params) {
-            if (![[params objectForKey:key] isEqualToString:@""]) {
+            //if (![[params objectForKey:key] isEqualToString:@""]) {
                 [self.sipManager.params setObject:[params objectForKey:key] forKey:key];
-            }
+            //}
         }
     }
     return NO;
