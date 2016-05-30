@@ -830,7 +830,7 @@ void ssc_r_invite(int status, char const *phrase,
                   nua_handle_t *nh, ssc_oper_t *op, sip_t const *sip,
                   tagi_t tags[])
 {
-    RCLogDebug("%s: INVITE: %03d %s", ssc->ssc_name, status, phrase);
+    RCLogNotice("%s: INVITE: %03d %s", ssc->ssc_name, status, phrase);
     
     if (status >= 300) {
         op->op_callstate = (op_callstate_t)(op->op_callstate & ~opc_sent);
@@ -1998,7 +1998,7 @@ void ssc_r_register(int status, char const *phrase,
 {
     //sip_contact_t *m = sip ? sip->sip_contact : NULL;
     
-    RCLogDebug("REGISTER: %03d %s", status, phrase);
+    RCLogNotice("REGISTER: %03d %s", status, phrase);
     
     if (status < 200)
         return;
@@ -2092,9 +2092,9 @@ void ssc_r_unregister(int status, char const *phrase,
                       nua_handle_t *nh, ssc_oper_t *op, sip_t const *sip,
                       tagi_t tags[])
 {
-    sip_contact_t *m;
+    //sip_contact_t *m;
     
-    RCLogDebug("un-REGISTER: %03d %s", status, phrase);
+    RCLogNotice("un-REGISTER: %03d %s", status, phrase);
     
     if (status < 200)
         return;
