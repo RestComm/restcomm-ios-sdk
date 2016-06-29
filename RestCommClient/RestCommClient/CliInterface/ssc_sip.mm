@@ -313,6 +313,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                        NUTAG_AUTOALERT(1),
                        NUTAG_SESSION_TIMER(0),
                        NUTAG_AUTOANSWER(0),
+                       //NUTAG_OUTBOUND("use-rport"),
                        //TAG_IF("64.233.184.127", STUNTAG_SERVER("64.233.184.127")),
                        //TAG_IF("stun.l.google.com", STUNTAG_DOMAIN("stun.l.google.com")),
                        //TAG_IF(cert_dir,
@@ -862,8 +863,14 @@ void ssc_r_invite(int status, char const *phrase,
             SofiaReply reply(ERROR_SIP_INVITE_TIMEOUT, [[RestCommClient getErrorText:ERROR_SIP_INVITE_TIMEOUT] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
+        else if (status == 503) {
+            // timeout error
+            SofiaReply reply(ERROR_SIP_INVITE_SERVICE_UNAVAILABLE, [[RestCommClient getErrorText:ERROR_SIP_INVITE_SERVICE_UNAVAILABLE] UTF8String]);
+            reply.Send(ssc->ssc_output_fd);
+        }
         else {
             // generic error
+            RCLogError("INVITE Unknown error: %03d %s", status, phrase);
             SofiaReply reply(ERROR_SIP_INVITE_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_INVITE_GENERIC] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
@@ -1549,7 +1556,13 @@ void ssc_r_message(int status, char const *phrase,
         SofiaReply reply(ERROR_SIP_MESSAGE_TIMEOUT, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_TIMEOUT] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
+    else if (status == 503) {
+        // timeout error
+        SofiaReply reply(ERROR_SIP_MESSAGE_SERVICE_UNAVAILABLE, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_SERVICE_UNAVAILABLE] UTF8String]);
+        reply.Send(ssc->ssc_output_fd);
+    }
     else {
+        RCLogError("MESSAGE Unknown error: %03d %s", status, phrase);
         SofiaReply reply(ERROR_SIP_MESSAGE_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_MESSAGE_GENERIC] UTF8String]);
         reply.Send(ssc->ssc_output_fd);
     }
@@ -2027,6 +2040,7 @@ void ssc_r_register(int status, char const *phrase,
         }
         else {
             // generic error
+            RCLogError("REGISTER Unknown error: %03d %s", status, phrase);
             SofiaReply reply(ERROR_SIP_REGISTER_GENERIC, [[RestCommClient getErrorText:ERROR_SIP_REGISTER_GENERIC] UTF8String]);
             reply.Send(ssc->ssc_output_fd);
         }
