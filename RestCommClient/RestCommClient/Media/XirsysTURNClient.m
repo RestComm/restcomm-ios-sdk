@@ -74,7 +74,7 @@
                         NSArray * iceServers = [[dict objectForKey:@"d"] objectForKey:@"iceServers"];
                         //turnServers = [RTCICEServer serversFromCEODJSONDictionary:dict];
                         
-                        turnServers = [RTCICEServer serverFromXirsysArray:iceServers];
+                        turnServers = [RTCIceServer serverFromXirsysArray:iceServers];
                         if (!turnServers) {
                             NSError *responseError =
                             [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]

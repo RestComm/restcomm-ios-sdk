@@ -24,7 +24,7 @@
 #import "RCDevice.h"
 #import "RCConnection.h"
 #import "SipManager.h"
-#import "RTCVideoTrack.h"
+#import "WebRTC/RTCVideoTrack.h"
 #import "RCUtilities.h"
 
 #include "common.h"

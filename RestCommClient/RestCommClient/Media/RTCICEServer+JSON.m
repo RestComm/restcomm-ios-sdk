@@ -34,17 +34,22 @@ static NSString const *kRTCICEServerUrisKey = @"uris";
 static NSString const *kRTCICEServerUrlKey = @"urls";
 static NSString const *kRTCICEServerCredentialKey = @"credential";
 
-@implementation RTCICEServer (JSON)
+@implementation RTCIceServer (JSON)
 
-+ (RTCICEServer *)serverFromJSONDictionary:(NSDictionary *)dictionary {
++ (RTCIceServer *)serverFromJSONDictionary:(NSDictionary *)dictionary {
   NSString *url = dictionary[kRTCICEServerUrlKey];
   NSString *username = dictionary[kRTCICEServerUsernameKey];
   NSString *credential = dictionary[kRTCICEServerCredentialKey];
   username = username ? username : @"";
   credential = credential ? credential : @"";
-  return [[RTCICEServer alloc] initWithURI:[NSURL URLWithString:url]
+  /*
+  return [[RTCIceServer alloc] initWithURI:[NSURL URLWithString:url]
                                   username:username
                                   password:credential];
+  */
+  return [[RTCIceServer alloc] initWithURLStrings:[NSArray arrayWithObject:url]
+                                    username:username
+                                  credential:credential];
 }
 
 + (NSArray *)serversFromCEODJSONDictionary:(NSDictionary *)dictionary {
@@ -53,11 +58,18 @@ static NSString const *kRTCICEServerCredentialKey = @"credential";
   NSArray *uris = dictionary[kRTCICEServerUrisKey];
   NSMutableArray *servers = [NSMutableArray arrayWithCapacity:uris.count];
   for (NSString *uri in uris) {
-    RTCICEServer *server =
-        [[RTCICEServer alloc] initWithURI:[NSURL URLWithString:uri]
+      /*
+      RTCIceServer *server =
+        [[RTCIceServer alloc] initWithURI:[NSURL URLWithString:uri]
                                  username:username
                                  password:password];
-    [servers addObject:server];
+       */
+      RTCIceServer *server =
+      [[RTCIceServer alloc] initWithURLStrings:[NSArray arrayWithObject:uri]
+                                      username:username
+                                    credential:password];
+
+      [servers addObject:server];
   }
   return servers;
 }
@@ -71,9 +83,14 @@ static NSString const *kRTCICEServerCredentialKey = @"credential";
         username = username ? username : @"";
         credential = credential ? credential : @"";
         RCLogNotice("[RTCICEServer serverFromXirsysArray] adding ICE server, url: %s, username: %s", [url UTF8String], [username UTF8String]);
-        [iceServers addObject:[[RTCICEServer alloc] initWithURI:[NSURL URLWithString:url]
+        /*
+        [iceServers addObject:[[RTCIceServer alloc] initWithURI:[NSURL URLWithString:url]
                                                        username:username
                                                        password:credential]];
+         */
+        [iceServers addObject:[[RTCIceServer alloc] initWithURLStrings:[NSArray arrayWithObject:url]
+                                                              username:username
+                                                            credential:credential]];
     }
     return iceServers;
 }

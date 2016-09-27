@@ -28,7 +28,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
-#import "RTCPeerConnectionFactory.h"
+//#import "WebRTC/RTCPeerConnectionFactory.h"
 
 #import "RestCommClient.h"
 #import "SipManager.h"
@@ -323,7 +323,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
         
         self.deviceDelegate = deviceDelegate;
         self.params = [[NSMutableDictionary alloc] init];
-        [RTCPeerConnectionFactory initializeSSL];
+        //[RTCPeerConnectionFactory initializeSSL];
         
     }
     return self;
@@ -365,7 +365,7 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 
 - (void)dealloc {
     RCLogNotice("[SipManager dealloc]");
-    [RTCPeerConnectionFactory deinitializeSSL];
+    //[RTCPeerConnectionFactory deinitializeSSL];
     self.media = nil;
 }
 

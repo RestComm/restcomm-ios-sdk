@@ -27,7 +27,6 @@
 		AE20DA851CE31EC200695925 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */; };
 		AE20DA861CE31EC200695925 /* speaker-on-50x50@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA831CE31EC200695925 /* speaker-on-50x50@3x.png */; };
 		AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */; };
-		AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */; };
 		AE3E52C61C57BB7B0057F5D0 /* agent.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C41C57BB7B0057F5D0 /* agent.pem */; };
 		AE3E52C71C57BB7B0057F5D0 /* cafile.pem in Resources */ = {isa = PBXBuildFile; fileRef = AE3E52C51C57BB7B0057F5D0 /* cafile.pem */; };
 		AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */; };
@@ -176,6 +175,7 @@
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
 		AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECA05521C7772F800EB9737 /* SigninTableViewController.m */; };
+		AECBFF281D9AAEF6007D187E /* libWebRTC-14380.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
@@ -408,6 +408,7 @@
 		AEC39AE81A5AE18800B155E4 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		AECA05511C7772F800EB9737 /* SigninTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigninTableViewController.h; sourceTree = "<group>"; };
 		AECA05521C7772F800EB9737 /* SigninTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigninTableViewController.m; sourceTree = "<group>"; };
+		AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-14380.a"; path = "../../dependencies/packages/webrtc/libWebRTC-14380.a"; sourceTree = "<group>"; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-olympusTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-olympusTests-Info.plist"; sourceTree = "<group>"; };
@@ -441,7 +442,7 @@
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
-				AE3E52B01C56A4290057F5D0 /* libWebRTC-11366.a in Frameworks */,
+				AECBFF281D9AAEF6007D187E /* libWebRTC-14380.a in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
@@ -503,6 +504,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */,
 				AEEC4D191CDB72A500598566 /* libc++.tbd */,
 				AEB5EB0A1C5A536C0004669F /* libsofia-sip-ua.a */,
 				AEB5EB001C58E5310004669F /* libcrypto.a */,

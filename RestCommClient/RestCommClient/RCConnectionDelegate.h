@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RTCVideoTrack.h"
+#import "WebRTC/RTCVideoTrack.h"
 
 /** @file RCConnectionDelegate.h */
 

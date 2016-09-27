@@ -107,14 +107,14 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  Initialize a new RCDevice object with parameters
  *
- *  @param parameters      Parameters for the Device entity. Possible keys/values: <br>
+ *  @param parameters      Parameters for the Device entity. Possible keys: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
  *    <b>password</b>: password for the client <br>
  *    <b>turn-enabled</b>: should TURN be enabled? <br>
  *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i> <br>
  *    <b>turn-username</b>: TURN username <br>
  *    <b>turn-password</b>: TURN password <br>
- *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
+ *    <b>registrar</b>: Restcomm instance to use, like <i>'cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
  *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *  @param delegate        Delegate of RCDevice
@@ -160,8 +160,8 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Create an outgoing connection to an endpoint
  *
- *  @param parameters Parameters for the outgoing connection. Possible keys/values: <br>
- *    <b>username</b>: Who is the called number, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
+ *  @param parameters Parameters for the outgoing connection. Possible keys: <br>
+ *    <b>username</b>: Who is the called number, like <i>'+1235'</i> or <i>'sip:+1235@cloud.restcomm.com'</i> <br>
  *    <b>video-enabled</b>: Whether we want WebRTC video enabled or not <br>
  *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br>
  *  @param delegate   The delegate object that will receive events when the connection state changes
@@ -173,7 +173,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 /**
  *  @abstract Send an instant message to a an endpoint
  *
- *  @param parameters  Message parameters. Possible keys/values are:  <br>
+ *  @param parameters  Message parameters. Possible keys are:  <br>
  *    <b>username</b>: Who is the recepient of the text message, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
  *    <b>message</b>: Content of the message <br>
  *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br>

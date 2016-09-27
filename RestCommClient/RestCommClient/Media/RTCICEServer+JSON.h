@@ -25,11 +25,11 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "RTCICEServer.h"
+#import "WebRTC/RTCICEServer.h"
 
-@interface RTCICEServer (JSON)
+@interface RTCIceServer (JSON)
 
-+ (RTCICEServer *)serverFromJSONDictionary:(NSDictionary *)dictionary;
++ (RTCIceServer *)serverFromJSONDictionary:(NSDictionary *)dictionary;
 // CEOD provides different JSON, and this parses that.
 + (NSArray *)serversFromCEODJSONDictionary:(NSDictionary *)dictionary;
 // Parse Xirsys-formatted servers

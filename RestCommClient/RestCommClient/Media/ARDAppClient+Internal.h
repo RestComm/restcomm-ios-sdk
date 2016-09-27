@@ -31,12 +31,12 @@
 //#import "ARDRoomServerClient.h"
 //#import "ARDSignalingChannel.h"
 #import "ARDTURNClient.h"
-#import "RTCPeerConnection.h"
-#import "RTCPeerConnectionDelegate.h"
-#import "RTCPeerConnectionFactory.h"
-#import "RTCSessionDescriptionDelegate.h"
+#import "WebRTC/RTCPeerConnection.h"
+#import "WebRTC/RTCPeerConnection.h"
+#import "WebRTC/RTCPeerConnectionFactory.h"
+//#import "RTCSessionDescriptionDelegate.h"
 
-@interface MediaWebRTC () <RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
+@interface MediaWebRTC () <RTCPeerConnectionDelegate>
 
 //@property(nonatomic, strong) id<ARDRoomServerClient> roomServerClient;
 //@property(nonatomic, strong) id<ARDSignalingChannel> channel;

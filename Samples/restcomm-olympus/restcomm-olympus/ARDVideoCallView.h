@@ -27,7 +27,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RTCEAGLVideoView.h"
+#import "WebRTC/RTCEAGLVideoView.h"
 
 @class ARDVideoCallView;
 /*

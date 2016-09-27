@@ -66,7 +66,7 @@ static NSInteger kARDCEODTURNClientErrorBadResponse = -1;
       return;
     }
     NSDictionary *dict = [NSDictionary dictionaryWithJSONData:data];
-    turnServers = [RTCICEServer serversFromCEODJSONDictionary:dict];
+    turnServers = [RTCIceServer serversFromCEODJSONDictionary:dict];
     if (!turnServers) {
       NSError *responseError =
           [[NSError alloc] initWithDomain:kARDCEODTURNClientErrorDomain

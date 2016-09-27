@@ -53,15 +53,19 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "RTCICECandidate.h"
-#import "RTCPeerConnection.h"
-#import "RTCICEServer.h"
-#import "RTCMediaConstraints.h"
-#import "RTCMediaStream.h"
-#import "RTCPair.h"
-#import "RTCVideoCapturer.h"
-#import "RTCVideoTrack.h"
-#import "RTCSessionDescription.h"
+#import "WebRTC/RTCAVFoundationVideoSource.h"
+#import "WebRTC/RTCAudioTrack.h"
+#import "WebRTC/RTCIceCandidate.h"
+#import "WebRTC/RTCPeerConnection.h"
+#import "WebRTC/RTCIceServer.h"
+#import "WebRTC/RTCMediaConstraints.h"
+#import "WebRTC/RTCMediaStream.h"
+#import "WebRTC/RTCConfiguration.h"
+//#import "WebRTC/RTCPair.h"
+//#import "WebRTC/RTCVideoCapturer.h"
+#import "WebRTC/RTCVideoTrack.h"
+#import "WebRTC/RTCSessionDescription.h"
+#import "WebRTC/RTCRtpSender.h"
 #import "RestCommClient.h"
 
 #import "common.h"
@@ -81,6 +85,10 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 //static NSInteger kARDAppClientErrorSetSDP = -4;
 //static NSInteger kARDAppClientErrorInvalidClient = -5;
 //static NSInteger kARDAppClientErrorInvalidRoom = -6;
+static NSString * const kARDMediaStreamId = @"ARDAMS";
+static NSString * const kARDAudioTrackId = @"ARDAMSa0";
+static NSString * const kARDVideoTrackId = @"ARDAMSv0";
+
 
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters
 {
@@ -219,11 +227,16 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     _iceServers = [NSMutableArray arrayWithObject:[self defaultSTUNServer]];
 }
 
-- (RTCICEServer *)defaultSTUNServer {
-    NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
-    return [[RTCICEServer alloc] initWithURI:defaultSTUNServerURL
+- (RTCIceServer *)defaultSTUNServer {
+    //NSURL *defaultSTUNServerURL = [NSURL URLWithString:kARDDefaultSTUNServerUrl];
+    /*
+    return [[RTCIceServer alloc] initWithURI:defaultSTUNServerURL
                                     username:@""
                                     password:@""];
+     */
+    return [[RTCIceServer alloc] initWithURLStrings:[NSArray arrayWithObject:kARDDefaultSTUNServerUrl]
+                                    username:@""
+                                    credential:@""];
 }
 
 - (void)startSignalingIfReady:(NSString*)sdp {
@@ -233,29 +246,59 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     _state = kARDAppClientStateConnected;
     
     // Create peer connection
+    /*
     RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
     _peerConnection = [_factory peerConnectionWithICEServers:_iceServers
                                                  constraints:constraints
                                                     delegate:self];
-    RTCMediaStream *localStream = [self createLocalMediaStream];
-    [_peerConnection addStream:localStream];
+     */
+    // Create peer connection.
+    RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
+    RTCConfiguration *config = [[RTCConfiguration alloc] init];
+    config.iceServers = _iceServers;
+    _peerConnection = [_factory peerConnectionWithConfiguration:config
+                                                    constraints:constraints
+                                                       delegate:self];
+
+    //RTCMediaStream *localStream = [self createLocalMediaStream];
+    //[_peerConnection addStream:localStream];
+    
+    // Create AV senders.
+    [self createAudioSender];
+    [self createVideoSender];
+
     if (_isInitiator) {
-        [self sendOffer];
+        // Send offer
+        __weak MediaWebRTC *weakSelf = self;
+        [_peerConnection offerForConstraints:[self defaultOfferConstraints]
+                           completionHandler:^(RTCSessionDescription *sdp,
+                                               NSError *error) {
+                               MediaWebRTC *strongSelf = weakSelf;
+                               [strongSelf peerConnection:strongSelf.peerConnection
+                              didCreateSessionDescription:sdp
+                                                    error:error];
+                           }];
+        /*
+        [_peerConnection createOfferWithDelegate:self
+                                     constraints:[self defaultOfferConstraints]];
+         */
     } else {
         [self processSignalingMessage:[sdp UTF8String] type:kARDSignalingMessageTypeOffer];
     }
 }
 
 - (RTCMediaConstraints *)defaultPeerConnectionConstraints {
+    /*
     NSArray *optionalConstraints = @[[[RTCPair alloc] initWithKey:@"DtlsSrtpKeyAgreement" value:@"true"]];
     RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
                                                                              optionalConstraints:optionalConstraints];
     return constraints;
-}
-
-- (void)sendOffer {
-    [_peerConnection createOfferWithDelegate:self
-                                 constraints:[self defaultOfferConstraints]];
+     */
+    NSDictionary *optionalConstraints = @{ @"DtlsSrtpKeyAgreement" : @"true" };
+    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc]
+                                        initWithMandatoryConstraints:nil
+                                        optionalConstraints:optionalConstraints];
+    return constraints;
 }
 
 // Offer/Answer Constraints
@@ -287,6 +330,67 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     return [self defaultOfferConstraints];
 }
 
+- (RTCMediaConstraints *)defaultMediaAudioConstraints {
+    //NSString *valueLevelControl = _shouldUseLevelControl ? kRTCMediaConstraintsValueTrue : kRTCMediaConstraintsValueFalse;
+    NSString *valueLevelControl = kRTCMediaConstraintsValueFalse;
+    NSDictionary *mandatoryConstraints = @{ kRTCMediaConstraintsLevelControl : valueLevelControl };
+    RTCMediaConstraints* constraints =
+    [[RTCMediaConstraints alloc]  initWithMandatoryConstraints:mandatoryConstraints
+                                           optionalConstraints:nil];
+    return constraints;
+}
+
+- (RTCMediaConstraints *)defaultMediaStreamConstraints {
+    RTCMediaConstraints* constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil
+                                                                             optionalConstraints:nil];
+    return constraints;
+}
+
+/////
+- (RTCRtpSender *)createVideoSender {
+    RTCRtpSender *sender =
+    [_peerConnection senderWithKind:kRTCMediaStreamTrackKindVideo
+                           streamId:kARDMediaStreamId];
+    RTCVideoTrack *track = [self createLocalVideoTrack];
+    if (track) {
+        sender.track = track;
+        [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:track];
+        //[_delegate appClient:self didReceiveLocalVideoTrack:track];
+    }
+    return sender;
+}
+
+- (RTCRtpSender *)createAudioSender {
+    RTCMediaConstraints *constraints = [self defaultMediaAudioConstraints];
+    RTCAudioSource *source = [_factory audioSourceWithConstraints:constraints];
+    RTCAudioTrack *track = [_factory audioTrackWithSource:source
+                                                  trackId:kARDAudioTrackId];
+    RTCRtpSender *sender =
+    [_peerConnection senderWithKind:kRTCMediaStreamTrackKindAudio
+                           streamId:kARDMediaStreamId];
+    sender.track = track;
+    return sender;
+}
+
+- (RTCVideoTrack *)createLocalVideoTrack {
+    RTCVideoTrack* localVideoTrack = nil;
+    // The iOS simulator doesn't provide any sort of camera capture
+    // support or emulation (http://goo.gl/rHAnC1) so don't bother
+    // trying to open a local stream.
+#if !TARGET_IPHONE_SIMULATOR
+    if (_videoAllowed) {
+        RTCMediaConstraints *mediaConstraints = [self defaultMediaStreamConstraints];
+        RTCAVFoundationVideoSource *source = [_factory avFoundationVideoSourceWithConstraints:mediaConstraints];
+        localVideoTrack = [_factory videoTrackWithSource:source
+                                                 trackId:kARDVideoTrackId];
+        [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:localVideoTrack];
+    }
+#endif
+    return localVideoTrack;
+}
+/////
+
+/*
 - (RTCMediaStream *)createLocalMediaStream
 {
     RCLogNotice("[MediaWebRTC createLocalMediaStream]");
@@ -332,6 +436,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     
     return localStream;
 }
+ */
 
 - (void)mute
 {
@@ -339,7 +444,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
             for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
                 RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
-                [track setEnabled:NO];
+                [track setIsEnabled:NO];
             }
         }
     }
@@ -351,7 +456,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
             for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
                 RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
-                [track setEnabled:YES];
+                [track setIsEnabled:YES];
             }
         }
     }
@@ -363,7 +468,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
             for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
                 RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
-                [track setEnabled:NO];
+                [track setIsEnabled:NO];
             }
         }
     }
@@ -375,7 +480,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
             for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
                 RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
-                [track setEnabled:YES];
+                [track setIsEnabled:YES];
             }
         }
     }
@@ -501,23 +606,82 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
 - (void)processSignalingMessage:(const char *)message type:(int)type
 {
     NSParameterAssert(_peerConnection);
+    
+    RTCSdpType sdpType;
+    if (type == kARDSignalingMessageTypeOffer) {
+        sdpType = RTCSdpTypeOffer;
+    }
+    else if (type == kARDSignalingMessageTypeAnswer) {
+        sdpType = RTCSdpTypeAnswer;
+    }
+    else {
+        return;
+    }
+    
+    // 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
+    NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
+    [self workaroundTruncation:msg];
+    NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
+    RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:sdpType
+                                                                                 sdp:msg];
+    
+    // Prefer H264 if available.
+    RTCSessionDescription *sdpPreferringH264 =
+    [MediaWebRTC descriptionForDescription:description
+                       preferredVideoCodec:@"H264"];
+    
+    __weak MediaWebRTC *weakSelf = self;
+    [_peerConnection setRemoteDescription:sdpPreferringH264
+                        completionHandler:^(NSError *error) {
+                            MediaWebRTC *strongSelf = weakSelf;
+                            [strongSelf peerConnection:strongSelf.peerConnection
+                     didSetSessionDescriptionWithError:error];
+                        }];
+    
+    //[_peerConnection setRemoteDescriptionWithDelegate:self
+    //                               sessionDescription:description];
+    for (NSString * key in candidates) {
+        for (NSString * candidate in [candidates objectForKey:key]) {
+            // remember that we have set 'key' to be either 'audio' or 'video' inside incomingFilterCandidatesFromSdp
+            RTCIceCandidate *iceCandidate = [[RTCIceCandidate alloc] initWithSdp:candidate
+                                                                   sdpMLineIndex:0
+                                                                          sdpMid:key];
+            [_peerConnection addIceCandidate:iceCandidate];
+        }
+    }
+
+    /*
     switch (type) {
         case kARDSignalingMessageTypeOffer: {
             // 'type' is @"offer" (we are not the initiator) or @"answer" (we are the initiator) and 'sdp' is the regular SDP
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             //[self workaroundTruncation:msg];
             NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
-            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"offer"
+            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:RTCSdpTypeOffer
                                                                                          sdp:msg];
-            [_peerConnection setRemoteDescriptionWithDelegate:self
-                                           sessionDescription:description];
+            
+            // Prefer H264 if available.
+            RTCSessionDescription *sdpPreferringH264 =
+            [MediaWebRTC descriptionForDescription:description
+                               preferredVideoCodec:@"H264"];
+
+            __weak MediaWebRTC *weakSelf = self;
+            [_peerConnection setRemoteDescription:sdpPreferringH264
+                                completionHandler:^(NSError *error) {
+                                    MediaWebRTC *strongSelf = weakSelf;
+                                    [strongSelf peerConnection:strongSelf.peerConnection
+                             didSetSessionDescriptionWithError:error];
+                                }];
+            
+            //[_peerConnection setRemoteDescriptionWithDelegate:self
+            //                               sessionDescription:description];
             for (NSString * key in candidates) {
                 for (NSString * candidate in [candidates objectForKey:key]) {
                     // remember that we have set 'key' to be either 'audio' or 'video' inside incomingFilterCandidatesFromSdp
-                    RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
-                                                                                   index:0
-                                                                                     sdp:candidate];
-                    [_peerConnection addICECandidate:iceCandidate];
+                    RTCIceCandidate *iceCandidate = [[RTCIceCandidate alloc] initWithSdp:candidate
+                                                                           sdpMLineIndex:0
+                                                                                  sdpMid:key];
+                    [_peerConnection addIceCandidate:iceCandidate];
                 }
             }
             
@@ -529,16 +693,16 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             NSMutableString * msg = [NSMutableString stringWithUTF8String:message];
             [self workaroundTruncation:msg];
             NSDictionary * candidates = [self incomingFilterCandidatesFromSdp:msg];
-            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:@"answer"
+            RTCSessionDescription *description = [[RTCSessionDescription alloc] initWithType:RTCSdpTypeAnswer
                                                                                          sdp:msg];
             [_peerConnection setRemoteDescriptionWithDelegate:self
                                            sessionDescription:description];
             
             for (NSString * key in candidates) {
                 for (NSString * candidate in [candidates objectForKey:key]) {
-                    RTCICECandidate *iceCandidate = [[RTCICECandidate alloc] initWithMid:key
-                                                                                   index:0
-                                                                                     sdp:candidate];
+                    RTCIceCandidate *iceCandidate = [[RTCIceCandidate alloc] initWithSdp:candidate
+                                                                           sdpMLineIndex:0
+                                                                                  sdpMid:key];
                     [_peerConnection addICECandidate:iceCandidate];
                 }
             }
@@ -546,16 +710,20 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             break;
         }
     }
+     */
 }
 
 #pragma mark - RTCPeerConnectionDelegate
-- (void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged {
+// Callbacks for this delegate occur on non-main thread and need to be
+// dispatched back to main queue as needed.
+
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didChangeSignalingState:(RTCSignalingState)stateChanged {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC signalingStateChanged:%d]", stateChanged);
     });
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection addedStream:(RTCMediaStream *)stream {
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC addedStream] Received %lu video tracks and %lu audio tracks",
               (unsigned long)stream.videoTracks.count,
@@ -568,25 +736,25 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     });
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection removedStream:(RTCMediaStream *)stream {
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didRemoveStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC removedStream]");
     });
 }
 
-- (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection {
+- (void)peerConnectionShouldNegotiate:(RTCPeerConnection *)peerConnection {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC peerConnectionOnRenegotiationNeeded]");
         //NSLog(@"WARNING: Renegotiation needed but unimplemented.");
     });
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState {
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC iceConnectionChanged:%d]", newState);
-        if (newState == RTCICEConnectionFailed || newState == RTCICEConnectionDisconnected) {
+        if (newState == RTCIceConnectionStateFailed || newState == RTCIceConnectionStateDisconnected) {
             NSString * errorMsg;
-            if (newState == RTCICEConnectionFailed) {
+            if (newState == RTCIceConnectionStateFailed) {
                 errorMsg = @"iceConnectionChanged: ICE connection failed";
             }
             else {
@@ -601,17 +769,17 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
             RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[RCUtilities stringifyDictionary:userInfo] UTF8String]);
             [self.mediaDelegate mediaController:self didError:iceError];
         }
-        if (newState == RTCICEConnectionConnected) {
+        if (newState == RTCIceConnectionStateConnected) {
             [self.mediaDelegate mediaController:self didIceConnectAsInitiator:_isInitiator];
         }
     });
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState {
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC iceGatheringChanged:%d]", newState);
         
-        if (newState == RTCICEGatheringComplete) {
+        if (newState == RTCIceGatheringStateComplete) {
             if ([_iceCandidates count] > 0) {
                 RCLogNotice("[MediaWebRTC iceGatheringChanged:], state Complete");
                 [self candidateGatheringComplete];
@@ -628,7 +796,7 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     });
 }
 
-- (void)peerConnection:(RTCPeerConnection *)peerConnection gotICECandidate:(RTCICECandidate *)candidate {
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC gotICECandidate:%s]", [[candidate sdp] UTF8String]);
         [_iceCandidates addObject:candidate];
@@ -678,8 +846,20 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         }
         
         //RCLogDebug("[MediaWebRTC didCreateSessionDescription], sdp: %s", [sdp.description UTF8String]);
-        [_peerConnection setLocalDescriptionWithDelegate:self
-                                      sessionDescription:sdp];
+        //[_peerConnection setLocalDescriptionWithDelegate:self
+        //                              sessionDescription:sdp];
+        // Prefer H264 if available.
+        RTCSessionDescription *sdpPreferringH264 =
+        [MediaWebRTC descriptionForDescription:sdp
+                           preferredVideoCodec:@"H264"];
+        __weak MediaWebRTC *weakSelf = self;
+        [_peerConnection setLocalDescription:sdpPreferringH264
+                           completionHandler:^(NSError *error) {
+                               MediaWebRTC *strongSelf = weakSelf;
+                               [strongSelf peerConnection:strongSelf.peerConnection
+                        didSetSessionDescriptionWithError:error];
+                           }];
+
 
         // keep the SDP around; we'll be using it when all ICE candidates are downloaded
         self.sdp = sdp.description;
@@ -712,10 +892,20 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
         // If we're answering and we've just set the remote offer we need to create
         // an answer and set the local description.
         if (!_isInitiator && !_peerConnection.localDescription) {
+            //RTCMediaConstraints *constraints = [self defaultAnswerConstraints];
+            //[_peerConnection createAnswerWithDelegate:self
+            //                              constraints:constraints];
             RTCMediaConstraints *constraints = [self defaultAnswerConstraints];
-            [_peerConnection createAnswerWithDelegate:self
-                                          constraints:constraints];
-            
+            __weak MediaWebRTC *weakSelf = self;
+            [_peerConnection answerForConstraints:constraints
+                                completionHandler:^(RTCSessionDescription *sdp,
+                                                    NSError *error) {
+                                    MediaWebRTC *strongSelf = weakSelf;
+                                    [strongSelf peerConnection:strongSelf.peerConnection
+                                   didCreateSessionDescription:sdp
+                                                         error:error];
+                                }];
+
         }
     });
 }
@@ -731,6 +921,80 @@ static NSString *kARDAppClientErrorDomain = @"ARDAppClient";
     else {
         RCLogNotice("[MediaWebRTC candidateGatheringComplete] already notified signaling; skipping");
     }
+}
+
++ (RTCSessionDescription *)descriptionForDescription:(RTCSessionDescription *)description
+                                 preferredVideoCodec:(NSString *)codec
+{
+    NSString *sdpString = description.sdp;
+    NSString *lineSeparator = @"\n";
+    NSString *mLineSeparator = @" ";
+    // Copied from PeerConnectionClient.java.
+    // TODO(tkchin): Move this to a shared C++ file.
+    NSMutableArray *lines =
+    [NSMutableArray arrayWithArray:
+     [sdpString componentsSeparatedByString:lineSeparator]];
+    NSInteger mLineIndex = -1;
+    NSString *codecRtpMap = nil;
+    // a=rtpmap:<payload type> <encoding name>/<clock rate>
+    // [/<encoding parameters>]
+    NSString *pattern =
+    [NSString stringWithFormat:@"^a=rtpmap:(\\d+) %@(/\\d+)+[\r]?$", codec];
+    NSRegularExpression *regex =
+    [NSRegularExpression regularExpressionWithPattern:pattern
+                                              options:0
+                                                error:nil];
+    for (NSInteger i = 0; (i < lines.count) && (mLineIndex == -1 || !codecRtpMap);
+         ++i) {
+        NSString *line = lines[i];
+        if ([line hasPrefix:@"m=video"]) {
+            mLineIndex = i;
+            continue;
+        }
+        NSTextCheckingResult *codecMatches =
+        [regex firstMatchInString:line
+                          options:0
+                            range:NSMakeRange(0, line.length)];
+        if (codecMatches) {
+            codecRtpMap =
+            [line substringWithRange:[codecMatches rangeAtIndex:1]];
+            continue;
+        }
+    }
+    if (mLineIndex == -1) {
+        RTCLog(@"No m=video line, so can't prefer %@", codec);
+        return description;
+    }
+    if (!codecRtpMap) {
+        RTCLog(@"No rtpmap for %@", codec);
+        return description;
+    }
+    NSArray *origMLineParts =
+    [lines[mLineIndex] componentsSeparatedByString:mLineSeparator];
+    if (origMLineParts.count > 3) {
+        NSMutableArray *newMLineParts =
+        [NSMutableArray arrayWithCapacity:origMLineParts.count];
+        NSInteger origPartIndex = 0;
+        // Format is: m=<media> <port> <proto> <fmt> ...
+        [newMLineParts addObject:origMLineParts[origPartIndex++]];
+        [newMLineParts addObject:origMLineParts[origPartIndex++]];
+        [newMLineParts addObject:origMLineParts[origPartIndex++]];
+        [newMLineParts addObject:codecRtpMap];
+        for (; origPartIndex < origMLineParts.count; ++origPartIndex) {
+            if (![codecRtpMap isEqualToString:origMLineParts[origPartIndex]]) {
+                [newMLineParts addObject:origMLineParts[origPartIndex]];
+            }
+        }
+        NSString *newMLine =
+        [newMLineParts componentsJoinedByString:mLineSeparator];
+        [lines replaceObjectAtIndex:mLineIndex
+                         withObject:newMLine];
+    } else {
+        RTCLogWarning(@"Wrong SDP media description format: %@", lines[mLineIndex]);
+    }
+    NSString *mangledSdpString = [lines componentsJoinedByString:lineSeparator];
+    return [[RTCSessionDescription alloc] initWithType:description.type
+                                                   sdp:mangledSdpString];
 }
 
 @end
