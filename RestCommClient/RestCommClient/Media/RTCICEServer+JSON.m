@@ -82,7 +82,7 @@ static NSString const *kRTCICEServerCredentialKey = @"credential";
         NSString *credential = iceServerDictionary[@"credential"];
         username = username ? username : @"";
         credential = credential ? credential : @"";
-        RCLogNotice("[RTCICEServer serverFromXirsysArray] adding ICE server, url: %s, username: %s", [url UTF8String], [username UTF8String]);
+        RCLogNotice("[RTCIceServer serverFromXirsysArray] adding ICE server, url: %s, username: %s", [url UTF8String], [username UTF8String]);
         /*
         [iceServers addObject:[[RTCIceServer alloc] initWithURI:[NSURL URLWithString:url]
                                                        username:username

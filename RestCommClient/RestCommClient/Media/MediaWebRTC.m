@@ -53,6 +53,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "WebRTC/RTCIceServer.h"
 #import "WebRTC/RTCAVFoundationVideoSource.h"
 #import "WebRTC/RTCAudioTrack.h"
 #import "WebRTC/RTCIceCandidate.h"
@@ -61,11 +62,10 @@
 #import "WebRTC/RTCMediaConstraints.h"
 #import "WebRTC/RTCMediaStream.h"
 #import "WebRTC/RTCConfiguration.h"
-//#import "WebRTC/RTCPair.h"
-//#import "WebRTC/RTCVideoCapturer.h"
 #import "WebRTC/RTCVideoTrack.h"
 #import "WebRTC/RTCSessionDescription.h"
 #import "WebRTC/RTCRtpSender.h"
+
 #import "RestCommClient.h"
 
 #import "common.h"
@@ -440,10 +440,10 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 - (void)mute
 {
-    if (_peerConnection.localStreams) {
-        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
-            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
-                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
+    if (_peerConnection.senders) {
+        for (int i = 0; i < [_peerConnection.senders count]; i++) {
+            RTCMediaStreamTrack * track = [[_peerConnection.senders objectAtIndex:i] track];
+            if ([track.kind isEqualToString:@"audio"]) {
                 [track setIsEnabled:NO];
             }
         }
@@ -452,10 +452,10 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 - (void)unmute
 {
-    if (_peerConnection.localStreams) {
-        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
-            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] count]; j++) {
-                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] audioTracks] objectAtIndex:j];
+    if (_peerConnection.senders) {
+        for (int i = 0; i < [_peerConnection.senders count]; i++) {
+            RTCMediaStreamTrack * track = [[_peerConnection.senders objectAtIndex:i] track];
+            if ([track.kind isEqualToString:@"audio"]) {
                 [track setIsEnabled:YES];
             }
         }
@@ -464,10 +464,10 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 - (void)muteVideo
 {
-    if (_peerConnection.localStreams) {
-        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
-            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
-                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
+    if (_peerConnection.senders) {
+        for (int i = 0; i < [_peerConnection.senders count]; i++) {
+            RTCMediaStreamTrack * track = [[_peerConnection.senders objectAtIndex:i] track];
+            if ([track.kind isEqualToString:@"video"]) {
                 [track setIsEnabled:NO];
             }
         }
@@ -476,10 +476,10 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 - (void)unmuteVideo
 {
-    if (_peerConnection.localStreams) {
-        for (int i = 0; i < [_peerConnection.localStreams count]; i++) {
-            for (int j = 0; j < [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] count]; j++) {
-                RTCMediaStreamTrack * track = [[[_peerConnection.localStreams objectAtIndex:i] videoTracks] objectAtIndex:j];
+    if (_peerConnection.senders) {
+        for (int i = 0; i < [_peerConnection.senders count]; i++) {
+            RTCMediaStreamTrack * track = [[_peerConnection.senders objectAtIndex:i] track];
+            if ([track.kind isEqualToString:@"video"]) {
                 [track setIsEnabled:YES];
             }
         }
@@ -819,6 +819,11 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
     });
 }
 
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didRemoveIceCandidates:(NSArray<RTCIceCandidate *> *)candidates
+{
+    RCLogNotice("[MediaWebRTC didRemoveIceCandidates:] Not Implemented");
+}
+
 - (void)peerConnection:(RTCPeerConnection*)peerConnection didOpenDataChannel:(RTCDataChannel*)dataChannel {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC didOpenDataChannel]");
@@ -916,7 +921,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         RCLogNotice("[MediaWebRTC candidateGatheringComplete] notifying signaling to send SDP");
         _candidatesGathered = YES;
         //[self.mediaDelegate mediaController:self didCreateSdp:[self outgoingUpdateSdpWithCandidates:_iceCandidates] isInitiator:_isInitiator];
-        [self.mediaDelegate mediaController:self didCreateSdp:_peerConnection.localDescription.description isInitiator:_isInitiator];
+        [self.mediaDelegate mediaController:self didCreateSdp:_peerConnection.localDescription.sdp isInitiator:_isInitiator];
     }
     else {
         RCLogNotice("[MediaWebRTC candidateGatheringComplete] already notified signaling; skipping");
@@ -962,11 +967,11 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         }
     }
     if (mLineIndex == -1) {
-        RTCLog(@"No m=video line, so can't prefer %@", codec);
+        //RTCLog(@"No m=video line, so can't prefer %@", codec);
         return description;
     }
     if (!codecRtpMap) {
-        RTCLog(@"No rtpmap for %@", codec);
+        //RTCLog(@"No rtpmap for %@", codec);
         return description;
     }
     NSArray *origMLineParts =
@@ -990,7 +995,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         [lines replaceObjectAtIndex:mLineIndex
                          withObject:newMLine];
     } else {
-        RTCLogWarning(@"Wrong SDP media description format: %@", lines[mLineIndex]);
+        //RTCLogWarning(@"Wrong SDP media description format: %@", lines[mLineIndex]);
     }
     NSString *mangledSdpString = [lines componentsJoinedByString:lineSeparator];
     return [[RTCSessionDescription alloc] initWithType:description.type

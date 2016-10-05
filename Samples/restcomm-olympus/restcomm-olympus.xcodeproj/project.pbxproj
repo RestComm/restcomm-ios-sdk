@@ -45,6 +45,8 @@
 		AE79D33C19BC8DAE0023306C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D33B19BC8DAE0023306C /* XCTest.framework */; };
 		AE79D33D19BC8DAE0023306C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31919BC8DAD0023306C /* Foundation.framework */; };
 		AE79D33E19BC8DAE0023306C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31D19BC8DAD0023306C /* UIKit.framework */; };
+		AE7D36471D9E707F00610033 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7D36461D9E707F00610033 /* WebRTC.framework */; };
+		AE7D36481D9E707F00610033 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE7D36461D9E707F00610033 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE95690B1C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */; };
 		AE95690C1C4281C400ED7B4A /* inapp-icon-30x30@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */; };
 		AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */; };
@@ -175,9 +177,10 @@
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
 		AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AE81A5AE18800B155E4 /* libresolv.dylib */; };
 		AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECA05521C7772F800EB9737 /* SigninTableViewController.m */; };
-		AECBFF281D9AAEF6007D187E /* libWebRTC-14380.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */; };
+		AECBFF5A1D9D5422007D187E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE79D31B19BC8DAD0023306C /* CoreGraphics.framework */; };
 		AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED0B0601A0976F8008A6057 /* InfoPlist.strings */; };
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
+		AEE846FE1DA50E8000C530B7 /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBFF531D9D4C51007D187E /* libboringssl.a */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
 		AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */; };
 		AEFB39121B061FA400F85545 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E3A51A6BC6BC00C0CB1B /* OpenGLES.framework */; };
@@ -215,29 +218,36 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AE7D36491D9E707F00610033 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE7D36481D9E707F00610033 /* WebRTC.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
 		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
-		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
 		AE20DA811CE31EC200695925 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50.png"; sourceTree = "<group>"; };
 		AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50@2x.png"; sourceTree = "<group>"; };
 		AE20DA831CE31EC200695925 /* speaker-on-50x50@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50@3x.png"; sourceTree = "<group>"; };
-		AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-ios-armeabi_v7a-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-ios-armeabi_v7a-Debug.a"; sourceTree = "<group>"; };
-		AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../../../Downloads/webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../dependencies/packages/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsTableViewController.h; sourceTree = "<group>"; };
 		AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsTableViewController.m; sourceTree = "<group>"; };
-		AE3E52AB1C569E700057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../../webrtc-build-scripts/ios/webrtc/libjingle_peerconnection_builds/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
-		AE3E52AD1C569F230057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-11366.a"; path = "../../dependencies/packages/webrtc/libWebRTC-11366.a"; sourceTree = "<group>"; };
 		AE3E52C41C57BB7B0057F5D0 /* agent.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = agent.pem; sourceTree = "<group>"; };
 		AE3E52C51C57BB7B0057F5D0 /* cafile.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cafile.pem; sourceTree = "<group>"; };
-		AE402E2A1C525C6D00B0AD06 /* libWebRTC-10255-arm-intel-Debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-10255-arm-intel-Debug.a"; path = "../../dependencies/packages/webrtc/libWebRTC-10255-arm-intel-Debug.a"; sourceTree = "<group>"; };
 		AE47F0ED1C7F456D0054772C /* SipSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SipSettingsTableViewController.h; sourceTree = "<group>"; };
 		AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SipSettingsTableViewController.m; sourceTree = "<group>"; };
 		AE4951481C2ABCE9006335CE /* restcomm-logo-call-139x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58.png"; sourceTree = "<group>"; };
 		AE4951491C2ABCE9006335CE /* restcomm-logo-call-139x58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "restcomm-logo-call-139x58@2x.png"; sourceTree = "<group>"; };
-		AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9814.a"; path = "../../dependencies/packages/webrtc/libWebRTC-9814.a"; sourceTree = "<group>"; };
 		AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../RestCommClient/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE56121A1A064F5B009C9A4F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClient.xcodeproj; path = ../../RestCommClient/RestCommClient.xcodeproj; sourceTree = "<group>"; };
@@ -254,6 +264,7 @@
 		AE79D31D19BC8DAD0023306C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AE79D33A19BC8DAE0023306C /* restcomm-olympus.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-olympus.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33B19BC8DAE0023306C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AE7D36461D9E707F00610033 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ../../dependencies/packages/webrtc/WebRTC.framework; sourceTree = "<group>"; };
 		AE9569091C4281C400ED7B4A /* inapp-grey-icon-30x30@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-grey-icon-30x30@3x.png"; sourceTree = "<group>"; };
 		AE95690A1C4281C400ED7B4A /* inapp-icon-30x30@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inapp-icon-30x30@3x.png"; sourceTree = "<group>"; };
 		AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -409,6 +420,7 @@
 		AECA05511C7772F800EB9737 /* SigninTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigninTableViewController.h; sourceTree = "<group>"; };
 		AECA05521C7772F800EB9737 /* SigninTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigninTableViewController.m; sourceTree = "<group>"; };
 		AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-14380.a"; path = "../../dependencies/packages/webrtc/libWebRTC-14380.a"; sourceTree = "<group>"; };
+		AECBFF531D9D4C51007D187E /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = ../../dependencies/packages/webrtc/libboringssl.a; sourceTree = "<group>"; };
 		AECDB8A31B0DFB9900563107 /* libRestCommClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClient.a; path = ../../RestCommClient/RestCommClientLib/libRestCommClient.a; sourceTree = "<group>"; };
 		AED0B0611A0976F8008A6057 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AED0B0621A0976F8008A6057 /* restcomm-olympusTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "restcomm-olympusTests-Info.plist"; sourceTree = "<group>"; };
@@ -426,6 +438,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AECBFF5A1D9D5422007D187E /* CoreGraphics.framework in Frameworks */,
 				AE9D4B841B74B2B900FE6246 /* CoreMotion.framework in Frameworks */,
 				AE78800A1B738E3300205C26 /* SystemConfiguration.framework in Frameworks */,
 				AEFB39151B061FB300F85545 /* QuartzCore.framework in Frameworks */,
@@ -442,7 +455,8 @@
 				AE79D31A19BC8DAD0023306C /* Foundation.framework in Frameworks */,
 				AE5669151BE9040D00C66789 /* libRestCommClient.a in Frameworks */,
 				AE505B821B0600870053F5B6 /* libsofia-sip-ua.a in Frameworks */,
-				AECBFF281D9AAEF6007D187E /* libWebRTC-14380.a in Frameworks */,
+				AEE846FE1DA50E8000C530B7 /* libboringssl.a in Frameworks */,
+				AE7D36471D9E707F00610033 /* WebRTC.framework in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
@@ -483,6 +497,7 @@
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
+				AE7D36461D9E707F00610033 /* WebRTC.framework */,
 				AE5669081BE903C700C66789 /* RestCommClient.xcodeproj */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
@@ -504,23 +519,17 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AECBFF531D9D4C51007D187E /* libboringssl.a */,
 				AECBFF271D9AAEF6007D187E /* libWebRTC-14380.a */,
 				AEEC4D191CDB72A500598566 /* libc++.tbd */,
 				AEB5EB0A1C5A536C0004669F /* libsofia-sip-ua.a */,
 				AEB5EB001C58E5310004669F /* libcrypto.a */,
 				AEB5EB011C58E5310004669F /* libssl.a */,
 				AE3E52AF1C56A4290057F5D0 /* libWebRTC-11366.a */,
-				AE3E52AD1C569F230057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */,
-				AE3E52AB1C569E700057F5D0 /* libWebRTC-11366-arm-intel-Debug.a */,
-				AE402E2A1C525C6D00B0AD06 /* libWebRTC-10255-arm-intel-Debug.a */,
 				AE22B2C31BCD0A4000EBDBDE /* libRestCommClient.a */,
-				AE22B2B91BCCF3C600EBDBDE /* libWebRTC-10255-arm-intel-Debug.a */,
-				AE22B2B71BCCF22700EBDBDE /* libWebRTC-10255-ios-armeabi_v7a-Debug.a */,
-				AE4A9C291BC7FC4900B7B989 /* libWebRTC-9814.a */,
 				AE9D4B831B74B2B900FE6246 /* CoreMotion.framework */,
 				AE7880091B738E3300205C26 /* SystemConfiguration.framework */,
 				AECDB8A31B0DFB9900563107 /* libRestCommClient.a */,
-				AE182F971B09F70200B40A0F /* libWebRTC-9190.a */,
 				AE505B811B0600870053F5B6 /* libsofia-sip-ua.a */,
 				AE5821E01A8AB79400578A7B /* GLKit.framework */,
 				AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */,
@@ -771,6 +780,7 @@
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
 				AEAC80E51B76824A00D6BD09 /* ShellScript */,
+				AE7D36491D9E707F00610033 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1219,11 +1229,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1231,10 +1244,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",
@@ -1260,11 +1273,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					$SOURCE_ROOT/../../dependencies/packages/webrtc,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1272,10 +1288,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClient/RestCommClient,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/sofia-sip-1.12.11/lib",

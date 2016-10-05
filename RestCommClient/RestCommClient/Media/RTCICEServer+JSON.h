@@ -25,7 +25,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "WebRTC/RTCICEServer.h"
+#import "WebRTC/RTCIceServer.h"
 
 @interface RTCIceServer (JSON)
 
