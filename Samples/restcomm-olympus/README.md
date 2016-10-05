@@ -1,1 +1,1 @@
-IMPORTANT NOTE: This directory's subdirs actually point to Samples/restcomm-olympus and just provides an alternative restcomm-olympus.xcodeproj that is better for SDK debugging. Specifically, what we do is include the RestCommClient subproject inside the restcomm-olympus project which allows to debug at the same time both Application code and SDK code inside xcode. But this is only for SDK debugging; a developer that just wants to checkout Restcomm Olympus, should use Samples/restcomm-olympus/restcomm-olympus.xcodeproj instead and have a cleaner project structure.
+
