@@ -356,6 +356,22 @@
         ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
         contactUpdateViewController.delegate = self;
     }
+
+    if ([segue.identifier isEqualToString:@"invoke-messages"]) {
+        NSIndexPath * indexPath = sender;
+        // retrieve info for the selected contact
+        NSArray * contact = [Utils contactForIndex:indexPath.row];
+        
+        MessageTableViewController *messageViewController = [segue destinationViewController];
+        messageViewController.delegate = self;
+        messageViewController.device = self.device;
+        messageViewController.parameters = [[NSMutableDictionary alloc] init];
+        [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
+        [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
+        
+        //[self.navigationController pushViewController:messageViewController animated:YES];
+        //[self presentViewController:messageViewController animated:YES completion:nil];
+    }
     
 }
 
@@ -400,6 +416,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
     /*
     // retrieve info for the selected contact
     NSArray * contact = [Utils contactForIndex:indexPath.row];
@@ -420,6 +437,7 @@
     [self presentViewController:callViewController animated:YES completion:nil];
     */
     
+    /* New logic:
     // retrieve info for the selected contact
     NSArray * contact = [Utils contactForIndex:indexPath.row];
     
@@ -433,6 +451,7 @@
     
     [self.navigationController pushViewController:messageViewController animated:YES];
     //[self presentViewController:messageViewController animated:YES completion:nil];
+     */
 }
 
 /*
