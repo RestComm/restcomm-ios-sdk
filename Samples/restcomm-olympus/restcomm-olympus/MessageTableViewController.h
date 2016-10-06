@@ -23,14 +23,19 @@
 #import <UIKit/UIKit.h>
 #import "RestCommClient.h"
 
+#import "CallViewController.h"
+
 @protocol MessageDelegate;
 
-@interface MessageTableViewController : UITableViewController<UIAlertViewDelegate>
+@interface MessageTableViewController : UITableViewController<UIAlertViewDelegate, CallDelegate>
 - (void)appendToDialog:(NSString*)msg sender:(NSString*)sender;
 
 @property (weak) RCDevice * device;
 @property NSMutableDictionary * parameters;
 @property (weak) id<MessageDelegate> delegate;
+@property NSString * alias;
+@property NSString * username;
+
 @end
 
 @protocol MessageDelegate <NSObject>

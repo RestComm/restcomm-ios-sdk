@@ -27,6 +27,7 @@
 #import "LocalMessageTableViewCell.h"
 #import "RemoteMessageTableViewCell.h"
 #import "Utils.h"
+#import "CallViewController.h"
 
 @interface MessageTableViewController ()
 @property InputAccessoryProxyView * inputAccessoryProxyView;
@@ -63,25 +64,79 @@
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(proxyViewPressed)];
     [self.inputAccessoryProxyView addGestureRecognizer:recognizer];
 
-    if ([self.parameters objectForKey:@"alias"]) {
+    self.alias = [self.parameters objectForKey:@"alias"];
+    self.username = [self.parameters objectForKey:@"username"];
+    
+    if (self.alias) {
         // alias is set only for local messages
-        self.navigationItem.title = [self.parameters objectForKey:@"alias"];
+        self.navigationItem.title = self.alias;
     }
     else {
-        self.navigationItem.title = [self.parameters objectForKey:@"username"];
+        self.navigationItem.title = self.username;
     }
     
-    self.messages = [[Utils messagesForSipUri:[self.parameters objectForKey:@"username"]] mutableCopy];
+    self.messages = [[Utils messagesForSipUri:self.username] mutableCopy];
     //self.messageCount = [self.messages count];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // Setup right bar button items. And since their default spacing is huge let's use custom view to remedy that
+    UIView *videoCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    UIButton *videoCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    [videoCallBtn addTarget:self action:@selector(doVideoCall) forControlEvents:UIControlEventTouchUpInside];
+    [videoCallBtn setBackgroundImage:[UIImage imageNamed:@"inapp-icon-30x30.png"] forState:UIControlStateNormal];
+    [videoCallBtnView addSubview:videoCallBtn];
+    UIBarButtonItem *btnVideoCall = [[UIBarButtonItem alloc] initWithCustomView:videoCallBtnView];
+    
+    UIView *audioCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    UIButton *audioCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    [audioCallBtn setBackgroundImage:[UIImage imageNamed:@"inapp-icon-30x30.png"] forState:UIControlStateNormal];
+    [audioCallBtn addTarget:self action:@selector(doAudioCall) forControlEvents:UIControlEventTouchUpInside];
+    [audioCallBtnView addSubview:audioCallBtn];
+    UIBarButtonItem *btnAudioCall = [[UIBarButtonItem alloc] initWithCustomView:audioCallBtnView];
+    
+    [self.navigationItem setRightBarButtonItems:@[btnVideoCall, btnAudioCall] animated:YES];
 }
 
 - (void)proxyViewPressed {
     [self.inputAccessoryProxyView becomeFirstResponder];
+}
+
+- (void)doVideoCall
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    
+    // setup call view controller
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:self.alias forKey:@"alias"];
+    [callViewController.parameters setObject:self.username forKey:@"username"];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    
+    [self presentViewController:callViewController animated:YES completion:nil];
+}
+
+- (void)doAudioCall
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    
+    // setup call view controller
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:self.alias forKey:@"alias"];
+    [callViewController.parameters setObject:self.username forKey:@"username"];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
+    
+    [self presentViewController:callViewController animated:YES completion:nil];
 }
 
 - (void)populateChatHistory
@@ -121,7 +176,7 @@
     
     // Incoming text message just arrived
     if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-message"]) {
-        [self appendToDialog:[self.parameters objectForKey:@"message-text"] sender:[self.parameters objectForKey:@"username"]];
+        [self appendToDialog:[self.parameters objectForKey:@"message-text"] sender:self.username];
     }
     
     if ([self.messages count] > 0) {
@@ -146,7 +201,7 @@
 // ---------- UI events
 - (IBAction)sendMessagePressed:(id)sender
 {
-    NSMutableDictionary * parms = [NSMutableDictionary dictionaryWithObjectsAndKeys:[self.parameters objectForKey:@"username"], @"username",
+    NSMutableDictionary * parms = [NSMutableDictionary dictionaryWithObjectsAndKeys:self.username, @"username",
                                    self.sipMessageText.text, @"message", nil];
     
     // SIP custom headers: uncomment this to use SIP custom headers
@@ -190,7 +245,7 @@
     if (![sender isEqualToString:@"Me"]) {
         type = @"remote";
         // check if the remote party already exists and if not add it
-        int index = [Utils indexForContact:[self.parameters objectForKey:@"username"]];
+        int index = [Utils indexForContact:self.username];
         if (index == -1) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Updating Contacts"
                                                             message:@"Sender not found in contacts; updating"
@@ -210,7 +265,7 @@
     //NSLog(@"Adding new message to data store");
     // update the backing store and NSUserDefaults
     [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
-    [Utils addMessageForSipUri:[self.parameters objectForKey:@"username"]
+    [Utils addMessageForSipUri:self.username
                           text:msg
                           type:type];
 
