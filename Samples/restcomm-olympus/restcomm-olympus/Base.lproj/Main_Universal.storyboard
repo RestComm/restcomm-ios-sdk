@@ -591,92 +591,79 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWm-0x-Uhv">
-                                <frame key="frameInset" minX="168" minY="67" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWm-0x-Uhv">
                                 <state key="normal" image="one-digit-74x74.png"/>
                                 <connections>
                                     <action selector="onePressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="FDm-Pb-lK6"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONc-AY-caG">
-                                <frame key="frameInset" minX="263" minY="67" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONc-AY-caG">
                                 <state key="normal" image="two-digit-74x74.png"/>
                                 <connections>
                                     <action selector="twoPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="KAX-MU-cXQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s1D-SD-HMH">
-                                <frame key="frameInset" minX="168" minY="162" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s1D-SD-HMH">
                                 <state key="normal" image="four-digit-74x74.png"/>
                                 <connections>
                                     <action selector="fourPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="hHv-Ee-LTU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0E6-MC-WYb">
-                                <frame key="frameInset" minX="263" minY="162" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0E6-MC-WYb">
                                 <state key="normal" image="five-digit-74x74.png"/>
                                 <connections>
                                     <action selector="fivePressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="eqV-OC-FbQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4M-zD-Z9M">
-                                <frame key="frameInset" minX="358" minY="162" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4M-zD-Z9M">
                                 <state key="normal" image="six-digit-74x74.png"/>
                                 <connections>
                                     <action selector="sixPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="dBd-NR-hzm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWn-X6-nTj">
-                                <frame key="frameInset" minX="168" minY="257" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWn-X6-nTj">
                                 <state key="normal" image="seven-digit-74x74.png"/>
                                 <connections>
                                     <action selector="sevenPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="dE3-nB-tLP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9RR-3I-NXo">
-                                <frame key="frameInset" minX="263" minY="257" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9RR-3I-NXo">
                                 <state key="normal" image="eight-digit-74x74.png"/>
                                 <connections>
                                     <action selector="eightPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="2IK-hT-6UE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wGx-ov-cJy">
-                                <frame key="frameInset" minX="358" minY="257" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wGx-ov-cJy">
                                 <state key="normal" image="nine-digit-74x74.png"/>
                                 <connections>
                                     <action selector="ninePressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="JQG-Kk-zJD"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldX-zC-cNZ">
-                                <frame key="frameInset" minX="168" minY="352" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldX-zC-cNZ">
                                 <state key="normal" image="star-digit-74x74.png"/>
                                 <connections>
                                     <action selector="starPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="gZa-bQ-MEP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0a-cA-I1l">
-                                <frame key="frameInset" minX="263" minY="352" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0a-cA-I1l">
                                 <state key="normal" image="zero-digit-74x74.png"/>
                                 <connections>
                                     <action selector="zeroPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="9ai-3M-l1M"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UtB-HX-Ij1">
-                                <frame key="frameInset" minX="358" minY="352" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UtB-HX-Ij1">
                                 <state key="normal" image="hash-digit-74x74.png"/>
                                 <connections>
                                     <action selector="hashPressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="IWt-5w-d5s"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtB-wu-Blk">
-                                <frame key="frameInset" minX="358" minY="67" width="74" height="74"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vtB-wu-Blk">
                                 <state key="normal" image="three-digit-74x74.png"/>
                                 <connections>
                                     <action selector="threePressed:" destination="U5V-Cs-bs8" eventType="touchUpInside" id="UIK-xy-roj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5z-m7-jL0">
-                                <frame key="frameInset" minX="514" minY="546" width="46" height="34"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5z-m7-jL0">
                                 <state key="normal" title="Close">
                                     <color key="titleColor" red="0.098039215690000001" green="0.30588235289999999" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
