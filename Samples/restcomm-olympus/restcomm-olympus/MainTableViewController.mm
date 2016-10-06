@@ -400,6 +400,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     // retrieve info for the selected contact
     NSArray * contact = [Utils contactForIndex:indexPath.row];
     
@@ -417,8 +418,24 @@
     [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
     
     [self presentViewController:callViewController animated:YES completion:nil];
+    */
+    
+    // retrieve info for the selected contact
+    NSArray * contact = [Utils contactForIndex:indexPath.row];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+    
+    messageViewController.device = self.device;
+    messageViewController.parameters = [[NSMutableDictionary alloc] init];
+    [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
+    [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
+    
+    [self.navigationController pushViewController:messageViewController animated:YES];
+    //[self presentViewController:messageViewController animated:YES completion:nil];
 }
 
+/*
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     // retrieve info for the selected contact
@@ -435,6 +452,7 @@
 
     [[self navigationController] pushViewController:contactDetailsViewController animated:YES];
 }
+ */
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
