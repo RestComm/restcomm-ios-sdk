@@ -748,8 +748,7 @@
                                     <frame key="frameInset" width="768" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="message-local-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nla-3U-l1S">
-                                            <frame key="frameInset" minX="557" width="43" height="43"/>
+                                        <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message-local-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nla-3U-l1S">
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="43" id="Mki-1G-vg4"/>
                                                 <constraint firstAttribute="width" secondItem="Nla-3U-l1S" secondAttribute="height" multiplier="1:1" id="PnA-X0-TqK"/>
@@ -766,8 +765,7 @@
                                                 </mask>
                                             </variation>
                                         </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" text="Test request" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="dH1-DX-3yp">
-                                            <frame key="frameInset" width="558" height="43"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" scrollEnabled="NO" text="Test request" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="dH1-DX-3yp">
                                             <color key="backgroundColor" red="0.99607843137254903" green="0.79607843137254897" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="mMf-i4-wkt"/>
@@ -807,8 +805,7 @@
                                     <frame key="frameInset" width="768" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="message-remote-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vol-Ft-W0g">
-                                            <frame key="frameInset" width="43" height="43"/>
+                                        <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message-remote-square-43x43.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vol-Ft-W0g">
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="43" id="1Ie-mq-bSc"/>
                                                 <constraint firstAttribute="height" constant="43" id="OzQ-Br-MK6"/>
@@ -819,8 +816,7 @@
                                                 </mask>
                                             </variation>
                                         </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" text="Test response" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Y8n-v5-MT6">
-                                            <frame key="frameInset" minX="42" width="558" height="43"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" scrollEnabled="NO" text="Test response" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Y8n-v5-MT6">
                                             <color key="backgroundColor" red="0.91764705882352937" green="0.92549019607843142" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="43" id="Fvm-JT-c23"/>
