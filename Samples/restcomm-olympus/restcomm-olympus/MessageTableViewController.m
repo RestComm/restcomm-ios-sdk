@@ -84,21 +84,21 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     // Setup right bar button items. And since their default spacing is huge let's use custom view to remedy that
-    UIView *videoCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-    UIButton *videoCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    UIView *videoCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 28)];
+    UIButton *videoCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     [videoCallBtn addTarget:self action:@selector(doVideoCall) forControlEvents:UIControlEventTouchUpInside];
-    [videoCallBtn setBackgroundImage:[UIImage imageNamed:@"inapp-icon-30x30.png"] forState:UIControlStateNormal];
+    [videoCallBtn setBackgroundImage:[UIImage imageNamed:@"camera-icon-28x28.png"] forState:UIControlStateNormal];
     [videoCallBtnView addSubview:videoCallBtn];
     UIBarButtonItem *btnVideoCall = [[UIBarButtonItem alloc] initWithCustomView:videoCallBtnView];
     
-    UIView *audioCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-    UIButton *audioCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-    [audioCallBtn setBackgroundImage:[UIImage imageNamed:@"inapp-icon-30x30.png"] forState:UIControlStateNormal];
+    UIView *audioCallBtnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    UIButton *audioCallBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    [audioCallBtn setBackgroundImage:[UIImage imageNamed:@"phone-icon-28x28.png"] forState:UIControlStateNormal];
     [audioCallBtn addTarget:self action:@selector(doAudioCall) forControlEvents:UIControlEventTouchUpInside];
     [audioCallBtnView addSubview:audioCallBtn];
     UIBarButtonItem *btnAudioCall = [[UIBarButtonItem alloc] initWithCustomView:audioCallBtnView];
     
-    [self.navigationItem setRightBarButtonItems:@[btnVideoCall, btnAudioCall] animated:YES];
+    [self.navigationItem setRightBarButtonItems:@[btnAudioCall, btnVideoCall] animated:YES];
 }
 
 - (void)proxyViewPressed {

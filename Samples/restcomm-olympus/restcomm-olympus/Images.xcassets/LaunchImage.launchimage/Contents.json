@@ -3,16 +3,16 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "iphone-splash@2x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "splash-320x480@2x.png",
       "scale" : "2x"
     },
     {
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "splash-320x568@2x.png",
+      "filename" : "iphone5-splash@2x.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -20,17 +20,17 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
+      "filename" : "ipad-splash.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "splash-768x1024.png",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
+      "filename" : "ipad-splash@2x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "splash-768x1024@2x.png",
       "scale" : "2x"
     }
   ],

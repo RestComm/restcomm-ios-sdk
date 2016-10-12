@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageTableViewController">
@@ -16,10 +17,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxc-ut-6aL">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <items>
                         <barButtonItem style="plain" id="eid-AB-P2R">
-                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="d0Q-dl-OSd">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a message" minimumFontSize="17" id="d0Q-dl-OSd">
                                 <rect key="frame" x="20" y="7" width="242" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -29,11 +29,11 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="5Mj-gY-5vm"/>
                         <barButtonItem style="plain" id="yJG-O2-pQ3">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="27Y-sJ-Xbe">
-                                <rect key="frame" x="544" y="7" width="36" height="30"/>
+                                <rect key="frame" x="555" y="10" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Send">
-                                    <color key="titleColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" backgroundImage="send-message-icon-25x25.png">
+                                    <color key="titleColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="sendMessagePressed:" destination="-1" eventType="touchUpInside" id="lpS-wc-J3B"/>
@@ -43,7 +43,7 @@
                     </items>
                 </toolbar>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="pxc-ut-6aL" secondAttribute="trailing" id="1L9-tO-hYY"/>
                 <constraint firstItem="pxc-ut-6aL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1au-qO-BIQ"/>
@@ -68,4 +68,7 @@
             </variation>
         </view>
     </objects>
+    <resources>
+        <image name="send-message-icon-25x25.png" width="25" height="25"/>
+    </resources>
 </document>
