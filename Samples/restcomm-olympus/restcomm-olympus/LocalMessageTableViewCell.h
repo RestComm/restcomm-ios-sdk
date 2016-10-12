@@ -25,5 +25,6 @@
 @interface LocalMessageTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *senderImage;
 @property (weak, nonatomic) IBOutlet UITextView *senderText;
+@property (weak, nonatomic) IBOutlet UILabel *senderName;
 
 @end

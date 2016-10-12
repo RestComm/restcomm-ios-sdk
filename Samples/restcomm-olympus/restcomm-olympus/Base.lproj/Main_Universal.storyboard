@@ -733,17 +733,28 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="antonis:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKA-bh-dpQ">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="9i6-7a-DeX"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Nla-3U-l1S" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-8" id="5z5-yo-GG2"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="bKA-bh-dpQ" secondAttribute="trailing" id="7az-XT-zUb"/>
+                                        <constraint firstItem="bKA-bh-dpQ" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-8" id="7go-4m-AB1"/>
+                                        <constraint firstItem="Nla-3U-l1S" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-4" id="8HH-NS-Ouo"/>
                                         <constraint firstItem="dH1-DX-3yp" firstAttribute="leading" secondItem="7ZO-BS-bra" secondAttribute="leadingMargin" constant="36" id="Any-wd-bZI"/>
-                                        <constraint firstItem="dH1-DX-3yp" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="-8" id="EZM-Q2-mbh"/>
+                                        <constraint firstItem="dH1-DX-3yp" firstAttribute="top" secondItem="7ZO-BS-bra" secondAttribute="topMargin" constant="7" id="EZM-Q2-mbh"/>
                                         <constraint firstItem="Nla-3U-l1S" firstAttribute="leading" secondItem="7ZO-BS-bra" secondAttribute="leadingMargin" id="KcJ-sR-SWr"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="dH1-DX-3yp" secondAttribute="bottom" id="Kfv-Pv-oM5"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="dH1-DX-3yp" secondAttribute="bottom" constant="-15" id="Kfv-Pv-oM5"/>
+                                        <constraint firstItem="bKA-bh-dpQ" firstAttribute="leading" secondItem="7ZO-BS-bra" secondAttribute="leadingMargin" constant="44" id="Okt-bo-m0e"/>
                                         <constraint firstItem="Nla-3U-l1S" firstAttribute="leading" secondItem="dH1-DX-3yp" secondAttribute="trailing" id="TjS-ou-i2x"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="dH1-DX-3yp" secondAttribute="trailing" constant="-8" id="Upq-Ww-shO"/>
                                         <constraint firstAttribute="height" secondItem="dH1-DX-3yp" secondAttribute="height" id="asw-oj-Nnu"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Nla-3U-l1S" secondAttribute="bottom" constant="-4" id="lwt-ic-lxT"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -755,6 +766,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="senderImage" destination="Nla-3U-l1S" id="Tfe-pv-0ng"/>
+                                    <outlet property="senderName" destination="bKA-bh-dpQ" id="FBu-yy-NQm"/>
                                     <outlet property="senderText" destination="dH1-DX-3yp" id="mIW-3d-pkg"/>
                                 </connections>
                             </tableViewCell>
@@ -789,6 +801,14 @@
                                                 </mask>
                                             </variation>
                                         </textView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="despina:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rT-la-6oF">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="IYx-a5-6Oq"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Y8n-v5-MT6" firstAttribute="leading" secondItem="Vol-Ft-W0g" secondAttribute="trailing" id="5ZX-Ww-suT"/>
@@ -798,12 +818,15 @@
                                         <constraint firstItem="Vol-Ft-W0g" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" id="Fl9-xM-TaZ"/>
                                         <constraint firstItem="Y8n-v5-MT6" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="36" id="GGc-0L-Aq9"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Vol-Ft-W0g" secondAttribute="bottom" constant="-8" id="L5Z-bh-WkA"/>
-                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-8" id="L6d-8d-gWQ"/>
+                                        <constraint firstItem="Y8n-v5-MT6" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="7" id="L6d-8d-gWQ"/>
+                                        <constraint firstItem="2rT-la-6oF" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-8" id="OMW-JD-AxN"/>
+                                        <constraint firstItem="Vol-Ft-W0g" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-4" id="WNa-C3-VI3"/>
                                         <constraint firstItem="Y8n-v5-MT6" firstAttribute="top" secondItem="hkz-u2-whN" secondAttribute="topMargin" constant="-8" id="e5s-Pq-vBe"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="2rT-la-6oF" secondAttribute="trailing" id="fLK-mu-n4N"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Y8n-v5-MT6" secondAttribute="trailing" constant="-8" id="geP-1I-Ibe"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Y8n-v5-MT6" secondAttribute="trailing" constant="-8" id="m0i-kT-xG1"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Y8n-v5-MT6" secondAttribute="bottom" id="udc-as-4pr"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Vol-Ft-W0g" secondAttribute="bottom" constant="-4" id="vkX-VL-esY"/>
+                                        <constraint firstItem="2rT-la-6oF" firstAttribute="leading" secondItem="hkz-u2-whN" secondAttribute="leadingMargin" constant="44" id="pxS-LI-mUt"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Y8n-v5-MT6" secondAttribute="bottom" constant="-15" id="udc-as-4pr"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -819,6 +842,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="senderImage" destination="Vol-Ft-W0g" id="rds-Kf-Kfy"/>
+                                    <outlet property="senderName" destination="2rT-la-6oF" id="s1B-LR-e75"/>
                                     <outlet property="senderText" destination="Y8n-v5-MT6" id="Bdz-23-SRb"/>
                                 </connections>
                             </tableViewCell>

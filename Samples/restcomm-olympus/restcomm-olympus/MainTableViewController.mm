@@ -45,13 +45,22 @@
     
     _alert = nil;
     
+    UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
     UIColor *logoOrange = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
+    //[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:223.0/255.0 green:61.0/255.0 blue:0.0/255.0 alpha:255.0/255.0]];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+                                                         forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.tintColor = grey;
+
+    //UIColor *logoGrey = [UIColor colorWithRed:127.0/255.0 green:127.0/255.0 blue:127.0/255.0 alpha:255.0/255.0];
     UIBarButtonItem * editButton = [self editButtonItem];
-    [editButton setTintColor:logoOrange];
+    [editButton setTintColor:grey];
     UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                 target:self
                                                                                 action:@selector(invokeCreateContact)];
-    [addButton setTintColor:logoOrange];
+    [addButton setTintColor:grey];
+    
+    //[self.navigationItem.backBarButtonItem setTitle:@" "];
 
     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
 
@@ -238,7 +247,7 @@
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
     //NSLog(@"------ updateConnectivityStatus: status: %d, text: %@", status, text);
-    NSString * imageName = @"inapp-icon-30x30.png";
+    NSString * imageName = @"inapp-icon-28x28.png";
 
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
                                              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -250,7 +259,7 @@
     NSString * defaultText = nil;
     if (state == RCDeviceStateOffline) {
         defaultText = @"Lost connectivity";
-        imageName = @"inapp-grey-icon-30x30.png";
+        imageName = @"inapp-grey-icon-28x28.png";
         [itemsArray addObject:barIndicator];
     }
     if (state != RCDeviceStateOffline) {

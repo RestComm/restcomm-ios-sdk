@@ -45,7 +45,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
+    //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
+    //[self.navigationItem.backBarButtonItem setTitle:@" "];
+    
+    //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.messages = [[NSMutableArray alloc] init];
     // allocate and insert proxy view. Important: the proxy view cannot be part of the view hierarchy in the storyboard/xib.
@@ -269,14 +272,16 @@
                           text:msg
                           type:type];
 
+    /*
     UITableViewRowAnimation animation = UITableViewRowAnimationRight;
     if ([type isEqualToString:@"remote"]) {
         animation = UITableViewRowAnimationLeft;
     }
+    */
     [self.tableView beginUpdates];
     // trigger the new table row creation
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]]
-                          withRowAnimation:animation];
+                          withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
     
     if ([self.messages count] > 0) {
@@ -324,11 +329,13 @@
     if ([type isEqualToString:@"local"]) {
         LocalMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"local-message-reuse-identifier" forIndexPath:indexPath];
         cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderName.text = @"me";
         return cell;
     }
     else {
         RemoteMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"remote-message-reuse-identifier" forIndexPath:indexPath];
         cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderName.text = self.username;
         return cell;
     }
     //RemoteMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"remote-message-reuse-identifier" forIndexPath:indexPath];
