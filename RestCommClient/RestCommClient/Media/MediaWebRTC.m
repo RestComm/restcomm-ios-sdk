@@ -752,6 +752,10 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
     dispatch_async(dispatch_get_main_queue(), ^{
         RCLogNotice("[MediaWebRTC iceConnectionChanged:%d]", newState);
+        if (newState == RTCIceConnectionStateDisconnected) {
+            RCLogError("[MediaWebRTC iceConnectionChanged] transitioned to RTCIceConnectionStateDisconnected");
+        }
+        /*
         if (newState == RTCIceConnectionStateFailed || newState == RTCIceConnectionStateDisconnected) {
             NSString * errorMsg;
             if (newState == RTCIceConnectionStateFailed) {
@@ -769,6 +773,20 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
             RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[RCUtilities stringifyDictionary:userInfo] UTF8String]);
             [self.mediaDelegate mediaController:self didError:iceError];
         }
+         */
+        if (newState == RTCIceConnectionStateFailed) {
+            NSString * errorMsg;
+            errorMsg = @"iceConnectionChanged: ICE connection failed";
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey: errorMsg,
+                                       };
+            NSError *iceError = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                           code:ERROR_WEBRTC_ICE
+                                                       userInfo:userInfo];
+            RCLogError("[MediaWebRTC iceConnectionChanged] %s", [[RCUtilities stringifyDictionary:userInfo] UTF8String]);
+            [self.mediaDelegate mediaController:self didError:iceError];
+        }
+
         if (newState == RTCIceConnectionStateConnected) {
             [self.mediaDelegate mediaController:self didIceConnectAsInitiator:_isInitiator];
         }
