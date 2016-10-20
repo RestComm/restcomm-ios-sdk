@@ -1,0 +1,6 @@
+language: objective-c #1
+osx_image: xcode7.3 #2
+#xcode_project: hello-world.xcodeproj #3
+xcode_project: Samples/restcomm-olympus/restcomm-olympus.xcodeproj #3
+xcode_scheme: restcomm-olympus #4
+xcode_sdk: iphonesimulator #5
