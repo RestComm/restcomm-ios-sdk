@@ -122,6 +122,14 @@ static cli_t *global_cli_p = NULL;
 NSMutableDictionary * conf = [[NSMutableDictionary alloc] init];
 
 @implementation SofiaConf
+
++ (void)dictionary:(NSMutableDictionary*)dictionary guardedSetString:(const char*)string forKey:(NSString*)key
+{
+    if (string) {
+        [dictionary setObject:[NSString stringWithUTF8String:string] forKey:key];
+    }
+}
+
 + (void)dictionary:(NSMutableDictionary*)dictionary guardedSetObject:(NSObject*)object forKey:(NSString*)key
 {
     if (object) {
@@ -156,7 +164,7 @@ int sofsip_loop(int ac, char *av[], const int input_fd, const int output_fd,
   [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:password] forKey:@"password"];
   [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:registrar] forKey:@"registrar"];
   [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:registrar] forKey:@"proxy"];
-  [SofiaConf dictionary:conf guardedSetObject:[NSString stringWithUTF8String:certificate_dir] forKey:@"certificate-dir"];
+  [SofiaConf dictionary:conf guardedSetString:certificate_dir forKey:@"certificate-dir"];
   if (registrar != NULL) {
      [SofiaConf dictionary:conf guardedSetObject:@(YES) forKey:@"register"];
   }

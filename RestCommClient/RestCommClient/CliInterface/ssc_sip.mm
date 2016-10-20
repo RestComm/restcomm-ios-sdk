@@ -187,7 +187,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
     ssc_t *ssc;
     string caps_str;
     char *userdomain = NULL;
-    string contact, secure_contact;
+    string contact = "", secure_contact = "";
     const char *proxy = NULL, *registrar = NULL, *cert_dir = NULL;
     stackIsShuttingDown = false;
     
@@ -248,16 +248,24 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         contact = conf->ssc_contact;
     }
     else {
+        /*
         contact = "sip:";
         contact += [address UTF8String];
         contact += ":*;transport=tcp";
         //contact +=  ":5090;transport=tcp";
+         */
 
         if (cert_dir) {
             secure_contact = "sips:";
             secure_contact += [address UTF8String];
             secure_contact += ":*;transport=tls";
             //secure_contact +=  ":5091;transport=tls";
+        }
+        else {
+            contact = "sip:";
+            contact += [address UTF8String];
+            contact += ":*;transport=tcp";
+            //contact +=  ":5090;transport=tcp";
         }
     }
 
@@ -277,7 +285,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                               TAG_IF(registrar,
                                      NUTAG_REGISTRAR(registrar)),
                               
-                              TAG_IF(contact.c_str(),
+                              TAG_IF(!contact.empty(),
                                      NUTAG_URL(contact.c_str())),
                               
                               TAG_IF(!secure_contact.empty(),

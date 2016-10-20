@@ -186,8 +186,10 @@
         [Utils updateSipPassword:self.passwordText.text];
     }
     
+    /*
     [params setObject:@(self.secureEnabledSwitch.on) forKey:@"signaling-secure"];
     [Utils updateSignalingSecure:self.secureEnabledSwitch.on];
+     */
     
     if ([self.device updateParams:params]) {
         [self.delegate sipSettingsTableViewController:self didUpdateRegistrationWithString:self.registrarText.text];
