@@ -26,7 +26,6 @@
 		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
 		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
 		AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */; };
-		AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E52B21C578A600057F5D0 /* libWebRTC-11366.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
 		AE65E39F1A6BC66600C0CB1B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE65E39E1A6BC66600C0CB1B /* CoreFoundation.framework */; };
@@ -49,6 +48,10 @@
 		AE9520A51B0B2C4D00E947D8 /* splash-320x568@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */; };
 		AE9520A61B0B2C4D00E947D8 /* splash-768x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */; };
 		AE9520A71B0B2C4D00E947D8 /* splash-768x1024@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */; };
+		AEA470E11DC0D4740031FF44 /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA470E01DC0D4740031FF44 /* libboringssl.a */; };
+		AEA470E31DC0D88A0031FF44 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA470E21DC0D88A0031FF44 /* SystemConfiguration.framework */; };
+		AEA470E51DC0D8C50031FF44 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA470E41DC0D8C50031FF44 /* WebRTC.framework */; };
+		AEA470E61DC0D8C50031FF44 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AEA470E41DC0D8C50031FF44 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE56121A1A064F5B009C9A4F /* AVFoundation.framework */; };
 		AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC39ADE1A5AE03100B155E4 /* AssetsLibrary.framework */; };
@@ -84,6 +87,20 @@
 			remoteInfo = "test-ios-sip-sofia";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AEA470E71DC0D8C50031FF44 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AEA470E61DC0D8C50031FF44 /* WebRTC.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AE182F971B09F70200B40A0F /* libWebRTC-9190.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC-9190.a"; path = "../../RestCommClient/webrtc/libWebRTC-9190.a"; sourceTree = "<group>"; };
@@ -121,6 +138,10 @@
 		AE9520A11B0B2C4D00E947D8 /* splash-320x568@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-320x568@2x.png"; sourceTree = "<group>"; };
 		AE9520A21B0B2C4D00E947D8 /* splash-768x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024.png"; sourceTree = "<group>"; };
 		AE9520A31B0B2C4D00E947D8 /* splash-768x1024@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash-768x1024@2x.png"; sourceTree = "<group>"; };
+		AEA470DE1DC0D4590031FF44 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ../../dependencies/packages/webrtc/WebRTC.framework; sourceTree = "<group>"; };
+		AEA470E01DC0D4740031FF44 /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = ../../dependencies/packages/webrtc/libboringssl.a; sourceTree = "<group>"; };
+		AEA470E21DC0D88A0031FF44 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		AEA470E41DC0D8C50031FF44 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ../../dependencies/packages/webrtc/WebRTC.framework; sourceTree = "<group>"; };
 		AEC39AAB1A5A95D100B155E4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AEC39AB11A5A96AE00B155E4 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		AEC39ADC1A5ADFF200B155E4 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -172,11 +193,13 @@
 				AEC39AE31A5AE0A100B155E4 /* AssetsLibrary.framework in Frameworks */,
 				AEC39ADB1A5ADF6100B155E4 /* AVFoundation.framework in Frameworks */,
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
-				AE3E52B31C578A600057F5D0 /* libWebRTC-11366.a in Frameworks */,
+				AEA470E31DC0D88A0031FF44 /* SystemConfiguration.framework in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
 				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
 				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
 				AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */,
+				AEA470E11DC0D4740031FF44 /* libboringssl.a in Frameworks */,
+				AEA470E51DC0D8C50031FF44 /* WebRTC.framework in Frameworks */,
 				AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */,
 				AEC39AE91A5AE18800B155E4 /* libresolv.dylib in Frameworks */,
 			);
@@ -198,6 +221,7 @@
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
+				AEA470E41DC0D8C50031FF44 /* WebRTC.framework */,
 				AED0B0671A097764008A6057 /* restcomm-helloworld */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
@@ -218,6 +242,9 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEA470E21DC0D88A0031FF44 /* SystemConfiguration.framework */,
+				AEA470E01DC0D4740031FF44 /* libboringssl.a */,
+				AEA470DE1DC0D4590031FF44 /* WebRTC.framework */,
 				AE3E52B21C578A600057F5D0 /* libWebRTC-11366.a */,
 				AEE94BC91BCBADDA00987ECC /* libWebRTC-9814.a */,
 				AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */,
@@ -343,6 +370,7 @@
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
+				AEA470E71DC0D8C50031FF44 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -638,17 +666,20 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					$SOURCE_ROOT/../../dependencies/packages/webrtc,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-helloworld/restcomm-helloworld-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/openssl-1.0.1i/lib/",
@@ -671,17 +702,20 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					$SOURCE_ROOT/../../dependencies/packages/webrtc,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-helloworld/restcomm-helloworld-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../dependencies/packages/RestCommClientLib/include,
-					$SOURCE_ROOT/../../dependencies/packages/webrtc/include,
 				);
 				INFOPLIST_FILE = "restcomm-helloworld/restcomm-helloworld-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$SOURCE_ROOT/../../dependencies/packages/openssl-1.0.1i/lib/",
