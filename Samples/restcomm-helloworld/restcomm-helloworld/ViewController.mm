@@ -39,8 +39,8 @@
     self.isInitialized = NO;
 
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                       @"sip:ios-sdk@cloud.restcomm.com", @"aor",
-                       @"1234", @"password",
+                       @"ios-sdk", @"aor",
+                       @"1111", @"password",
                        nil];
 
     // CHANGEME: set the IP address of your RestComm instance in the URI below

@@ -23,8 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BA1B15DDD100F5E834 /* libRestCommClient.a */; };
-		AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BC1B15DDF200F5E834 /* libcrypto.a */; };
-		AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05BD1B15DDF200F5E834 /* libssl.a */; };
 		AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1C05C01B15DE1500F5E834 /* libsofia-sip-ua.a */; };
 		AE505B871B061A0C0053F5B6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821E01A8AB79400578A7B /* GLKit.framework */; };
 		AE5821DF1A8AB76900578A7B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5821DE1A8AB76900578A7B /* libsqlite3.dylib */; };
@@ -195,8 +193,6 @@
 				AEC39ADA1A5AD8D800B155E4 /* VideoToolbox.framework in Frameworks */,
 				AEA470E31DC0D88A0031FF44 /* SystemConfiguration.framework in Frameworks */,
 				AE1C05BB1B15DDD100F5E834 /* libRestCommClient.a in Frameworks */,
-				AE1C05BE1B15DDF200F5E834 /* libcrypto.a in Frameworks */,
-				AE1C05BF1B15DDF200F5E834 /* libssl.a in Frameworks */,
 				AE1C05C11B15DE1500F5E834 /* libsofia-sip-ua.a in Frameworks */,
 				AEA470E11DC0D4740031FF44 /* libboringssl.a in Frameworks */,
 				AEA470E51DC0D8C50031FF44 /* WebRTC.framework in Frameworks */,

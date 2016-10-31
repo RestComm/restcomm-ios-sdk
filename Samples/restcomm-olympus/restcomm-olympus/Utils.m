@@ -41,7 +41,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                     @"turn-url" : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
                                     @"turn-username" : @"atsakiridis",  // @"iapprtc",
                                     @"turn-password" : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
-                                    @"signaling-secure" : @(NO),  // by default signaling is not secure
+                                    @"signaling-secure" : @(YES),  // by default signaling is secure
                                     @"signaling-certificate-dir" : @"",
                                     //@"turn-candidate-timeout" : @"5",
                                     @"contacts" :   // an array of contacts. Important: reason we use array is cause this is a backing store for a UITableView which suits it best due to its nature
