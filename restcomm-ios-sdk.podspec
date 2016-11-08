@@ -26,7 +26,7 @@ iOS Mobile SDK to easily integrate communication features (messaging, presence, 
   s.license          = "AGPL version 3"
   s.author           = 'Telestax Inc.'
   #s.source           = { :git => 'https://github.com/RestComm/restcomm-ios-sdk.git', :tag => 's.version.to_s }
-  s.source           = { :git => 'https://github.com/RestComm/restcomm-ios-sdk.git', :tag => 'v1.0.0-beta.4' }
+  s.source           = { :git => 'https://github.com/RestComm/restcomm-ios-sdk.git', :tag => 'v1.0.0-beta.4.2' }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'

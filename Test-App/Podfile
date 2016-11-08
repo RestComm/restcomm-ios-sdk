@@ -8,7 +8,7 @@ target 'Sample' do
   #pod 'BoringSSL'
   #pod 'webrtc-framework'
 
-  pod 'RestCommClient', :path => '../'
+  pod 'restcomm-ios-sdk', :path => '../'
 
   target 'Sample_Tests' do
     inherit! :search_paths

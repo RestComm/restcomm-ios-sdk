@@ -6,8 +6,8 @@ target 'restcomm-olympus' do
   # use_frameworks!
 
   # Pods for restcomm-olympus
-  pod 'RestCommClient', :path => '../../'
-  #pod 'RestCommClient'
+  pod 'restcomm-ios-sdk', :path => '../../'
+  #pod 'restcomm-ios-sdk'
 
   #target 'restcomm-olympusTests' do
   #  inherit! :search_paths
