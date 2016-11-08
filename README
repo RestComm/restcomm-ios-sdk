@@ -1,7 +1,0 @@
-This repo is used to host multiple projects related to the restcomm SDK for iOS.
-
-Structure:
-
-- sofia-sip: is a Sofia SIP library fork, cloned from the official repo: git://gitorious.org/sofia-sip/sofia-sip.git, commit 8cb7baaab77fc3af351262933f0ae113d591fba1. On top of it, there are changes needed to work for iOS.
-- staging: is a container for various staging projects and experimentation with sofia library.
-- staging/test-ios-sip-sofia: is a sample iOS App that uses sip sofia to send a SIP instant message to a server UA and get an instant message response back.

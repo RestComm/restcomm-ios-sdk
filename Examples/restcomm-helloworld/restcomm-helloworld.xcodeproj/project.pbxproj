@@ -1,0 +1,439 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE7DB44C1DCCDBD3007FED6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB44B1DCCDBD3007FED6E /* main.m */; };
+		AE7DB44F1DCCDBD3007FED6E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */; };
+		AE7DB4521DCCDBD3007FED6E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB4511DCCDBD3007FED6E /* ViewController.m */; };
+		AE7DB4551DCCDBD3007FED6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4531DCCDBD3007FED6E /* Main.storyboard */; };
+		AE7DB4571DCCDBD3007FED6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */; };
+		AE7DB45A1DCCDBD3007FED6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */; };
+		AE7DB4651DCCDBD3007FED6E /* restcomm_helloworldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE7DB4611DCCDBD3007FED6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE7DB43F1DCCDBD3007FED6E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE7DB4461DCCDBD3007FED6E;
+			remoteInfo = "restcomm-helloworld";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-helloworld.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE7DB44B1DCCDBD3007FED6E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AE7DB44D1DCCDBD3007FED6E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AE7DB4501DCCDBD3007FED6E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AE7DB4511DCCDBD3007FED6E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		AE7DB4541DCCDBD3007FED6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE7DB4591DCCDBD3007FED6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE7DB45B1DCCDBD3007FED6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-helloworldTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = restcomm_helloworldTests.m; sourceTree = "<group>"; };
+		AE7DB4661DCCDBD3007FED6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE7DB4441DCCDBD3007FED6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45D1DCCDBD3007FED6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE7DB43E1DCCDBD3007FED6E = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4491DCCDBD3007FED6E /* restcomm-helloworld */,
+				AE7DB4631DCCDBD3007FED6E /* restcomm-helloworldTests */,
+				AE7DB4481DCCDBD3007FED6E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE7DB4481DCCDBD3007FED6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */,
+				AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE7DB4491DCCDBD3007FED6E /* restcomm-helloworld */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB44D1DCCDBD3007FED6E /* AppDelegate.h */,
+				AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */,
+				AE7DB4501DCCDBD3007FED6E /* ViewController.h */,
+				AE7DB4511DCCDBD3007FED6E /* ViewController.m */,
+				AE7DB4531DCCDBD3007FED6E /* Main.storyboard */,
+				AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */,
+				AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */,
+				AE7DB45B1DCCDBD3007FED6E /* Info.plist */,
+				AE7DB44A1DCCDBD3007FED6E /* Supporting Files */,
+			);
+			path = "restcomm-helloworld";
+			sourceTree = "<group>";
+		};
+		AE7DB44A1DCCDBD3007FED6E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB44B1DCCDBD3007FED6E /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AE7DB4631DCCDBD3007FED6E /* restcomm-helloworldTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */,
+				AE7DB4661DCCDBD3007FED6E /* Info.plist */,
+			);
+			path = "restcomm-helloworldTests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE7DB4691DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */;
+			buildPhases = (
+				AE7DB4431DCCDBD3007FED6E /* Sources */,
+				AE7DB4441DCCDBD3007FED6E /* Frameworks */,
+				AE7DB4451DCCDBD3007FED6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "restcomm-helloworld";
+			productName = "restcomm-helloworld";
+			productReference = AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE7DB45F1DCCDBD3007FED6E /* restcomm-helloworldTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE7DB46C1DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */;
+			buildPhases = (
+				AE7DB45C1DCCDBD3007FED6E /* Sources */,
+				AE7DB45D1DCCDBD3007FED6E /* Frameworks */,
+				AE7DB45E1DCCDBD3007FED6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE7DB4621DCCDBD3007FED6E /* PBXTargetDependency */,
+			);
+			name = "restcomm-helloworldTests";
+			productName = "restcomm-helloworldTests";
+			productReference = AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE7DB43F1DCCDBD3007FED6E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Telestax Inc.";
+				TargetAttributes = {
+					AE7DB4461DCCDBD3007FED6E = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = H9PG74NSQT;
+						ProvisioningStyle = Automatic;
+					};
+					AE7DB45F1DCCDBD3007FED6E = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = H9PG74NSQT;
+						ProvisioningStyle = Automatic;
+						TestTargetID = AE7DB4461DCCDBD3007FED6E;
+					};
+				};
+			};
+			buildConfigurationList = AE7DB4421DCCDBD3007FED6E /* Build configuration list for PBXProject "restcomm-helloworld" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE7DB43E1DCCDBD3007FED6E;
+			productRefGroup = AE7DB4481DCCDBD3007FED6E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */,
+				AE7DB45F1DCCDBD3007FED6E /* restcomm-helloworldTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE7DB4451DCCDBD3007FED6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB45A1DCCDBD3007FED6E /* LaunchScreen.storyboard in Resources */,
+				AE7DB4571DCCDBD3007FED6E /* Assets.xcassets in Resources */,
+				AE7DB4551DCCDBD3007FED6E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45E1DCCDBD3007FED6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE7DB4431DCCDBD3007FED6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB4521DCCDBD3007FED6E /* ViewController.m in Sources */,
+				AE7DB44F1DCCDBD3007FED6E /* AppDelegate.m in Sources */,
+				AE7DB44C1DCCDBD3007FED6E /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45C1DCCDBD3007FED6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB4651DCCDBD3007FED6E /* restcomm_helloworldTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE7DB4621DCCDBD3007FED6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */;
+			targetProxy = AE7DB4611DCCDBD3007FED6E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE7DB4531DCCDBD3007FED6E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE7DB4541DCCDBD3007FED6E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE7DB4591DCCDBD3007FED6E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE7DB4671DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE7DB4681DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE7DB46A1DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "restcomm-helloworld/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworld";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AE7DB46B1DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "restcomm-helloworld/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworld";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AE7DB46D1DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				INFOPLIST_FILE = "restcomm-helloworldTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworldTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
+			};
+			name = Debug;
+		};
+		AE7DB46E1DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				INFOPLIST_FILE = "restcomm-helloworldTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworldTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE7DB4421DCCDBD3007FED6E /* Build configuration list for PBXProject "restcomm-helloworld" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB4671DCCDBD3007FED6E /* Debug */,
+				AE7DB4681DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE7DB4691DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB46A1DCCDBD3007FED6E /* Debug */,
+				AE7DB46B1DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE7DB46C1DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB46D1DCCDBD3007FED6E /* Debug */,
+				AE7DB46E1DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE7DB43F1DCCDBD3007FED6E /* Project object */;
+}

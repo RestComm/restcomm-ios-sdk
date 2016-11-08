@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Build sofia sip library for all architectures and combine all the libs to a universal library
+# Build sofia sip library for all architectures and combine all the libs to a universal library. Need to be run in the sofia sip directory
 #
 # Function build() is ran once for each architecture and in the end the output .a files are combined and stored in directory 'build'
 #
@@ -41,21 +41,24 @@ function build()
 	if [[ $SDK == "iphonesimulator" ]]
 	then
 		# use boringssl instead of openssl
-		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
+		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
+		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -F/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -framework WebRTC"
+		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv"
 	else
 		# use boringssl instead of openssl
-		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
+		#export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
+		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv"
 	fi
 
 	export ARCH
 	# for debug but use boringssl instead of openssl
-	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-build-scripts/ios/webrtc/src/third_party/boringssl/src/include" 
+	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-ios/webrtc_checkout/src/third_party/boringssl/src/include" 
 
 	if [[ $SDK != "iphonesimulator" ]]
 	then
 		CFLAGS=${CFLAGS}" -DIOS_BUILD"
 	else
-		CFLAGS=${CFLAGS}" -miphoneos-version-min=7.0"
+		CFLAGS=${CFLAGS}" -miphoneos-version-min=8.0"
 	fi
 
 	if [ "$DEBUG" -eq 1 ]
@@ -146,22 +149,22 @@ ARCH="i386"
 SDK="iphonesimulator"
 build $SDK $ARCH $DEBUG $VERBOSE
 
-ARCH="x86_64"
-SDK="iphonesimulator"
-build $SDK $ARCH $DEBUG $VERBOSE
-
-ARCH="armv7"
-SDK="iphoneos"
-build $SDK $ARCH $DEBUG $VERBOSE
+#ARCH="x86_64"
+#SDK="iphonesimulator"
+#build $SDK $ARCH $DEBUG $VERBOSE
+#
+#ARCH="armv7"
+#SDK="iphoneos"
+#build $SDK $ARCH $DEBUG $VERBOSE
 
 # this doesn't work for some reason
 #ARCH="armv7s"
 #SDK="iphoneos"
 #build $SDK $ARCH $DEBUG $VERBOSE
 
-ARCH="arm64"
-SDK="iphoneos"
-build $SDK $ARCH $DEBUG $VERBOSE
+#ARCH="arm64"
+#SDK="iphoneos"
+#build $SDK $ARCH $DEBUG $VERBOSE
 
 echo "--- Creating universal library at build/"
 rm -f build/libsofia-sip-ua.a

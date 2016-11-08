@@ -1,0 +1,57 @@
+//
+//  RestCommClientTests.m
+//  RestCommClientTests
+//
+//  Created by Antonis Tsakiridis on 10/24/2016.
+//  Copyright (c) 2016 Antonis Tsakiridis. All rights reserved.
+//
+
+// https://github.com/Specta/Specta
+
+#import <Specta/Specta.h>
+#define EXP_SHORTHAND
+#import "Expecta.h"
+//#import "Cell.h"
+#import "RestCommClient.h"
+
+
+SpecBegin(RCDeviceTest)
+
+// container for tests
+describe(@"these will fail", ^{
+
+    // actual test
+    it(@"can do maths", ^{
+        expect(1).to.equal(2);
+    });
+
+    it(@"can read", ^{
+        expect(@"number").to.equal(@"string");
+    });
+    
+    it(@"will wait for 10 seconds and fail", ^{
+        waitUntil(^(DoneCallback done) {
+        
+        });
+    });
+});
+
+describe(@"these will pass", ^{
+    
+    it(@"can do maths", ^{
+        expect(1).beLessThan(23);
+    });
+    
+    it(@"can read", ^{
+        expect(@"team").toNot.contain(@"I");
+    });
+    
+    it(@"will wait and succeed", ^{
+        waitUntil(^(DoneCallback done) {
+            done();
+        });
+    });
+});
+
+SpecEnd
+

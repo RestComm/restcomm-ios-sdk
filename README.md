@@ -1,56 +1,57 @@
-RestComm Mobile - iOS SDK
-================
+# RestComm Mobile - iOS SDK
+
+[![CI Status](http://img.shields.io/travis/Restcomm/restcomm-ios-sdk.svg?style=flat)](https://travis-ci.org/Restcomm/restcomm-ios-sdk)
+[![Version](https://img.shields.io/cocoapods/v/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
+[![License](https://img.shields.io/cocoapods/l/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
+[![Platform](https://img.shields.io/cocoapods/p/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
 
 iOS Mobile SDK to easily integrate communication features (messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
 
-Quick Start guide
-================
+## Quick Start guide
+
+Restcomm iOS SDK is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+
+```ruby
+pod "restcomm-ios-sdk"
+```
 
 For an easy to follow guide on how to get started with RestComm Client SDK for iOS, please check:
 
 http://docs.telestax.com/restcomm-client-ios-sdk-quick-start/
 
-Reference Documentation
-================
+## Reference Documentation
 
 Appledoc style reference documentation can be found at:
 
 http://restcomm.github.io/restcomm-ios-sdk/doc/html/
 
-OS/Hardware requirements
-================
+## OS/Hardware requirements
 
-RestComm Client SDK for iOS has been tested to work on iOS 7.0 and above (has been successfully tested with iphone 4 and above)
+RestComm Client SDK for iOS has been tested to work on iOS 8.0 and above (has been successfully tested with iphone 4 and above)
 
-Latest Olympus .ipa
-=============================
+## Latest Olympus .ipa
 
 Here's the .ipa for the Olympus Restcomm iOS App utilizing the RestComm Client SDK and providing a simple client application for Restcomm Cloud: https://tsfr.io/xex2zc 
 
-Want to Contribute ? 
-========
+## Want to Contribute ? 
+
 [See our Contributors Guide](https://github.com/Restcomm/Restcomm-Connect/wiki/Contribute-to-RestComm)
 
-Issue Tracking and Roadmap
-========
+## Issue Tracking and Roadmap
+
 [Issue Tracker](https://github.com/restcomm/restcomm-ios-sdk/issues)
 
+## Questions ?
 
-Questions ?
-========
 Please ask your question on our [public forum](http://groups.google.com/group/restcomm)
 
-License
-========
+## License
 
 RestComm is lead by [TeleStax](http://www.telestax.com/), Inc. and developed collaboratively by a community of individual and enterprise contributors.
 
 RestComm is licensed under dual license policy. The default license is the Free Open Source GNU Affero GPL v3.0. Alternatively a commercial license can be obtained from Telestax ([contact form](http://www.telestax.com/contactus/#InquiryForm))
 
-Continuous Integration and Delivery
-========
-[![RestComm Continuous Job](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png)](https://mobicents.ci.cloudbees.com/job/RestComm/)
+## Acknowledgements
 
-Acknowledgements
-========
 [See who has been contributing to RestComm](http://www.telestax.com/opensource/acknowledgments/)
+

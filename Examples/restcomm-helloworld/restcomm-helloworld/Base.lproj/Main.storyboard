@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvW-1V-lzm">
+                                <rect key="frame" x="24" y="617" width="30" height="30"/>
+                                <state key="normal" title="Dial"/>
+                                <connections>
+                                    <action selector="dialPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7ce-fV-Ku3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MW4-Mg-rHo">
+                                <rect key="frame" x="307" y="617" width="58" height="30"/>
+                                <state key="normal" title="Hang up"/>
+                                <connections>
+                                    <action selector="hangUpPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cUE-mb-6wW"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Idle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcC-Jy-EB5">
+                                <rect key="frame" x="173.5" y="228" width="28" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2c0-rL-EVo">
+                                <rect key="frame" x="187.5" y="190" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="MW4-Mg-rHo" secondAttribute="trailing" constant="-6" id="Bap-iI-iCB"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="MW4-Mg-rHo" secondAttribute="bottom" constant="20" id="C7J-Ts-4ZL"/>
+                            <constraint firstItem="2c0-rL-EVo" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="170" id="EgB-cy-yTe"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="IvW-1V-lzm" secondAttribute="bottom" constant="20" id="KiP-8V-PZ4"/>
+                            <constraint firstItem="rcC-Jy-EB5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PKW-57-zAP"/>
+                            <constraint firstItem="2c0-rL-EVo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RUG-ye-M0c"/>
+                            <constraint firstItem="IvW-1V-lzm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="8" id="kOw-RW-wen"/>
+                            <constraint firstItem="rcC-Jy-EB5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="208" id="kpz-Z2-C8L"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="callLabel" destination="2c0-rL-EVo" id="QNs-xg-hkv"/>
+                        <outlet property="statusLabel" destination="rcC-Jy-EB5" id="mAy-hs-Fbm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
