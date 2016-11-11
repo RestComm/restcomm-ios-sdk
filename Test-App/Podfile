@@ -17,6 +17,7 @@ target 'Sample' do
     #pod 'BoringSSL'
     #pod 'webrtc-framework'
 
+    pod 'restcomm-ios-sdk', :path => '../'
     ##pod 'RestCommClient', :path => '../'
     #use_frameworks!
 

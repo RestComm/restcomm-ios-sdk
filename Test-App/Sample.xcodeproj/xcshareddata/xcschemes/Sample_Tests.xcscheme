@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "09362C36F64D1C2B3A1323C038960A83"
-               BuildableName = "libRestCommClient.a"
-               BlueprintName = "RestCommClient"
+               BlueprintIdentifier = "11D56E1567C24B5203FEA51174A5FCD5"
+               BuildableName = "librestcomm-ios-sdk.a"
+               BlueprintName = "restcomm-ios-sdk"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09362C36F64D1C2B3A1323C038960A83"
-            BuildableName = "libRestCommClient.a"
-            BlueprintName = "RestCommClient"
+            BlueprintIdentifier = "11D56E1567C24B5203FEA51174A5FCD5"
+            BuildableName = "librestcomm-ios-sdk.a"
+            BlueprintName = "restcomm-ios-sdk"
             ReferencedContainer = "container:Pods/Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09362C36F64D1C2B3A1323C038960A83"
-            BuildableName = "libRestCommClient.a"
-            BlueprintName = "RestCommClient"
+            BlueprintIdentifier = "11D56E1567C24B5203FEA51174A5FCD5"
+            BuildableName = "librestcomm-ios-sdk.a"
+            BlueprintName = "restcomm-ios-sdk"
             ReferencedContainer = "container:Pods/Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +82,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09362C36F64D1C2B3A1323C038960A83"
-            BuildableName = "libRestCommClient.a"
-            BlueprintName = "RestCommClient"
+            BlueprintIdentifier = "11D56E1567C24B5203FEA51174A5FCD5"
+            BuildableName = "librestcomm-ios-sdk.a"
+            BlueprintName = "restcomm-ios-sdk"
             ReferencedContainer = "container:Pods/Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

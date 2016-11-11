@@ -19,6 +19,8 @@
     //NSMutableDictionary * parameters;
     //BOOL isInitialized;
     //BOOL isRegistered;
+    NSString * username;
+    NSString * password;
     NSString * restcommUrl;
     
     XCTestExpectation *genericExpectation;
@@ -46,7 +48,9 @@
     
     
     //connection = nil;
-    restcommUrl = @"192.168.2.11:5080";
+    username = @"ios-test-user";
+    password = @"1234";
+    restcommUrl = @"cloud.restcomm.com";
 }
 
 // Test-level tearDown
@@ -59,8 +63,8 @@
 // ---------- Actual tests
 - (void)DISABLED_testSuccessfulRegistration {
     NSMutableDictionary * parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                  @"antonis", @"aor",
-                  @"1234", @"password",
+                  username, @"aor",
+                  password, @"password",
                   restcommUrl, @"registrar",
                   nil];
     device = [[RCDevice alloc] initWithParams:parameters delegate:self];
@@ -75,9 +79,9 @@
 }
 
 /**/
-- (void)DISABLED_testFaildRegistrationInvalidPassword {
+- (void)testFaildRegistrationInvalidPassword {
     NSMutableDictionary * parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        @"antonis", @"aor",
+                                        username, @"aor",
                                         @"invalid-password", @"password",
                                         restcommUrl, @"registrar",
                                         nil];
@@ -92,12 +96,12 @@
     }];
 }
 
-- (void)testSuccessfulCall {
+- (void)DISABLED_testSuccessfulCall {
     // 1. register with Restcomm
     NSLog(@"==================== Registering");
     NSMutableDictionary * parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        @"antonis", @"aor",
-                                        @"1234", @"password",
+                                        username, @"aor",
+                                        password, @"password",
                                         restcommUrl, @"registrar",
                                         nil];
     device = [[RCDevice alloc] initWithParams:parameters delegate:self];
@@ -115,7 +119,7 @@
     // 2. Make a call and once connected disconnect
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
     NSLog(@"==================== Calling");
-    [parameters setObject:@"despina" forKey:@"username"];
+    [parameters setObject:@"+1235" forKey:@"username"];
     
     // call the other party
     RCConnection * connection = [device connect:parameters delegate:self];
