@@ -7,7 +7,7 @@ language: objective-c
 # cache: cocoapods
 podfile: Test-App/Podfile
 before_install:
-# - gem install cocoapods # Since Travis is not always on latest version
+- gem install cocoapods # Since Travis is not always on latest version
 #- ls -al
 #- find . 
 #- pod install --project-directory=./Test-App
