@@ -6,10 +6,10 @@ target 'Sample' do
   # Temporary, these should reside in podspec
   #pod 'sofia-sip-library'
   #pod 'BoringSSL'
-  #pod 'webrtc-framework'
+  pod 'webrtc-framework', '14493.3'
 
   #pod 'restcomm-ios-sdk', :path => '../'
-  pod 'restcomm-ios-sdk'
+  #pod 'restcomm-ios-sdk'
 
   target 'Sample_Tests' do
     inherit! :search_paths
@@ -19,7 +19,7 @@ target 'Sample' do
     #pod 'webrtc-framework'
 
     #pod 'restcomm-ios-sdk', :path => '../'
-	 pod 'restcomm-ios-sdk'
+	 #pod 'restcomm-ios-sdk'
     ##pod 'RestCommClient', :path => '../'
     #use_frameworks!
 
