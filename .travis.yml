@@ -10,7 +10,8 @@ podfile: Test-App/Podfile
 before_install:
 - gem install cocoapods # Since Travis is not always on latest version
 #- travis_wait 60 pod repo update > /dev/null 2>&1
-- travis_wait 60 ./pod-repo-update.sh
+#- travis_wait 60 ./pod-repo-update.sh
+- travis_wait 60 pod repo update --silent
 - pod install --project-directory=Test-App
 #- cd Test-App && pod install && cd ..
 script:
