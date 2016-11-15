@@ -427,7 +427,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         // also replace '://' with ':' so that the SIP stack can understand it
         final = [normalized stringByReplacingOccurrencesOfString:@"://" withString:@":"];
     } else if ([RCUtilities string:[uri scheme] containsString:@"app"]) {
-      //just open the app with no call initiated
+        //just open the app with no call initiated
     }
     else {
         // either 'tel', 'restcomm-tel', 'client' or 'restcomm-client'. Return just the host part, like 'bob' or '1235' that the Restcomm SDK can handle
