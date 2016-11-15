@@ -7,7 +7,7 @@ target 'Sample' do
   #pod 'sofia-sip-library'
   #pod 'BoringSSL'
   pod 'Quickblox-WebRTC'
-  pod 'webrtc-framework'
+  #pod 'webrtc-framework'
 
   #pod 'restcomm-ios-sdk', :path => '../'
   #pod 'restcomm-ios-sdk'
