@@ -6,6 +6,7 @@ target 'Sample' do
   # Temporary, these should reside in podspec
   #pod 'sofia-sip-library'
   #pod 'BoringSSL'
+  pod 'Quickblox-WebRTC'
   pod 'webrtc-framework'
 
   #pod 'restcomm-ios-sdk', :path => '../'
