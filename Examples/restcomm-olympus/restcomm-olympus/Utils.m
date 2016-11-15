@@ -84,14 +84,14 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
                                                 ],
                                         },
                                     };
-    
+
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
 }
 
 + (NSArray*)messagesForSipUri:(NSString*)sipUri
 {
     NSMutableArray *messages = [[NSMutableArray alloc] init];
-    
+
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     if ([appDefaults dictionaryForKey:@"chat-history"] && [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri]) {
         return [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri];
@@ -106,15 +106,15 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
     if (![appDefaults dictionaryForKey:@"chat-history"]) {
         return;
     }
-    
+
     NSMutableDictionary * messages = [[appDefaults dictionaryForKey:@"chat-history"] mutableCopy];
     if ([messages objectForKey:sipUri]) {
         aliasMessages = [[messages objectForKey:sipUri] mutableCopy];
     }
-    
+
     [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
     [messages setObject:aliasMessages forKey:sipUri];
-    
+
     [appDefaults setObject:messages forKey:@"chat-history"];
 }
 
@@ -135,7 +135,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
-    
+
     for (int i = 0; i < [contacts count]; i++) {
         NSArray * contact = [contacts objectAtIndex:i];
         if ([[contact objectAtIndex:0] isEqualToString:alias]) {
@@ -151,14 +151,14 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
-    
+
     for (int i = 0; i < [contacts count]; i++) {
         NSArray * contact = [contacts objectAtIndex:i];
         if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
             return i;
         }
     }
-    
+
     return -1;
 }
 
@@ -166,14 +166,14 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSArray * contacts = [appDefaults arrayForKey:@"contacts"];
-    
+
     for (int i = 0; i < [contacts count]; i++) {
         NSArray * contact = [contacts objectAtIndex:i];
         if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
             return [contact objectAtIndex:0];
         }
     }
-    
+
     return @"";
 }
 
@@ -257,7 +257,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 + (NSString*) genericType:(NSString*)type forLevel:(NSNumber*)level;
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    
+
     if ([appDefaults dictionaryForKey:type]) {
         if([[appDefaults dictionaryForKey:type] objectForKey:[level stringValue]]) {
             return [[[appDefaults dictionaryForKey:type] objectForKey:[level stringValue]] stringValue];
@@ -271,7 +271,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 + (void)addContact:(NSArray*)contact
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    
+
     NSMutableArray * mutable = nil;
     if ([appDefaults arrayForKey:@"contacts"]) {
         // exists; get a mutable copy
@@ -281,9 +281,9 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         // should never happen
         return;
     }
-    
+
     [mutable addObject:contact];
-    
+
     // update user defaults
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
@@ -291,7 +291,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 + (void)removeContactAtIndex:(int)index
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    
+
     NSMutableArray * mutable = nil;
     if ([appDefaults arrayForKey:@"contacts"]) {
         // exists; get a mutable copy
@@ -301,9 +301,9 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         // should never happen
         return;
     }
-    
+
     [mutable removeObjectAtIndex:index];
-    
+
     // update user defaults
     [appDefaults setObject:mutable forKey:@"contacts"];
 }
@@ -311,7 +311,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 + (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    
+
     NSMutableArray * mutable = nil;
     if ([appDefaults arrayForKey:@"contacts"]) {
         // exists; get a mutable copy
@@ -321,7 +321,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         // should never happen
         return;
     }
-    
+
     for (int i = 0; i < [mutable count]; i++) {
         NSArray * contact = [mutable objectAtIndex:i];
         if ([[contact objectAtIndex:1] isEqualToString:sipUri]) {
@@ -410,6 +410,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
      * restcomm-tel://+1235@telestax.com
      * client://bob
      * restcomm-client://bob
+     * restcomm-app://bob -> just opens app and potentially login with user
      * Important note: the browser only recognizes URLs starting with 'scheme://', not 'scheme:'
      */
 
@@ -425,12 +426,14 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         NSString * normalized = [[uri absoluteString] stringByReplacingOccurrencesOfString:@"restcomm-sip" withString:@"sip"];
         // also replace '://' with ':' so that the SIP stack can understand it
         final = [normalized stringByReplacingOccurrencesOfString:@"://" withString:@":"];
+    } else if ([RCUtilities string:[uri scheme] containsString:@"app"]) {
+        //just open the app with no call initiated
     }
     else {
         // either 'tel', 'restcomm-tel', 'client' or 'restcomm-client'. Return just the host part, like 'bob' or '1235' that the Restcomm SDK can handle
         final = [NSString stringWithFormat:@"%@", [uri host]];
     }
-    
+
     NSLog(@"convertInterappUri2RestcommUri after conversion: %@", final);
     return final;
 }
@@ -440,7 +443,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
 + (void) setGenericType:(NSString*)type forLevel:(NSNumber*)level withValue:(NSNumber*)value updateType:(NSString*)updateType
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    
+
     NSMutableDictionary * mutable = nil;
     if ([appDefaults dictionaryForKey:type]) {
         // exists; get a mutable copy
@@ -450,7 +453,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
         // if the type does not exist create it
         mutable = [[NSMutableDictionary alloc] init];
     }
-    
+
     BOOL updateValue = YES;
     if (updateType && [updateType isEqualToString:@"update-when-greater"]) {
         // if there's a value for the level score or stars and that is bigger than the current value then don't update score
@@ -458,11 +461,11 @@ NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b
             updateValue = NO;
         }
     }
-    
+
     if (updateValue) {
         [mutable setObject:value forKey:[level stringValue]];
     }
-    
+
     // update user defaults
     [appDefaults setObject:mutable forKey:type];
 }
