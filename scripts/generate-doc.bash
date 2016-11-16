@@ -4,7 +4,9 @@
 
 git checkout gh-pages
 git rebase master
+# Do the generation
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
-git diff --quiet --exit-code --cached || git commit -m "Update gh-pages"
+# add and commit
+git diff --quiet --exit-code --cached || git commit -a -m "Update gh-pages"
 git push origin gh-pages
 git checkout master
