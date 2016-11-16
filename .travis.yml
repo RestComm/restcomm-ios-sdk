@@ -17,5 +17,6 @@ before_install:
 script:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' | xcpretty
-- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
+#- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
+- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
 #- pod lib lint
