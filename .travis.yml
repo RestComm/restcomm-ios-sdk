@@ -21,5 +21,7 @@ script:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
 - set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+# Generate reference doc
+- scripts/generate-doc.bash
 #- pod lib lint
 
