@@ -119,7 +119,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *  @param delegate        Delegate of RCDevice
  *
- *  @return Newly initialized object
+ *  @return Newly initialized RCDevice object
  */
 - (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate;
 
