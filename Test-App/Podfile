@@ -1,14 +1,16 @@
 #use_frameworks!
-#platform :ios, '8.0'
+platform :ios, '8.0'
 
 target 'Sample' do
 
   # Temporary, these should reside in podspec
   #pod 'sofia-sip-library'
   #pod 'BoringSSL'
+  #pod 'Quickblox-WebRTC'
   #pod 'webrtc-framework'
 
-  pod 'restcomm-ios-sdk', :path => '../'
+  #pod 'restcomm-ios-sdk', :path => '../'
+  pod 'restcomm-ios-sdk'
 
   target 'Sample_Tests' do
     inherit! :search_paths
@@ -17,6 +19,8 @@ target 'Sample' do
     #pod 'BoringSSL'
     #pod 'webrtc-framework'
 
+    #pod 'restcomm-ios-sdk', :path => '../'
+	 pod 'restcomm-ios-sdk'
     ##pod 'RestCommClient', :path => '../'
     #use_frameworks!
 

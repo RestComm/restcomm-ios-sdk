@@ -1,37 +1,33 @@
 # RestComm Mobile - iOS SDK
 
-[![CI Status](http://img.shields.io/travis/Restcomm/restcomm-ios-sdk.svg?style=flat)](https://travis-ci.org/Restcomm/restcomm-ios-sdk)
-[![Version](https://img.shields.io/cocoapods/v/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
-[![License](https://img.shields.io/cocoapods/l/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
-[![Platform](https://img.shields.io/cocoapods/p/RestCommClient.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
+[![CI Status](http://img.shields.io/travis/RestComm/restcomm-ios-sdk.svg?style=flat)](https://travis-ci.org/RestComm/restcomm-ios-sdk)
+[![Version](https://img.shields.io/cocoapods/v/restcomm-ios-sdk.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
+[![License](https://img.shields.io/cocoapods/l/restcomm-ios-sdk.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
+[![Platform](https://img.shields.io/cocoapods/p/restcomm-ios-sdk.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
 
 iOS Mobile SDK to easily integrate communication features (messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
 
 ## Quick Start guide
 
-Restcomm iOS SDK is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+Restcomm iOS SDK is available through [CocoaPods](http://cocoapods.org). To integrate it, simply add the following line to your App's Podfile:
 
 ```ruby
 pod "restcomm-ios-sdk"
 ```
 
-For an easy to follow guide on how to get started with RestComm Client SDK for iOS, please check:
-
-http://docs.telestax.com/restcomm-client-ios-sdk-quick-start/
+More more information on how to get started with Restcomm iOS SDK, please check our [Quick Start Guide](http://docs.telestax.com/restcomm-client-ios-sdk-quick-start/)
 
 ## Reference Documentation
 
-Appledoc style reference documentation can be found at:
-
-http://restcomm.github.io/restcomm-ios-sdk/doc/html/
+Appledoc style reference documentation can be found [here](http://restcomm.github.io/restcomm-ios-sdk/doc/html/)
 
 ## OS/Hardware requirements
 
-RestComm Client SDK for iOS has been tested to work on iOS 8.0 and above (has been successfully tested with iphone 4 and above)
+RestComm Client SDK for iOS has been tested to work on iOS 8.0 and above (has been successfully tested with iphone 4s and above)
 
 ## Latest Olympus .ipa
 
-Here's the .ipa for the Olympus Restcomm iOS App utilizing the RestComm Client SDK and providing a simple client application for Restcomm Cloud: https://tsfr.io/xex2zc 
+Interested in taking Restcomm iOS SDK for a spin? You can readily install the iOS Olympus App that utilizes the SDK and provides a simple webrtc voice/video App for the Restcomm Cloud [here](https://tsfr.io/xex2zc)
 
 ## Want to Contribute ? 
 
