@@ -151,7 +151,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (void)updateCapabilityToken:(NSString*)capabilityToken;
 
 /**
- *  @abstract Retrieve parameters
+ *  @abstract Retrieve RCDevice parameters
  *
  *  @return RCDevice parameters
  */
