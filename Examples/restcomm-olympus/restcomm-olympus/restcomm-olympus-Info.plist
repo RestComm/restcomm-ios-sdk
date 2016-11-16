@@ -88,7 +88,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>BETA4.1#2</string>
+	<string>BETA4.1#5</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -105,6 +105,10 @@
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This App uses the camera to send for video calls</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This App use the microphone for audio and video calls</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_Universal</string>
 	<key>UIMainStoryboardFile~ipad</key>
