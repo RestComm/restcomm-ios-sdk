@@ -85,7 +85,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 @property (nonatomic, readonly) NSDictionary* capabilities;
 
 /**
- *  @abstract Delegate that will be receiving RCDevice events described at RCDeviceDelegate
+ *  @abstract Delegate that will be receiving RCDevice events described at RCDeviceDelegate protocol
  */
 @property (nonatomic, assign) id<RCDeviceDelegate> delegate;
 
