@@ -201,7 +201,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *
- *  @return If update of parameters was successful. Typical reason to fail is connectivity issues
+ *  @return If update of parameters was successful. Typical reason to fail is connectivity issues.
  */
 - (BOOL) updateParams:(NSDictionary*)params;
 
