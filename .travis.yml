@@ -9,6 +9,7 @@ language: objective-c
 # cache: cocoapods
 podfile: Test-App/Podfile
 before_install:
+- openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in github_rsa.enc -out ~\/.ssh/github_rsa -d
 #- travis_wait 60 pod repo update > /dev/null 2>&1
 #- travis_wait 60 ./pod-repo-update.sh
 
@@ -21,7 +22,4 @@ script:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
 - set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-# Generate reference doc
-- ./scripts/update-doc.bash
-#- pod lib lint
-
+- ./scripts/main.bash

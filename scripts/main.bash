@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Main script that will drive CI/CD actions, depending on type of commit
+
+if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
+	echo "This is a pull request, bailing out."
+	exit 0
+fi
+
+if [[ "$TRAVIS_BRANCH" != "master" ]]; then
+	echo "Testing on a branch other than master, bailing out."
+	exit 0
+fi
+
+# Update reference documentation
+./scripts/update-doc.bash
+
+# Update the pod
+#- pod lib lint
