@@ -3,14 +3,19 @@
 # Main script that will drive CI/CD actions, depending on type of commit
 
 if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
-	echo "This is a pull request, bailing out."
+	echo "-- This is a pull request, bailing out."
 	exit 0
 fi
 
 if [[ "$TRAVIS_BRANCH" != "master" ]]; then
-	echo "Testing on a branch other than master, bailing out."
+	echo "-- Testing on a branch other than master, bailing out."
 	exit 0
 fi
+
+echo "-- Processing main script."
+git remote -v
+git config user.name "Travis CI, build: $TRAVIS_BUILD_NUMBER"
+git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Update reference documentation
 ./scripts/update-doc.bash
