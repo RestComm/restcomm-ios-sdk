@@ -41,6 +41,11 @@ git add doc/
 
 # Commit
 git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation, Travis CI build: $TRAVIS_BUILD_NUMBER"
+if [ $? -ne 0 ]
+then
+	echo "-- Failed to commit, bailing"
+	exit 1
+fi
 
 # Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
 # branch isn't retrieved correctly with 'git branch'
@@ -53,10 +58,11 @@ then
 	exit 1	
 fi
 
-if [ $? -eq 0 ]
+# SSH_REPO must be set
+if [ ! -z "$SSH_REPO" ]
 then
 	echo "-- Force pushing $DOC_BRANCH to origin"
-	git push -f origin $DOC_BRANCH
+	git push -f $SSH_REPO $DOC_BRANCH
 fi
 
 # Removing non staged changes from gh-pages, so that we can go back to original branch without issues
