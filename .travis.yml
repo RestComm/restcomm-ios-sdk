@@ -24,9 +24,12 @@ before_install:
 #- travis_wait 60 pod repo update --silent
 - pod install --project-directory=Test-App
 script:
+# Bad ones, kept for reference:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
-- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+
+# Good one:
+#- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 - ./scripts/main.bash

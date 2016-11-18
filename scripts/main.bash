@@ -7,7 +7,8 @@ if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
 	exit 0
 fi
 
-if [[ "$TRAVIS_BRANCH" != "master" ]]; then
+# TODO change that to master
+if [[ "$TRAVIS_BRANCH" != "develop" ]]; then
 	echo "-- Testing on a branch other than master, bailing out."
 	exit 0
 fi
