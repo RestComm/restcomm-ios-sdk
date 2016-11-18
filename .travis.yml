@@ -13,12 +13,12 @@ env:
 # cache: cocoapods
 ##podfile: Test-App/Podfile
 before_install:
-- brew install md5sha1sum
+#- brew install md5sha1sum
 # Install appledoc as I don't see it pre-installed
 - curl -sL https://gist.github.com/henrikhodne/7ac6d02ff9a24a94720c/raw/install_appledoc.sh | sh
 - openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in .\/.ssh/github_rsa.enc -out .\/.ssh/github_rsa -d
 - chmod 600 .\/.ssh/github_rsa
-- sha1sum .\/.ssh/github_rsa
+#- sha1sum .\/.ssh/github_rsa
 # Add the key to the ssh agent
 - ssh-add .\/.ssh/github_rsa
 
