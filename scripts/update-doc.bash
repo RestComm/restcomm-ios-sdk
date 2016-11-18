@@ -2,7 +2,15 @@
 #
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
+# keep the branch we start out at
+ORIGINAL_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 DOC_BRANCH="gh-pages"
+
+if [ "$ORIGINAL_BRANCH" == "$DOC_BRANCH" ] 
+then
+	echo "-- Starting off at $DOC_BRANCH which is wrong; should never trigger CI build at $DOC_BRANCH. Bailing"
+	exit 1	
+fi
 
 echo "-- Checking out $DOC_BRANCH as orphan"
 git checkout --orphan $DOC_BRANCH
@@ -12,24 +20,14 @@ then
 	exit 1	
 fi
 
-# Need to make absolutely sure that we are in gh-pages before doing anything else
-CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
-echo "-- Current branch is: $CURRENT_BRANCH"
-if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 
-then
-	echo "-- Error: Currently in wrong branch: $CURRENT_BRANCH instead of $DOC_BRANCH. Returning to master and bailing"
-	git checkout master
-	exit 1	
-fi
-
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
 git rm --cached -r . > /dev/null
-#echo "-- Rebasing $CURRENT_BRANCH to master"
-#git rebase master
+#echo "-- Rebasing $CURRENT_BRANCH to $ORIGINAL_BRANCH"
+#git rebase $ORIGINAL_BRANCH
 #if [ $? -ne 0 ]
 #then
-#	echo "-- Error: could not rebase $DOC_BRANCH to master. Returning to master and bailing"
-#	git checkout master
+#	echo "-- Error: could not rebase $DOC_BRANCH to original branch. Returning to original branch and bailing"
+#	git checkout $ORIGINAL_BRANCH
 #	exit 1	
 #fi
 
@@ -43,18 +41,30 @@ git add doc/
 
 # Commit
 git commit -m "Update $DOC_BRANCH"
+
+# Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
+# branch isn't retrieved correctly with 'git branch'
+CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+echo "-- Current branch is: $CURRENT_BRANCH"
+if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 
+then
+	echo "-- Error: Currently in wrong branch: $CURRENT_BRANCH instead of $DOC_BRANCH. Returning to $ORIGINAL_BRANCH and bailing"
+	git checkout $ORIGINAL_BRANCH
+	exit 1	
+fi
+
 if [ $? -eq 0 ]
 then
 	echo "-- Force pushing $DOC_BRANCH to origin"
 	git push -f origin $DOC_BRANCH
 fi
 
-# Removing non staged changes from gh-pages, so that we can go back to master without issues
+# Removing non staged changes from gh-pages, so that we can go back to original branch without issues
 echo "-- Removing non staged changes from $DOC_BRANCH"
 git clean -fd
 
 # Debug command to verify everything is in order
 git status
 
-echo "-- Done updating docs, checking out master"
-git checkout master
+echo "-- Done updating docs, checking out $ORIGINAL_BRANCH"
+git checkout $ORIGINAL_BRANCH
