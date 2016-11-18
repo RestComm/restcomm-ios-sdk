@@ -3,7 +3,7 @@
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
 # keep the branch we start out at
-ORIGINAL_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+ORIGINAL_BRANCH="develop"
 DOC_BRANCH="gh-pages"
 
 echo "-- Showing local branches:"
