@@ -13,13 +13,13 @@ then
 fi
 
 # Need to make absolutely sure that we are in gh-pages before doing anything else
-CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
-if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 
-then
-	echo "-- Error: Currently in wrong branch: $CURRENT_BRANCH instead of $DOC_BRANCH. Returning to master and bailing"
-	git checkout master
-	exit 1	
-fi
+#CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+#if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 
+#then
+#	echo "-- Error: Currently in wrong branch: $CURRENT_BRANCH instead of $DOC_BRANCH. Returning to master and bailing"
+#	git checkout master
+#	exit 1	
+#fi
 
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
 git rm --cached -r . > /dev/null
