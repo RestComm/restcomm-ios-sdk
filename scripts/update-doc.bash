@@ -76,7 +76,8 @@ fi
 if [ ! -z "$SSH_REPO" ]
 then
 	echo "-- Force pushing $DOC_BRANCH to $SSH_REPO"
-	git push -f $SSH_REPO $DOC_BRANCH
+	#git push -f $SSH_REPO $DOC_BRANCH
+	git push -f origin $DOC_BRANCH
 fi
 
 # Removing non staged changes from gh-pages, so that we can go back to original branch without issues

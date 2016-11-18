@@ -14,6 +14,7 @@ if [[ "$TRAVIS_BRANCH" != "develop" ]]; then
 fi
 
 echo "-- Processing main script."
+git config credential.helper "store --file=.git/credentials"; echo "https://${GITHUB_OAUTH_TOKEN}:@github.com" > .git/credentials 2>/dev/null
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
