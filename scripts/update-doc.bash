@@ -6,6 +6,10 @@
 ORIGINAL_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 DOC_BRANCH="gh-pages"
 
+echo "-- Showing local branches:"
+git branch
+
+echo "-- Original branch is: $ORIGINAL_BRANCH"
 if [ "$ORIGINAL_BRANCH" == "$DOC_BRANCH" ] 
 then
 	echo "-- Starting off at $DOC_BRANCH which is wrong; should never trigger CI build at $DOC_BRANCH. Bailing"
