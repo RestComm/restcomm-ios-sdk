@@ -21,8 +21,13 @@ then
 fi
 
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
+echo "-- Before removing unneeded files from staging area"
+git status
 echo "-- Removing unneeded files from staging area"
-git rm --cached -r . > /dev/null 2>&1
+git rm --cached -r . 
+echo "-- After removing unneeded files from staging area"
+git status
+
 #echo "-- Rebasing $CURRENT_BRANCH to $ORIGINAL_BRANCH"
 #git rebase $ORIGINAL_BRANCH
 #if [ $? -ne 0 ]
@@ -35,6 +40,9 @@ git rm --cached -r . > /dev/null 2>&1
 # Do the generation
 echo "-- Generating appledoc documentation"
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
+
+echo "-- Checking output doc dir"
+find doc/
 
 # Add generated doc to staging area
 echo "-- Adding newly generated doc to staging area"

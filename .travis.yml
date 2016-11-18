@@ -11,7 +11,7 @@ env:
 
 # Consider uncommenting this once we are stable
 # cache: cocoapods
-podfile: Test-App/Podfile
+##podfile: Test-App/Podfile
 before_install:
 # Install appledoc as I don't see it pre-installed
 - curl -sL https://gist.github.com/henrikhodne/7ac6d02ff9a24a94720c/raw/install_appledoc.sh | sh
