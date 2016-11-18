@@ -40,7 +40,7 @@ echo "-- Adding changes to staging area and committing"
 git add doc/
 
 # Commit
-git commit -m "Update $DOC_BRANCH"
+git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation, Travis CI build: $TRAVIS_BUILD_NUMBER"
 
 # Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
 # branch isn't retrieved correctly with 'git branch'

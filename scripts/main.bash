@@ -14,7 +14,7 @@ fi
 
 echo "-- Processing main script."
 git remote -v
-git config user.name "Travis CI, build: $TRAVIS_BUILD_NUMBER"
+git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Update reference documentation
