@@ -21,7 +21,8 @@ then
 fi
 
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
-git rm --cached -r . > /dev/null
+echo "-- Removing unneeded files from staging area"
+git rm --cached -r . > /dev/null 2>&1
 #echo "-- Rebasing $CURRENT_BRANCH to $ORIGINAL_BRANCH"
 #git rebase $ORIGINAL_BRANCH
 #if [ $? -ne 0 ]
@@ -36,10 +37,11 @@ echo "-- Generating appledoc documentation"
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
 
 # Add generated doc to staging area
-echo "-- Adding changes to staging area and committing"
+echo "-- Adding changes to staging area"
 git add doc/
 
 # Commit
+echo "-- Commiting to $DOC_BRANCH"
 git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation, Travis CI build: $TRAVIS_BUILD_NUMBER"
 if [ $? -ne 0 ]
 then
