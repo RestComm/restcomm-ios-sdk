@@ -37,7 +37,7 @@ echo "-- Generating appledoc documentation"
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
 
 # Add generated doc to staging area
-echo "-- Adding changes to staging area"
+echo "-- Adding newly generated doc to staging area"
 git add doc/
 
 # Commit
@@ -63,7 +63,7 @@ fi
 # SSH_REPO must be set
 if [ ! -z "$SSH_REPO" ]
 then
-	echo "-- Force pushing $DOC_BRANCH to origin"
+	echo "-- Force pushing $DOC_BRANCH to $SSH_REPO"
 	git push -f $SSH_REPO $DOC_BRANCH
 fi
 
