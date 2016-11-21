@@ -18,8 +18,9 @@ git config credential.helper "store --file=.git/credentials"; echo "https://${GI
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
-export REPO=`git config remote.origin.url`
-export SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
+# SSH endpoint not needed any longer, since we 're using OAuth tokens with https, but let's leave it around in case we need it in the future
+#export REPO=`git config remote.origin.url`
+#export SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 echo "-- Will use ssh repo: $SSH_REPO"
 #git remote -v

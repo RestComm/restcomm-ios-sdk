@@ -2,7 +2,7 @@
 #
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
-# keep the branch we start out at
+# keep the branch we start out at. Notice that I tried to retrieve it dynamically, but it seems that Travis CI checks out latest commit with git, not the current branch, so it doesn't work that well
 ORIGINAL_BRANCH="develop"
 DOC_BRANCH="gh-pages"
 
@@ -25,12 +25,12 @@ then
 fi
 
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
-echo "-- Before removing unneeded files from staging area"
-git status
+#echo "-- Before removing unneeded files from staging area"
+#git status
 echo "-- Removing unneeded files from staging area"
 git rm --cached -r . 
-echo "-- After removing unneeded files from staging area"
-git status
+#echo "-- After removing unneeded files from staging area"
+#git status
 
 #echo "-- Rebasing $CURRENT_BRANCH to $ORIGINAL_BRANCH"
 #git rebase $ORIGINAL_BRANCH
@@ -72,18 +72,22 @@ then
 	exit 1	
 fi
 
+
+echo "-- Force pushing $DOC_BRANCH to origin"
+git push -f origin $DOC_BRANCH
+
+# Old functionality, let's keep it around in case we need to use GitHub Deploy Keys in the future. 
 # SSH_REPO must be set
-if [ ! -z "$SSH_REPO" ]
-then
-	echo "-- Force pushing $DOC_BRANCH to $SSH_REPO"
-	#git push -f $SSH_REPO $DOC_BRANCH
-	git push -f origin $DOC_BRANCH
-fi
+#if [ ! -z "$SSH_REPO" ]
+#then
+#	echo "-- Force pushing $DOC_BRANCH to $SSH_REPO"
+#	git push -f $SSH_REPO $DOC_BRANCH
+#fi
 
 # Removing non staged changes from gh-pages, so that we can go back to original branch without issues
 echo "-- Removing non staged changes from $DOC_BRANCH"
 git clean -fd
-# There seems to be a bug in git where with the first clean, 'dependecies' dir is left intact, running it a second time removes that as well an we can resume
+# TODO: Remove when fixed. There seems to be a bug in git where with the first clean, 'dependecies' dir is left intact, running it a second time removes that as well an we can resume
 git clean -fd
 
 # Debug command to verify everything is in order

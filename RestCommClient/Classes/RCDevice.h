@@ -105,7 +105,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 @property (nonatomic) BOOL disconnectSoundEnabled;
 
 /**
- *  Initialize a new RCDevice object with parameters
+ *  Initialize a new RCDevice object with the given parameters
  *
  *  @param parameters      Parameters for the Device entity. Possible keys: <br>
  *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
