@@ -46,7 +46,11 @@ rm -fr doc/*
 
 # Do the generation
 echo "-- Generating appledoc documentation"
-appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
+#appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
+echo "-- Generating appledoc documentation: Help"
+appledoc --help
+echo "-- Generating appledoc documentation: Less Args"
+appledoc --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --output "./doc" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
 
 echo "-- Checking output doc dir"
 find doc
