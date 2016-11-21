@@ -11,22 +11,34 @@ env:
 
 # Consider uncommenting this once we are stable
 # cache: cocoapods
-podfile: Test-App/Podfile
+##podfile: Test-App/Podfile
 before_install:
+#- brew install md5sha1sum
+# Install appledoc as I don't see it pre-installed
+#- curl -sL https://gist.github.com/henrikhodne/7ac6d02ff9a24a94720c/raw/install_appledoc.sh | sh
+- curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/1637e50d6c478add443c7cc721403a98fd72dbd5/install_appledoc.sh | sh
 - openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in .\/.ssh/github_rsa.enc -out .\/.ssh/github_rsa -d
 - chmod 600 .\/.ssh/github_rsa
+#- sha1sum .\/.ssh/github_rsa
 # Add the key to the ssh agent
 - ssh-add .\/.ssh/github_rsa
+
+# Bad ones, kept for reference:
 #- travis_wait 60 pod repo update > /dev/null 2>&1
 #- travis_wait 60 ./pod-repo-update.sh
-
 #- gem install cocoapods # Since Travis is not always on latest version
 #- travis_wait 60 pod repo update --silent
-- pod install --project-directory=Test-App
+
+##- pod install --project-directory=Test-App
 script:
+# Bad ones, kept for reference:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
-- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+
+# Good one:
+##- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 - ./scripts/main.bash
+
+# testing other user

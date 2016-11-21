@@ -2,10 +2,14 @@
 #
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
-# keep the branch we start out at
-ORIGINAL_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+# keep the branch we start out at. Notice that I tried to retrieve it dynamically, but it seems that Travis CI checks out latest commit with git, not the current branch, so it doesn't work that well
+ORIGINAL_BRANCH="develop"
 DOC_BRANCH="gh-pages"
 
+echo "-- Showing local branches:"
+git branch
+
+echo "-- Original branch is: $ORIGINAL_BRANCH"
 if [ "$ORIGINAL_BRANCH" == "$DOC_BRANCH" ] 
 then
 	echo "-- Starting off at $DOC_BRANCH which is wrong; should never trigger CI build at $DOC_BRANCH. Bailing"
@@ -21,7 +25,13 @@ then
 fi
 
 # When the orphan branch is created all files are staged automatically, so we need to remove them from staging area and leave them to working dir
-git rm --cached -r . > /dev/null
+#echo "-- Before removing unneeded files from staging area"
+#git status
+echo "-- Removing unneeded files from staging area"
+git rm --cached -r . 
+#echo "-- After removing unneeded files from staging area"
+#git status
+
 #echo "-- Rebasing $CURRENT_BRANCH to $ORIGINAL_BRANCH"
 #git rebase $ORIGINAL_BRANCH
 #if [ $? -ne 0 ]
@@ -31,19 +41,31 @@ git rm --cached -r . > /dev/null
 #	exit 1	
 #fi
 
+echo "-- Cleaning up doc output dir"
+rm -fr doc/*
+
 # Do the generation
 echo "-- Generating appledoc documentation"
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
 
+echo "-- Checking output doc dir"
+find doc
+
 # Add generated doc to staging area
-echo "-- Adding changes to staging area and committing"
+echo "-- Adding newly generated doc to staging area"
 git add doc/
 
 # Commit
+echo "-- Commiting to $DOC_BRANCH"
 git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation, Travis CI build: $TRAVIS_BUILD_NUMBER"
+if [ $? -ne 0 ]
+then
+	echo "-- Failed to commit, bailing"
+	exit 1
+fi
 
 # Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
-# branch isn't retrieved correctly with 'git branch'
+# branch isn't retrieved correctly with 'git branch' because we 're in detached state
 CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 echo "-- Current branch is: $CURRENT_BRANCH"
 if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 
@@ -53,16 +75,22 @@ then
 	exit 1	
 fi
 
-if [ $? -eq 0 ]
-then
-	echo "-- Force pushing $DOC_BRANCH to origin"
-	git push -f origin $DOC_BRANCH
-fi
+
+echo "-- Force pushing $DOC_BRANCH to origin"
+git push -f origin $DOC_BRANCH
+
+# Old functionality, let's keep it around in case we need to use GitHub Deploy Keys in the future. 
+# SSH_REPO must be set
+#if [ ! -z "$SSH_REPO" ]
+#then
+#	echo "-- Force pushing $DOC_BRANCH to $SSH_REPO"
+#	git push -f $SSH_REPO $DOC_BRANCH
+#fi
 
 # Removing non staged changes from gh-pages, so that we can go back to original branch without issues
 echo "-- Removing non staged changes from $DOC_BRANCH"
 git clean -fd
-# There seems to be a bug in git where with the first clean, 'dependecies' dir is left intact, running it a second time removes that as well an we can resume
+# TODO: Remove when fixed. There seems to be a bug in git where with the first clean, 'dependecies' dir is left intact, running it a second time removes that as well an we can resume
 git clean -fd
 
 # Debug command to verify everything is in order

@@ -13,9 +13,16 @@ if [[ "$TRAVIS_BRANCH" != "master" ]]; then
 fi
 
 echo "-- Processing main script."
-git remote -v
+git config credential.helper "store --file=.git/credentials"; echo "https://${GITHUB_OAUTH_TOKEN}:@github.com" > .git/credentials 2>/dev/null
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
+
+# SSH endpoint not needed any longer, since we 're using OAuth tokens with https, but let's leave it around in case we need it in the future
+#export REPO=`git config remote.origin.url`
+#export SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
+
+#echo "-- Will use ssh repo: $SSH_REPO"
+#git remote -v
 
 # Update reference documentation
 ./scripts/update-doc.bash
