@@ -22,7 +22,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 #export REPO=`git config remote.origin.url`
 #export SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
-echo "-- Will use ssh repo: $SSH_REPO"
+#echo "-- Will use ssh repo: $SSH_REPO"
 #git remote -v
 
 # Update reference documentation
