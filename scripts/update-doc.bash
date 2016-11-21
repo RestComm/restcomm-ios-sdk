@@ -41,6 +41,9 @@ git rm --cached -r .
 #	exit 1	
 #fi
 
+echo "-- Cleaning up doc output dir"
+rm -fr doc/*
+
 # Do the generation
 echo "-- Generating appledoc documentation"
 appledoc -h --no-create-docset --project-name "Restcomm iOS SDK" --project-company Telestax --company-id com.telestax --output "./doc" --index-desc "RestCommClient/doc/index.markdown" RestCommClient/Classes/RC* RestCommClient/Classes/RestCommClient.h
