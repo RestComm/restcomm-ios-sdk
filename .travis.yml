@@ -16,7 +16,7 @@ before_install:
 #- brew install md5sha1sum
 # Install appledoc as I don't see it pre-installed
 #- curl -sL https://gist.github.com/henrikhodne/7ac6d02ff9a24a94720c/raw/install_appledoc.sh | sh
-- curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/be5d5806d566133ad65281a13796288b333afbf4/install_appledoc.sh | sh
+- curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/1637e50d6c478add443c7cc721403a98fd72dbd5/install_appledoc.sh | sh
 - openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in .\/.ssh/github_rsa.enc -out .\/.ssh/github_rsa -d
 - chmod 600 .\/.ssh/github_rsa
 #- sha1sum .\/.ssh/github_rsa
