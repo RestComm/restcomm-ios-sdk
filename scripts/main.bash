@@ -2,13 +2,17 @@
 #
 # Main script that will drive CI/CD actions, depending on type of commit
 
+# Build Test-App and run integration tests
+set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+
 if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
 	echo "-- This is a pull request, bailing out."
 	exit 0
 fi
 
-if [[ "$TRAVIS_BRANCH" != "master" ]]; then
-	echo "-- Testing on a branch other than master, bailing out."
+# CD_BRANCH is the brach we are passing from the travis CI settings and shows which branch CI should deploy from
+if [[ "$TRAVIS_BRANCH" != "$CD_BRANCH" ]]; then
+	echo "-- Testing on a branch other than $CD_BRANCH, bailing out."
 	exit 0
 fi
 
@@ -23,6 +27,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 #echo "-- Will use ssh repo: $SSH_REPO"
 #git remote -v
+
 
 # Update reference documentation
 ./scripts/update-doc.bash

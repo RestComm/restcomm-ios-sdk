@@ -3,7 +3,7 @@
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
 # keep the branch we start out at. Notice that I tried to retrieve it dynamically, but it seems that Travis CI checks out latest commit with git, not the current branch, so it doesn't work that well
-ORIGINAL_BRANCH="master"
+ORIGINAL_BRANCH=$CD_BRANCH
 DOC_BRANCH="gh-pages"
 
 echo "-- Showing local branches:"
