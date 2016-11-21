@@ -65,7 +65,7 @@ then
 fi
 
 # Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
-# branch isn't retrieved correctly with 'git branch'
+# branch isn't retrieved correctly with 'git branch' because we 're in detached state
 CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 echo "-- Current branch is: $CURRENT_BRANCH"
 if [ "$CURRENT_BRANCH" != "$DOC_BRANCH" ] 

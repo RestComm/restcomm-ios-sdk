@@ -171,7 +171,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 
 /**
- *  @abstract Send an instant message to a an endpoint
+ *  @abstract Send a text message 
  *
  *  @param parameters  Message parameters. Possible keys are:  <br>
  *    <b>username</b>: Who is the recepient of the text message, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
