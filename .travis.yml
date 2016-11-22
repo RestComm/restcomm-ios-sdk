@@ -19,10 +19,9 @@ before_install:
 ##- curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/1637e50d6c478add443c7cc721403a98fd72dbd5/install_appledoc.sh | sh
 #- openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in .\/.ssh/github_rsa.enc -out .\/.ssh/github_rsa -d
 #- chmod 600 .\/.ssh/github_rsa
-
 #- sha1sum .\/.ssh/github_rsa
 # Add the key to the ssh agent
-- ssh-add .\/.ssh/github_rsa
+#- ssh-add .\/.ssh/github_rsa
 
 # Bad ones, kept for reference:
 #- travis_wait 60 pod repo update > /dev/null 2>&1
