@@ -27,7 +27,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-./scripts/update-doc.bash
+#./scripts/update-doc.bash
 
 # Build and deploy Olympus
 ./scripts/build-olympus.bash
