@@ -2,9 +2,6 @@
 #
 # Main script that will drive CI/CD actions, depending on type of commit
 
-# Build Test-App and run integration tests
-set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-
 if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
 	echo "-- This is a pull request, bailing out."
 	exit 0
