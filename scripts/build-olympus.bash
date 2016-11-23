@@ -10,11 +10,12 @@ pod install --project-directory=Examples/restcomm-olympus
 
 # Decrypting certs
 echo "-- Setting up signing"
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${PROFILE_NAME}.mobileprovision
 # Development
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_NAME}.mobileprovision
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-cert.cer.enc -d -a -out scripts/certs/developer-cert.cer
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-key.p12.enc -d -a -out scripts/certs/developer-key.p12
 # Distribution
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_NAME}.mobileprovision
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-cert.cer.enc -d -a -out scripts/certs/enterprise-distribution-cert.cer
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-key.p12.enc -d -a -out scripts/certs/enterprise-distribution-key.p12
 
@@ -45,7 +46,8 @@ echo "Checking scripts"
 find scripts
 # Put the provisioning profile in the right place so that they are picked up by Xcode
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp "./scripts/provisioning-profile/$PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+cp "./scripts/provisioning-profile/$DISTRIBUTION_PROVISIONING_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 echo "Checking provisioning profiles"
 find scripts
 ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
@@ -65,14 +67,14 @@ echo "-- Building Olympus"
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS,name=iPhone SE,OS=10.0' | xcpretty
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
-#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY='iPhone Distribution' DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$PROFILE_NAME PROVISIONING_PROFILE_SPECIFIER=''
+#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY='iPhone Distribution' DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME PROVISIONING_PROFILE_SPECIFIER=''
 
 xcodebuild archive \
              -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace \
              -scheme restcomm-olympus \
              -configuration Enterprise \
              -derivedDataPath ./build \
-             -archivePath ./build/Products/restcomm-olympus.xcarchive DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$PROFILE_NAME
+             -archivePath ./build/Products/restcomm-olympus.xcarchive DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME
 
 echo "-- Exporting Archive"
 xcodebuild -exportArchive \
@@ -85,6 +87,6 @@ xcodebuild -exportArchive \
 
 # Sign App
 #echo "-- Signing App"
-#PROVISIONING_PROFILE="$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_NAME.mobileprovision"
+#PROVISIONING_PROFILE="$HOME/Library/MobileDevice/Provisioning Profiles/$DISTRIBUTION_PROVISIONING_PROFILE_NAME.mobileprovision"
 #OUTPUTDIR="$PWD/build/Release-iphoneos"
 #xcrun -log -sdk iphoneos PackageApplication "$OUTPUTDIR/$APP_NAME.app" -o "$OUTPUTDIR/$APP_NAME.ipa" -sign "$DEVELOPER_NAME" -embed "$PROVISIONING_PROFILE"
