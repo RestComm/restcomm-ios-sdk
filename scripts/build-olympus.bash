@@ -9,6 +9,9 @@ echo "-- Installing CocoaPod dependencies"
 pod install --project-directory=Examples/restcomm-olympus
 
 # Decrypting certs
+echo "-- Setting up signing"
+find scripts
+echo "-- Will check for mobileprovision at: scripts/profile/${PROFILE_NAME}.mobileprovision.enc"
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/profile/${PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/profile/${PROFILE_NAME}.mobileprovision
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-cert.cer.enc -d -a -out scripts/certs/enterprise-distribution-cert.cer
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-key.p12.enc -d -a -out scripts/certs/enterprise-distribution-key.p12
