@@ -11,6 +11,7 @@ env:
   - secure: "ioMyivfPG8gHNtmbvPPyD9JADUPKtszx+7bqA5oWVAVBuZ7q4HjKdsEx+n2aOaNXY1RSfzA8YzHZ1dD7dj8MBxz2UyuiOeOmihCl2EcnGnXC0AdHy1TV/fHwz9Td6cIU1Fj2uF0FkbhjtFDjK3LQQ6uGudsuDm1ZEF6rc3ioDXY="
   - APP_NAME="restcomm-olympus"
   - 'DEVELOPER_NAME="iPhone Distribution: Telestax, Inc."'
+  - DEVELOPMENT_TEAM: "H9PG74NSQT"
   - PROFILE_NAME="enterprise-provisioning-profile"
 #  - APP_NAME: "restcomm-olympus"
 #  - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
