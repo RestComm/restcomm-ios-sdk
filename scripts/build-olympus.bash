@@ -56,7 +56,8 @@ xcodebuild archive \
              -scheme restcomm-olympus \
              -configuration Enterprise \
              -derivedDataPath ./build \
-             -archivePath ./build/Products/restcomm-olympus.xcarchive
+             -archivePath ./build/Products/restcomm-olympus.xcarchive \
+				 DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM
 
 echo "-- Exporting Archive"
 xcodebuild -exportArchive \
