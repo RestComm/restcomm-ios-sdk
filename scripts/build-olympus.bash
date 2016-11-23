@@ -11,6 +11,10 @@ pod install --project-directory=Examples/restcomm-olympus
 # Decrypting certs
 echo "-- Setting up signing"
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${PROFILE_NAME}.mobileprovision
+# Development
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-cert.cer.enc -d -a -out scripts/certs/developer-cert.cer
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-key.p12.enc -d -a -out scripts/certs/developer-key.p12
+# Distribution
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-cert.cer.enc -d -a -out scripts/certs/enterprise-distribution-cert.cer
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-key.p12.enc -d -a -out scripts/certs/enterprise-distribution-key.p12
 
@@ -30,13 +34,24 @@ security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
 # Add certificates to keychain and allow codesign to access them
 security import ./scripts/certs/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
+# Development
+security import ./scripts/certs/developer-cert.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
+security import ./scripts/certs/developer-key.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
+# Distribution
 security import ./scripts/certs/enterprise-distribution-cert.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
 security import ./scripts/certs/enterprise-distribution-key.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
 
-# Put the provisioning profile in place
+echo "Checking scripts"
+find scripts
+# Put the provisioning profile in the right place so that they are picked up by Xcode
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 cp "./scripts/provisioning-profile/$PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+echo "Checking provisioning profiles"
+find scripts
 ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
+
+echo "Signing identities: "
+security find-identity -p codesigning -v
 # --------
 
 
@@ -64,6 +79,7 @@ xcodebuild -exportArchive \
              -archivePath ./build/Products/restcomm-olympus.xcarchive \
              -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist \
              -exportPath ./build/Products/IPA
+
 # From blog post
 #set -o pipefail && xctool -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
 

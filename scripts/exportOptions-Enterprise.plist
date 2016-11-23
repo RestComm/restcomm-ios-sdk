@@ -18,7 +18,7 @@
         <string>https://github.com/RestComm/restcomm-ios-sdk#latest-olympus-ipa</string>
         <key>displayImageURL</key>
         <string>https://github.com/RestComm/restcomm-ios-sdk/blob/master/Examples/restcomm-olympus/restcomm-olympus/img/icon/icon-60x60%402x.png</string>
-        <ke>fullSizeImageURL</key>
+        <key>fullSizeImageURL</key>
         <string>https://github.com/RestComm/restcomm-ios-sdk/blob/master/Examples/restcomm-olympus/restcomm-olympus/img/icon/icon-60x60%403x.png</string>
     </dict>
 </dict>
