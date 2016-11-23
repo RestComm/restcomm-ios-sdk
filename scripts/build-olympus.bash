@@ -74,7 +74,8 @@ xcodebuild archive \
              -scheme restcomm-olympus \
              -configuration Enterprise \
              -derivedDataPath ./build \
-             -archivePath ./build/Products/restcomm-olympus.xcarchive DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME
+             -archivePath ./build/Products/restcomm-olympus.xcarchive CODE_SIGN_IDENTITY="iPhone Developer" DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM 
+#PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME
 
 echo "-- Exporting Archive"
 xcodebuild -exportArchive \
