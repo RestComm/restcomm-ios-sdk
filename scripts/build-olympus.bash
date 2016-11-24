@@ -17,6 +17,8 @@ openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provi
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-cert.cer.enc -d -a -out scripts/certs/developer-cert.cer
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-key.p12.enc -d -a -out scripts/certs/developer-key.p12
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-appledev-cert.cer.enc -d -a -out scripts/certs/developer-appledev-cert.cer
+openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-appledev-key.p12.enc -d -a -out scripts/certs/developer-appledev-key.p12
 # Distribution
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_NAME}.mobileprovision
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/enterprise-distribution-cert.cer.enc -d -a -out scripts/certs/enterprise-distribution-cert.cer
@@ -41,6 +43,8 @@ security import ./scripts/certs/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build
 # Development
 security import ./scripts/certs/developer-cert.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
 security import ./scripts/certs/developer-key.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
+security import ./scripts/certs/developer-appledev-cert.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
+security import ./scripts/certs/developer-appledev-key.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
 # Distribution
 security import ./scripts/certs/enterprise-distribution-cert.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
 security import ./scripts/certs/enterprise-distribution-key.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
