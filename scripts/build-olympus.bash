@@ -91,7 +91,7 @@ echo "-- Building Olympus"
 xcodebuild archive \
              -project Examples/test-xcode8/test-xcode8.xcodeproj \
              -scheme test-xcode8 \
-             -configuration Enterprise \
+             -configuration Release \
              -derivedDataPath ./build \
              -archivePath ./build/Products/test-xcode8.xcarchive 
 
