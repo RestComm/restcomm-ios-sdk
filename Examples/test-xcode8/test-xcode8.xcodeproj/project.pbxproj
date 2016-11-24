@@ -110,7 +110,7 @@
 				TargetAttributes = {
 					AE1192D21DE7270100F1466F = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = H9PG74NSQT;
+						DevelopmentTeam = 52RH5V8JEN;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -273,7 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = 52RH5V8JEN;
 				INFOPLIST_FILE = "test-xcode8/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.test-xcode8";
@@ -285,7 +285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = 52RH5V8JEN;
 				INFOPLIST_FILE = "test-xcode8/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.test-xcode8";
@@ -312,6 +312,7 @@
 				AE1192EC1DE7270100F1466F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
