@@ -13,6 +13,7 @@ env:
   - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
   - DEVELOPMENT_TEAM: "H9PG74NSQT"
   - DEVELOPMENT_PROVISIONING_PROFILE_NAME: "development"
+  - DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME: "development-olympus"
   - DISTRIBUTION_PROVISIONING_PROFILE_NAME: "enterprise-distribution"
 #  - APP_NAME: "restcomm-olympus"
 #  - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."

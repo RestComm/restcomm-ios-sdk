@@ -9,6 +9,7 @@ target 'Sample' do
   #pod 'Quickblox-WebRTC'
   #pod 'webrtc-framework'
 
+  #use_frameworks!
   #pod 'restcomm-ios-sdk', :path => '../'
   pod 'restcomm-ios-sdk'
 
