@@ -23,6 +23,8 @@ env:
 # cache: cocoapods
 ##podfile: Test-App/Podfile
 before_install:
+# Export travis_wait function for use externally
+- export -f travis_wait
 #- brew install md5sha1sum
 
 # Install appledoc as I don't see it pre-installed
