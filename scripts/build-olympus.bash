@@ -56,6 +56,8 @@ mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 cp "./scripts/provisioning-profile/$DISTRIBUTION_PROVISIONING_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+cp "./scripts/provisioning-profile/provisioningprofilemanualdevelopment3.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/4a55a44a-c058-45d0-accd-f06b6b0b72fa.mobileprovision
+
 echo "Checking provisioning profiles"
 find scripts
 ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
