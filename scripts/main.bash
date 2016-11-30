@@ -1,16 +1,28 @@
 #!/bin/bash
 #
-# Main script that will drive CI/CD actions, depending on type of commit
+# Main script that will drive CI/CD actions, depending on type of commit.
+# For local builds we need to export COMMIT_AUTHOR_EMAIL, GITHUB_OAUTH_TOKEN, prior to running it
 
-if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
-	echo "-- This is a pull request, bailing out."
-	exit 0
-fi
+if [ ! -z "$TRAVIS" ]
+then
+	# This is a travis build
+	if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
+		echo "-- This is a pull request, bailing out."
+		exit 0
+	fi
 
-# CD_BRANCH is the brach we are passing from the travis CI settings and shows which branch CI should deploy from
-if [[ "$TRAVIS_BRANCH" != "$CD_BRANCH" ]]; then
-	echo "-- Testing on a branch other than $CD_BRANCH, bailing out."
-	exit 0
+	# CD_BRANCH is the brach we are passing from the travis CI settings and shows which branch CI should deploy from
+	if [[ "$TRAVIS_BRANCH" != "$CD_BRANCH" ]]; then
+		echo "-- Testing on a branch other than $CD_BRANCH, bailing out."
+		exit 0
+	fi
+else
+	# This is a local build
+	if [[ "$DEPLOY" != "true" ]]
+	then
+		echo "-- This is a local build and DEPLOY env variable is not true, bailing out."
+		exit 0
+	fi
 fi
 
 echo "-- Processing main script."

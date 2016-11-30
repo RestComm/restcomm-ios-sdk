@@ -7,43 +7,49 @@ osx_image: xcode8.1
 language: objective-c
 env:
   global:
-  - COMMIT_AUTHOR_EMAIL: "antonis.tsakiridis@telestax.com"
   - secure: "ioMyivfPG8gHNtmbvPPyD9JADUPKtszx+7bqA5oWVAVBuZ7q4HjKdsEx+n2aOaNXY1RSfzA8YzHZ1dD7dj8MBxz2UyuiOeOmihCl2EcnGnXC0AdHy1TV/fHwz9Td6cIU1Fj2uF0FkbhjtFDjK3LQQ6uGudsuDm1ZEF6rc3ioDXY="
+# Added them in a script instead to be reachable in local builds as well
+  - COMMIT_AUTHOR_EMAIL: "antonis.tsakiridis@telestax.com"
   - APP_NAME: "restcomm-olympus"
   - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
   - DEVELOPMENT_TEAM: "H9PG74NSQT"
   - DEVELOPMENT_PROVISIONING_PROFILE_NAME: "development"
   - DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME: "development-olympus"
   - DISTRIBUTION_PROVISIONING_PROFILE_NAME: "enterprise-distribution"
-#  - APP_NAME: "restcomm-olympus"
-#  - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
-#  - PROFILE_NAME: "enterprise-provisioning-profile"
 
-# Consider uncommenting this once we are stable
+# Consider uncommenting this once we are fully stable
 # cache: cocoapods
 ##podfile: Test-App/Podfile
 before_install:
-# Export travis_wait function for use externally
+##- ./scripts/local-wrapper.bash
+# Export travis_wait function for use externally and travis_jigger that is required by travis_wait
+- export -f travis_jigger
 - export -f travis_wait
 #- brew install md5sha1sum
 
 # Install appledoc as I don't see it pre-installed
 ##- curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/1637e50d6c478add443c7cc721403a98fd72dbd5/install_appledoc.sh | sh
+
+# In case Travis CI has those issues again in the future with old cocoapods version
+#- gem install cocoapods # Since Travis is not always on latest version
+
+# In case we need to use a private key locally in the future
 #- openssl aes-256-cbc -K $encrypted_1a2b91771659_key -iv $encrypted_1a2b91771659_iv -in .\/.ssh/github_rsa.enc -out .\/.ssh/github_rsa -d
 #- chmod 600 .\/.ssh/github_rsa
+# In case we need to verify the private key without exposing it
 #- sha1sum .\/.ssh/github_rsa
 # Add the key to the ssh agent
 #- ssh-add .\/.ssh/github_rsa
 
-# Bad ones, kept for reference:
-#- travis_wait 60 pod repo update > /dev/null 2>&1
-#- travis_wait 60 ./pod-repo-update.sh
-#- gem install cocoapods # Since Travis is not always on latest version
+# In case we need to tell travis to wait for a command without output for more than default 10 minutes. This one uses 60 minutes of waiting time. Notice that
+# the way travis_wait works is to output a random string in STDOUT, so you *must not* redirect the output of the whole command to /dev/null
 #- travis_wait 60 pod repo update --silent
 
+# Install pod dependencies for Test-App that is used for integration testing
 ##- pod install --project-directory=Test-App
 script:
-# Bad ones, kept for reference:
+
+# Various failing commands that I used until I found the correct one, let's keep them for reference
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' | xcpretty
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1'
