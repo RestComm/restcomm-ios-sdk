@@ -6,7 +6,8 @@ PLIST_BUDDY="/usr/libexec/PlistBuddy"
 INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist"
 
 echo "-- Installing CocoaPod dependencies"
-pod install --project-directory=Examples/restcomm-olympus
+# TODO: add this back when we 're done
+##pod install --project-directory=Examples/restcomm-olympus
 
 # Decrypting certs
 echo "-- Setting up signing"
@@ -90,14 +91,14 @@ echo "-- Building Olympus"
 #             -archivePath ./build/Products/restcomm-olympus.xcarchive CODE_SIGN_IDENTITY="iPhone Developer" DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM 
 #PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME
 
-#travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
-xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
+travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
+#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
 
 echo "-- Exporting Archive"
 # Exporting and signing with distribution certificate
 #xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-#travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+#xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
 
 # From blog post
 #set -o pipefail && xctool -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
