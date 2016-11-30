@@ -7,10 +7,10 @@ INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info
 
 echo "-- Installing CocoaPod dependencies"
 # TODO: add this back when we 're done
-##pod install --project-directory=Examples/restcomm-olympus
+pod install --project-directory=Examples/restcomm-olympus
 
 # For starters lets only create keychains in travis, since locally everything is setup already. But ultimately, we should create a separate new keychain locally to so that we can test that better
-echo "TRAVIS: $TRAVIS"
+echo "-- TRAVIS: $TRAVIS"
 
 if [ ! -z "$TRAVIS" ]
 then
@@ -96,13 +96,27 @@ echo "-- Building Olympus"
 #             -archivePath ./build/Products/restcomm-olympus.xcarchive CODE_SIGN_IDENTITY="iPhone Developer" DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM 
 #PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_NAME
 
-travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
+if [ ! -z "$TRAVIS" ]
+then
+	travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
+else
+	#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive | xcpretty
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
+fi
 #xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
 
 echo "-- Exporting Archive"
 # Exporting and signing with distribution certificate
 #xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+if [ ! -z "$TRAVIS" ]
+then
+	travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+else
+	# Use system rvm to avoid build error
+	#rvm system
+	#xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
+fi
 #xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
 
 # From blog post

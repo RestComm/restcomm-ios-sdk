@@ -5,13 +5,12 @@
 #
 # For local builds we need to have exported ENTERPRISE_DISTRIBUTION_KEY_PASSWORD and DEPLOY in the shell env
 
-if [ ! -z "$TRAVIS" ]
-then
-	# if this is a travis build, no need to do anything, just continue with main script
-	./scripts/main.bash
-	echo "-- This is Travis CI build, no need to local setup"
-	exit 0
-fi
+#if [ ! -z "$TRAVIS" ]
+#then
+#	# if this is a travis build, no need to do anything, just continue with main script
+#	echo "-- This is Travis CI build, no need to local setup"
+#	exit 0
+#fi
 
 # For now using copies of same values once for travis and one for locally. When things clear up with can update accordingly
 if [ ! -z "$TRAVIS" ]
@@ -45,3 +44,5 @@ fi
 #if [[ "$DEPLOY" == "true" ]]
 #then
 #fi
+
+./scripts/main.bash

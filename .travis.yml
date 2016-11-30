@@ -9,13 +9,13 @@ env:
   global:
   - secure: "ioMyivfPG8gHNtmbvPPyD9JADUPKtszx+7bqA5oWVAVBuZ7q4HjKdsEx+n2aOaNXY1RSfzA8YzHZ1dD7dj8MBxz2UyuiOeOmihCl2EcnGnXC0AdHy1TV/fHwz9Td6cIU1Fj2uF0FkbhjtFDjK3LQQ6uGudsuDm1ZEF6rc3ioDXY="
 # Added them in a script instead to be reachable in local builds as well
-  - COMMIT_AUTHOR_EMAIL: "antonis.tsakiridis@telestax.com"
-  - APP_NAME: "restcomm-olympus"
-  - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
-  - DEVELOPMENT_TEAM: "H9PG74NSQT"
-  - DEVELOPMENT_PROVISIONING_PROFILE_NAME: "development"
-  - DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME: "development-olympus"
-  - DISTRIBUTION_PROVISIONING_PROFILE_NAME: "enterprise-distribution"
+#  - COMMIT_AUTHOR_EMAIL: "antonis.tsakiridis@telestax.com"
+#  - APP_NAME: "restcomm-olympus"
+#  - DEVELOPER_NAME: "iPhone Distribution: Telestax, Inc."
+#  - DEVELOPMENT_TEAM: "H9PG74NSQT"
+#  - DEVELOPMENT_PROVISIONING_PROFILE_NAME: "development"
+#  - DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME: "development-olympus"
+#  - DISTRIBUTION_PROVISIONING_PROFILE_NAME: "enterprise-distribution"
 
 # Consider uncommenting this once we are fully stable
 # cache: cocoapods
@@ -57,6 +57,6 @@ script:
 
 # Good one:
 ##- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-- ./scripts/main.bash
+- ./scripts/local-wrapper.bash
 
 # testing other user
