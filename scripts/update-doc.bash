@@ -16,6 +16,12 @@ then
 	exit 1	
 fi
 
+if [ `git branch --list $DOC_BRANCH` ]
+then
+	echo "$DOC_BRANCH already exists, removing it"
+	git branch -D $DOC_BRANCH
+fi
+
 echo "-- Checking out $DOC_BRANCH as orphan"
 git checkout --orphan $DOC_BRANCH
 if [ $? -ne 0 ]
