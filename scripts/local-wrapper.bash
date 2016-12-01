@@ -12,30 +12,32 @@
 #	exit 0
 #fi
 
-# For now using copies of same values once for travis and one for locally. When things clear up with can update accordingly
+# Common to local and travis builds
+export COMMIT_AUTHOR_EMAIL="antonis.tsakiridis@telestax.com"
+export APP_NAME="restcomm-olympus"
+export DEVELOPER_NAME="iPhone Distribution: Telestax, Inc."
+export DEVELOPMENT_TEAM="H9PG74NSQT"
+#export DEVELOPMENT_PROVISIONING_PROFILE_NAME="development"
+
+export APPLE_CERT="AppleWWDRCA.cer"
+export DEVELOPMENT_CERT="developer-cert.cer"
+export DEVELOPMENT_KEY="developer-key.p12"
+export DISTRIBUTION_CERT="enterprise-distribution-cert.cer"
+export DISTRIBUTION_KEY="enterprise-distribution-key.p12"
+export DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME="profile-development-olympus"
+export DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME="profile-distribution-olympus"
+export CUSTOM_KEYCHAIN="ios-build.keychain"
+
 if [ ! -z "$TRAVIS" ]
 then
 	# Travis build
 	export COMMIT_USERNAME="Travis CI"
-	export COMMIT_AUTHOR_EMAIL="antonis.tsakiridis@telestax.com"
-	export APP_NAME="restcomm-olympus"
-	export DEVELOPER_NAME="iPhone Distribution: Telestax, Inc."
-	export DEVELOPMENT_TEAM="H9PG74NSQT"
-	export DEVELOPMENT_PROVISIONING_PROFILE_NAME="development"
-	export DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME="development-olympus"
-	export DISTRIBUTION_PROVISIONING_PROFILE_NAME="enterprise-distribution"
 else
+	# Local build
 	export CD_BRANCH="develop"
 	export BASE_VERSION="1.0.0"
 	export VERSION_SUFFIX="beta.4.1"
 	export COMMIT_USERNAME="Antonis Tsakiridis"
-	export COMMIT_AUTHOR_EMAIL="antonis.tsakiridis@telestax.com"
-	export APP_NAME="restcomm-olympus"
-	export DEVELOPER_NAME="iPhone Distribution: Telestax, Inc."
-	export DEVELOPMENT_TEAM="H9PG74NSQT"
-	export DEVELOPMENT_PROVISIONING_PROFILE_NAME="development"
-	export DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME="development-olympus"
-	export DISTRIBUTION_PROVISIONING_PROFILE_NAME="enterprise-distribution"
 	export DEPLOY="true"
 fi
 

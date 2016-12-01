@@ -791,7 +791,7 @@
 				TargetAttributes = {
 					AE79D31519BC8DAD0023306C = {
 						DevelopmentTeam = H9PG74NSQT;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1254,7 +1254,7 @@
 				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1273,8 +1273,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
-				PROVISIONING_PROFILE = "c9921766-d9e7-40ac-bfd9-fdfef916b9f5";
-				PROVISIONING_PROFILE_SPECIFIER = "development-profile-olympus";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				USE_HEADERMAP = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -1294,7 +1294,7 @@
 				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1313,8 +1313,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
-				PROVISIONING_PROFILE = "c9921766-d9e7-40ac-bfd9-fdfef916b9f5";
-				PROVISIONING_PROFILE_SPECIFIER = "development-profile-olympus";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				USE_HEADERMAP = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
