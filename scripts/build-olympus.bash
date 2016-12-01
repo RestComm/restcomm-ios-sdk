@@ -90,7 +90,14 @@ echo -e "-- Updating .plist version strings:\n\tCFBundleShortVersionString $BASE
 # Set base version
 $PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$INFOPLIST_FILE"
 # Set suffix
-$PLIST_BUDDY -c "Set :CFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}" "$INFOPLIST_FILE"
+if [ ! -z "$TRAVIS" ]
+then
+	# Travis
+	$PLIST_BUDDY -c "Set :CFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}" "$INFOPLIST_FILE"
+else
+	# Local, let's use the commit hash for now
+	$PLIST_BUDDY -c "Set :CFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}" "$INFOPLIST_FILE"
+fi
 
 echo "-- Building Olympus"
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
@@ -144,6 +151,9 @@ fi
 #PROVISIONING_PROFILE="$HOME/Library/MobileDevice/Provisioning Profiles/$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision"
 #OUTPUTDIR="$PWD/build/Release-iphoneos"
 #xcrun -log -sdk iphoneos PackageApplication "$OUTPUTDIR/$APP_NAME.app" -o "$OUTPUTDIR/$APP_NAME.ipa" -sign "$DEVELOPER_NAME" -embed "$PROVISIONING_PROFILE"
+
+echo "-- Uploading to TestFairy"
+./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
 
 
 # Clean up

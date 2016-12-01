@@ -3,6 +3,14 @@
 # Main script that will drive CI/CD actions, depending on type of commit.
 # For local builds we need to export COMMIT_AUTHOR_EMAIL, GITHUB_OAUTH_TOKEN, prior to running it
 
+# Run integration tests in simulator
+if [ ! -z "$TRAVIS" ]
+then
+	set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+else
+	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+fi
+
 if [ ! -z "$TRAVIS" ]
 then
 	# This is a travis build
@@ -39,10 +47,10 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-./scripts/update-doc.bash
+#./scripts/update-doc.bash
 
 # Build and deploy Olympus
-#./scripts/build-olympus.bash
+./scripts/build-olympus.bash
 
 # Update the pod
 #- pod lib lint
