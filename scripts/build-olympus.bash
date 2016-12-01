@@ -34,8 +34,13 @@ openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
 echo "-- Managing keychain"
-echo -n "-- Current keychain: "
-security default-keychain
+ORIGINAL_KEYCHAIN=`security default-keychain | rev | cut -d '/' -f -1 | sed 's/\"//' | rev`
+echo "-- Original keychain: \"$ORIGINAL_KEYCHAIN\""
+if [[ "$ORIGINAL_KEYCHAIN" == "$CUSTOM_KEYCHAIN" ]]
+then
+		echo "-- Custom keychain already set as default, bailing out to avoid issues."
+		exit 1
+fi
 
 # Create a custom keychain, $CUSTOM_KEYCHAIN (not much interested for password as it will be hosted an CI env and removed right after)
 security create-keychain -p keychain_password $CUSTOM_KEYCHAIN
@@ -105,7 +110,8 @@ echo "-- Building Olympus"
 if [ ! -z "$TRAVIS" ]
 then
 	#travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
-	travis_wait 60 xcodebuild archive  -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace  -scheme restcomm-olympus  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
+	#travis_wait 60 xcodebuild archive  -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace  -scheme restcomm-olympus  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
 else
 	#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive | xcpretty
 	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
@@ -118,7 +124,8 @@ echo "-- Exporting Archive"
 if [ ! -z "$TRAVIS" ]
 then
 	#travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-	travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+	#travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
 else
 	# Use system rvm to avoid build error
 	#rvm system
@@ -138,7 +145,13 @@ fi
 
 
 # Clean up
-#echo "-- Removing keychain $CUSTOM_KEYCHAIN"
-#security delete-keychain $CUSTOM_KEYCHAIN
+echo "-- Cleaning up"
+
+echo "-- Setting original keychain, $ORIGINAL_KEYCHAIN, as default"
+security default-keychain -s $ORIGINAL_KEYCHAIN
+
+echo "-- Removing keychain $CUSTOM_KEYCHAIN"
+security delete-keychain $CUSTOM_KEYCHAIN
+
 echo "-- Removing keys, certs and profiles"
 rm scripts/certs/${DEVELOPMENT_CERT} scripts/certs/${DEVELOPMENT_KEY} scripts/certs/${DISTRIBUTION_CERT} scripts/certs/${DISTRIBUTION_KEY} ~/Library/MobileDevice/Provisioning\ Profiles/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision ./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision ./scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
