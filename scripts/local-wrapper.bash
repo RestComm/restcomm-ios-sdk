@@ -5,6 +5,40 @@
 #
 # For local builds we need to have exported GITHUB_OAUTH_TOKEN, ENTERPRISE_DISTRIBUTION_KEY_PASSWORD and DEPLOY in the shell env
 
+# Global facilities for use by all other scripts
+function is_git_repo_state_clean() {
+	# Update the index
+	#git update-index -q --ignore-submodules --refresh
+	err=0
+
+	# Disallow unstaged changes in the working tree
+	if ! git diff-files --quiet --ignore-submodules --
+	then
+		echo >&2 "-- Error: you have unstaged changes."
+		#git diff-files --name-status -r --ignore-submodules -- >&2
+		err=1
+	fi
+
+	# Disallow uncommitted changes in the index
+	if ! git diff-index --cached --quiet HEAD --ignore-submodules --
+	then
+		echo >&2 "-- Error: your staging area/index contains uncommitted changes."
+		#git diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
+		err=1
+	fi
+
+	# Disallow untracked changes 
+	if [[ `git ls-files --other --exclude-standard --directory` ]]
+	then
+		echo >&2 "-- Error: you have untracked changes."
+		#git diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
+		err=1
+	fi
+
+	return $err;
+}
+
+
 #if [ ! -z "$TRAVIS" ]
 #then
 #	# if this is a travis build, no need to do anything, just continue with main script
@@ -40,6 +74,8 @@ else
 	export COMMIT_USERNAME="Antonis Tsakiridis"
 	export DEPLOY="true"
 fi
+
+export -f is_git_repo_state_clean
 
 # Local build
 #DEPLOY=true

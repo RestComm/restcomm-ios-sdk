@@ -6,6 +6,14 @@
 ORIGINAL_BRANCH=$CD_BRANCH
 DOC_BRANCH="gh-pages"
 
+echo "-- Checking if repo is clean, before doing documentation generation"
+is_git_repo_state_clean
+if [ $? -ne 0 ]
+then
+	echo "-- Error: repo is not clean, please make sure that there are no untracked, unstaged or uncommitted changes"
+	exit 1	
+fi
+
 echo "-- Showing local branches:"
 git branch
 
