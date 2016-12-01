@@ -3,7 +3,7 @@
 # Main script to be used for local builds (i.e. not Travis CI), that sets up the environment so that scripts designed for Travis CI can work locally,
 # and we can do fast builds/testing/deployment even if Travis CI is not available (something that happens often, sadly)
 #
-# For local builds we need to have exported ENTERPRISE_DISTRIBUTION_KEY_PASSWORD and DEPLOY in the shell env
+# For local builds we need to have exported GITHUB_OAUTH_TOKEN, ENTERPRISE_DISTRIBUTION_KEY_PASSWORD and DEPLOY in the shell env
 
 #if [ ! -z "$TRAVIS" ]
 #then

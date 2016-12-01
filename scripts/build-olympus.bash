@@ -33,7 +33,7 @@ openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs
 
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
-echo "-- Managing keychain"
+echo "-- Setting up keychain"
 ORIGINAL_KEYCHAIN=`security default-keychain | rev | cut -d '/' -f -1 | sed 's/\"//' | rev`
 echo "-- Original keychain: \"$ORIGINAL_KEYCHAIN\""
 if [[ "$ORIGINAL_KEYCHAIN" == "$CUSTOM_KEYCHAIN" ]]
@@ -42,9 +42,11 @@ then
 		exit 1
 fi
 
+echo "-- Creating custom keychain for signing: \"$CUSTOM_KEYCHAIN\""
 # Create a custom keychain, $CUSTOM_KEYCHAIN (not much interested for password as it will be hosted an CI env and removed right after)
 security create-keychain -p keychain_password $CUSTOM_KEYCHAIN
 
+echo "-- Setting up $CUSTOM_KEYCHAIN as default"
 # Make the $CUSTOM_KEYCHAIN default, so xcodebuild will use it for signing
 security default-keychain -s $CUSTOM_KEYCHAIN
 
@@ -77,7 +79,7 @@ cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAM
 cp "./scripts/provisioning-profile/$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 #cp "./scripts/provisioning-profile/provisioningprofilemanualdevelopment3.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/4a55a44a-c058-45d0-accd-f06b6b0b72fa.mobileprovision
 
-echo "Checking provisioning profiles"
+echo "-- Checking provisioning profiles"
 #find scripts
 ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
 echo "Checking signing identities: "
@@ -114,7 +116,7 @@ then
 	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
 else
 	#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive | xcpretty
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive
 fi
 #xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
 
@@ -147,10 +149,10 @@ fi
 # Clean up
 echo "-- Cleaning up"
 
-echo "-- Setting original keychain, $ORIGINAL_KEYCHAIN, as default"
+echo "-- Setting original keychain, \"$ORIGINAL_KEYCHAIN\", as default"
 security default-keychain -s $ORIGINAL_KEYCHAIN
 
-echo "-- Removing keychain $CUSTOM_KEYCHAIN"
+echo "-- Removing custom keychain $CUSTOM_KEYCHAIN"
 security delete-keychain $CUSTOM_KEYCHAIN
 
 echo "-- Removing keys, certs and profiles"
