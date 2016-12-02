@@ -86,71 +86,69 @@ echo "Checking signing identities: "
 security find-identity -p codesigning -v
 
 
-echo -e "-- Updating .plist version strings:\n\tCFBundleShortVersionString $BASE_VERSION\n\tCFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}"
-# Set base version
-$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$INFOPLIST_FILE"
-# Set suffix
 if [ ! -z "$TRAVIS" ]
 then
 	# Travis
-	$PLIST_BUDDY -c "Set :CFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}" "$INFOPLIST_FILE"
+	BUNDLE_VERSION="${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}"
 else
 	# Local, let's use the commit hash for now
-	$PLIST_BUDDY -c "Set :CFBundleVersion ${VERSION_SUFFIX}+${TRAVIS_BUILD_NUMBER}" "$INFOPLIST_FILE"
+	BUNDLE_VERSION="${VERSION_SUFFIX}+${COMMIT_SHA1}"
+fi
+echo -e "-- Updating .plist version strings:\n\tCFBundleShortVersionString $BASE_VERSION\n\tCFBundleVersion ${BUNDLE_VERSION}"
+# Set base version
+$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$INFOPLIST_FILE"
+$PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$INFOPLIST_FILE"
+# Set suffix
+
+# Update build string in sources if needed
+echo "-- Updating Sofia SIP User Agent with version"
+SDK_COMMON_HEADER=RestCommClient/Classes/common.h
+if [ ! -f $SDK_COMMON_HEADER ]; then
+	echo "$SDK_COMMON_HEADER not found, bailing"
+	exit 1;
+fi
+sed -i '' 's/#BASE_VERSION/$BASE_VERSION/' $SDK_COMMON_HEADER 
+sed -i '' 's/#VERSION_SUFFIX/$VERSION_SUFFIX/' $SDK_COMMON_HEADER 
+if [ ! -z "$TRAVIS" ]
+then
+	sed -i '' 's/#BUILD/$TRAVIS_BUILD_NUMBER/' $SDK_COMMON_HEADER
+else
+	sed -i '' 's/#BUILD/$COMMIT_SHA1/' $SDK_COMMON_HEADER
 fi
 
+OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
+if [ ! -f $OLYMPUS_UTILS ]; then
+	echo "$OLYMPUS_UTILS not found, bailing"
+	exit 1;
+fi
+sed -i '' 's/#GIT-HASH/$COMMIT_SHA1/' $OLYMPUS_UTILS 
+
+# Build and sign with development certificate (cannot use distribution cert here!)
 echo "-- Building Olympus"
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS,name=iPhone SE,OS=10.0' | xcpretty
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
 #set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY='iPhone Distribution' DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME PROVISIONING_PROFILE_SPECIFIER=''
 
-# Build and sign with development certificate (cannot use distribution cert here!)
-#xcodebuild archive \
-#             -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace \
-#             -scheme restcomm-olympus \
-#             -configuration Enterprise \
-#             -derivedDataPath ./build \
-#             -archivePath ./build/Products/restcomm-olympus.xcarchive 
-#CODE_SIGN_IDENTITY="iPhone Developer: Ivelin Ivanov (E3D845CWDU)" DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM 
-#             -archivePath ./build/Products/restcomm-olympus.xcarchive CODE_SIGN_IDENTITY="iPhone Developer" DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM 
-#PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME
-
 if [ ! -z "$TRAVIS" ]
 then
-	#travis_wait 60 xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
-	#travis_wait 60 xcodebuild archive  -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace  -scheme restcomm-olympus  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
+	#travis_wait 60 ...
 	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
 else
-	#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive | xcpretty
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
 fi
-#xcodebuild archive  -project Examples/test-xcode8/test-xcode8.xcodeproj  -scheme test-xcode8  -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/test-xcode8.xcarchive 
 
-echo "-- Exporting Archive"
 # Exporting and signing with distribution certificate
-#xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+echo "-- Exporting Archive"
 if [ ! -z "$TRAVIS" ]
 then
-	#travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-	#travis_wait 60 xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
+	#travis_wait 60 ...
 	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
 else
-	# Use system rvm to avoid build error
+	# IMPORTANT: Use system rvm to avoid build error
 	#rvm system
-	#xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
+	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
 fi
-#xcodebuild -exportArchive -archivePath ./build/Products/test-xcode8.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA
-
-# From blog post
-#set -o pipefail && xctool -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
-
-# Sign App
-#echo "-- Signing App"
-#PROVISIONING_PROFILE="$HOME/Library/MobileDevice/Provisioning Profiles/$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision"
-#OUTPUTDIR="$PWD/build/Release-iphoneos"
-#xcrun -log -sdk iphoneos PackageApplication "$OUTPUTDIR/$APP_NAME.app" -o "$OUTPUTDIR/$APP_NAME.ipa" -sign "$DEVELOPER_NAME" -embed "$PROVISIONING_PROFILE"
 
 echo "-- Uploading to TestFairy"
 ./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
@@ -158,6 +156,10 @@ echo "-- Uploading to TestFairy"
 
 # Clean up
 echo "-- Cleaning up"
+
+echo "-- Edited source files to discard version strings: $SDK_COMMON_HEADER, $OLYMPUS_UTILS"
+git checkout -- $SDK_COMMON_HEADER
+git checkout -- $OLYMPUS_UTILS
 
 echo "-- Setting original keychain, \"$ORIGINAL_KEYCHAIN\", as default"
 security default-keychain -s $ORIGINAL_KEYCHAIN

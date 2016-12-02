@@ -6,8 +6,12 @@
 # For local builds we need to have exported in your shell the following variables (for Travis they are setup via web/settings): 
 # - GITHUB_OAUTH_TOKEN 
 # - ENTERPRISE_DISTRIBUTION_KEY_PASSWORD 
-# - DEPLOY 
+# - DEPLOY: i.e. true/false
 # - TESTFAIRY_API_KEY
+# - BASE_VERSION: i.e. 1.0.0
+# - VERSION_SUFFIX: i.e. beta.4.1
+
+
 
 # Global facilities for use by all other scripts
 function is_git_repo_state_clean() {
@@ -41,6 +45,8 @@ function is_git_repo_state_clean() {
 
 	return $err;
 }
+# Export it for use in other scripts
+export -f is_git_repo_state_clean
 
 
 #if [ ! -z "$TRAVIS" ]
@@ -55,6 +61,8 @@ export COMMIT_AUTHOR_EMAIL="antonis.tsakiridis@telestax.com"
 export APP_NAME="restcomm-olympus"
 export DEVELOPER_NAME="iPhone Distribution: Telestax, Inc."
 export DEVELOPMENT_TEAM="H9PG74NSQT"
+# Keep the first seven chars from SHA1 as typically done
+export COMMIT_SHA1=`git rev-parse HEAD | cut -c -7`
 #export DEVELOPMENT_PROVISIONING_PROFILE_NAME="development"
 
 export APPLE_CERT="AppleWWDRCA.cer"
@@ -73,13 +81,9 @@ then
 else
 	# Local build
 	export CD_BRANCH="develop"
-	export BASE_VERSION="1.0.0"
-	export VERSION_SUFFIX="beta.4.1"
 	export COMMIT_USERNAME="Antonis Tsakiridis"
 	export DEPLOY="true"
 fi
-
-export -f is_git_repo_state_clean
 
 # Local build
 #DEPLOY=true
