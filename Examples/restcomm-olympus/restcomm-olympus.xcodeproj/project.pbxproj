@@ -193,6 +193,7 @@
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
 		AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */; };
+		DF0E495B0FDDE1FEA55F1474 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 625754B66674AFD8DDB62717 /* libPods-restcomm-olympus.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,6 +220,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		068132324007F5C84741984A /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		625754B66674AFD8DDB62717 /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7241EFEA928D219244595DE1 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
 		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
@@ -425,6 +429,7 @@
 			files = (
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
+				DF0E495B0FDDE1FEA55F1474 /* libPods-restcomm-olympus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +443,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		484106113CDEAD569A77CF4C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7241EFEA928D219244595DE1 /* Pods-restcomm-olympus.debug.xcconfig */,
+				068132324007F5C84741984A /* Pods-restcomm-olympus.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		AE3E52C31C57BB7B0057F5D0 /* cert */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +468,7 @@
 				AE79D31719BC8DAD0023306C /* Products */,
 				AEA495651C2997F6000D9762 /* restcomm-olympus */,
 				AED0B05F1A0976F8008A6057 /* restcomm-olympusTests */,
+				484106113CDEAD569A77CF4C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -470,6 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
+				625754B66674AFD8DDB62717 /* libPods-restcomm-olympus.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -728,11 +744,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-olympus" */;
 			buildPhases = (
+				C58656AFBD966E7FCADB9865 /* [CP] Check Pods Manifest.lock */,
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
 				AEAC80E51B76824A00D6BD09 /* ShellScript */,
 				AE7D36491D9E707F00610033 /* Embed Frameworks */,
+				916F94A054288AB271761292 /* [CP] Embed Pods Frameworks */,
+				9389E941DBC9BC79E4916299 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -968,6 +987,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		916F94A054288AB271761292 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9389E941DBC9BC79E4916299 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		AEAC80E51B76824A00D6BD09 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1006,6 +1055,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${PROJECT_DIR}/doc\"\ndoxygen Doxyfile";
+		};
+		C58656AFBD966E7FCADB9865 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1179,6 +1243,7 @@
 		};
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7241EFEA928D219244595DE1 /* Pods-restcomm-olympus.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1218,6 +1283,7 @@
 		};
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 068132324007F5C84741984A /* Pods-restcomm-olympus.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

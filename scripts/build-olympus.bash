@@ -4,6 +4,10 @@
 
 PLIST_BUDDY="/usr/libexec/PlistBuddy"
 INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist"
+# Various files that we edit
+SDK_COMMON_HEADER=RestCommClient/Classes/common.h
+OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
+OLYMPUS_PLIST=Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist
 
 echo "-- Installing CocoaPod dependencies"
 # TODO: add this back when we 're done
@@ -102,26 +106,24 @@ $PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$INFOPLIST_FILE"
 
 # Update build string in sources if needed
 echo "-- Updating Sofia SIP User Agent with version"
-SDK_COMMON_HEADER=RestCommClient/Classes/common.h
 if [ ! -f $SDK_COMMON_HEADER ]; then
 	echo "$SDK_COMMON_HEADER not found, bailing"
 	exit 1;
 fi
-sed -i '' 's/#BASE_VERSION/$BASE_VERSION/' $SDK_COMMON_HEADER 
-sed -i '' 's/#VERSION_SUFFIX/$VERSION_SUFFIX/' $SDK_COMMON_HEADER 
+sed -i '' "s/#BASE_VERSION/$BASE_VERSION/" $SDK_COMMON_HEADER 
+sed -i '' "s/#VERSION_SUFFIX/$VERSION_SUFFIX/" $SDK_COMMON_HEADER 
 if [ ! -z "$TRAVIS" ]
 then
-	sed -i '' 's/#BUILD/$TRAVIS_BUILD_NUMBER/' $SDK_COMMON_HEADER
+	sed -i '' "s/#BUILD/$TRAVIS_BUILD_NUMBER/" $SDK_COMMON_HEADER
 else
-	sed -i '' 's/#BUILD/$COMMIT_SHA1/' $SDK_COMMON_HEADER
+	sed -i '' "s/#BUILD/$COMMIT_SHA1/" $SDK_COMMON_HEADER
 fi
 
-OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
 if [ ! -f $OLYMPUS_UTILS ]; then
 	echo "$OLYMPUS_UTILS not found, bailing"
 	exit 1;
 fi
-sed -i '' 's/#GIT-HASH/$COMMIT_SHA1/' $OLYMPUS_UTILS 
+sed -i '' "s/#GIT-HASH/$COMMIT_SHA1/" $OLYMPUS_UTILS 
 
 # Build and sign with development certificate (cannot use distribution cert here!)
 echo "-- Building Olympus"
@@ -157,9 +159,8 @@ echo "-- Uploading to TestFairy"
 # Clean up
 echo "-- Cleaning up"
 
-echo "-- Edited source files to discard version strings: $SDK_COMMON_HEADER, $OLYMPUS_UTILS"
-git checkout -- $SDK_COMMON_HEADER
-git checkout -- $OLYMPUS_UTILS
+echo "-- Edited source files to discard version strings: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
+git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST
 
 echo "-- Setting original keychain, \"$ORIGINAL_KEYCHAIN\", as default"
 security default-keychain -s $ORIGINAL_KEYCHAIN
