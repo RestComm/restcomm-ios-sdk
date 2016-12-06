@@ -11,6 +11,7 @@
 # - BASE_VERSION: i.e. 1.0.0
 # - VERSION_SUFFIX: i.e. beta.4.1
 # - CUSTOM_KEYCHAIN_PASSWORD: password used for custom keychain we generate
+# - TESTFAIRY_APP_TOKEN: Test Fairy App token, so that only CI builds send stats to TF
 
 
 

@@ -8,6 +8,7 @@ INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info
 SDK_COMMON_HEADER=RestCommClient/Classes/common.h
 OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
 OLYMPUS_PLIST=Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist
+OLYMPUS_APP_DELEGATE=Examples/restcomm-olympus/restcomm-olympus/AppDelegate.m
 
 echo "-- Installing CocoaPod dependencies"
 # TODO: add this back when we 're done
@@ -123,11 +124,22 @@ else
 	sed -i '' "s/#BUILD/$COMMIT_SHA1/" $SDK_COMMON_HEADER
 fi
 
+echo "-- Updating git commit hash for Olympus About screen"
 if [ ! -f $OLYMPUS_UTILS ]; then
 	echo "$OLYMPUS_UTILS not found, bailing"
 	exit 1;
 fi
 sed -i '' "s/#GIT-HASH/$COMMIT_SHA1/" $OLYMPUS_UTILS 
+
+echo "-- Updating Test Fairy App Key, so that we get TF stats and insights"
+if [ ! -f $OLYMPUS_APP_DELEGATE ]; then
+	echo "$OLYMPUS_APP_DELEGATE not found, bailing"
+	exit 1;
+fi
+# uncomment token line
+sed -i '' '/#TESTFAIRY_APP_TOKEN/s/\/\///' $OLYMPUS_APP_DELEGATE
+# replace placeholder with actual app token
+sed -i '' "s/#TESTFAIRY_APP_TOKEN/$TESTFAIRY_APP_TOKEN/" $OLYMPUS_APP_DELEGATE 
 
 # Build and sign with development certificate (cannot use distribution cert here!)
 echo "-- Building Olympus"
