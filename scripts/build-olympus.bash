@@ -176,7 +176,7 @@ echo "-- Uploading to TestFairy"
 echo "-- Cleaning up"
 
 echo "-- Edited source files to discard version strings: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
-git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST
+git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST $OLYMPUS_APP_DELEGATE
 
 echo "-- Setting original keychain, \"$ORIGINAL_KEYCHAIN\", as default"
 security default-keychain -s $ORIGINAL_KEYCHAIN
