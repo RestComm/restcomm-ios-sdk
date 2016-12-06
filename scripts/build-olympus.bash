@@ -61,17 +61,21 @@ security unlock-keychain -p $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN
 # see http://www.egeek.me/2013/02/23/jenkins-and-xcode-user-interaction-is-not-allowed/
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/$CUSTOM_KEYCHAIN
 
+
+echo "-- Showing keychain info"
+security show-keychain-info $CUSTOM_KEYCHAIN
+
 # Add certificates to keychain and allow codesign to access them
-security import ./scripts/certs/${APPLE_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
+security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
 # Development
-security import ./scripts/certs/${DEVELOPMENT_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
-security import ./scripts/certs/${DEVELOPMENT_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
+security import ./scripts/certs/${DEVELOPMENT_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
+security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
 
 #security import ./scripts/certs/developer-appledev-cert.cer -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
 #security import ./scripts/certs/developer-appledev-key.p12 -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
 # Distribution
-security import ./scripts/certs/${DISTRIBUTION_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
-security import ./scripts/certs/${DISTRIBUTION_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
+security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
+security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
 
 echo "Installing provisioning profiles, so that XCode can find them"
 #echo "Checking scripts"
