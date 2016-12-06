@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # Main script that will drive CI/CD actions, depending on type of commit.
-# For local builds we need to export COMMIT_AUTHOR_EMAIL, GITHUB_OAUTH_TOKEN, prior to running it
 
 # Run integration tests in simulator
 if [ ! -z "$TRAVIS" ]
