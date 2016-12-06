@@ -47,15 +47,15 @@ then
 fi
 
 echo "-- Creating custom keychain for signing: \"$CUSTOM_KEYCHAIN\""
-# Create a custom keychain, $CUSTOM_KEYCHAIN (not much interested for password as it will be hosted an CI env and removed right after)
-security create-keychain -p keychain_password $CUSTOM_KEYCHAIN
+# Create a custom keychain, $CUSTOM_KEYCHAIN using passwordk $CUSTOM_KEYCHAIN_PASSWORD
+security create-keychain -p $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN
 
 echo "-- Setting up $CUSTOM_KEYCHAIN as default"
 # Make the $CUSTOM_KEYCHAIN default, so xcodebuild will use it for signing
 security default-keychain -s $CUSTOM_KEYCHAIN
 
 # Unlock the keychain
-security unlock-keychain -p keychain_password $CUSTOM_KEYCHAIN
+security unlock-keychain -p $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN
 
 # Set keychain timeout to 1 hour for long builds
 # see http://www.egeek.me/2013/02/23/jenkins-and-xcode-user-interaction-is-not-allowed/
@@ -65,13 +65,13 @@ security set-keychain-settings -t 3600 -l ~/Library/Keychains/$CUSTOM_KEYCHAIN
 security import ./scripts/certs/${APPLE_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
 # Development
 security import ./scripts/certs/${DEVELOPMENT_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
-security import ./scripts/certs/${DEVELOPMENT_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
+security import ./scripts/certs/${DEVELOPMENT_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
 
 #security import ./scripts/certs/developer-appledev-cert.cer -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
 #security import ./scripts/certs/developer-appledev-key.p12 -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
 # Distribution
 security import ./scripts/certs/${DISTRIBUTION_CERT} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
-security import ./scripts/certs/${DISTRIBUTION_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
+security import ./scripts/certs/${DISTRIBUTION_KEY} -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
 
 echo "Installing provisioning profiles, so that XCode can find them"
 #echo "Checking scripts"
@@ -137,7 +137,7 @@ then
 	#travis_wait 60 ...
 	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
 else
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive # | xcpretty
 fi
 
 # Exporting and signing with distribution certificate
@@ -153,7 +153,7 @@ else
 fi
 
 echo "-- Uploading to TestFairy"
-./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
+#./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
 
 
 # Clean up
