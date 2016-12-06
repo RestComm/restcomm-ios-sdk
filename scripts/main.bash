@@ -2,12 +2,12 @@
 #
 # Main script that will drive CI/CD actions, depending on type of commit.
 
-# Run integration tests in simulator
+# Run integration tests in simulator - TODO: take this out to a separate script
 if [ ! -z "$TRAVIS" ]
 then
 	#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-	echo 
+	pod install --project-directory=Test-App
+	xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0'
 else
 	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 	echo

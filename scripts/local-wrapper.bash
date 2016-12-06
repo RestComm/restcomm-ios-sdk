@@ -46,7 +46,8 @@ function is_git_repo_state_clean() {
 
 	return $err;
 }
-# Export it for use in other scripts
+
+# Export this function for use in other scripts as its pretty common
 export -f is_git_repo_state_clean
 
 

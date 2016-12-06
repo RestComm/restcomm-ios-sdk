@@ -21,7 +21,6 @@ env:
 # cache: cocoapods
 ##podfile: Test-App/Podfile
 before_install:
-##- ./scripts/local-wrapper.bash
 # Export travis_wait function for use externally and travis_jigger that is required by travis_wait
 - export -f travis_jigger
 - export -f travis_wait
@@ -56,7 +55,7 @@ script:
 #- set -o pipefail && xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
 
 # Good one:
-- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+##- set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
 - ./scripts/local-wrapper.bash
 
 # testing other user
