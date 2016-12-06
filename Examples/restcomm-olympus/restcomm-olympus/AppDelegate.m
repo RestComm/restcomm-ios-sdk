@@ -34,7 +34,7 @@
     [Utils setupUserDefaults];
 
     // Override point for customization after application launch.
-    [TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
+    //[TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
     
     return YES;
 }
