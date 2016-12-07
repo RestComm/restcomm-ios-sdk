@@ -67,16 +67,17 @@ echo "-- Showing keychain info"
 security show-keychain-info $CUSTOM_KEYCHAIN
 
 # Add certificates to keychain and allow codesign to access them
-security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
+#security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
+security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -A
 # Development
-security import ./scripts/certs/${DEVELOPMENT_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
-security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
+security import ./scripts/certs/${DEVELOPMENT_CERT} -k $CUSTOM_KEYCHAIN -A
+security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
 
-#security import ./scripts/certs/developer-appledev-cert.cer -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -T /usr/bin/codesign
-#security import ./scripts/certs/developer-appledev-key.p12 -k ~/Library/Keychains/$CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign
 # Distribution
-security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -T /usr/bin/codesign -A
-security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -T /usr/bin/codesign -A
+security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -A
+security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
+
+security set-key-partition-list -S apple-tool:,apple: -s -k $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN
 
 echo "Installing provisioning profiles, so that XCode can find them"
 #echo "Checking scripts"
@@ -153,7 +154,7 @@ then
 	#travis_wait 60 ...
 	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
 else
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive # | xcpretty
+	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
 fi
 
 # Exporting and signing with distribution certificate
