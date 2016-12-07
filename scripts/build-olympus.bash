@@ -162,10 +162,11 @@ echo "-- Exporting Archive"
 if [ ! -z "$TRAVIS" ]
 then
 	#travis_wait 60 ...
+	rvm use system
 	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
 else
 	# IMPORTANT: Use system rvm to avoid build error
-	#rvm system
+	#rvm use system
 	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
 fi
 
