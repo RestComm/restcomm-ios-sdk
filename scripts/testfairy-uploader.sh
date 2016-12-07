@@ -109,6 +109,8 @@ echo "\tMetrics: $METRICS\n"
 # Original:
 JSON=$( "${CURL}" -v --progress-bar -s ${SERVER_ENDPOINT} -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F instrumentation="off" -F metrics="${METRICS}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
+echo "-- curl response: $JSON"
+
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
 	echo "FAILED!"
