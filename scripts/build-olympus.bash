@@ -11,7 +11,6 @@ OLYMPUS_PLIST=Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.p
 OLYMPUS_APP_DELEGATE=Examples/restcomm-olympus/restcomm-olympus/AppDelegate.m
 
 echo "-- Installing CocoaPod dependencies"
-# TODO: add this back when we 're done
 pod install --project-directory=Examples/restcomm-olympus
 
 # For starters lets only create keychains in travis, since locally everything is setup already. But ultimately, we should create a separate new keychain locally to so that we can test that better
@@ -24,11 +23,6 @@ echo "-- Decrypting keys, etc"
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_CERT}.enc -d -a -out scripts/certs/${DEVELOPMENT_CERT}
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_KEY}.enc -d -a -out scripts/certs/${DEVELOPMENT_KEY}
 
-#openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-appledev-cert.cer.enc -d -a -out scripts/certs/developer-appledev-cert.cer
-#openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/developer-appledev-key.p12.enc -d -a -out scripts/certs/developer-appledev-key.p12
-
-# Wildcard provisioning profile
-#openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_NAME}.mobileprovision
 # Olympus provisioning profile
 openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
@@ -86,10 +80,8 @@ echo "-- Installing provisioning profiles, so that XCode can find them"
 #find scripts
 # Put the provisioning profile in the right place so that they are picked up by Xcode
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-#cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 cp "./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 cp "./scripts/provisioning-profile/$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
-#cp "./scripts/provisioning-profile/provisioningprofilemanualdevelopment3.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/4a55a44a-c058-45d0-accd-f06b6b0b72fa.mobileprovision
 
 echo "-- Checking provisioning profiles"
 #find scripts
@@ -146,34 +138,15 @@ sed -i '' "s/#TESTFAIRY_APP_TOKEN/$TESTFAIRY_APP_TOKEN/" $OLYMPUS_APP_DELEGATE
 
 # Build and sign with development certificate (cannot use distribution cert here!)
 echo "-- Building Olympus"
-#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination 'platform=iOS,name=iPhone SE,OS=10.0' | xcpretty
-#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
-#set -o pipefail && xcodebuild build -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -destination generic/platform=iOS -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY='iPhone Distribution' DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM PROVISIONING_PROFILE=$DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME PROVISIONING_PROFILE_SPECIFIER=''
-
-if [ ! -z "$TRAVIS" ]
-then
-	#travis_wait 60 ...
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive 
-else
-	xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
-fi
+xcodebuild archive -workspace Examples/restcomm-olympus/restcomm-olympus.xcworkspace -scheme restcomm-olympus -configuration Release  -derivedDataPath ./build  -archivePath ./build/Products/restcomm-olympus.xcarchive | xcpretty
 
 # Exporting and signing with distribution certificate
 echo "-- Exporting Archive"
-if [ ! -z "$TRAVIS" ]
-then
-	#travis_wait 60 ...
-	#rvm system
-	scripts/xcodebuild-rvm.bash -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
-else
-	# IMPORTANT: Use system rvm to avoid build error
-	#rvm use system
-	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
-fi
+# IMPORTANT: Use xcodebuild wrapper that sets up rvm to workaround the "No applicable devices found" issue 
+scripts/xcodebuild-rvm.bash -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
 
 echo "-- Uploading to TestFairy"
-./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
+scripts/testfairy-uploader.sh build/Products/IPA/restcomm-olympus.ipa 
 
 # Clean up
 echo "-- Cleaning up"
