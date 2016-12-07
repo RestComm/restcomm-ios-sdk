@@ -77,7 +77,8 @@ security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTER
 security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -A
 security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
 
-security set-key-partition-list -S apple-tool:,apple: -s -k $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN
+# Fix for OS X Sierra that hungs in the codesign step due to a UI prompt not visible to headless servers
+security set-key-partition-list -S apple-tool:,apple: -s -k $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN > /dev/null
 
 echo "Installing provisioning profiles, so that XCode can find them"
 #echo "Checking scripts"
@@ -162,8 +163,8 @@ echo "-- Exporting Archive"
 if [ ! -z "$TRAVIS" ]
 then
 	#travis_wait 60 ...
-	rvm system
-	xcodebuild -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
+	#rvm system
+	scripts/xcodebuild-rvm.bash -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA 
 else
 	# IMPORTANT: Use system rvm to avoid build error
 	#rvm use system
@@ -177,7 +178,7 @@ echo "-- Uploading to TestFairy"
 # Clean up
 echo "-- Cleaning up"
 
-echo "-- Edited source files to discard version strings: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
+echo "-- Rolling back changes in source files: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
 git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST $OLYMPUS_APP_DELEGATE
 
 echo "-- Setting original keychain, \"$ORIGINAL_KEYCHAIN\", as default"
