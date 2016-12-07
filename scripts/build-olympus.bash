@@ -78,9 +78,10 @@ security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -A
 security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
 
 # Fix for OS X Sierra that hungs in the codesign step due to a UI prompt not visible to headless servers
+echo "-- Updating partition IDs for certs in the custom keychain, to avoid codesign hanging, waiting for UI input"
 security set-key-partition-list -S apple-tool:,apple: -s -k $CUSTOM_KEYCHAIN_PASSWORD $CUSTOM_KEYCHAIN > /dev/null
 
-echo "Installing provisioning profiles, so that XCode can find them"
+echo "-- Installing provisioning profiles, so that XCode can find them"
 #echo "Checking scripts"
 #find scripts
 # Put the provisioning profile in the right place so that they are picked up by Xcode
@@ -172,8 +173,7 @@ else
 fi
 
 echo "-- Uploading to TestFairy"
-#./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
-
+./scripts/testfairy-uploader.sh /Users/antonis/Documents/telestax/code/restcomm-ios-sdk/build/Products/IPA/restcomm-olympus.ipa 
 
 # Clean up
 echo "-- Cleaning up"
@@ -188,4 +188,11 @@ echo "-- Removing custom keychain $CUSTOM_KEYCHAIN"
 security delete-keychain $CUSTOM_KEYCHAIN
 
 echo "-- Removing keys, certs and profiles"
-rm scripts/certs/${DEVELOPMENT_CERT} scripts/certs/${DEVELOPMENT_KEY} scripts/certs/${DISTRIBUTION_CERT} scripts/certs/${DISTRIBUTION_KEY} ~/Library/MobileDevice/Provisioning\ Profiles/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision ./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision ./scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
+rm scripts/certs/${DEVELOPMENT_CERT} \
+	scripts/certs/${DEVELOPMENT_KEY} \
+	scripts/certs/${DISTRIBUTION_CERT} \
+	scripts/certs/${DISTRIBUTION_KEY} \
+	./scripts/provisioning-profile/$DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME.mobileprovision \
+	./scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision \
+	~/Library/MobileDevice/Provisioning\ Profiles/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision \
+	~/Library/MobileDevice/Provisioning\ Profiles/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
