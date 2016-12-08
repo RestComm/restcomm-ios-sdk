@@ -3,8 +3,19 @@
 # Generate apple doc reference documentation, update & commit gh-pages branch and push gh-pages branch to GitHub
 
 # keep the branch we start out at. Notice that I tried to retrieve it dynamically, but it seems that Travis CI checks out latest commit with git, not the current branch, so it doesn't work that well
-ORIGINAL_BRANCH="master"
+ORIGINAL_BRANCH=$CD_BRANCH
 DOC_BRANCH="gh-pages"
+
+# Install appledoc as its not pre-installed in Travis for some reason
+curl -sL https://gist.githubusercontent.com/atsakiridis/2f8f755bd23a3e0be8dcd4aa5923d5a2/raw/1637e50d6c478add443c7cc721403a98fd72dbd5/install_appledoc.sh | sh
+
+echo "-- Checking if repo is clean, before doing documentation generation"
+is_git_repo_state_clean
+if [ $? -ne 0 ]
+then
+	echo "-- Error: repo is not clean, please make sure that there are no untracked, unstaged or uncommitted changes"
+	exit 1	
+fi
 
 echo "-- Showing local branches:"
 git branch
@@ -14,6 +25,12 @@ if [ "$ORIGINAL_BRANCH" == "$DOC_BRANCH" ]
 then
 	echo "-- Starting off at $DOC_BRANCH which is wrong; should never trigger CI build at $DOC_BRANCH. Bailing"
 	exit 1	
+fi
+
+if [ `git branch --list $DOC_BRANCH` ]
+then
+	echo "$DOC_BRANCH already exists, removing it"
+	git branch -D $DOC_BRANCH
 fi
 
 echo "-- Checking out $DOC_BRANCH as orphan"

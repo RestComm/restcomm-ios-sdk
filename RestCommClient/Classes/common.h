@@ -29,7 +29,7 @@
 #include <libgen.h>
 
 #define LOG_BUFFER_SIZE 65536
-#define SIP_USER_AGENT "TelScale Restcomm iOS Client 1.0.0 BETA4.1#2"
+#define SIP_USER_AGENT "TelScale Restcomm iOS Client #BASE_VERSION-#VERSION_SUFFIX+#BUILD"
 #define ENABLE_LOGGING 1
 
 // simple extern "C" doesn't work in all cases, need to differentiate:

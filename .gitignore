@@ -34,3 +34,6 @@ Carthage
 # Pods/
 
 tmp
+# vim swap files
+*.swp
+*.swo

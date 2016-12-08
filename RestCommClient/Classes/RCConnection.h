@@ -75,7 +75,7 @@ extern NSString* const RCConnectionIncomingParameterCallSIDKey;
 @property RCConnectionState state;
 
 /**
- *  @abstract Direction of the connection. True if connection is incoming; false otherwise
+ *  @abstract Direction of the connection. True if connection is incoming, false otherwise
  */
 @property (nonatomic, getter=isIncoming) BOOL incoming;
 

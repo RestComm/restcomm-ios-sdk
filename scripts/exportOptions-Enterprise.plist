@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>compileBitcode</key>
+    <false/>
+    <key>method</key>
+    <string>enterprise</string>
+    <key>teamID</key>
+    <string>H9PG74NSQT</string>
+    <key>uploadBitcode</key>
+    <true/>
+    <key>uploadSymbols</key>
+    <true/>
+    <key>manifest</key>
+    <dict>
+        <key>appURL</key>
+        <string>https://github.com/RestComm/restcomm-ios-sdk#latest-olympus-ipa</string>
+        <key>displayImageURL</key>
+        <string>https://github.com/RestComm/restcomm-ios-sdk/blob/master/Examples/restcomm-olympus/restcomm-olympus/img/icon/icon-60x60%402x.png</string>
+        <key>fullSizeImageURL</key>
+        <string>https://github.com/RestComm/restcomm-ios-sdk/blob/master/Examples/restcomm-olympus/restcomm-olympus/img/icon/icon-60x60%403x.png</string>
+    </dict>
+</dict>
+</plist>

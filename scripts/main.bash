@@ -1,20 +1,44 @@
 #!/bin/bash
 #
-# Main script that will drive CI/CD actions, depending on type of commit
+# Main script that will drive CI/CD actions, depending on type of commit.
 
-if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
-	echo "-- This is a pull request, bailing out."
-	exit 0
+# Run integration tests in simulator - TODO: take this out to a separate script
+if [ ! -z "$TRAVIS" ]
+then
+	#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+	#pod install --project-directory=Test-App
+	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0'
+	echo 
+else
+	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+	echo
 fi
 
-if [[ "$TRAVIS_BRANCH" != "master" ]]; then
-	echo "-- Testing on a branch other than master, bailing out."
-	exit 0
+if [ ! -z "$TRAVIS" ]
+then
+	# This is a travis build
+	if [[ "$TRAVIS_PULL_REQUEST" == "true" ]]; then
+		echo "-- This is a pull request, bailing out."
+		exit 0
+	fi
+
+	# CD_BRANCH is the brach we are passing from the travis CI settings and shows which branch CI should deploy from
+	if [[ "$TRAVIS_BRANCH" != "$CD_BRANCH" ]]; then
+		echo "-- Testing on a branch other than $CD_BRANCH, bailing out."
+		exit 0
+	fi
+else
+	# This is a local build
+	if [[ "$DEPLOY" != "true" ]]
+	then
+		echo "-- This is a local build and DEPLOY env variable is not true, bailing out."
+		exit 0
+	fi
 fi
 
 echo "-- Processing main script."
 git config credential.helper "store --file=.git/credentials"; echo "https://${GITHUB_OAUTH_TOKEN}:@github.com" > .git/credentials 2>/dev/null
-git config user.name "Travis CI"
+git config user.name $COMMIT_USERNAME
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # SSH endpoint not needed any longer, since we 're using OAuth tokens with https, but let's leave it around in case we need it in the future
@@ -24,8 +48,12 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 #echo "-- Will use ssh repo: $SSH_REPO"
 #git remote -v
 
+
 # Update reference documentation
-./scripts/update-doc.bash
+#./scripts/update-doc.bash
+
+# Build and deploy Olympus
+./scripts/build-olympus.bash
 
 # Update the pod
 #- pod lib lint

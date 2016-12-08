@@ -26,7 +26,7 @@
 
 @implementation Utils
 
-NSString* const RestCommClientSDKLatestGitHash = @"255130e68c38e31f9d8740395150b394a7137eca";
+NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 
 + (void) setupUserDefaults
 {

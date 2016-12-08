@@ -772,6 +772,7 @@
 				TargetAttributes = {
 					AE79D31519BC8DAD0023306C = {
 						DevelopmentTeam = H9PG74NSQT;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1154,7 +1155,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TeleStax, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1186,9 +1187,9 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_MODULES_AUTOLINK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1208,6 +1209,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				USE_HEADERMAP = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -1224,9 +1226,9 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_MODULES_AUTOLINK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = H9PG74NSQT;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1246,6 +1248,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.telestax.olympus;
 				PRODUCT_NAME = "restcomm-olympus";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				USE_HEADERMAP = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
