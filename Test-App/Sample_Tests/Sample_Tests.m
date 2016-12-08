@@ -32,6 +32,8 @@
 // Global setUp
 + (void)setUp {
     NSLog(@"Global setUp");
+    NSString* path = [[[NSProcessInfo processInfo]environment] objectForKey:@"PATH"];
+    NSLog(@"ENV: %@", path);
 }
 
 // Global tearDown
