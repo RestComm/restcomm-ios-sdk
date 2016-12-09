@@ -17,7 +17,7 @@ help() {
 	exit 1
 }
 
-DAEMON=1
+DAEMON=0
 if [ "${1}" == "-f" ]; then
 	DAEMON=0
 	shift
@@ -43,6 +43,7 @@ if [ "${#}" -gt 1 ]; then
 
 	shift
 	DSYM_PATH="${1}"
+	DWARF_DSYM_FILE_NAME=`basename $DSYM_PATH`
 fi
 
 if [ "${DSYM_PATH}" == "" ] || [ "${DSYM_PATH}" == "/" ] || [ ! -d "${DSYM_PATH}" ]; then
@@ -58,13 +59,14 @@ log "Compressing .dSYM folder ${DSYM_PATH}"
 $ZIP -qrp9 "${TMP_FILENAME}" "${DSYM_PATH}"
 FILE_SIZE=$($STAT -f "%z" "${TMP_FILENAME}")
 
-echo "---- Compressed at: $TMP_FILENAME"
+log "Compressed at: $TMP_FILENAME"
 
 foreground_upload() {
 	# Upload zipped .dSYM file to TestFairy's servers
 	STARTED=$($DATE +"%s")
-	echo "----1 Uploading: ${1}"
-	$CURL -s -F api_key="${API_KEY}" -F dsym=@"${1}" -o /dev/null "${TESTFAIRY_ENDPOINT}"
+	log "Uploading: ${1}"
+	#$CURL -s -F api_key="${API_KEY}" -F dsym=@"${1}" -o /dev/null "${TESTFAIRY_ENDPOINT}"
+	$CURL -v --progress-bar -s -F api_key="${API_KEY}" -F dsym=@"${1}" "${TESTFAIRY_ENDPOINT}"
 	ENDED=$($DATE +"%s")
 	DIFF=$(expr ${ENDED} - ${STARTED})
 	log "Symbols uploaded in ${DIFF} seconds"
@@ -74,7 +76,7 @@ foreground_upload() {
 }
 
 background_upload() {
-	echo "----2 Uploading: ${1}"
+	log "Uploading: ${1}"
 	sh -c "$CURL -F api_key=\"${API_KEY}\" -F dsym=@\"${1}\" -s -o /dev/null \"${TESTFAIRY_ENDPOINT}\"; rm -f ${TMP_FILENAME};" /dev/null 2>&1 &
 }
 
@@ -85,6 +87,4 @@ else
 	log "Uploading ${FILE_SIZE} bytes to dsym server in background"
 	background_upload "${TMP_FILENAME}"
 fi
-
-log "TestFairy .dSYM upload script ends"
 
