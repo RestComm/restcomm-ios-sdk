@@ -3,7 +3,6 @@
 # Build Olympus after updating version string and deploy
 
 PLIST_BUDDY="/usr/libexec/PlistBuddy"
-INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist"
 # Various files that we edit
 SDK_COMMON_HEADER=RestCommClient/Classes/common.h
 OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
@@ -100,8 +99,8 @@ else
 fi
 echo -e "-- Updating .plist version strings:\n\tCFBundleShortVersionString $BASE_VERSION\n\tCFBundleVersion ${BUNDLE_VERSION}"
 # Set base version
-$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$INFOPLIST_FILE"
-$PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$INFOPLIST_FILE"
+$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$OLYMPUS_PLIST"
+$PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$OLYMPUS_PLIST"
 # Set suffix
 
 # Update build string in sources if needed
