@@ -2,7 +2,10 @@
 #
 # Main script that will drive CI/CD actions, depending on type of commit.
 
+echo "-- Processing main script."
+
 # Run integration tests in simulator - TODO: take this out to a separate script
+echo "-- Running Integration Tests on simulator."
 if [ ! -z "$TRAVIS" ]
 then
 	#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
@@ -36,7 +39,6 @@ else
 	fi
 fi
 
-echo "-- Processing main script."
 git config credential.helper "store --file=.git/credentials"; echo "https://${GITHUB_OAUTH_TOKEN}:@github.com" > .git/credentials 2>/dev/null
 git config user.name $COMMIT_USERNAME
 git config user.email "$COMMIT_AUTHOR_EMAIL"
@@ -50,7 +52,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-#./scripts/update-doc.bash
+./scripts/update-doc.bash
 
 # Build and deploy Olympus
 ./scripts/build-olympus.bash
