@@ -31,14 +31,12 @@
 
 // Global setUp
 + (void)setUp {
-    NSLog(@"Global setUp");
-    NSString* path = [[[NSProcessInfo processInfo]environment] objectForKey:@"PATH"];
-    NSLog(@"ENV: %@", path);
+    NSLog(@"-- Global setUp");
 }
 
 // Global tearDown
 + (void)tearDown {
-    NSLog(@"Global tearDown");
+    NSLog(@"-- Global tearDown");
 }
 
 // Test-level setUp
@@ -49,10 +47,11 @@
     //isInitialized = NO;
     
     
-    //connection = nil;
-    username = @"ios-test-user";
-    password = @"1234";
-    restcommUrl = @"cloud.restcomm.com";
+    restcommUrl = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"RESTCOMM_URL"];
+    username = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"RESTCOMM_USERNAME"];
+    password = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"RESTCOMM_PASSWORD"];
+
+    NSLog(@"---------- Starting Test");
 }
 
 // Test-level tearDown
@@ -63,7 +62,7 @@
 
 
 // ---------- Actual tests
-- (void)DISABLED_testSuccessfulRegistration {
+- (void)testSuccessfulRegistration {
     NSMutableDictionary * parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                   username, @"aor",
                   password, @"password",
@@ -98,9 +97,10 @@
     }];
 }
 
+// Not ready yet, we're getting runtime issue with the simulator
 - (void)DISABLED_testSuccessfulCall {
     // 1. register with Restcomm
-    NSLog(@"==================== Registering");
+    NSLog(@"-- Registering");
     NSMutableDictionary * parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         username, @"aor",
                                         password, @"password",
@@ -114,28 +114,28 @@
     // The test will pause here, running the run loop, until the timeout is hit or all expectations are fulfilled.
     [self waitForExpectationsWithTimeout:5 handler:^(NSError *error) {
         //[device unlisten];
-        NSLog(@"==================== Registered");
+        NSLog(@"-- Registered");
     }];
     
     
     // 2. Make a call and once connected disconnect
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
-    NSLog(@"==================== Calling");
+    NSLog(@"-- Calling");
     [parameters setObject:@"+1235" forKey:@"username"];
     
     // call the other party
     RCConnection * connection = [device connect:parameters delegate:self];
     genericExpectation = [self expectationWithDescription:@"Make a call to +1235"];
     [self waitForExpectationsWithTimeout:20.0 handler:^(NSError *error) {
-        NSLog(@"==================== Disconnect");
+        NSLog(@"-- Disconnect");
         [connection disconnect];
     }];
 
     // 3. Once the call is disconnected shut down device
-    NSLog(@"==================== Disconnected");
+    NSLog(@"-- Disconnected");
     genericExpectation = [self expectationWithDescription:@"Waiting to disconnect call"];
     [self waitForExpectationsWithTimeout:5 handler:^(NSError *error) {
-        NSLog(@"==================== Shutting down");
+        NSLog(@"-- Shutting down");
         [device unlisten];
     }];
 }
@@ -162,7 +162,7 @@
 // ---------- Delegate methods for RC Device
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
-    NSLog(@"deviceDidStartListeningForIncomingConnections");
+    NSLog(@"-- deviceDidStartListeningForIncomingConnections");
     
     if ([self.name rangeOfString:@"testSuccessfulRegistration"].location != NSNotFound) {
         XCTAssert(true);
@@ -179,7 +179,7 @@
 
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
-    NSLog(@"didStopListeningForIncomingConnections, code: %ld, text: %@, test-name: %@", error.code, error.description, self.name);
+    NSLog(@"-- didStopListeningForIncomingConnections, code: %ld, text: %@, test-name: %@", error.code, error.description, self.name);
     
     // test-name: -[Sample_Tests testSuccessfulRegistration]
     if ([self.name rangeOfString:@"testSuccessfulRegistration"].location != NSNotFound) {
@@ -196,6 +196,17 @@
         }
         [genericExpectation fulfill];
     }
+    if ([self.name rangeOfString:@"testSuccessfulCall"].location != NSNotFound) {
+        // Successful if we got authentication error
+        if (error.code == RESTCOMM_CLIENT_SUCCESS) {
+            XCTAssert(true);
+        }
+        else {
+            XCTAssert(false);
+        }
+        [genericExpectation fulfill];
+    }
+
 }
 
 // received incoming message
@@ -234,7 +245,7 @@
         //XCTAssert(true);
         //[genericExpectation fulfill];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"==================== Calling dispatch_after body");
+            NSLog(@"-- Calling dispatch_after body");
             XCTAssert(true);
             [genericExpectation fulfill];
         });
@@ -245,6 +256,7 @@
 - (void)connectionDidDisconnect:(RCConnection*)connection
 {
     if ([self.name rangeOfString:@"testSuccessfulCall"].location != NSNotFound) {
+        NSLog(@"-- connectionDidDisconnect");
         XCTAssert(true);
         [genericExpectation fulfill];
     }

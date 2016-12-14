@@ -92,7 +92,12 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
         
         // init logging + set logging level
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
-        RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
+        // create a new parameters dictionary used for logging, from which we will remove sensitive information
+        NSMutableDictionary * logParameters = [parameters mutableCopy];
+        [logParameters removeObjectForKey:@"password"];
+        [logParameters removeObjectForKey:@"turn-password"];
+
+        RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
 
         // reachability
         self.hostActive = NO;
@@ -267,7 +272,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
 
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 {
-    RCLogNotice("[RCDevice connect: %s]", [[RCUtilities stringifyDictionary:parameters] UTF8String]);
+    // create a new parameters dictionary used for logging, from which we will remove sensitive information
+    NSMutableDictionary * logParameters = [parameters mutableCopy];
+    [logParameters removeObjectForKey:@"password"];
+
+    RCLogNotice("[RCDevice connect: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
     if (_state != RCDeviceStateReady) {
         if (_state == RCDeviceStateBusy) {
             RCLogError("Error connecting: RCDevice is busy");

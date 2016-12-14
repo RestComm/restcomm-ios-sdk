@@ -39,6 +39,7 @@
     if (self = [super init]) {
         self.errorDomain = @"RestcommClient-iOS-SDK";
         self.errors = @{
+                        @(RESTCOMM_CLIENT_SUCCESS) : @"Success",
                         @(ERROR_WEBRTC_SDP) : @"Webrtc media error in SDP negotiation",
                         @(ERROR_WEBRTC_ICE) : @"Webrtc media error in ICE",
                         @(ERROR_WEBRTC_TURN) : @"Error retrieving TURN servers",
