@@ -6,15 +6,20 @@ echo "-- Processing main script."
 
 # Run integration tests in simulator - TODO: take this out to a separate script
 echo "-- Running Integration Tests on simulator."
-if [ ! -z "$TRAVIS" ]
+if [ -z "$SKIP_INTEGRATION_TESTS" ]
 then
-	#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-	pod install --project-directory=Test-App
-	xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
+	if [ ! -z "$TRAVIS" ]
+	then
+		#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+		pod install --project-directory=Test-App
+		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
+	else
+		# For local builds don't specify iOS version, to make it more flexible
+		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE' | xcpretty
+		echo
+	fi
 else
-	# For local builds don't specify iOS version, to make it more flexible
-	xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE' | xcpretty
-	echo
+	echo "-- Skipping Integration Tests."
 fi
 
 if [ ! -z "$TRAVIS" ]
