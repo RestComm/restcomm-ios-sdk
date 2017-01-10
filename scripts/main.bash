@@ -57,7 +57,12 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-./scripts/update-doc.bash
+if [ -z "$SKIP_DOC_GENERATION" ]
+then
+	./scripts/update-doc.bash
+else
+	echo "-- Skipping Documentation Generation."
+fi
 
 # Build and deploy Olympus
 ./scripts/build-olympus.bash

@@ -144,11 +144,17 @@ echo "-- Exporting Archive"
 # IMPORTANT: Use xcodebuild wrapper that sets up rvm to workaround the "No applicable devices found" issue 
 scripts/xcodebuild-rvm.bash -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
 
-echo "-- Uploading .ipa to TestFairy"
-scripts/testfairy-uploader.sh build/Products/IPA/restcomm-olympus.ipa 
+# Upload to Test Fairy
+if [ -z "$SKIP_TF_UPLOAD" ]
+then
+	echo "-- Uploading .ipa to TestFairy"
+	scripts/testfairy-uploader.sh build/Products/IPA/restcomm-olympus.ipa 
 
-echo "-- Uploading dSYM to TestFairy"
-scripts/upload-dsym-testfairy.sh -d $TESTFAIRY_API_KEY -p build/Products/restcomm-olympus.xcarchive/dSYMs/restcomm-olympus.app.dSYM
+	echo "-- Uploading dSYM to TestFairy"
+	scripts/upload-dsym-testfairy.sh -d $TESTFAIRY_API_KEY -p build/Products/restcomm-olympus.xcarchive/dSYMs/restcomm-olympus.app.dSYM
+else
+	echo "-- Skipping upload to Test Fairy."
+fi
 
 # Clean up
 echo "-- Cleaning up"
