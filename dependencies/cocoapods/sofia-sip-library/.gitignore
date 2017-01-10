@@ -21,7 +21,6 @@ DerivedData
 
 # Bundler
 .bundle
-#dependencies*
 
 Carthage
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -32,8 +31,3 @@ Carthage
 # `pod install` in .travis.yml
 #
 # Pods/
-
-tmp
-# vim swap files
-*.swp
-*.swo

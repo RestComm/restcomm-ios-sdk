@@ -1,0 +1,16 @@
+PODS:
+  - sofia-sip-library (0.1.0)
+
+DEPENDENCIES:
+  - sofia-sip-library (from `../`)
+
+EXTERNAL SOURCES:
+  sofia-sip-library:
+    :path: ../
+
+SPEC CHECKSUMS:
+  sofia-sip-library: ed331fa24a1753fd8cced887b9e502dbc522dcfe
+
+PODFILE CHECKSUM: 956fe3bdeab1d69b8288532b5822dfe514bb5f69
+
+COCOAPODS: 1.1.1
