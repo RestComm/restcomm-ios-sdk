@@ -31,6 +31,9 @@
 #define LOG_BUFFER_SIZE 65536
 #define SIP_USER_AGENT "TelScale Restcomm iOS Client #BASE_VERSION-#VERSION_SUFFIX+#BUILD"
 #define ENABLE_LOGGING 1
+// iOS version checks
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
 
 // simple extern "C" doesn't work in all cases, need to differentiate:
 #if !defined(__cplusplus)
@@ -39,6 +42,7 @@
 #define ExternC extern "C"
 #endif
 
+ExternC void customSofiaLoggerCallback(void *stream, char const *fmt, va_list ap);
 ExternC void initializeLogging(void);
 ExternC void finalizeLogging(void);
 ExternC void setLogLevel(int level);

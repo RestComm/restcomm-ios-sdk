@@ -21,7 +21,7 @@ DerivedData
 
 # Bundler
 .bundle
-dependencies*
+//dependencies*
 
 Carthage
 # We recommend against adding the Pods directory to your .gitignore. However

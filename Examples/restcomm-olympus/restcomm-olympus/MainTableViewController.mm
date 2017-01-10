@@ -33,6 +33,7 @@
 #import "RCUtilities.h"
 #import "Utils.h"
 
+
 @interface MainTableViewController ()
 @property RCDeviceState previousDeviceState;
 @property UIAlertView *alert;
@@ -42,7 +43,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _alert = nil;
     
     UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
