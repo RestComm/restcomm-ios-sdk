@@ -19,17 +19,17 @@ echo "-- TRAVIS: $TRAVIS"
 echo "-- Setting up signing"
 echo "-- Decrypting keys, etc"
 # Development
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_CERT}.enc -d -a -out scripts/certs/${DEVELOPMENT_CERT}
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_KEY}.enc -d -a -out scripts/certs/${DEVELOPMENT_KEY}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DEVELOPMENT_CERT}.enc -d -a -out scripts/certs/${DEVELOPMENT_CERT}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DEVELOPMENT_KEY}.enc -d -a -out scripts/certs/${DEVELOPMENT_KEY}
 
 # Olympus provisioning profile
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
 # Distribution
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DISTRIBUTION_CERT}.enc -d -a -out scripts/certs/${DISTRIBUTION_CERT}
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DISTRIBUTION_KEY}.enc -d -a -out scripts/certs/${DISTRIBUTION_KEY}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DISTRIBUTION_CERT}.enc -d -a -out scripts/certs/${DISTRIBUTION_CERT}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DISTRIBUTION_KEY}.enc -d -a -out scripts/certs/${DISTRIBUTION_KEY}
 
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
 echo "-- Setting up keychain"
 ORIGINAL_KEYCHAIN=`security default-keychain | rev | cut -d '/' -f -1 | sed 's/\"//' | rev`
@@ -64,11 +64,11 @@ security show-keychain-info $CUSTOM_KEYCHAIN
 security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -A
 # Development
 security import ./scripts/certs/${DEVELOPMENT_CERT} -k $CUSTOM_KEYCHAIN -A
-security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
+security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $PRIVATE_KEY_PASSWORD -A
 
 # Distribution
 security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -A
-security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
+security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $PRIVATE_KEY_PASSWORD -A
 
 # Fix for OS X Sierra that hungs in the codesign step due to a UI prompt not visible to headless servers
 echo "-- Updating partition IDs for certs in the custom keychain, to avoid codesign hanging, waiting for UI input"
@@ -158,6 +158,10 @@ fi
 
 # Clean up
 echo "-- Cleaning up"
+
+echo "-- Deintegrating olympus pods"
+cd Examples/restcomm-olympus && pod deintegrate
+cd ../..
 
 echo "-- Rolling back changes in source files: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
 git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST $OLYMPUS_APP_DELEGATE

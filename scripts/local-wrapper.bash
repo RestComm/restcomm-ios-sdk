@@ -4,8 +4,9 @@
 # and we can do fast builds/testing/deployment even if Travis CI is not available (something that happens often, sadly)
 #
 # For local builds we need to have exported in your shell the following variables (for Travis they are setup via web/settings): 
-# - GITHUB_OAUTH_TOKEN 
-# - ENTERPRISE_DISTRIBUTION_KEY_PASSWORD 
+# - GITHUB_OAUTH_TOKEN: token to be able to commit in GitHub repo from our scripts with no user intervention, for updating reference doc for example. I believe that this is different per repo (secret)
+# - FILE_ENCRYPTION_PASSWORD: key used to symmetrically encrypt various sensitive files (like key files for signing in iOS) that need to be available inside the repo, and hence readable by public (secret) (deprecates ENTERPRISE_DISTRIBUTION_KEY_PASSWORD)
+# - PRIVATE_KEY_PASSWORD: password to protect private keys (secret)
 # - DEPLOY: i.e. true/false
 # - BASE_VERSION: i.e. 1.0.0
 # - VERSION_SUFFIX: i.e. beta.4.1
@@ -69,8 +70,8 @@ export COMMIT_SHA1=`git rev-parse HEAD | cut -c -7`
 #export DEVELOPMENT_PROVISIONING_PROFILE_NAME="development"
 
 export APPLE_CERT="AppleWWDRCA.cer"
-export DEVELOPMENT_CERT="developer-cert.cer"
-export DEVELOPMENT_KEY="developer-key.p12"
+export DEVELOPMENT_CERT="development-cert.cer"
+export DEVELOPMENT_KEY="development-key.p12"
 export DISTRIBUTION_CERT="enterprise-distribution-cert.cer"
 export DISTRIBUTION_KEY="enterprise-distribution-key.p12"
 export DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME="profile-development-olympus"

@@ -8,16 +8,21 @@ echo "-- Processing main script."
 echo "-- Running Integration Tests on simulator."
 if [ -z "$SKIP_INTEGRATION_TESTS" ]
 then
+	echo "-- Installing CocoaPod dependencies"
+	pod install --project-directory=Test-App
+	# TODO: this should become a single line both for local and travis builds
 	if [ ! -z "$TRAVIS" ]
 	then
 		#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-		pod install --project-directory=Test-App
 		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
 	else
 		# For local builds don't specify iOS version, to make it more flexible
 		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE' | xcpretty
 		echo
 	fi
+	echo "-- Deintegrating Test-App pods"
+	cd Test-App && pod deintegrate
+	cd ..
 else
 	echo "-- Skipping Integration Tests."
 fi
@@ -65,7 +70,13 @@ else
 fi
 
 # Build and deploy Olympus
-./scripts/build-olympus.bash
+# Update reference documentation
+if [ -z "$SKIP_OLYMPUS_BUILD" ]
+then
+	./scripts/build-olympus.bash
+else
+	echo "-- Skipping Olympus build."
+fi
 
 # Update the pod
 #- pod lib lint
