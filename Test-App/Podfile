@@ -10,8 +10,8 @@ target 'Sample' do
   #pod 'webrtc-framework'
 
   #use_frameworks!
-  #pod 'restcomm-ios-sdk', :path => '../'
-  pod 'restcomm-ios-sdk'
+  pod 'restcomm-ios-sdk', :path => '../'
+  #pod 'restcomm-ios-sdk'
 
   target 'Sample_Tests' do
     inherit! :search_paths
@@ -20,8 +20,8 @@ target 'Sample' do
     #pod 'BoringSSL'
     #pod 'webrtc-framework'
 
-    #pod 'restcomm-ios-sdk', :path => '../'
-	 pod 'restcomm-ios-sdk'
+    pod 'restcomm-ios-sdk', :path => '../'
+	 #pod 'restcomm-ios-sdk'
     ##pod 'RestCommClient', :path => '../'
     #use_frameworks!
 

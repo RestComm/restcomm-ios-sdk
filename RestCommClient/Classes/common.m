@@ -24,6 +24,7 @@
 #include <asl.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "TestFairy.h"
 
 // TODO: asl man page says that the best practice is to use separate client handle from each
 // thread for which you want logging. Currently we don't do that and I haven't seen any issues
@@ -31,21 +32,44 @@
 static bool loggingInitialized = false;
 static aslmsg msg = NULL;
 
+// This is actually used as a callback and sofia default logger calls it to do its logging instead of the default (i.e. that ends up calling printf)
+// Notice that right now this is called only for transport layer SIP messages (i.e. full SIP messages), rest of the logging comes from actively calling
+// any of the RCLog* macros from our code
+// TODO: At some point it might be worth hooking other sofia logging facilities as well, like nua, nta, tport, etc so that we can retrieve logs from those
+// and have them use our mechanism that properly logs them on: xcode console, device console and Test Fairy (i.e. remote logging)
+void customSofiaLoggerCallback(void *stream, char const *fmt, va_list ap)
+{
+    char message[LOG_BUFFER_SIZE];
+    vsnprintf(message, sizeof(message), fmt, ap);
+    if (strcmp(message, "") && strcmp(message, "\n")) {
+        RCLogDebug(message);
+    
+        //NSString * format = [[NSString stringWithUTF8String:fmt] stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n"];
+        //TFLogv(format, ap);
+    }
+}
+
 void initializeLogging(void)
 {
     if (!loggingInitialized) {
-        // add STDERR (i.e. device console) to ASL facilities
-        asl_add_log_file(NULL, STDERR_FILENO);
-        // device log
-        asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
         // device console
-        asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
-        loggingInitialized = true;
+        asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
+
+        if (SYSTEM_VERSION_LESS_THAN(@"10.0")) {
+            // For earlier versions that iOS 10.0, we need additional handling so that logs show up in xcode console (otherwise they only show in device console.
+            // Moreover, leaving those in iOS 10.0 and above duplicates messages and creates a mess
+            // add STDERR (i.e. xcode console) to ASL facilities
+            asl_add_log_file(NULL, STDERR_FILENO);
+            // xcode console
+            asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
+        }
         
         // initialize and configure the message structure
         msg = asl_new(ASL_TYPE_MSG);
-        // Important: without this asl messages never go to device log (only to console)
+        // Important: without this asl messages never go to device log (only to xcode console)
         asl_set(msg, ASL_KEY_READ_UID, "-1");
+        
+        loggingInitialized = true;
     }
 }
 
@@ -56,10 +80,58 @@ void finalizeLogging(void)
 
 void setLogLevel(int level)
 {
-    // device log
-    asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(level));
     // device console
-    asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(level));
+    asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(level));
+
+    if (SYSTEM_VERSION_LESS_THAN(@"10.0")) {
+        // xcode console
+        asl_set_output_file_filter(NULL, STDERR_FILENO, ASL_FILTER_MASK_UPTO(level));
+    }
+}
+
+#define ASL_LEVEL_EMERG   0
+#define ASL_LEVEL_ALERT   1
+#define ASL_LEVEL_CRIT    2
+#define ASL_LEVEL_ERR     3
+#define ASL_LEVEL_WARNING 4
+#define ASL_LEVEL_NOTICE  5
+#define ASL_LEVEL_INFO    6
+#define ASL_LEVEL_DEBUG   7
+
+char * levelNumber2String(int level)
+{
+    // 0
+    if (level == ASL_LEVEL_EMERG) {
+        return "EMERGENCY";
+    }
+    // 1
+    if (level == ASL_LEVEL_ALERT) {
+        return "ALERT";
+    }
+    // 2
+    if (level == ASL_LEVEL_CRIT) {
+        return "CRITICAL";
+    }
+    // 3
+    if (level == ASL_LEVEL_ERR) {
+        return "ERROR";
+    }
+    // 4
+    if (level == ASL_LEVEL_WARNING) {
+        return "WARN";
+    }
+    // 5
+    if (level == ASL_LEVEL_NOTICE) {
+        return "NOTICE";
+    }
+    // 6
+    if (level == ASL_LEVEL_INFO) {
+        return "INFO";
+    }
+    // 7
+    if (level == ASL_LEVEL_DEBUG) {
+        return "DEBUG";
+    }
 }
 
 #define RC_MAKE_LOG_FUNCTION(LEVEL, NAME) \
@@ -70,6 +142,7 @@ va_start(args, format); \
 char message[LOG_BUFFER_SIZE]; \
 vsnprintf(message, sizeof(message), format, args); \
 asl_log(NULL, msg, (LEVEL), "(%s:%d) %s", filename, linenumber, message); \
+TFLog(@"%s (%s:%d) %s", levelNumber2String(LEVEL), filename, linenumber, message); \
 va_end(args); \
 }
 

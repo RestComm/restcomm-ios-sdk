@@ -2,16 +2,29 @@
 #
 # Main script that will drive CI/CD actions, depending on type of commit.
 
+echo "-- Processing main script."
+
 # Run integration tests in simulator - TODO: take this out to a separate script
-if [ ! -z "$TRAVIS" ]
+echo "-- Running Integration Tests on simulator."
+if [ -z "$SKIP_INTEGRATION_TESTS" ] || [[ "$SKIP_INTEGRATION_TESTS" == "false" ]]
 then
-	#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-	#pod install --project-directory=Test-App
-	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0'
-	echo 
+	echo "-- Installing CocoaPod dependencies"
+	pod install --project-directory=Test-App
+	# TODO: this should become a single line both for local and travis builds
+	if [ ! -z "$TRAVIS" ]
+	then
+		#set -o pipefail && travis_retry xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
+		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE'
+	else
+		# For local builds don't specify iOS version, to make it more flexible
+		xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE' | xcpretty
+		echo
+	fi
+	echo "-- Deintegrating Test-App pods"
+	cd Test-App && pod deintegrate
+	cd ..
 else
-	#xcodebuild test -workspace Test-App/Sample.xcworkspace -scheme Sample -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.0' | xcpretty
-	echo
+	echo "-- Skipping Integration Tests."
 fi
 
 if [ ! -z "$TRAVIS" ]
@@ -36,7 +49,6 @@ else
 	fi
 fi
 
-echo "-- Processing main script."
 git config credential.helper "store --file=.git/credentials"; echo "https://${GITHUB_OAUTH_TOKEN}:@github.com" > .git/credentials 2>/dev/null
 git config user.name $COMMIT_USERNAME
 git config user.email "$COMMIT_AUTHOR_EMAIL"
@@ -50,10 +62,21 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-#./scripts/update-doc.bash
+if [ -z "$SKIP_DOC_GENERATION" ] || [[ "$SKIP_DOC_GENERATION" == "false" ]]
+then
+	./scripts/update-doc.bash
+else
+	echo "-- Skipping Documentation Generation."
+fi
 
 # Build and deploy Olympus
-./scripts/build-olympus.bash
+# Update reference documentation
+if [ -z "$SKIP_OLYMPUS_BUILD" ]  || [[ "$SKIP_OLYMPUS_BUILD" == "false" ]]
+then
+	./scripts/build-olympus.bash
+else
+	echo "-- Skipping Olympus build."
+fi
 
 # Update the pod
 #- pod lib lint

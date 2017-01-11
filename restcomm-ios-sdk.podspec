@@ -60,7 +60,7 @@ iOS Mobile SDK to easily integrate communication features (messaging, presence, 
   s.ios.dependency 'sofia-sip-library'
   #s.ios.dependency 'BoringSSL'
   s.ios.dependency 'webrtc-framework'
-
+  s.ios.dependency 'TestFairy'
   s.xcconfig = {
      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Headers/Public/sofia-sip-library/sofiasip"', 
      #'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Headers/Public/sofia-sip-library/sofiasip"'

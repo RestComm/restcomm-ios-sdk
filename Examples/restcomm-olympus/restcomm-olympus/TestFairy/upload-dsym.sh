@@ -32,7 +32,8 @@ if [ ! "${API_KEY}" ]; then
 	help
 fi
 
-DSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
+#DSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
+DSYM_PATH=""
 
 if [ "${#}" -gt 1 ]; then
 	shift
@@ -57,9 +58,12 @@ log "Compressing .dSYM folder ${DSYM_PATH}"
 $ZIP -qrp9 "${TMP_FILENAME}" "${DSYM_PATH}"
 FILE_SIZE=$($STAT -f "%z" "${TMP_FILENAME}")
 
+echo "---- Compressed at: $TMP_FILENAME"
+
 foreground_upload() {
 	# Upload zipped .dSYM file to TestFairy's servers
 	STARTED=$($DATE +"%s")
+	echo "----1 Uploading: ${1}"
 	$CURL -s -F api_key="${API_KEY}" -F dsym=@"${1}" -o /dev/null "${TESTFAIRY_ENDPOINT}"
 	ENDED=$($DATE +"%s")
 	DIFF=$(expr ${ENDED} - ${STARTED})
@@ -70,6 +74,7 @@ foreground_upload() {
 }
 
 background_upload() {
+	echo "----2 Uploading: ${1}"
 	sh -c "$CURL -F api_key=\"${API_KEY}\" -F dsym=@\"${1}\" -s -o /dev/null \"${TESTFAIRY_ENDPOINT}\"; rm -f ${TMP_FILENAME};" /dev/null 2>&1 &
 }
 

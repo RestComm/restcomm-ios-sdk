@@ -372,7 +372,12 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
 // initialize sofia
 - (bool)eventLoop
 {
-    RCLogNotice("[SipManager eventLoop: %s]", [[RCUtilities stringifyDictionary:self.params] UTF8String]);
+    // create a new parameters dictionary used for logging, from which we will remove sensitive information
+    NSMutableDictionary * logParameters = [self.params mutableCopy];
+    [logParameters removeObjectForKey:@"password"];
+    [logParameters removeObjectForKey:@"turn-password"];
+
+    RCLogNotice("[SipManager eventLoop: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
     [_signallingInstancesLock lock];
     if (_signallingInstances > 0) {
         RCLogNotice("[SipManager eventLoop] another instance already running; bailing");

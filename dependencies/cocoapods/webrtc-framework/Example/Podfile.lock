@@ -1,0 +1,16 @@
+PODS:
+  - webrtc-framework (0.1.0)
+
+DEPENDENCIES:
+  - webrtc-framework (from `../`)
+
+EXTERNAL SOURCES:
+  webrtc-framework:
+    :path: ../
+
+SPEC CHECKSUMS:
+  webrtc-framework: 4f7a0924379f7d305e8539ccd3477653ab83f689
+
+PODFILE CHECKSUM: 0e73af4451048b7d6542ac985bec7726dab8d508
+
+COCOAPODS: 1.1.1

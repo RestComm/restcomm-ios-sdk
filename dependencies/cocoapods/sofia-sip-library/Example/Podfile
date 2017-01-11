@@ -1,0 +1,6 @@
+use_frameworks!
+target 'sofia-sip-library_Tests' do
+  pod 'sofia-sip-library', :path => '../'
+  
+  
+end

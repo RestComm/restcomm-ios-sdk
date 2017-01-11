@@ -692,7 +692,7 @@ void ssc_auth(ssc_t *ssc, const char *data)
             if (tmpstr)
                 authstring = tmpstr;
             
-            RCLogDebug("Authenticating '%s' with '%s'", authitem->ssc_op->op_method_name, authstring);
+            RCLogDebug("Authenticating '%s'", authitem->ssc_op->op_method_name);
             
             /* XXX: if realm does not match, nua does not notify client about
              *      the mismatch in any way */

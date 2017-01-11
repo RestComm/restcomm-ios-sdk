@@ -38,11 +38,15 @@ then
 else
 	FULL_VERSION="${BASE_VERSION}.${VERSION_SUFFIX}+${COMMIT_SHA1}"
 fi
+
 # COMMIT_SHA1 is set in local-wrapper.bash
 COMMENT="Version: ${FULL_VERSION}, GitHub commit: ${COMMIT_SHA1}"
 
 # locations of various tools
 CURL=curl
+ZIP=zip
+STAT=stat
+DATE=date
 
 SERVER_ENDPOINT=http://app.testfairy.com/api/upload
 
@@ -71,6 +75,7 @@ verify_settings() {
 	fi
 }
 
+
 if [ $# -ne 1 ]; then
 	usage
 	exit 1
@@ -87,8 +92,25 @@ if [ ! -f "${APP_FILENAME}" ]; then
 	exit 2
 fi
 
+# dSYM handling
+echo "-- Compressing .dSYM dir from: $DSYM_PATH"
+# DSYM_PATH comes from the environment
+DWARF_DSYM_FILE_NAME=`basename $DSYM_PATH`
+if [ "${DSYM_PATH}" == "" ] || [ "${DSYM_PATH}" == "/" ] || [ ! -d "${DSYM_PATH}" ]; then
+	echo "-- Fatal: Can't find .dSYM folder!"
+	exit 1
+fi
+
+NOW=$($DATE +%s)
+ZIP_DSYM_FILENAME="/tmp/${NOW}-${DWARF_DSYM_FILE_NAME}.zip"
+
+# Compress the .dSYM folder into a zip file
+$ZIP -qrp9 "${ZIP_DSYM_FILENAME}" "${DSYM_PATH}"
+FILE_SIZE=$($STAT -f "%z" "${ZIP_DSYM_FILENAME}")
+echo "-- Compressed at: $ZIP_DSYM_FILENAME"
+
 # temporary file paths
-DATE=`date`
+#DATE=`date`
 
 /bin/echo "-- Uploading ${APP_FILENAME} to TestFairy... "
 
@@ -98,6 +120,7 @@ DATE=`date`
 echo "-- Curl command settings: "
 echo "\tServer endpoint: $SERVER_ENDPOINT"
 echo "\tIPA filename: $APP_FILENAME"
+echo "\tCompressed .dSYM: $ZIP_DSYM_FILENAME"
 echo "\tVideo: $VIDEO"
 echo "\tMax duration: $MAX_DURATION"
 echo "\tComment: $COMMENT"
@@ -107,9 +130,11 @@ echo "\tNotify: $NOTIFY"
 echo "\tMetrics: $METRICS\n"
 
 # Original:
-JSON=$( "${CURL}" -v --progress-bar -s ${SERVER_ENDPOINT} -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F instrumentation="off" -F metrics="${METRICS}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( "${CURL}" -v --progress-bar -s ${SERVER_ENDPOINT} -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F symbols_file="@${ZIP_DSYM_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F instrumentation="off" -F metrics="${METRICS}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
 echo "-- curl response: $JSON"
+
+rm -f $ZIP_DSYM_FILENAME
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then

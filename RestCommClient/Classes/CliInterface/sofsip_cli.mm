@@ -320,9 +320,13 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   conf->ssc_stun_server = getenv("SOFSIP_STUN_SERVER");
   //conf->ssc_stun_server = "stun.l.google.com:19302";
   
-  // log all SIP transport messages in the console. TODO: need to make this configurable
+  // enable logging of all SIP transport messages
   setenv("TPORT_LOG", "1", 1);
-
+  // for some weird the logging of all SIP transport messages occurs in su_log_default, not tport_log. Hence, to be able to redirect those to our logging facilities
+  // we use su_log_redirect(), that instead of doing the default logging for the su_log_default logger, calls the provided callback (for future reference, notice that I tried
+  // passing tport_log instead of NULL as a first argument and got no tranport messages
+  su_log_redirect(NULL, customSofiaLoggerCallback, NULL);
+    
   for (i = 1; i < ac; i++) {
     if (av[i] && av[i][0] != '-') {
       cli->cli_conf->ssc_aor = av[i];

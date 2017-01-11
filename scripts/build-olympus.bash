@@ -3,7 +3,6 @@
 # Build Olympus after updating version string and deploy
 
 PLIST_BUDDY="/usr/libexec/PlistBuddy"
-INFOPLIST_FILE="Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist"
 # Various files that we edit
 SDK_COMMON_HEADER=RestCommClient/Classes/common.h
 OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
@@ -20,17 +19,17 @@ echo "-- TRAVIS: $TRAVIS"
 echo "-- Setting up signing"
 echo "-- Decrypting keys, etc"
 # Development
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_CERT}.enc -d -a -out scripts/certs/${DEVELOPMENT_CERT}
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DEVELOPMENT_KEY}.enc -d -a -out scripts/certs/${DEVELOPMENT_KEY}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DEVELOPMENT_CERT}.enc -d -a -out scripts/certs/${DEVELOPMENT_CERT}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DEVELOPMENT_KEY}.enc -d -a -out scripts/certs/${DEVELOPMENT_KEY}
 
 # Olympus provisioning profile
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DEVELOPMENT_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
 # Distribution
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DISTRIBUTION_CERT}.enc -d -a -out scripts/certs/${DISTRIBUTION_CERT}
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/certs/${DISTRIBUTION_KEY}.enc -d -a -out scripts/certs/${DISTRIBUTION_KEY}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DISTRIBUTION_CERT}.enc -d -a -out scripts/certs/${DISTRIBUTION_CERT}
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/certs/${DISTRIBUTION_KEY}.enc -d -a -out scripts/certs/${DISTRIBUTION_KEY}
 
-openssl aes-256-cbc -k "$ENTERPRISE_DISTRIBUTION_KEY_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
+openssl aes-256-cbc -k "$FILE_ENCRYPTION_PASSWORD" -in scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision.enc -d -a -out scripts/provisioning-profile/${DISTRIBUTION_PROVISIONING_PROFILE_OLYMPUS_NAME}.mobileprovision
 
 echo "-- Setting up keychain"
 ORIGINAL_KEYCHAIN=`security default-keychain | rev | cut -d '/' -f -1 | sed 's/\"//' | rev`
@@ -65,11 +64,11 @@ security show-keychain-info $CUSTOM_KEYCHAIN
 security import ./scripts/certs/${APPLE_CERT} -k $CUSTOM_KEYCHAIN -A
 # Development
 security import ./scripts/certs/${DEVELOPMENT_CERT} -k $CUSTOM_KEYCHAIN -A
-security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
+security import ./scripts/certs/${DEVELOPMENT_KEY} -k $CUSTOM_KEYCHAIN -P $PRIVATE_KEY_PASSWORD -A
 
 # Distribution
 security import ./scripts/certs/${DISTRIBUTION_CERT} -k $CUSTOM_KEYCHAIN -A
-security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $ENTERPRISE_DISTRIBUTION_KEY_PASSWORD -A
+security import ./scripts/certs/${DISTRIBUTION_KEY} -k $CUSTOM_KEYCHAIN -P $PRIVATE_KEY_PASSWORD -A
 
 # Fix for OS X Sierra that hungs in the codesign step due to a UI prompt not visible to headless servers
 echo "-- Updating partition IDs for certs in the custom keychain, to avoid codesign hanging, waiting for UI input"
@@ -100,8 +99,8 @@ else
 fi
 echo -e "-- Updating .plist version strings:\n\tCFBundleShortVersionString $BASE_VERSION\n\tCFBundleVersion ${BUNDLE_VERSION}"
 # Set base version
-$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$INFOPLIST_FILE"
-$PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$INFOPLIST_FILE"
+$PLIST_BUDDY -c "Set :CFBundleShortVersionString $BASE_VERSION" "$OLYMPUS_PLIST"
+$PLIST_BUDDY -c "Set :CFBundleVersion ${BUNDLE_VERSION}" "$OLYMPUS_PLIST"
 # Set suffix
 
 # Update build string in sources if needed
@@ -145,11 +144,28 @@ echo "-- Exporting Archive"
 # IMPORTANT: Use xcodebuild wrapper that sets up rvm to workaround the "No applicable devices found" issue 
 scripts/xcodebuild-rvm.bash -exportArchive -archivePath ./build/Products/restcomm-olympus.xcarchive -exportOptionsPlist ./scripts/exportOptions-Enterprise.plist -exportPath ./build/Products/IPA | xcpretty
 
-echo "-- Uploading to TestFairy"
-scripts/testfairy-uploader.sh build/Products/IPA/restcomm-olympus.ipa 
+
+# Upload to Test Fairy
+if [ -z "$SKIP_TF_UPLOAD" ] || [[ "$SKIP_TF_UPLOAD" == "false" ]]
+then
+	# export path so that it is available inside testfairy-uploader.sh script
+	export DSYM_PATH=build/Products/restcomm-olympus.xcarchive/dSYMs/restcomm-olympus.app.dSYM
+
+	echo "-- Uploading .ipa and .dSYM to TestFairy"
+	scripts/testfairy-uploader.sh build/Products/IPA/restcomm-olympus.ipa 
+
+	#echo "-- Uploading dSYM to TestFairy"
+	#scripts/upload-dsym-testfairy.sh -d $TESTFAIRY_API_KEY -p build/Products/restcomm-olympus.xcarchive/dSYMs/restcomm-olympus.app.dSYM
+else
+	echo "-- Skipping upload to Test Fairy."
+fi
 
 # Clean up
 echo "-- Cleaning up"
+
+echo "-- Deintegrating olympus pods"
+cd Examples/restcomm-olympus && pod deintegrate
+cd ../..
 
 echo "-- Rolling back changes in source files: $SDK_COMMON_HEADER, $OLYMPUS_UTILS, $OLYMPUS_PLIST"
 git checkout -- $SDK_COMMON_HEADER $OLYMPUS_UTILS $OLYMPUS_PLIST $OLYMPUS_APP_DELEGATE

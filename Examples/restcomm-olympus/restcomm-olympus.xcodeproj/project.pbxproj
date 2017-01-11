@@ -731,7 +731,6 @@
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
-				AEAC80E51B76824A00D6BD09 /* ShellScript */,
 				AE7D36491D9E707F00610033 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -968,19 +967,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		AEAC80E51B76824A00D6BD09 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#echo $CONFIGURATION > /tmp/3.txt\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    sh $SRCROOT/restcomm-olympus/TestFairy/upload-dsym.sh -d c575c3a7f55080be2f02589818a5c091ca0950da\n#sh $SRCROOT/../../RestCommClient/RestCommClient/TestFairy/upload-dsym.sh -d c575c3a7f55080be2f02589818a5c091ca0950da\nfi\n";
-		};
 		AED9718819E98B77000F7A8E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

@@ -1,0 +1,6 @@
+use_frameworks!
+target 'webrtc-framework_Tests' do
+  pod 'webrtc-framework', :path => '../'
+  
+  
+end
