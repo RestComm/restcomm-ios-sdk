@@ -6,7 +6,7 @@ echo "-- Processing main script."
 
 # Run integration tests in simulator - TODO: take this out to a separate script
 echo "-- Running Integration Tests on simulator."
-if [ -z "$SKIP_INTEGRATION_TESTS" ]
+if [ -z "$SKIP_INTEGRATION_TESTS" ] || [[ "$SKIP_INTEGRATION_TESTS" == "false" ]]
 then
 	echo "-- Installing CocoaPod dependencies"
 	pod install --project-directory=Test-App
@@ -62,7 +62,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 
 # Update reference documentation
-if [ -z "$SKIP_DOC_GENERATION" ]
+if [ -z "$SKIP_DOC_GENERATION" ] || [[ "$SKIP_DOC_GENERATION" == "false" ]]
 then
 	./scripts/update-doc.bash
 else
@@ -71,7 +71,7 @@ fi
 
 # Build and deploy Olympus
 # Update reference documentation
-if [ -z "$SKIP_OLYMPUS_BUILD" ]
+if [ -z "$SKIP_OLYMPUS_BUILD" ]  || [[ "$SKIP_OLYMPUS_BUILD" == "false" ]]
 then
 	./scripts/build-olympus.bash
 else
