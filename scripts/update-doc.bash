@@ -46,6 +46,7 @@ fi
 #git status
 echo "-- Removing unneeded files from staging area"
 git rm --cached -r . 
+
 #echo "-- After removing unneeded files from staging area"
 #git status
 
@@ -74,12 +75,22 @@ git add doc/
 
 # Commit
 echo "-- Commiting to $DOC_BRANCH"
-git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation, Travis CI build: $TRAVIS_BUILD_NUMBER"
+if [ ! -z "$TRAVIS" ]
+then
+	git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation for ${ORIGINAL_BRANCH}/${COMMIT_SHA1}, Travis CI build: $TRAVIS_BUILD_NUMBER"
+else 
+	# If doc generation happens locally, let's use the original branch's commit to be able to tell for which commit documentation was generated
+	git commit -m "Update $DOC_BRANCH with Restcomm SDK Reference Documentation for ${ORIGINAL_BRANCH}/${COMMIT_SHA1}"
+fi
+
 if [ $? -ne 0 ]
 then
 	echo "-- Failed to commit, bailing"
 	exit 1
 fi
+
+# Add all untracked changes to index/staging area so that we can return to original branch without issues
+git add .
 
 # Need to make absolutely sure that we are in gh-pages before pushing. Originally, I tried to make this check right after 'git checkout --orphan' above, but it seems than in the orphan state the current 
 # branch isn't retrieved correctly with 'git branch' because we 're in detached state
@@ -105,10 +116,10 @@ git push -f origin $DOC_BRANCH
 #fi
 
 # Removing non staged changes from gh-pages, so that we can go back to original branch without issues
-echo "-- Removing non staged changes from $DOC_BRANCH"
-git clean -fd
+#echo "-- Removing non staged changes from $DOC_BRANCH"
+##git clean -fd
 # TODO: Remove when fixed. There seems to be a bug in git where with the first clean, 'dependecies' dir is left intact, running it a second time removes that as well an we can resume
-git clean -fd
+##git clean -fd
 
 # Debug command to verify everything is in order
 git status
