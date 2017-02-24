@@ -348,14 +348,17 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 /////
 - (RTCRtpSender *)createVideoSender {
-    RTCRtpSender *sender =
-    [_peerConnection senderWithKind:kRTCMediaStreamTrackKindVideo
-                           streamId:kARDMediaStreamId];
-    RTCVideoTrack *track = [self createLocalVideoTrack];
-    if (track) {
-        sender.track = track;
-        [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:track];
-        //[_delegate appClient:self didReceiveLocalVideoTrack:track];
+    RTCRtpSender *sender = nil;
+    
+    if (_videoAllowed) {
+        sender = [_peerConnection senderWithKind:kRTCMediaStreamTrackKindVideo
+                                        streamId:kARDMediaStreamId];
+        RTCVideoTrack *track = [self createLocalVideoTrack];
+        if (track) {
+            sender.track = track;
+            [self.mediaDelegate mediaController:self didReceiveLocalVideoTrack:track];
+            //[_delegate appClient:self didReceiveLocalVideoTrack:track];
+        }
     }
     return sender;
 }
