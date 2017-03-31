@@ -169,6 +169,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
+    
+    [self handleDisconnected];
 }
 
 - (void)sendDigits:(NSString*)digits
@@ -243,6 +245,11 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     [self.delegate connectionDidStartConnecting:self];
 }
 
+- (void) handleDisconnected
+{
+    [self.device clearCurrentConnection];
+}
+
 - (void)sipManagerDidReceiveOutgoingEstablished:(SipManager*)sipManager
 {
     RCLogNotice("[RCConnection sipManagerDidReceiveOutgoingEstablished]");
@@ -281,6 +288,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidDisconnect:self];
     self.device.state = RCDeviceStateReady;
+    [self handleDisconnected];
 }
 
 - (void)sipManagerDidReceiveOutgoingDeclined:(SipManager*)sipManager;
@@ -294,6 +302,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidGetDeclined:self];
     self.device.state = RCDeviceStateReady;
+    [self handleDisconnected];
 }
 
 - (void)sipManagerDidReceiveBye:(SipManager*)sipManager;
@@ -312,6 +321,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     if (self.device.state != RCDeviceStateOffline) {
         self.device.state = RCDeviceStateReady;
     }
+    [self handleDisconnected];
 }
 
 - (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;
@@ -326,6 +336,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidCancel:self];
     self.device.state = RCDeviceStateReady;
+    [self handleDisconnected];
 }
 
 - (void)sipManager:(SipManager*)sipManager didReceiveLocalVideo:(RTCVideoTrack *)localView;

@@ -233,6 +233,11 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     [self.sipManager shutdown:NO];
 }
 
+- (void)clearCurrentConnection
+{
+    self.currentConnection = nil;
+}
+
 + (RCDeviceConnectivityType)networkStatus2ConnectivityType:(NetworkStatus)status
 {
     // right now those 2 enums are one to one, but let's keep the conversion in case the values change at some point

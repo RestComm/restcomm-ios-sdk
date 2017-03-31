@@ -205,6 +205,9 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  */
 - (BOOL) updateParams:(NSDictionary*)params;
 
+// To be used internally by the library -not for application usage
+- (void)clearCurrentConnection;
+
 /* DEBUG:
 -(void)startSofia;
 -(void)stopSofia;
