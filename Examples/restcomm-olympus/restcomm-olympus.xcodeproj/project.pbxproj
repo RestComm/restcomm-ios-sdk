@@ -22,7 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8D077AE924D682A3864EB1B6 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4348E4400029D41BAF43FE /* libPods-restcomm-olympus.a */; };
+		0F5ACCF4CE47953803FE0B65 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 587E1152EE026571FB1AE9FE /* libPods-restcomm-olympus.a */; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
@@ -220,7 +220,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7E04E0726E9DAAD39F403925 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
+		587E1152EE026571FB1AE9FE /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
 		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
@@ -418,8 +418,8 @@
 		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIPSettingsNavigationController.m; sourceTree = "<group>"; };
 		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsNavigationController.h; sourceTree = "<group>"; };
 		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsNavigationController.m; sourceTree = "<group>"; };
-		BC4348E4400029D41BAF43FE /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DEB244673BF1A52D93E92613 /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		E04705FE0BB1843E14A937F4 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
+		EC51213CD5895EF303D78663 /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -429,7 +429,7 @@
 			files = (
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
-				8D077AE924D682A3864EB1B6 /* libPods-restcomm-olympus.a in Frameworks */,
+				0F5ACCF4CE47953803FE0B65 /* libPods-restcomm-olympus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,11 +443,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A3CF81123D358C8601AD0862 /* Pods */ = {
+		6E6296987E651ECCB42362F5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7E04E0726E9DAAD39F403925 /* Pods-restcomm-olympus.debug.xcconfig */,
-				DEB244673BF1A52D93E92613 /* Pods-restcomm-olympus.release.xcconfig */,
+				E04705FE0BB1843E14A937F4 /* Pods-restcomm-olympus.debug.xcconfig */,
+				EC51213CD5895EF303D78663 /* Pods-restcomm-olympus.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -468,7 +468,7 @@
 				AE79D31719BC8DAD0023306C /* Products */,
 				AEA495651C2997F6000D9762 /* restcomm-olympus */,
 				AED0B05F1A0976F8008A6057 /* restcomm-olympusTests */,
-				A3CF81123D358C8601AD0862 /* Pods */,
+				6E6296987E651ECCB42362F5 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -485,7 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
-				BC4348E4400029D41BAF43FE /* libPods-restcomm-olympus.a */,
+				587E1152EE026571FB1AE9FE /* libPods-restcomm-olympus.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -744,13 +744,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-olympus" */;
 			buildPhases = (
-				54FAC50C676569AB62D7A177 /* [CP] Check Pods Manifest.lock */,
+				15E45DDC2492D8B9A25E19E5 /* [CP] Check Pods Manifest.lock */,
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
 				AE7D36491D9E707F00610033 /* Embed Frameworks */,
-				4D093DA00E5D5809F67951E4 /* [CP] Embed Pods Frameworks */,
-				C3CFD8736FDBD50DD78AA037 /* [CP] Copy Pods Resources */,
+				C24FFBB69004EC89FA162009 /* [CP] Embed Pods Frameworks */,
+				CB2500A286CBCE3F5C882876 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -986,22 +986,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4D093DA00E5D5809F67951E4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		54FAC50C676569AB62D7A177 /* [CP] Check Pods Manifest.lock */ = {
+		15E45DDC2492D8B9A25E19E5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1042,7 +1027,22 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"${PROJECT_DIR}/doc\"\ndoxygen Doxyfile";
 		};
-		C3CFD8736FDBD50DD78AA037 /* [CP] Copy Pods Resources */ = {
+		C24FFBB69004EC89FA162009 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB2500A286CBCE3F5C882876 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1229,7 +1229,7 @@
 		};
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E04E0726E9DAAD39F403925 /* Pods-restcomm-olympus.debug.xcconfig */;
+			baseConfigurationReference = E04705FE0BB1843E14A937F4 /* Pods-restcomm-olympus.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1269,7 +1269,7 @@
 		};
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEB244673BF1A52D93E92613 /* Pods-restcomm-olympus.release.xcconfig */;
+			baseConfigurationReference = EC51213CD5895EF303D78663 /* Pods-restcomm-olympus.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

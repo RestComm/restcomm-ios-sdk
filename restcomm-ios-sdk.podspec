@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'restcomm-ios-sdk'
   #s.version          = '0.9.1'
-  s.version          = '1.0.0-beta.4.2.1'
+  s.version          = '1.0.0-beta.4.2.2'
   s.summary          = 'Restcomm iOS SDK'
 
 # This description is used to generate tags and improve search results.
