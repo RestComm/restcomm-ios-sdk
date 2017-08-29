@@ -48,6 +48,10 @@
 @property Reachability* hostReachable;
 @property NetworkStatus reachabilityStatus;
 @property BOOL hostActive;
+
+// used with beginBackgroundTaskWithExpirationHandler
+@property UIBackgroundTaskIdentifier backgroundTaskId;
+
 @end
 
 
@@ -60,6 +64,8 @@ NSString* const RCDeviceCapabilityAccountSIDKey = @"RCDeviceCapabilityAccountSID
 NSString* const RCDeviceCapabilityApplicationSIDKey = @"RCDeviceCapabilityApplicationSIDKey";
 NSString* const RCDeviceCapabilityApplicationParametersKey = @"RCDeviceCapabilityApplicationParametersKey";
 NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientNameKey";
+
+const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
 - (void) populateCapabilitiesFromToken:(NSString*)capabilityToken
 {
@@ -218,12 +224,23 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
             [self disconnectAll];
         }
 
-        [self.sipManager unregister:nil];
+        // not needed as unREGISTER is automatically called by Sofia when shutting down
+        //[self.sipManager unregister:nil];
         _state = RCDeviceStateOffline;
         NSError * error = [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                            code:ERROR_LOST_CONNECTIVITY
                                        userInfo:@{NSLocalizedDescriptionKey : @"" }];
 
+        RCLogError("[RCDevice unlisten], start background");
+        self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            RCLogError("[RCDevice unlisten], Forcing background stop");
+            [self handleSignlingBackgroundTimeout];
+            //[[UIApplication sharedApplication] endBackgroundTask:taskId];
+        }];
+
+        RCLogError("[RCDevice unlisten], time remaining: %lf", [[UIApplication sharedApplication] backgroundTimeRemaining]);
+        [self performSelector:@selector(handleSignlingBackgroundTimeout) withObject:nil afterDelay:SIGNALING_SHUTDOWN_TIMEOUT];
+        
         // important: in this case we are calling asyncDeviceDidStopListeningForIncomingConnections synchronously
         // because we want the App to get a chance to update UI before it goes to the background
         [self asyncDeviceDidStopListeningForIncomingConnections:error];
@@ -231,6 +248,15 @@ NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientName
     
     // need to shut down sofia even if we are already offline. Remember that we are deemed offline even if sofia is up but REGISTER has failed. And we want to make sure Sofia stops on unlisten()
     [self.sipManager shutdown:NO];
+}
+
+- (void)handleSignlingBackgroundTimeout  //:(NSNumber*)taskId
+{
+    RCLogError("[RCDevice unlisten], end background");
+    if (self.backgroundTaskId != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskId];
+        self.backgroundTaskId = UIBackgroundTaskInvalid;
+    }
 }
 
 - (void)clearCurrentConnection

@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE421E871F557C0A004C44B6 /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE421E861F557C0A004C44B6 /* libboringssl.a */; };
+		AE421E891F557C30004C44B6 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE421E881F557C30004C44B6 /* libsofia-sip-ua.a */; };
 		AE58C9621DCB6C6E00D02931 /* sofia-sip.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C9601DCB6C6E00D02931 /* sofia-sip.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AE58C9691DCB6C7800D02931 /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58C9681DCB6C7800D02931 /* libsofia-sip-ua.a */; };
 		AE58C9E11DCB6C9200D02931 /* sres.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C96D1DCB6C9200D02931 /* sres.h */; };
 		AE58C9E21DCB6C9200D02931 /* sres_async.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C96E1DCB6C9200D02931 /* sres_async.h */; };
 		AE58C9E31DCB6C9200D02931 /* sres_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C96F1DCB6C9200D02931 /* sres_cache.h */; };
@@ -124,15 +125,15 @@
 		AE58CA511DCB6C9200D02931 /* url.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C9DE1DCB6C9200D02931 /* url.h */; };
 		AE58CA521DCB6C9200D02931 /* url_tag.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C9DF1DCB6C9200D02931 /* url_tag.h */; };
 		AE58CA531DCB6C9200D02931 /* url_tag_class.h in Headers */ = {isa = PBXBuildFile; fileRef = AE58C9E01DCB6C9200D02931 /* url_tag_class.h */; };
-		AE58CA561DCB704C00D02931 /* libBoringSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58CA551DCB704C00D02931 /* libBoringSSL.a */; };
 		AE58CA581DCB760D00D02931 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AE58CA571DCB760D00D02931 /* libresolv.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE421E861F557C0A004C44B6 /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = ../../binaries/boringssl/lib/libboringssl.a; sourceTree = "<group>"; };
+		AE421E881F557C30004C44B6 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../binaries/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE58C95D1DCB6C6E00D02931 /* sofiasip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = sofiasip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE58C9601DCB6C6E00D02931 /* sofia-sip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sofia-sip.h"; sourceTree = "<group>"; };
 		AE58C9611DCB6C6E00D02931 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AE58C9681DCB6C7800D02931 /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE58C96D1DCB6C9200D02931 /* sres.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres.h; sourceTree = "<group>"; };
 		AE58C96E1DCB6C9200D02931 /* sres_async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_async.h; sourceTree = "<group>"; };
 		AE58C96F1DCB6C9200D02931 /* sres_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sres_cache.h; sourceTree = "<group>"; };
@@ -248,8 +249,11 @@
 		AE58C9DE1DCB6C9200D02931 /* url.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url.h; sourceTree = "<group>"; };
 		AE58C9DF1DCB6C9200D02931 /* url_tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag.h; sourceTree = "<group>"; };
 		AE58C9E01DCB6C9200D02931 /* url_tag_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_tag_class.h; sourceTree = "<group>"; };
-		AE58CA551DCB704C00D02931 /* libBoringSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBoringSSL.a; sourceTree = "<group>"; };
 		AE58CA571DCB760D00D02931 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		AE72F83A1F501DE400C50C7D /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../sources/sofia-sip/build/libsofia-sip-ua.a"; sourceTree = "<group>"; };
+		AE72F83C1F501DFD00C50C7D /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = "../../../../../staging/webrtc-root/src/out/libs/libboringssl.a"; sourceTree = "<group>"; };
+		AE72F83E1F50219C00C50C7D /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = dependencies/libboringssl.a; sourceTree = "<group>"; };
+		AE72F83F1F50219C00C50C7D /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "dependencies/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,8 +261,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE58CA561DCB704C00D02931 /* libBoringSSL.a in Frameworks */,
-				AE58C9691DCB6C7800D02931 /* libsofia-sip-ua.a in Frameworks */,
+				AE421E871F557C0A004C44B6 /* libboringssl.a in Frameworks */,
+				AE421E891F557C30004C44B6 /* libsofia-sip-ua.a in Frameworks */,
 				AE58CA581DCB760D00D02931 /* libresolv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +275,6 @@
 			children = (
 				AE58C95F1DCB6C6E00D02931 /* sofia-sip */,
 				AE58C95E1DCB6C6E00D02931 /* Products */,
-				AE58C9681DCB6C7800D02931 /* libsofia-sip-ua.a */,
 				AE58CA541DCB704B00D02931 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -443,8 +446,13 @@
 		AE58CA541DCB704B00D02931 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE421E881F557C30004C44B6 /* libsofia-sip-ua.a */,
+				AE421E861F557C0A004C44B6 /* libboringssl.a */,
+				AE72F83E1F50219C00C50C7D /* libboringssl.a */,
+				AE72F83F1F50219C00C50C7D /* libsofia-sip-ua.a */,
+				AE72F83C1F501DFD00C50C7D /* libboringssl.a */,
+				AE72F83A1F501DE400C50C7D /* libsofia-sip-ua.a */,
 				AE58CA571DCB760D00D02931 /* libresolv.tbd */,
-				AE58CA551DCB704C00D02931 /* libBoringSSL.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -781,17 +789,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../../binaries/boringssl/lib",
+					"$(PROJECT_DIR)/../../binaries/sofia-sip-1.12.11/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.sofia-sip";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Debug;
 		};
 		AE58C9671DCB6C6E00D02931 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = H9PG74NSQT;
@@ -807,11 +819,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../../binaries/boringssl/lib",
+					"$(PROJECT_DIR)/../../binaries/sofia-sip-1.12.11/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.sofia-sip";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};

@@ -24,7 +24,11 @@
 #include <asl.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "TestFairy.h"
+#include <stdbool.h>
+#include <string.h>
+#import <UIKit/UIKit.h>
+
+//#include "TestFairy.h"
 
 // TODO: asl man page says that the best practice is to use separate client handle from each
 // thread for which you want logging. Currently we don't do that and I haven't seen any issues
@@ -132,6 +136,8 @@ char * levelNumber2String(int level)
     if (level == ASL_LEVEL_DEBUG) {
         return "DEBUG";
     }
+    
+    return "DEBUG";
 }
 
 #define RC_MAKE_LOG_FUNCTION(LEVEL, NAME) \
@@ -142,7 +148,6 @@ va_start(args, format); \
 char message[LOG_BUFFER_SIZE]; \
 vsnprintf(message, sizeof(message), format, args); \
 asl_log(NULL, msg, (LEVEL), "(%s:%d) %s", filename, linenumber, message); \
-TFLog(@"%s (%s:%d) %s", levelNumber2String(LEVEL), filename, linenumber, message); \
 va_end(args); \
 }
 

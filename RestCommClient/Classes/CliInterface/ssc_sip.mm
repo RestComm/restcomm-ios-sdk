@@ -2264,18 +2264,47 @@ void ssc_r_shutdown(int status, char const *phrase,
                     nua_handle_t *nh, ssc_oper_t *op, sip_t const *sip,
                     tagi_t tags[])
 {
+    // TODO: Unfortunately there's an issue (probably Sofia SIP internal?), that causes ssc_r_shutdown
+    // to never be called with status code 200 (it's only called with 100), to signify that stack
+    // has been shutdown properly. So what we do is a hack where when we get the 100, which always arrives,
+    // we just break out of the sofia runloop. Some additional notes:
+    // - In iOS to make sure that it's not the OS's fault that stops the process I tried this when the App
+    //   is not being backgrounded (which is the typical case) and we have the same issue still even after
+    //   several seconds -I even waited for 120 seconds!
+    // - To make sure that Sofia thread has enough time to finish shutting down before iOS stops it, in the
+    //   higher layers of the SDK we call UIApplication.beginBackgroundTaskWithExpirationHandler and ask
+    //   more time
+    // - When we get around to implementing our refactoring we should 1. Investigate the Sofia SIP issue
+    //   more and try to fix it, 2. Provide callback when shutdown is properly completed, and use that
+    //   callback to stop the iOS background task by calling UIApplication.endBackgroundTask
+    
+     
     RCLogDebug("%s: nua_shutdown: %03d %s", ssc->ssc_name, status, phrase);
     static int attempt = 0;
 
+    /*
+    nua_destroy(nua);
+    su_root_break(ssc->ssc_root);
+     */
+
+    if (status == 100) {
+        RCLogDebug("Forcing Sofia SIP to complete shutdown: breaking out of loop");
+        //nua_destroy(nua);
+        su_root_break(ssc->ssc_root);
+    }
+
+    /*
     if (status == 101) {
         // shut down in progress
         if (attempt >= 3) {
             RCLogDebug("Sofia failed to shutdown gracefully after 3 attempts: breaking out of loop");
             //nua_destroy(nua);
             su_root_break(ssc->ssc_root);
+            attempt = 0;
         }
         attempt++;
     }
+     */
     
     if (status < 200)
         return;
@@ -2400,6 +2429,10 @@ void ssc_shutdown(ssc_t *ssc)
     RCLogDebug("%s: quitting (this can take some time)", ssc->ssc_name);
     
     nua_shutdown(ssc->ssc_nua);
+    
+    //nua_destroy(ssc->ssc_nua);
+    
+    //su_root_break(ssc->ssc_root);
     
     stackIsShuttingDown = true;
 }

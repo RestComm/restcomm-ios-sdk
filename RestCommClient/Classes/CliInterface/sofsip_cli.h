@@ -23,6 +23,8 @@
 #ifndef HAVE_SOFSIP_CLI_J
 #define HAVE_SOFSIP_CLI_J
 
+#import <Foundation/Foundation.h>
+
 @interface SofiaConf : NSObject
 + (void)dictionary:(NSMutableDictionary*)dictionary guardedSetObject:(NSObject*)object forKey:(NSString*)key;
 @end

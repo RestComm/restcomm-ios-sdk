@@ -1,12 +1,21 @@
 #!/bin/bash
 #
-# Build sofia sip library for all architectures and combine all the libs to a universal library. Need to be run in the sofia sip directory
+# Build sofia sip library for all architectures and combine all the libs to a universal library. Need to be run from side the sofia-sip directory (i.e. root of sofia sip sources)
 #
 # Function build() is ran once for each architecture and in the end the output .a files are combined and stored in directory 'build'
 #
-# Example: $ ./build-sofia-sip.bash -d <0|1> -v <0|1>
+# Example: $ ../../../build-sofia-sip.bash -d <0|1> -v <0|1>
 # -d: add debug symbols to the build
 # -v: show the full CC commands (like compile and link flags) for troubleshooting
+#
+# IMPORTANT: 
+#
+# If somehow 'configure' gets deleted you need to regenerate with '$ autoreconf -i'
+#
+# For some reason '$ autoconf' doesn't work, although it did work with original
+# sofia-sip sources. Probably when we added support for BoringSSL something was
+# missing in the autotools configuration files
+#
 #
 
 function build()
@@ -52,7 +61,9 @@ function build()
 
 	export ARCH
 	# for debug but use boringssl instead of openssl
-	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-ios/webrtc_checkout/src/third_party/boringssl/src/include" 
+	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-ios/webrtc_checkout/src/third_party/boringssl/src/include" 
+	# TODO: maybe we need to also link with boringssl? I would assume not, as this happens during build of the end executable, but I seem to recall that we had some issues using Sofia SIP with TLS without this setting
+	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I../../boringssl" 
 
 	if [[ $SDK != "iphonesimulator" ]]
 	then
@@ -63,6 +74,7 @@ function build()
 
 	if [ "$DEBUG" -eq 1 ]
 	then
+		echo "--- Adding DEBUG symbols and setting zero optimizations"
 		CFLAGS=${CFLAGS}" -g -O0"
 	fi
 
@@ -149,22 +161,22 @@ ARCH="i386"
 SDK="iphonesimulator"
 build $SDK $ARCH $DEBUG $VERBOSE
 
-#ARCH="x86_64"
-#SDK="iphonesimulator"
-#build $SDK $ARCH $DEBUG $VERBOSE
-#
-#ARCH="armv7"
-#SDK="iphoneos"
-#build $SDK $ARCH $DEBUG $VERBOSE
+ARCH="x86_64"
+SDK="iphonesimulator"
+build $SDK $ARCH $DEBUG $VERBOSE
+
+ARCH="armv7"
+SDK="iphoneos"
+build $SDK $ARCH $DEBUG $VERBOSE
 
 # this doesn't work for some reason
 #ARCH="armv7s"
 #SDK="iphoneos"
 #build $SDK $ARCH $DEBUG $VERBOSE
 
-#ARCH="arm64"
-#SDK="iphoneos"
-#build $SDK $ARCH $DEBUG $VERBOSE
+ARCH="arm64"
+SDK="iphoneos"
+build $SDK $ARCH $DEBUG $VERBOSE
 
 echo "--- Creating universal library at build/"
 rm -f build/libsofia-sip-ua.a

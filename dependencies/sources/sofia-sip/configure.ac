@@ -110,7 +110,6 @@ if test "x${ax_cv_c_compiler_vendor}"  =  "xsun" ; then
 fi
 
 SAC_SOFIA_SU
-dnl SAC_OPENSSL
 SAC_BORINGSSL
 SAC_TPORT
 
