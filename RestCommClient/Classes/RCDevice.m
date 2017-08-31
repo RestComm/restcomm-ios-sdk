@@ -231,6 +231,10 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
                                            code:ERROR_LOST_CONNECTIVITY
                                        userInfo:@{NSLocalizedDescriptionKey : @"" }];
 
+        // TODO: Right now we 're starting the background task and we 're stoping it without getting a
+        // notification from signaling facilities that shutdown has completed. Although this is hacky, we 're
+        // using this now until we refactor the signaling stack so that it can properly convey that shutdown
+        // is complete (right now there seems to be a bug is Sofia SIP and we never get such notification)
         RCLogError("[RCDevice unlisten], start background");
         self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             RCLogError("[RCDevice unlisten], Forcing background stop");

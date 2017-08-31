@@ -10,40 +10,6 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>05E570F797797ACAA1D471E3</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C529156108E61E96B84A9B1D</string>
-				<string>FD9F158D57A6D80E63298A8C</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5A2818CC5BC5D61E7B10E406</key>
-		<dict>
-			<key>fileRef</key>
-			<string>6943E2450757AE124BC5E849</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>6943E2450757AE124BC5E849</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-restcomm-olympus.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
 		<key>AE0A08341DD2101100641151</key>
 		<dict>
 			<key>isa</key>
@@ -1395,7 +1361,6 @@
 				<string>AE79D31719BC8DAD0023306C</string>
 				<string>AEA495651C2997F6000D9762</string>
 				<string>AED0B05F1A0976F8008A6057</string>
-				<string>05E570F797797ACAA1D471E3</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -1421,6 +1386,11 @@
 						<key>SystemCapabilities</key>
 						<dict>
 							<key>com.apple.BackgroundModes</key>
+							<dict>
+								<key>enabled</key>
+								<string>0</string>
+							</dict>
+							<key>com.apple.Push</key>
 							<dict>
 								<key>enabled</key>
 								<string>0</string>
@@ -1522,7 +1492,6 @@
 			<array>
 				<string>AE0A08351DD2101100641151</string>
 				<string>AEA4967F1C2997F6000D9762</string>
-				<string>5A2818CC5BC5D61E7B10E406</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -1692,13 +1661,10 @@
 			<string>AE79D34B19BC8DAE0023306C</string>
 			<key>buildPhases</key>
 			<array>
-				<string>E5730D85322B0857D948B208</string>
 				<string>AE79D31219BC8DAD0023306C</string>
 				<string>AE79D31319BC8DAD0023306C</string>
 				<string>AE79D31419BC8DAD0023306C</string>
 				<string>AE7D36491D9E707F00610033</string>
-				<string>FF24CB74665E3DE3861C7DCD</string>
-				<string>C75FB536A1C1E2DBA2B49169</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -1747,7 +1713,6 @@
 			<key>children</key>
 			<array>
 				<string>AE0A08341DD2101100641151</string>
-				<string>6943E2450757AE124BC5E849</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -2031,8 +1996,6 @@
 		</dict>
 		<key>AE79D34C19BC8DAE0023306C</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>C529156108E61E96B84A9B1D</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ARCHS</key>
@@ -2103,8 +2066,6 @@
 		</dict>
 		<key>AE79D34D19BC8DAE0023306C</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>FD9F158D57A6D80E63298A8C</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ARCHS</key>
@@ -2633,6 +2594,7 @@
 		<dict>
 			<key>children</key>
 			<array>
+				<string>AECBFD0F1F56EC530022840A</string>
 				<string>AE3E52C31C57BB7B0057F5D0</string>
 				<string>AEA495791C2997F6000D9762</string>
 				<string>AEA495781C2997F6000D9762</string>
@@ -4583,6 +4545,17 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>AECBFD0F1F56EC530022840A</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.entitlements</string>
+			<key>path</key>
+			<string>restcomm-olympus.entitlements</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>AED0B05F1A0976F8008A6057</key>
 		<dict>
 			<key>children</key>
@@ -4843,113 +4816,6 @@ doxygen Doxyfile</string>
 			<string>AEFA3BCC1C7F32E600ECD02F</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
-		</dict>
-		<key>C529156108E61E96B84A9B1D</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-restcomm-olympus.debug.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C75FB536A1C1E2DBA2B49169</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>[CP] Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>E5730D85322B0857D948B208</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>[CP] Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [ $? != 0 ] ; then
-    # print error to STDERR
-    echo "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation." &gt;&amp;2
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>FD9F158D57A6D80E63298A8C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-restcomm-olympus.release.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>FF24CB74665E3DE3861C7DCD</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>[CP] Embed Pods Frameworks</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>

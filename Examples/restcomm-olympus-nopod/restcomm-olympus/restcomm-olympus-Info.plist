@@ -106,9 +106,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This App uses the camera to send for video calls</string>
+	<string>This App uses the camera for video calls</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This App use the microphone for audio and video calls</string>
+	<string>This App uses the microphone for audio and video calls</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_Universal</string>
 	<key>UIMainStoryboardFile~ipad</key>
