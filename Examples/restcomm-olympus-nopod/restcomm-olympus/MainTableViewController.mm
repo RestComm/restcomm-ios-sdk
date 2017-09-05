@@ -46,13 +46,10 @@
     _alert = nil;
     
     UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
-    UIColor *logoOrange = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
-    //[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:223.0/255.0 green:61.0/255.0 blue:0.0/255.0 alpha:255.0/255.0]];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = grey;
-
-    //UIColor *logoGrey = [UIColor colorWithRed:127.0/255.0 green:127.0/255.0 blue:127.0/255.0 alpha:255.0/255.0];
+    
     UIBarButtonItem * editButton = [self editButtonItem];
     [editButton setTintColor:grey];
     UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -60,23 +57,20 @@
                                                                                 action:@selector(invokeCreateContact)];
     [addButton setTintColor:grey];
     
-    //[self.navigationItem.backBarButtonItem setTitle:@" "];
-
     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // remove empty cells from tableview
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.isRegistered = NO;
     self.isInitialized = NO;
     
-    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
-
+    
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
@@ -88,8 +82,8 @@
                        [Utils turnPassword], @"turn-password",
                        @(NO), @"signaling-secure",
                        //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                       @([Utils signalingSecure]), @"signaling-secure",
-//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                       //                       @([Utils signalingSecure]), @"signaling-secure",
+                       //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
@@ -109,17 +103,16 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
-// ---------- UI events
+#pragma mark - UI events
+
 - (void)register:(NSNotification *)notification
 {
     if (self.device && self.isInitialized) {
@@ -129,9 +122,7 @@
 
 - (void)register
 {
-    // update our parms
     [self.device listen];
-    //[self.device updateParams:self.parameters];
     self.isRegistered = YES;
 }
 
@@ -141,7 +132,8 @@
     self.isRegistered = NO;
 }
 
-// ---------- Delegate methods for RC Device
+#pragma mark - Delegate methods for RCDeviceDelegate
+
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
     //NSLog(@"------ didStopListeningForIncomingConnections: error: %p", error);
@@ -153,12 +145,11 @@
     }
 }
 
-// optional
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
     self.isInitialized = YES;
     self.isRegistered = YES;
-
+    
     [self updateConnectivityStatus:device.state
                andConnectivityType:device.connectivityType
                           withText:nil];
@@ -169,12 +160,11 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
         CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
         
-        // setup call view controller
-        //CallViewController *callViewController = [[CallViewController alloc] init];
         callViewController.delegate = self;
         callViewController.device = self.device;
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+        
         // search through the contacts if the given URI is known and if so use its alias, if not just use the URI
         NSString * alias = [Utils sipUri2Alias:pendingInterapUri];
         if ([alias isEqualToString:@""]) {
@@ -236,7 +226,7 @@
         alias = [connection.parameters objectForKey:@"from"];
     }
     [callViewController.parameters setObject:alias forKey:@"alias"];
-
+    
     // TODO: change this once I implement the incoming call caller id
     //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
     
@@ -246,18 +236,20 @@
                      completion:nil];
 }
 
+
+
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
     //NSLog(@"------ updateConnectivityStatus: status: %d, text: %@", status, text);
     NSString * imageName = @"inapp-icon-28x28.png";
-
+    
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
                                              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [activityView startAnimating];
     UIBarButtonItem *barIndicator = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     
     NSMutableArray * itemsArray = [[NSMutableArray alloc] init];
-
+    
     NSString * defaultText = nil;
     if (state == RCDeviceStateOffline) {
         defaultText = @"Lost connectivity";
@@ -276,7 +268,7 @@
     if (!text) {
         text = defaultText;
     }
-
+    
     // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
     UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                                                                             style:UIBarButtonItemStylePlain
@@ -286,18 +278,18 @@
     [itemsArray insertObject:restcommIconButton atIndex:0];
     
     self.navigationItem.leftBarButtonItems = itemsArray;
-
+    
     if (![text isEqualToString:@""] ||
         (![text isEqualToString:@""] && status != self.previousDeviceState)) {
         
         // only alert if we have a change of the connectivity state
         /*
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
-                                                        message:text
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
+         message:text
+         delegate:self
+         cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];
          */
         
         // Let's use toast notifications that are much more suitable now that we implemented them
@@ -306,20 +298,7 @@
     self.previousDeviceState = state;
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-}
-
-- (BOOL)shouldAutorotate
-{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-}
-
+#pragma mark - SipSettingsDelegate method
 // User requested new registration in 'Settings'
 - (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
 {
@@ -328,9 +307,102 @@
                           withText:@""];
 }
 
-- (void)invokeRestcomm
+
+#pragma mark - ContactUpdateDelegate method
+
+- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
+          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
 }
+
+#pragma mark - ContactDetailsDelegate method
+
+- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
+           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:sipUri] inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark - MessageDelegate method
+
+- (void)messageViewController:(MessageTableViewController*)messageViewController
+       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    return [Utils contactCount];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
+    
+    // Configure the cell...
+    NSArray * contact = [Utils contactForIndex: (int)indexPath.row];
+    cell.textLabel.text = [contact objectAtIndex:0];
+    cell.detailTextLabel.text = [contact objectAtIndex:1];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
+}
+
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [Utils removeContactAtIndex:(int)indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //[self.tableView endUpdates];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Adding is handled in the separate screen
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
+}
+
+#pragma mark - PrepareForSegue
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"invoke-settings"]) {
+        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
+        settingsTableViewController.device = self.device;
+    }
+    
+    if ([segue.identifier isEqualToString:@"invoke-create-contact"]) {
+        UINavigationController *contactUpdateNavigationController = [segue destinationViewController];
+        ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
+        contactUpdateViewController.delegate = self;
+    }
+    
+    if ([segue.identifier isEqualToString:@"invoke-messages"]) {
+        NSIndexPath * indexPath = sender;
+        // retrieve info for the selected contact
+        NSArray * contact = [Utils contactForIndex: (int)indexPath.row];
+        
+        MessageTableViewController *messageViewController = [segue destinationViewController];
+        messageViewController.delegate = self;
+        messageViewController.device = self.device;
+        messageViewController.parameters = [[NSMutableDictionary alloc] init];
+        [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
+        [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
+        
+    }
+    
+}
+
+#pragma mark - Invoke methods
 
 - (void)invokeSettings
 {
@@ -352,150 +424,19 @@
     contactUpdateViewController.delegate = self;
     
     [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
-    //[self.navigationController pushViewController:contactUpdateViewController animated:YES];
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - Rotation/Orientation
+
+- (BOOL)shouldAutorotate
 {
-    if ([segue.identifier isEqualToString:@"invoke-settings"]) {
-        SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
-        settingsTableViewController.device = self.device;
-    }
-    
-    if ([segue.identifier isEqualToString:@"invoke-create-contact"]) {
-        UINavigationController *contactUpdateNavigationController = [segue destinationViewController];
-        ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
-        contactUpdateViewController.delegate = self;
-    }
-
-    if ([segue.identifier isEqualToString:@"invoke-messages"]) {
-        NSIndexPath * indexPath = sender;
-        // retrieve info for the selected contact
-        NSArray * contact = [Utils contactForIndex:indexPath.row];
-        
-        MessageTableViewController *messageViewController = [segue destinationViewController];
-        messageViewController.delegate = self;
-        messageViewController.device = self.device;
-        messageViewController.parameters = [[NSMutableDictionary alloc] init];
-        [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
-        [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
-        
-        //[self.navigationController pushViewController:messageViewController animated:YES];
-        //[self presentViewController:messageViewController animated:YES completion:nil];
-    }
-    
+    return YES;
 }
 
-- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
-          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+- (NSUInteger)supportedInterfaceOrientations
 {
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
-- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
-           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
-{
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:sipUri] inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (void)messageViewController:(MessageTableViewController*)messageViewController
-       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
-{
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [Utils contactCount];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
-    
-    // Configure the cell...
-    NSArray * contact = [Utils contactForIndex:indexPath.row];
-    cell.textLabel.text = [contact objectAtIndex:0];
-    cell.detailTextLabel.text = [contact objectAtIndex:1];
-    
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
-    /*
-    // retrieve info for the selected contact
-    NSArray * contact = [Utils contactForIndex:indexPath.row];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
-
-    // setup call view controller
-    //CallViewController *callViewController = [[CallViewController alloc] init];
-    callViewController.delegate = self;
-    callViewController.device = self.device;
-    callViewController.parameters = [[NSMutableDictionary alloc] init];
-    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
-    [callViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
-    
-    [self presentViewController:callViewController animated:YES completion:nil];
-    */
-    
-    /* New logic:
-    // retrieve info for the selected contact
-    NSArray * contact = [Utils contactForIndex:indexPath.row];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-    
-    messageViewController.device = self.device;
-    messageViewController.parameters = [[NSMutableDictionary alloc] init];
-    [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
-    [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
-    
-    [self.navigationController pushViewController:messageViewController animated:YES];
-    //[self presentViewController:messageViewController animated:YES completion:nil];
-     */
-}
-
-/*
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    // retrieve info for the selected contact
-    NSArray * contact = [Utils contactForIndex:indexPath.row];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    
-    ContactDetailsTableViewController *contactDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"contact-details-controller"];
-    //contactDetailsViewController.delegate = self;
-    contactDetailsViewController.device = self.device;
-    contactDetailsViewController.delegate = self;
-    contactDetailsViewController.alias = [contact objectAtIndex:0];
-    contactDetailsViewController.sipUri = [contact objectAtIndex:1];
-
-    [[self navigationController] pushViewController:contactDetailsViewController animated:YES];
-}
- */
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        //[self.tableView beginUpdates];
-        [Utils removeContactAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        //[self.tableView endUpdates];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Adding is handled in the separate screen
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
 
 @end
