@@ -41,6 +41,7 @@
 @property RCDeviceState previousDeviceState;
 
 @property (nonatomic, strong) CNContactStore *contactsStore;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
 
@@ -111,6 +112,9 @@
     
     self.contactsStore = [[CNContactStore alloc] init];
 
+    //define spinner
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
     [self checkContactsAccess];
 }
 
@@ -336,8 +340,6 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int count = (int) [Utils contactCount];
-    NSLog(@"Ognjen= %i", count);
     return [Utils contactCount];
 }
 
@@ -445,36 +447,44 @@
 #pragma mark - Contacts access request
 
 -(void)checkContactsAccess{
-    
-    [self requestContactsAccessWithHandler:^(BOOL grandted) {
-        if (grandted) { 
-            CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:
-                                              @[CNContactFamilyNameKey, CNContactGivenNameKey,
-                                                CNContactNamePrefixKey, CNContactMiddleNameKey, CNContactPhoneNumbersKey]];
-            
-            [self.contactsStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+    [self showSpinner];
+    [self requestContactsAccessWithHandler:^(BOOL granted) {
+        if (granted) {
+                CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:
+                                                  @[CNContactFamilyNameKey, CNContactGivenNameKey,
+                                                    CNContactNamePrefixKey, CNContactMiddleNameKey, CNContactPhoneNumbersKey]];
                 
-                NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
-                LocalContact *localContact = [[LocalContact alloc] init];
-                localContact.firstName = contact.givenName;
-                localContact.lastName = contact.familyName;
-                
-                if (contact.phoneNumbers.count > 0) {
-                    for (int i=0; i<contact.phoneNumbers.count; i++){
-                        //add numbers to array
-                        CNPhoneNumber *phoneNumber = (CNPhoneNumber *)contact.phoneNumbers[i].value;
-                        [phoneNumbers addObject:[phoneNumber valueForKey:@"digits"]];
+                [self.contactsStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+                    
+                    NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+                    LocalContact *localContact = [[LocalContact alloc] init];
+                    localContact.firstName = contact.givenName;
+                    localContact.lastName = contact.familyName;
+                    
+                    if (contact.phoneNumbers.count > 0) {
+                        for (int i=0; i<contact.phoneNumbers.count; i++){
+                            //add numbers to array
+                            CNPhoneNumber *phoneNumber = (CNPhoneNumber *)contact.phoneNumbers[i].value;
+                            [phoneNumbers addObject:[phoneNumber valueForKey:@"digits"]];
+                        }
+                        localContact.phoneNumbers = [NSArray arrayWithArray:phoneNumbers];
                     }
-                    localContact.phoneNumbers = [NSArray arrayWithArray:phoneNumbers];
-                }
-                [Utils addContact:localContact];
-            }];
+                    [Utils addContact:localContact];
+                }];
+                
+                dispatch_async( dispatch_get_main_queue(), ^{
+                    [self hideSpinner];
+                    [self.tableView reloadData];
+                });
+        } else {
+            dispatch_async( dispatch_get_main_queue(), ^{
+                [self hideSpinner];
+            });
         }
-        [self.tableView reloadData];
     }];
 }
 
--(void)requestContactsAccessWithHandler:(void (^)(BOOL grandted))handler{
+-(void)requestContactsAccessWithHandler:(void (^)(BOOL granted))handler{
     switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {
         case CNAuthorizationStatusAuthorized:
             handler(YES);
@@ -492,5 +502,20 @@
     }
 };
 
+
+#pragma mark - Spinner
+
+-(void) showSpinner{
+    self.spinner.center = self.view.center;
+    self.spinner.hidesWhenStopped = YES;
+    [self.view addSubview:self.spinner];
+    [self.view bringSubviewToFront:self.spinner];
+    
+    [self.spinner startAnimating];
+}
+
+-(void) hideSpinner{
+    [self.spinner removeFromSuperview];
+}
 
 @end
