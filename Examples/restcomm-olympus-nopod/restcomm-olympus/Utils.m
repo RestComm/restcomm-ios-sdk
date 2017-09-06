@@ -91,12 +91,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
                 //Phone numbers
-                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0){
-                    for (int j=0; j < localContact.phoneNumbers.count; j++){
-                        if ([localContact.phoneNumbers[j] isEqualToString:sipUri]){
-                            return i;
-                        }
-                    }
+                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){                            return i;
                 }
             }
         } else {
@@ -124,12 +119,8 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
                 //Phone numbers
-                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0){
-                    for (int j=0; j < localContact.phoneNumbers.count; j++){
-                        if ([localContact.phoneNumbers[j] isEqualToString:sipUri]){
-                            return [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
-                        }
-                    }
+                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){
+                    return [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
                 }
             }
         } else {
@@ -241,21 +232,17 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
             for (int i=0; i < filterdArray.count; i ++){
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
-                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0){
+                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){
                     //phone numbers (sip uris)
-                    for (int j=0; j < localContact.phoneNumbers.count; j++){
-                        if ([localContact.phoneNumbers[j] isEqualToString:sipUri]){
-                            //update the actual object in non predicated array
-                            NSMutableArray *mutable = [contactsArray mutableCopy];
-                            
-                            for (int z=0; z < mutable.count; z ++){
-                                LocalContact *fromNonFilteredContact = [mutable objectAtIndex:z];
-                                if ([fromNonFilteredContact isEqual:localContact]){
-                                    localContact.firstName = alias;
-                                    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
-                                    return;
-                                }
-                            }
+                    //update the actual object in non predicated array
+                    NSMutableArray *mutable = [contactsArray mutableCopy];
+                    
+                    for (int j=0; j < mutable.count; j ++){
+                        LocalContact *fromNonFilteredContact = [mutable objectAtIndex:j];
+                        if ([fromNonFilteredContact isEqual:localContact]){
+                            localContact.firstName = alias;
+                            [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+                            return;
                         }
                     }
                 }
