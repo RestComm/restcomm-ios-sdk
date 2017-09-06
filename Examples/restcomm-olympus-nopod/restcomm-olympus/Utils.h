@@ -21,18 +21,19 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "LocalContact.h"
 
 extern NSString* const RestCommClientSDKLatestGitHash;
 
 @interface Utils : NSObject
 + (void) setupUserDefaults;
-+ (NSArray*)contactForIndex:(int)index;
++ (LocalContact *)contactForIndex:(int)index;
 //+ (int)indexForContact:(NSString*)alias;
 // if contact is not found returns -1
 + (NSString*)sipUri2Alias:(NSString*)sipUri;
 + (int)indexForContact:(NSString*)sipUri;
 + (int)contactCount;
-+ (void)addContact:(NSArray*)contact;
++ (void)addContact:(LocalContact *)contact;
 + (void)removeContactAtIndex:(int)index;
 + (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias;
 + (NSString*)sipIdentification;

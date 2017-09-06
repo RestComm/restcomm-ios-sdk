@@ -33,17 +33,21 @@
 #import "RCUtilities.h"
 #import "Utils.h"
 
+#import <Contacts/Contacts.h>
+#import "LocalContact.h"
+
 
 @interface MainTableViewController ()
 @property RCDeviceState previousDeviceState;
-@property UIAlertView *alert;
+
+@property (nonatomic, strong) CNContactStore *contactsStore;
+
 @end
 
 @implementation MainTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _alert = nil;
     
     UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
@@ -104,6 +108,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    self.contactsStore = [[CNContactStore alloc] init];
+
+    [self checkContactsAccess];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -282,16 +290,6 @@
     if (![text isEqualToString:@""] ||
         (![text isEqualToString:@""] && status != self.previousDeviceState)) {
         
-        // only alert if we have a change of the connectivity state
-        /*
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice connectivity change"
-         message:text
-         delegate:self
-         cancelButtonTitle:@"OK"
-         otherButtonTitles:nil];
-         [alert show];
-         */
-        
         // Let's use toast notifications that are much more suitable now that we implemented them
         [[ToastController sharedInstance] showToastWithText:text withDuration:2.0];
     }
@@ -338,7 +336,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+    int count = (int) [Utils contactCount];
+    NSLog(@"Ognjen= %i", count);
     return [Utils contactCount];
 }
 
@@ -346,10 +345,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
     
     // Configure the cell...
-    NSArray * contact = [Utils contactForIndex: (int)indexPath.row];
-    cell.textLabel.text = [contact objectAtIndex:0];
-    cell.detailTextLabel.text = [contact objectAtIndex:1];
-    
+    LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+    if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
+        cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
+    }
     return cell;
 }
 
@@ -363,8 +363,9 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [Utils removeContactAtIndex:(int)indexPath.row];
+       
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        //[self.tableView endUpdates];
+        
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Adding is handled in the separate screen
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -389,14 +390,17 @@
     if ([segue.identifier isEqualToString:@"invoke-messages"]) {
         NSIndexPath * indexPath = sender;
         // retrieve info for the selected contact
-        NSArray * contact = [Utils contactForIndex: (int)indexPath.row];
+        LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
         
         MessageTableViewController *messageViewController = [segue destinationViewController];
         messageViewController.delegate = self;
         messageViewController.device = self.device;
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
-        [messageViewController.parameters setObject:[contact objectAtIndex:0] forKey:@"alias"];
-        [messageViewController.parameters setObject:[contact objectAtIndex:1] forKey:@"username"];
+        
+        [messageViewController.parameters setObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName] forKey:@"alias"];
+        if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
+            [messageViewController.parameters setObject:[contact.phoneNumbers objectAtIndex:0] forKey:@"username"];
+        }
         
     }
     
@@ -437,6 +441,56 @@
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
+
+#pragma mark - Contacts access request
+
+-(void)checkContactsAccess{
+    
+    [self requestContactsAccessWithHandler:^(BOOL grandted) {
+        if (grandted) { 
+            CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:
+                                              @[CNContactFamilyNameKey, CNContactGivenNameKey,
+                                                CNContactNamePrefixKey, CNContactMiddleNameKey, CNContactPhoneNumbersKey]];
+            
+            [self.contactsStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+                
+                NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+                LocalContact *localContact = [[LocalContact alloc] init];
+                localContact.firstName = contact.givenName;
+                localContact.lastName = contact.familyName;
+                
+                if (contact.phoneNumbers.count > 0) {
+                    for (int i=0; i<contact.phoneNumbers.count; i++){
+                        //add numbers to array
+                        CNPhoneNumber *phoneNumber = (CNPhoneNumber *)contact.phoneNumbers[i].value;
+                        [phoneNumbers addObject:[phoneNumber valueForKey:@"digits"]];
+                    }
+                    localContact.phoneNumbers = [NSArray arrayWithArray:phoneNumbers];
+                }
+                [Utils addContact:localContact];
+            }];
+        }
+        [self.tableView reloadData];
+    }];
+}
+
+-(void)requestContactsAccessWithHandler:(void (^)(BOOL grandted))handler{
+    switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {
+        case CNAuthorizationStatusAuthorized:
+            handler(YES);
+            break;
+        case CNAuthorizationStatusDenied:
+        case CNAuthorizationStatusNotDetermined:{
+            [self.contactsStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                handler(granted);
+            }];
+            break;
+        }
+        case CNAuthorizationStatusRestricted:
+            handler(NO);
+            break;
+    }
+};
 
 
 @end

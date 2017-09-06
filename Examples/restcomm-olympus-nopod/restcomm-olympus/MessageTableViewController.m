@@ -45,11 +45,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
-    //[self.navigationItem.backBarButtonItem setTitle:@" "];
-    
-    //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     self.messages = [[NSMutableArray alloc] init];
     // allocate and insert proxy view. Important: the proxy view cannot be part of the view hierarchy in the storyboard/xib.
     // It needs to be added dynamically
@@ -165,12 +160,20 @@
     
     if (self.device.state == RCDeviceStateOffline) {
         self.pendingError = YES;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice not Connected"
-                                                        message:@"No connectivity"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"RCDevice not Connected"
+                                     message:@"No connectivity"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       [self alertOKTap];
+                                   }];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     
@@ -213,13 +216,22 @@
     
     // send an instant message using RCDevice
     if (![self.device sendMessage:parms]) {
-        //self.pendingError = YES;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCDevice Error"
-                                                        message:@"Not connected"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"RCDevice Error"
+                                     message:@"Not connected"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       [self alertOKTap];
+                                   }];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     
@@ -231,7 +243,7 @@
     //[self.sipMessageText endEditing:false];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertOKTap
 {
     if (self.pendingError) {
         self.pendingError = NO;
@@ -250,15 +262,25 @@
         // check if the remote party already exists and if not add it
         int index = [Utils indexForContact:self.username];
         if (index == -1) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Updating Contacts"
-                                                            message:@"Sender not found in contacts; updating"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Updating Contacts"
+                                         message:@"Sender not found in contacts; updating"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            
+            UIAlertAction *okAction = [UIAlertAction
+                                       actionWithTitle:@"OK"
+                                       style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction *action)
+                                       {
+                                           [self alertOKTap];
+                                       }];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+           
             // not existing
-            [Utils addContact:[NSArray arrayWithObjects:sender, sender, nil]];
+            LocalContact *localContact = [[LocalContact alloc] initWithFirstName:sender lastName:@"" andPhoneNumbers:@[sender]];
+            [Utils addContact:localContact];
             
             [self.delegate messageViewController:self didAddContactWithAlias:sender
                                           sipUri:sender];
@@ -271,14 +293,8 @@
     [Utils addMessageForSipUri:self.username
                           text:msg
                           type:type];
-
-    /*
-    UITableViewRowAnimation animation = UITableViewRowAnimationRight;
-    if ([type isEqualToString:@"remote"]) {
-        animation = UITableViewRowAnimationLeft;
-    }
-    */
     [self.tableView beginUpdates];
+
     // trigger the new table row creation
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0]]
                           withRowAnimation:UITableViewRowAnimationNone];
@@ -290,37 +306,14 @@
     }
 }
 
-/*
-- (CGFloat)textViewHeightForRowAtIndexPath: (NSIndexPath*)indexPath {
-    UITextView *calculationView = [textViews objectForKey: indexPath];
-    CGFloat textViewWidth = calculationView.frame.size.width;
-    if (!calculationView.attributedText) {
-        // This will be needed on load, when the text view is not inited yet
-        
-        calculationView = [[UITextView alloc] init];
-        calculationView.attributedText = // get the text from your datasource add attributes and insert here
-        textViewWidth = 290.0; // Insert the width of your UITextViews or include calculations to set it accordingly
-    }
-    CGSize size = [calculationView sizeThatFits:CGSizeMake(textViewWidth, FLT_MAX)];
-    return size.height;
-}
- */
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    //int count = [self.messages count];
-    //NSLog(@"numberOfSectionsInTableView: %d", count);
-    //return count;
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return [self.messages count];
-    // we are using a section per entry to introduce spacing
-    //NSLog(@"numberOfRowsInSection: %d, 1", section);
-    //return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -338,85 +331,6 @@
         cell.senderName.text = self.username;
         return cell;
     }
-    //RemoteMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"remote-message-reuse-identifier" forIndexPath:indexPath];
-    //cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
-    // Configure the cell...
-    //NSArray * contact = [Utils contactForIndex:indexPath.row];
-    //cell.textLabel.text = [contact objectAtIndex:0];
-    //cell.detailTextLabel.text = [contact objectAtIndex:1];
-    //UITextView * message = (UITextView*)
 }
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 8.0;
-}
- */
-
-/*
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *v = [UIView new];
-    [v setBackgroundColor:[UIColor clearColor]];
-    return v;
-}
- */
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // check here, if it is one of the cells, that needs to be resized
-    // to the size of the contained UITextView
-    if (  )
-        return [self textViewHeightForRowAtIndexPath:indexPath];
-    else
-        // return your normal height here:
-        return 100.0;
-}
- */
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

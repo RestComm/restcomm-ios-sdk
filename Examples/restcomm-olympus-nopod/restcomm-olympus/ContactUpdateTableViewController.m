@@ -81,17 +81,19 @@
     }
     else {
         if (![self.aliasTxt.text isEqualToString:@""] && ![self.sipUriTxt.text isEqualToString:@""]) {
-            [Utils addContact:[NSArray arrayWithObjects:self.aliasTxt.text, self.sipUriTxt.text, nil]];
+            LocalContact *localContact = [[LocalContact alloc] initWithFirstName:self.aliasTxt.text lastName:@"" andPhoneNumbers:@[self.sipUriTxt.text]];
+            [Utils addContact:localContact];
+            
             [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
                                                 sipUri:self.sipUriTxt.text];
         }
         else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Input"
-                                                            message:@"Please fill in Username and SIP URI fields"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Invalid Input"
+                                         message:@"Please fill in Username and SIP URI fields"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+
+            [self presentViewController:alert animated:YES completion:nil];
             return;
         }
     }

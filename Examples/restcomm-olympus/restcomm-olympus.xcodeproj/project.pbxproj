@@ -23,6 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
+		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
+		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
@@ -222,6 +225,10 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
+		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
+		A9CA4D821F5F33380005A553 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
@@ -428,6 +435,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
 				25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */,
@@ -451,6 +459,92 @@
 				997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A9CA4D781F5ED9D00005A553 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AEA495D71C2997F6000D9762 /* KeypadViewController.h */,
+				AEA495D81C2997F6000D9762 /* KeypadViewController.m */,
+				AEA495661C2997F6000D9762 /* AboutTableViewController.h */,
+				AEA495671C2997F6000D9762 /* AboutTableViewController.m */,
+				AEA495721C2997F6000D9762 /* ContactDetailsTableViewController.h */,
+				AEA495731C2997F6000D9762 /* ContactDetailsTableViewController.m */,
+				AEA495741C2997F6000D9762 /* ContactUpdateTableViewController.h */,
+				AEA495751C2997F6000D9762 /* ContactUpdateTableViewController.m */,
+				AEA495701C2997F6000D9762 /* CallViewController.h */,
+				AEA495711C2997F6000D9762 /* CallViewController.m */,
+				AEA495DC1C2997F6000D9762 /* MainNavigationController.h */,
+				AEA495DD1C2997F6000D9762 /* MainNavigationController.m */,
+				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
+				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
+				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
+				AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */,
+				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
+				AEA495E11C2997F6000D9762 /* MessageTableViewController.m */,
+				AEA495E61C2997F6000D9762 /* SettingsTableViewController.h */,
+				AEA495E71C2997F6000D9762 /* SettingsTableViewController.m */,
+				AE47F0ED1C7F456D0054772C /* SipSettingsTableViewController.h */,
+				AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */,
+				AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */,
+				AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */,
+				AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */,
+				AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */,
+				AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */,
+				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		A9CA4D791F5EDA2D0005A553 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AEA495EA1C2997F6000D9762 /* sounds */,
+				AEA495791C2997F6000D9762 /* img */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A9CA4D7A1F5EDA540005A553 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AE155F521CCF8658002F404E /* ToastController.h */,
+				AE155F531CCF8658002F404E /* ToastController.m */,
+				AEA4956A1C2997F6000D9762 /* ARDVideoCallView.h */,
+				AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */,
+				AEA495D51C2997F6000D9762 /* InputAccessoryProxyView.h */,
+				AEA495D61C2997F6000D9762 /* InputAccessoryProxyView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		A9CA4D7B1F5EDA6A0005A553 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				AEA495D91C2997F6000D9762 /* LocalMessageTableViewCell.h */,
+				AEA495DA1C2997F6000D9762 /* LocalMessageTableViewCell.m */,
+				AEA495E21C2997F6000D9762 /* RemoteMessageTableViewCell.h */,
+				AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */,
+			);
+			name = TableViewCell;
+			sourceTree = "<group>";
+		};
+		A9CA4D7C1F5EDA9F0005A553 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				AEA495FE1C2997F6000D9762 /* Utils.h */,
+				AEA495FF1C2997F6000D9762 /* Utils.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		A9CA4D7D1F5EDAD60005A553 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */,
+				A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		AE3E52C31C57BB7B0057F5D0 /* cert */ = {
@@ -485,6 +579,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9CA4D821F5F33380005A553 /* Contacts.framework */,
+				A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */,
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
 				84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */,
 			);
@@ -494,61 +590,25 @@
 		AEA495651C2997F6000D9762 /* restcomm-olympus */ = {
 			isa = PBXGroup;
 			children = (
-				AECBFD0F1F56EC530022840A /* restcomm-olympus.entitlements */,
+				A9CA4D7D1F5EDAD60005A553 /* Model */,
+				A9CA4D781F5ED9D00005A553 /* ViewController */,
+				A9CA4D7A1F5EDA540005A553 /* View */,
+				A9CA4D7B1F5EDA6A0005A553 /* TableViewCell */,
+				A9CA4D7C1F5EDA9F0005A553 /* Util */,
+				A9CA4D791F5EDA2D0005A553 /* Resources */,
 				AE3E52C31C57BB7B0057F5D0 /* cert */,
-				AEA495791C2997F6000D9762 /* img */,
 				AEA495781C2997F6000D9762 /* Images.xcassets */,
 				AEA4956C1C2997F6000D9762 /* Main_iPad.storyboard */,
 				AEA4956E1C2997F6000D9762 /* Main_Universal.storyboard */,
 				AEA495D41C2997F6000D9762 /* InputAccessoryFragment.xib */,
-				AEA495761C2997F6000D9762 /* InfoPlist.strings */,
-				AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */,
-				AEA495E51C2997F6000D9762 /* restcomm-olympus-Prefix.pch */,
-				AEA495661C2997F6000D9762 /* AboutTableViewController.h */,
-				AEA495671C2997F6000D9762 /* AboutTableViewController.m */,
 				AEA495681C2997F6000D9762 /* AppDelegate.h */,
 				AEA495691C2997F6000D9762 /* AppDelegate.m */,
-				AEA4956A1C2997F6000D9762 /* ARDVideoCallView.h */,
-				AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */,
-				AEA495701C2997F6000D9762 /* CallViewController.h */,
-				AEA495711C2997F6000D9762 /* CallViewController.m */,
-				AEA495721C2997F6000D9762 /* ContactDetailsTableViewController.h */,
-				AEA495731C2997F6000D9762 /* ContactDetailsTableViewController.m */,
-				AEA495741C2997F6000D9762 /* ContactUpdateTableViewController.h */,
-				AEA495751C2997F6000D9762 /* ContactUpdateTableViewController.m */,
-				AEA495D51C2997F6000D9762 /* InputAccessoryProxyView.h */,
-				AEA495D61C2997F6000D9762 /* InputAccessoryProxyView.m */,
-				AEA495D71C2997F6000D9762 /* KeypadViewController.h */,
-				AEA495D81C2997F6000D9762 /* KeypadViewController.m */,
-				AEA495D91C2997F6000D9762 /* LocalMessageTableViewCell.h */,
-				AEA495DA1C2997F6000D9762 /* LocalMessageTableViewCell.m */,
-				AE155F521CCF8658002F404E /* ToastController.h */,
-				AE155F531CCF8658002F404E /* ToastController.m */,
 				AEA495DB1C2997F6000D9762 /* main.m */,
-				AEA495DC1C2997F6000D9762 /* MainNavigationController.h */,
-				AEA495DD1C2997F6000D9762 /* MainNavigationController.m */,
-				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
-				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
-				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
-				AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */,
-				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
-				AEA495E11C2997F6000D9762 /* MessageTableViewController.m */,
-				AEA495E21C2997F6000D9762 /* RemoteMessageTableViewCell.h */,
-				AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */,
-				AEA495E61C2997F6000D9762 /* SettingsTableViewController.h */,
-				AEA495E71C2997F6000D9762 /* SettingsTableViewController.m */,
-				AE47F0ED1C7F456D0054772C /* SipSettingsTableViewController.h */,
-				AE47F0EE1C7F456D0054772C /* SipSettingsTableViewController.m */,
-				AE3E52A31C5649C50057F5D0 /* ICESettingsTableViewController.h */,
-				AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */,
-				AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */,
-				AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */,
-				AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */,
-				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
-				AEA495FE1C2997F6000D9762 /* Utils.h */,
-				AEA495FF1C2997F6000D9762 /* Utils.m */,
-				AEA495EA1C2997F6000D9762 /* sounds */,
+				AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */,
+				AEA495E51C2997F6000D9762 /* restcomm-olympus-Prefix.pch */,
+				AEA495761C2997F6000D9762 /* InfoPlist.strings */,
 				AEA495FA1C2997F6000D9762 /* TestFairy */,
+				AECBFD0F1F56EC530022840A /* restcomm-olympus.entitlements */,
 			);
 			path = "restcomm-olympus";
 			sourceTree = "<group>";
@@ -1071,6 +1131,7 @@
 			files = (
 				AEA496681C2997F6000D9762 /* main.m in Sources */,
 				AEA496651C2997F6000D9762 /* InputAccessoryProxyView.m in Sources */,
+				A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */,
 				AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */,
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
@@ -1098,6 +1159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1254,7 +1316,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1294,7 +1356,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
