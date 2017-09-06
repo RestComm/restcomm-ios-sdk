@@ -349,9 +349,25 @@
     // Configure the cell...
     LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
+    
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
         cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
+        if ([contact.phoneNumbers count] > 1){
+            UIImage *image = [UIImage imageNamed:@"settings-30x30.png"];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+            button.frame = frame;
+            [button setBackgroundImage:image forState:UIControlStateNormal];
+            
+            [button addTarget:self action:@selector(checkButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.accessoryView = button;
+        }
     }
+    
     return cell;
 }
 
@@ -365,7 +381,6 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [Utils removeContactAtIndex:(int)indexPath.row];
-       
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -373,6 +388,47 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
 }
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    PhoneNumbersViewController *phoneNumbersViewController = (PhoneNumbersViewController *)[storyboard instantiateViewControllerWithIdentifier:@"phone-numbers"];
+    phoneNumbersViewController.localContact = [Utils contactForIndex: (int)indexPath.row];
+    phoneNumbersViewController.phoneNumbersDelegate = self;
+    
+    phoneNumbersViewController.preferredContentSize = CGSizeMake(150, [phoneNumbersViewController.localContact.phoneNumbers count] * 50);
+    phoneNumbersViewController.modalPresentationStyle = UIModalPresentationPopover;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [phoneNumbersViewController popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    popController.delegate = self;
+    
+
+    popController.sourceRect = CGRectMake(2, 5, 10, 10);
+    popController.sourceView = cell.accessoryView;
+    [self presentViewController:phoneNumbersViewController animated:YES completion:nil];
+}
+
+-(UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+    return UIModalPresentationNone;
+}
+
+#pragma mark - AccessoryView button tap
+- (void)checkButtonTapped:(id)sender event:(id)event
+{
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: currentTouchPosition];
+    if (indexPath != nil)
+    {
+        [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath: indexPath];
+    }
+}
+
 
 #pragma mark - PrepareForSegue
 
@@ -502,6 +558,24 @@
     }
 };
 
+#pragma mark - PhoneNumbersDelegate method
+
+- (void) onPhoneNumberTap:(NSString *)alias andSipUri:(NSString *)sipUri{
+    NSLog(@"%@ %@", alias, sipUri);
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+    
+    messageViewController.delegate = self;
+    messageViewController.device = self.device;
+    messageViewController.parameters = [[NSMutableDictionary alloc] init];
+    
+    [messageViewController.parameters setObject:alias forKey:@"alias"];
+    [messageViewController.parameters setObject:sipUri forKey:@"username"];
+    
+    [self.navigationController pushViewController:messageViewController animated:YES];
+
+}
 
 #pragma mark - Spinner
 
