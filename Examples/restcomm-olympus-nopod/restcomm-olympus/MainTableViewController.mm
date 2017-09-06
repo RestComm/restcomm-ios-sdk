@@ -402,10 +402,19 @@
     
     // configure the Popover presentation controller
     UIPopoverPresentationController *popController = [phoneNumbersViewController popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+   
     popController.delegate = self;
     
+    //for the last 3 tableview rows
+    CGRect rectOfCellInTableView = [tableView rectForRowAtIndexPath: indexPath];
+    CGRect rectOfCellInSuperview = [tableView convertRect: rectOfCellInTableView toView: tableView.superview];
 
+    int viewHeight = self.view.frame.size.height -  self.navigationController.navigationBar.frame.size.height - 20;
+    if (rectOfCellInSuperview.origin.y + rectOfCellInSuperview.size.height  >= viewHeight){
+        popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    } else {
+        popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    }
     popController.sourceRect = CGRectMake(2, 5, 10, 10);
     popController.sourceView = cell.accessoryView;
     [self presentViewController:phoneNumbersViewController animated:YES completion:nil];
