@@ -248,7 +248,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                             //update the actual object in non predicated array
                             NSMutableArray *mutable = [contactsArray mutableCopy];
                             
-                            for (int z=0; y<mutable.count; z ++){
+                            for (int z=0; z < mutable.count; z ++){
                                 LocalContact *fromNonFilteredContact = [mutable objectAtIndex:z];
                                 if ([fromNonFilteredContact isEqual:localContact]){
                                     localContact.firstName = alias;
