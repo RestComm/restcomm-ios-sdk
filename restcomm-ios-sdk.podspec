@@ -46,7 +46,7 @@ iOS Mobile SDK to easily integrate communication features (messaging, presence, 
 
   # Libraries this pod depends on. Notice the c++ dependency to be able to build .mm files
   s.libraries = 'c++', 'sqlite3', 'resolv'
-  s.public_header_files = 'RestCommClient/Classes/RC*.h', 'RestCommClient/Classes/RestCommClient.h', 'RestCommClient/Classes/ICEConfigType.h'
+  s.public_header_files = 'RestCommClient/Classes/RC*.h', 'RestCommClient/Classes/RestCommClient.h'
   #s.private_header_files = 'RestCommClient/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'

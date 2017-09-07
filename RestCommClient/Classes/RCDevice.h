@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "ICEConfigType.h"
 //#import "RCDeviceDelegate.h"
 #import "RCConnectionDelegate.h"
 
@@ -44,6 +43,16 @@ typedef enum {
     RCDeviceConnectivityTypeWifi,  /**< Device is connected via Wifi (given that RCDeviceState is Ready or Busy) */
     RCDeviceConnectivityTypeCellularData,  /**< Device is connected via Cellular Data (given that RCDeviceState is Ready or Busy) */
 } RCDeviceConnectivityType;
+
+/**
+ * ICE Config Type
+ */
+typedef NS_ENUM(NSInteger, ICEConfigType) {
+    kXirsysV2,
+    kXirsysV3,
+    kCustom
+};
+
 
 extern NSString* const RCDeviceCapabilityIncomingKey;
 extern NSString* const RCDeviceCapabilityOutgoingKey;

@@ -90,7 +90,8 @@ static NSString * const kARDAudioTrackId = @"ARDAMSa0";
 static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType
+
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigTypeForMedia)iceConfigType
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -146,17 +147,17 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
          _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
          */
         
-         if (self.iceConfigType != kCustom){
+         if (self.iceConfigType != kMCustom){
             NSURL *turnRequestURL = nil;
             switch (self.iceConfigType) {
-                case kXirsysV2:
+                case kMXirsys2:
                    turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
                                           [_parameters objectForKey:@"turn-url"],
                                           [_parameters objectForKey:@"turn-username"],
                                           [_parameters objectForKey:@"turn-password"],
                                           @"cloud.restcomm.com"]];
                     break;
-                case kXirsysV3:
+                case kMXirsys3:
                     turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@:%@@ice.restcomm.io/_turn/restcomm",
                                                            [_parameters objectForKey:@"turn-username"],
                                                            [_parameters objectForKey:@"turn-password"]]];
@@ -188,7 +189,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
          }else{
              NSArray *turnServers =  [_parameters objectForKey:@"stun-turn-servers"];
              if (!turnServers){
-                 RCLogNotice("TurnServers not found for Custom config.");
+                 RCLogNotice("TurnServers not found for kCustom config.");
              }
              [_iceServers addObjectsFromArray:turnServers];
              _isTurnComplete = YES;
@@ -1046,5 +1047,6 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
     return [[RTCSessionDescription alloc] initWithType:description.type
                                                    sdp:mangledSdpString];
 }
+
 
 @end
