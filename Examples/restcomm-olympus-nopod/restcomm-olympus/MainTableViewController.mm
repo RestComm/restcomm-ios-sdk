@@ -79,16 +79,19 @@
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
+    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
+
+    
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                       @([Utils turnEnabled]), @"turn-enabled",
+                      // @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
                        @(NO), @"signaling-secure",
                        //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                       //                       @([Utils signalingSecure]), @"signaling-secure",
-                       //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                          @([Utils signalingSecure]), @"signaling-secure",
+                          [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
@@ -352,6 +355,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     
+    //if there is more than 1 phone number, we are showing custom accessoryView
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
         cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
         if ([contact.phoneNumbers count] > 1){
@@ -455,20 +459,35 @@
     }
     
     if ([segue.identifier isEqualToString:@"invoke-messages"]) {
-        NSIndexPath * indexPath = sender;
-        // retrieve info for the selected contact
-        LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
         
+        NSString *alias;
+        NSString *username;
+        
+        
+        // retrieve info for the selected contact
+        if ([sender isKindOfClass:NSIndexPath.class]){
+            NSIndexPath * indexPath = sender;
+            LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
+            alias = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+            if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
+                username = [contact.phoneNumbers objectAtIndex:0];
+            }
+        //its called PhoneNumbersDelegate
+        } else if ([sender isKindOfClass:NSDictionary.class]){
+            NSDictionary *contactDict = (NSDictionary *)sender;
+            alias = [contactDict valueForKey:@"alias"];
+            username = [contactDict valueForKey:@"username"];
+        }
+        
+    
         MessageTableViewController *messageViewController = [segue destinationViewController];
         messageViewController.delegate = self;
         messageViewController.device = self.device;
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
         
-        [messageViewController.parameters setObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName] forKey:@"alias"];
-        if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
-            [messageViewController.parameters setObject:[contact.phoneNumbers objectAtIndex:0] forKey:@"username"];
-        }
-        
+        [messageViewController.parameters setObject:alias forKey:@"alias"];
+        [messageViewController.parameters setObject:username forKey:@"username"];
+    
     }
     
 }
@@ -572,18 +591,8 @@
 - (void) onPhoneNumberTap:(NSString *)alias andSipUri:(NSString *)sipUri{
     NSLog(@"%@ %@", alias, sipUri);
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-    
-    messageViewController.delegate = self;
-    messageViewController.device = self.device;
-    messageViewController.parameters = [[NSMutableDictionary alloc] init];
-    
-    [messageViewController.parameters setObject:alias forKey:@"alias"];
-    [messageViewController.parameters setObject:sipUri forKey:@"username"];
-    
-    [self.navigationController pushViewController:messageViewController animated:YES];
-
+    NSDictionary *contactDict = @{ @"alias" : alias, @"username" : sipUri};
+    [self performSegueWithIdentifier:@"invoke-messages" sender:contactDict];
 }
 
 #pragma mark - Spinner
