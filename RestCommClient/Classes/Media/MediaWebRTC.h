@@ -51,6 +51,7 @@
 #import "WebRTC/RTCPeerConnectionFactory.h"
 #import "ARDCEODTURNClient.h"
 #import "XirsysTURNClient.h"
+#import "ICEConfigType.h"
 //#import "RTCPeerConnectionDelegate.h"
 //#import "WebRTC/RTCSessionDescriptionDelegate.h"
 
@@ -73,7 +74,7 @@ typedef enum {
 } ARDSignalingMessageType;
 
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters;
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType;
 // TODO: change the name to something more appropriate
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed;
 - (void)disconnect;
@@ -93,6 +94,8 @@ typedef enum {
 @property BOOL videoAllowed;
 @property BOOL candidatesGathered;
 @property NSDictionary* parameters;
+
+@property (nonatomic, readonly) ICEConfigType iceConfigType;
 
 @end
 

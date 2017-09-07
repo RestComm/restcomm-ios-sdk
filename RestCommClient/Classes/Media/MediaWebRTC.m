@@ -90,7 +90,7 @@ static NSString * const kARDAudioTrackId = @"ARDAMSa0";
 static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -103,6 +103,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         self.videoAllowed = NO;
         _candidatesGathered = NO;
         _parameters = parameters;
+        _iceConfigType = iceConfigType;
     }
     return self;
 }
@@ -144,32 +145,55 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
                                                       [_parameters objectForKey:@"turn-password"]]];
          _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
          */
-        NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
-                                                      [_parameters objectForKey:@"turn-url"],
-                                                      [_parameters objectForKey:@"turn-username"],
-                                                      [_parameters objectForKey:@"turn-password"],
-                                                      @"cloud.restcomm.com"]];
-
         
-        _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
-        
-        __weak MediaWebRTC *weakSelf = self;
-        [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
-                                                           NSError *error) {
-            if (error) {
-                RCLogError([error.localizedDescription UTF8String]);
-                [self.mediaDelegate mediaController:self didError:error];
-                return;
-            }
-            //NSArray * array = @[ [NSURL URLWithString:@""]];
-            MediaWebRTC *strongSelf = weakSelf;
-            // Need to remove the single object that we prepopulate manually which is the STUN server,
-            // because with Xirsys the STUN server is returned in the list of TURN servers
-            [strongSelf.iceServers removeAllObjects];
-            [strongSelf.iceServers addObjectsFromArray:turnServers];
-            strongSelf.isTurnComplete = YES;
-            [strongSelf startSignalingIfReady:sdp];
-        }];
+         if (self.iceConfigType != kCustom){
+            NSURL *turnRequestURL = nil;
+            switch (self.iceConfigType) {
+                case kXirsysV2:
+                   turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
+                                          [_parameters objectForKey:@"turn-url"],
+                                          [_parameters objectForKey:@"turn-username"],
+                                          [_parameters objectForKey:@"turn-password"],
+                                          @"cloud.restcomm.com"]];
+                    break;
+                case kXirsysV3:
+                    turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@:%@@ice.restcomm.io/_turn/restcomm",
+                                                           [_parameters objectForKey:@"turn-username"],
+                                                           [_parameters objectForKey:@"turn-password"]]];
+                                                           
+                    break;
+                default:
+                    break;
+             }
+            
+             _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
+            
+             __weak MediaWebRTC *weakSelf = self;
+             [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
+                                                               NSError *error) {
+                if (error) {
+                    RCLogError([error.localizedDescription UTF8String]);
+                    [self.mediaDelegate mediaController:self didError:error];
+                    return;
+                }
+                //NSArray * array = @[ [NSURL URLWithString:@""]];
+                MediaWebRTC *strongSelf = weakSelf;
+                // Need to remove the single object that we prepopulate manually which is the STUN server,
+                // because with Xirsys the STUN server is returned in the list of TURN servers
+                [strongSelf.iceServers removeAllObjects];
+                [strongSelf.iceServers addObjectsFromArray:turnServers];
+                strongSelf.isTurnComplete = YES;
+                [strongSelf startSignalingIfReady:sdp];
+             }];
+         }else{
+             NSArray *turnServers =  [_parameters objectForKey:@"stun-turn-servers"];
+             if (!turnServers){
+                 RCLogNotice("TurnServers not found for Custom config.");
+             }
+             [_iceServers addObjectsFromArray:turnServers];
+             _isTurnComplete = YES;
+             [self startSignalingIfReady:sdp];
+         }
     }
     else {
         self.isTurnComplete = YES;
