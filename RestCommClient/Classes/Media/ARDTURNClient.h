@@ -30,8 +30,7 @@
 @protocol ARDTURNClient <NSObject>
 
 // Returns TURN server urls if successful.
-- (void)requestServersWithCompletionHandler:
-    (void (^)(NSArray *turnServers,
-              NSError *error))completionHandler;
-
+- (void)requestServersWithCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler;
+// if TURN server requests basic authorization
+- (void)requestServersWithUsername:(NSString *)username password:(NSString *)password andCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler;
 @end

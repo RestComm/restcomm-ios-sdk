@@ -86,22 +86,65 @@
     NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
 
     
+//we should have those in settings in the future....
+/******************************/
+/* Xirsys v2 */
+/******************************/
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                      // @([Utils turnEnabled]), @"turn-enabled",
+                       @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
+                       @(NO), @"signaling-secure",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
-                       @(NO), @"signaling-secure",
+//
                        //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                           @([Utils signalingSecure]), @"signaling-secure",
                           [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
+/******************************/
+/* Xirsys v3 */
+/******************************/
+//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+//                       [Utils sipPassword], @"password",
+//                       @([Utils turnEnabled]), @"turn-enabled",
+//                       [Utils turnUrl], @"turn-url",
+//                       @"telestax", @"turn-username",
+//                       @"78a9a68c-55f3-11e7-b678-24aec531c807", @"turn-password",
+//                       @(NO), @"signaling-secure",
+//
+//                         //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       @([Utils signalingSecure]), @"signaling-secure",
+//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       nil];
+ 
+/******************************/
+ /* Xirsys custom */
+/******************************/
+//    NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
+//     @"46560f8e-94a7-11e7-bc4c-3c21a281eee8", @"username",
+//     @"turn:ice1.restcomm.io:80?transport=udp", @"url",
+//     @"4656101a-94a7-11e7-97ac-82fdfe2001f6", @"credential",
+//     nil];
     
+//    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                       @"stun:ice1.restcomm.io",@"url", nil];
+//    
+//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+//                       [Utils sipPassword], @"password",
+//                       @([Utils turnEnabled]), @"turn-enabled",
+//                       [Utils turnUrl], @"turn-url",
+//                       @(NO), @"signaling-secure",
+//                       @[dictionaryServer, dictionaryServer2] , @"stun-turn-servers",
+//                       //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       @([Utils signalingSecure]), @"signaling-secure",
+//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       nil];
+   
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self andICEConfigType:kXirsysV2];
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self andICEConfigType:kCustom];
     
     if (self.device.state == RCDeviceStateOffline) {
         [self updateConnectivityStatus:self.device.state

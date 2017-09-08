@@ -126,7 +126,19 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>registrar</b>: Restcomm instance to use, like <i>'cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
  *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
-      <b>stun-turn-servers</b> Array of the STUN and TURN servers; This key is mandatory if ICEConfigType is 'kCustom'
+*     <b>stun-turn-servers</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ICEConfigType is 'kCustom'; Example with 2 servers:
+             NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
+             @"46560f8e-94a7-11e7-FAKE", @"username",
+             @"turn:iceSERVER:80?transport=udp", @"url",
+             @"4656101a-94a7-11e7-97ac-FAKE", @"credential",
+             nil];
+             
+             NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+             @"stun:ice1.SERVER",@"url", nil];
+ 
+            parameter to pass (Array):
+            @[dictionaryServer, dictionaryServers2]
+ 
  *  @param delegate        Delegate of RCDevice
  *  @param iceConfigType   Type of the ICE configuration
  *  @return Newly initialized RCDevice object
