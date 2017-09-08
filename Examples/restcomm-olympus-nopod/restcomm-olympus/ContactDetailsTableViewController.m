@@ -185,6 +185,7 @@
     self.alias = alias;
     self.aliaslLbl.text = alias;
     
+    //todo: when we have edit number, save to user defaults
     // notify main screen that we updated, so that contact table is updated as well
     [self.delegate contactDetailsViewController:self
                       didUpdateContactWithAlias:alias sipUri:sipUri];

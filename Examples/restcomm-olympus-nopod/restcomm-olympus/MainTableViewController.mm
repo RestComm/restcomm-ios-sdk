@@ -42,6 +42,8 @@
 
 @property (nonatomic, strong) CNContactStore *contactsStore;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) NSArray *contactsData;
+@property (nonatomic, strong) NSArray *searchResults;
 
 @end
 
@@ -75,20 +77,25 @@
     self.isRegistered = NO;
     self.isInitialized = NO;
     
+    self.contactsData = [[NSArray alloc] init];
+    
     
     // TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
     
+    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
+
+    
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                       @([Utils turnEnabled]), @"turn-enabled",
+                      // @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
                        @(NO), @"signaling-secure",
                        //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                       //                       @([Utils signalingSecure]), @"signaling-secure",
-                       //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                          @([Utils signalingSecure]), @"signaling-secure",
+                          [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
     
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
@@ -115,6 +122,7 @@
     //define spinner
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
+    //get contacts from phone
     [self checkContactsAccess];
 }
 
@@ -315,8 +323,7 @@
 - (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
+    [self reloadData];
 }
 
 #pragma mark - ContactDetailsDelegate method
@@ -324,8 +331,7 @@
 - (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
            didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils indexForContact:sipUri] inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
+    [self reloadData];
 }
 
 #pragma mark - MessageDelegate method
@@ -333,25 +339,25 @@
 - (void)messageViewController:(MessageTableViewController*)messageViewController
        didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[Utils contactCount] - 1 inSection:0]]
-                          withRowAnimation:UITableViewRowAnimationNone];
+    [self reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [Utils contactCount];
+    return [self.contactsData count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
     
     // Configure the cell...
-    LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
+    LocalContact * contact = self.contactsData[(int)indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     
+    //if there is more than 1 phone number, we are showing custom accessoryView
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
         cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
         if ([contact.phoneNumbers count] > 1){
@@ -380,9 +386,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [Utils removeContactAtIndex:(int)indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
+        [Utils removeContact:self.contactsData[indexPath.row]];
+        [self reloadData];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Adding is handled in the separate screen
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -393,7 +398,7 @@
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     PhoneNumbersViewController *phoneNumbersViewController = (PhoneNumbersViewController *)[storyboard instantiateViewControllerWithIdentifier:@"phone-numbers"];
-    phoneNumbersViewController.localContact = [Utils contactForIndex: (int)indexPath.row];
+    phoneNumbersViewController.localContact = self.contactsData[indexPath.row];
     phoneNumbersViewController.phoneNumbersDelegate = self;
     
     phoneNumbersViewController.preferredContentSize = CGSizeMake(150, [phoneNumbersViewController.localContact.phoneNumbers count] * 50);
@@ -455,20 +460,35 @@
     }
     
     if ([segue.identifier isEqualToString:@"invoke-messages"]) {
-        NSIndexPath * indexPath = sender;
-        // retrieve info for the selected contact
-        LocalContact * contact = [Utils contactForIndex: (int)indexPath.row];
         
+        NSString *alias;
+        NSString *username;
+        
+        
+        // retrieve info for the selected contact
+        if ([sender isKindOfClass:NSIndexPath.class]){
+            NSIndexPath * indexPath = sender;
+            LocalContact * contact = self.contactsData[(int)indexPath.row];
+            alias = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+            if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
+                username = [contact.phoneNumbers objectAtIndex:0];
+            }
+        //its called PhoneNumbersDelegate
+        } else if ([sender isKindOfClass:NSDictionary.class]){
+            NSDictionary *contactDict = (NSDictionary *)sender;
+            alias = [contactDict valueForKey:@"alias"];
+            username = [contactDict valueForKey:@"username"];
+        }
+        
+    
         MessageTableViewController *messageViewController = [segue destinationViewController];
         messageViewController.delegate = self;
         messageViewController.device = self.device;
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
         
-        [messageViewController.parameters setObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName] forKey:@"alias"];
-        if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
-            [messageViewController.parameters setObject:[contact.phoneNumbers objectAtIndex:0] forKey:@"username"];
-        }
-        
+        [messageViewController.parameters setObject:alias forKey:@"alias"];
+        [messageViewController.parameters setObject:username forKey:@"username"];
+    
     }
     
 }
@@ -539,7 +559,7 @@
                 
                 dispatch_async( dispatch_get_main_queue(), ^{
                     [self hideSpinner];
-                    [self.tableView reloadData];
+                    [self reloadData];
                 });
         } else {
             dispatch_async( dispatch_get_main_queue(), ^{
@@ -572,18 +592,8 @@
 - (void) onPhoneNumberTap:(NSString *)alias andSipUri:(NSString *)sipUri{
     NSLog(@"%@ %@", alias, sipUri);
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-    
-    messageViewController.delegate = self;
-    messageViewController.device = self.device;
-    messageViewController.parameters = [[NSMutableDictionary alloc] init];
-    
-    [messageViewController.parameters setObject:alias forKey:@"alias"];
-    [messageViewController.parameters setObject:sipUri forKey:@"username"];
-    
-    [self.navigationController pushViewController:messageViewController animated:YES];
-
+    NSDictionary *contactDict = @{ @"alias" : alias, @"username" : sipUri};
+    [self performSegueWithIdentifier:@"invoke-messages" sender:contactDict];
 }
 
 #pragma mark - Spinner
@@ -599,6 +609,13 @@
 
 -(void) hideSpinner{
     [self.spinner removeFromSuperview];
+}
+
+#pragma mark - Loader 
+
+- (void)reloadData{
+    self.contactsData = [Utils getSortedContacts];
+    [self.tableView reloadData];
 }
 
 @end
