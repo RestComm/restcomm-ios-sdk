@@ -55,29 +55,6 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 
 #pragma mark - Contacts
 
-+ (LocalContact *)contactForIndex:(int)index
-{
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
-    if (contactsArrayData != nil) {
-        NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
-        if (contactsArray != nil){
-            NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
-            if ([filterdArray count] > index) {
-                return [filterdArray objectAtIndex:index];
-           }
-        } else {
-            // should never happen
-            return nil;
-        }
-    } else {
-        // should never happen
-        return nil;
-    }
-    return nil;
-}
-
-
 + (int)indexForContact:(NSString*)sipUri
 {
     //index for contact is only for filtered array (non deleted contacts)
@@ -86,7 +63,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
-           NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
+           NSArray *filterdArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
             for (int i=0; i < filterdArray.count; i ++){
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
@@ -114,7 +91,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
-            NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
+            NSArray *filterdArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
             for (int i=0; i < filterdArray.count; i ++){
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
@@ -141,7 +118,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
             //return non deleted contacts
-            NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
+            NSArray *filterdArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
             return (int)[filterdArray count];
         }
     }
@@ -180,12 +157,11 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     if (!exists){
         [mutable addObject:contact];
     }
-    
     // update user defaults
     [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
 }
 
-+ (void)removeContactAtIndex:(int)index
++ (void)removeContact:(LocalContact *)localContact
 {
     //contact will have the flag deleted set to true
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -195,9 +171,6 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
-            NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
-            LocalContact *localContact = [filterdArray objectAtIndex:index];
-            
             mutable = [contactsArray mutableCopy];
             for (int i=0; i<mutable.count; i ++){
                 LocalContact *fromNonFilteredContact = [mutable objectAtIndex:i];
@@ -228,7 +201,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
-            NSArray *filterdArray = [Utils getFilteredContactArray:contactsArray];
+            NSArray *filterdArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
             for (int i=0; i < filterdArray.count; i ++){
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
@@ -458,16 +431,43 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     return final;
 }
 
++ (NSArray *)getSortedContacts{
+    NSArray *contactsArray = [[NSArray alloc] init];
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    
+    if (contactsArrayData != nil) {
+        contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
+        contactsArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
+        if (contactsArray != nil){
+            //we dont want the default nubers to be sorted, so we will split an array and have them
+            //concatenate with the new array
+            NSArray *defaults = [Utils getDefaultFilteredContactArray:contactsArray forDefault:YES];
+            NSArray *others = [Utils getDefaultFilteredContactArray:contactsArray forDefault:NO];
+            
+         
+            NSSortDescriptor *sortFirstName = [NSSortDescriptor sortDescriptorWithKey:@"firstName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+            NSSortDescriptor *sortLastName = [NSSortDescriptor sortDescriptorWithKey:@"lastName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+            
+            others = [others sortedArrayUsingDescriptors:@[sortFirstName, sortLastName]];
+           
+            //concatenate default and others
+            contactsArray = [defaults arrayByAddingObjectsFromArray:others];
+        }
+    }
+    return contactsArray;
+}
+
 #pragma mark - Default values
 
 + (NSArray *)getDefaultContacts{
 
     
-    LocalContact *localContactPlayApp = [[LocalContact alloc] initWithFirstName:@"Play" lastName:@"App" andPhoneNumbers:@[@"+1234"]]; //@"sip:+1234@cloud.restcomm.com"],
-    LocalContact *localContactSayApp = [[LocalContact alloc] initWithFirstName:@"Say" lastName:@"App" andPhoneNumbers:@[@"+1235"]]; //@"sip:+1235@cloud.restcomm.com"],
-    LocalContact *localContactGatherApp = [[LocalContact alloc] initWithFirstName:@"Gather" lastName:@"App" andPhoneNumbers:@[@"+1236"]]; //@"sip:+1236@cloud.restcomm.com"],
-    LocalContact *localContactConferenceApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"App" andPhoneNumbers:@[@"+1310"]]; //@"sip:+1311@cloud.restcomm.com"],
-    LocalContact *localContactConferenceAdminApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"Admin App" andPhoneNumbers:@[@"+1311"]]; //@"sip:+1310@cloud.restcomm.com"],
+    LocalContact *localContactPlayApp = [[LocalContact alloc] initWithFirstName:@"Play" lastName:@"App" andPhoneNumbers:@[@"+1234"] andIsDefaultNumber:YES]; //@"sip:+1234@cloud.restcomm.com"],
+    LocalContact *localContactSayApp = [[LocalContact alloc] initWithFirstName:@"Say" lastName:@"App" andPhoneNumbers:@[@"+1235"] andIsDefaultNumber:YES]; //@"sip:+1235@cloud.restcomm.com"],
+    LocalContact *localContactGatherApp = [[LocalContact alloc] initWithFirstName:@"Gather" lastName:@"App" andPhoneNumbers:@[@"+1236"] andIsDefaultNumber:YES]; //@"sip:+1236@cloud.restcomm.com"],
+    LocalContact *localContactConferenceApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"App" andPhoneNumbers:@[@"+1310"] andIsDefaultNumber:YES]; //@"sip:+1311@cloud.restcomm.com"],
+    LocalContact *localContactConferenceAdminApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"Admin App" andPhoneNumbers:@[@"+1311"] andIsDefaultNumber:YES]; //@"sip:+1310@cloud.restcomm.com"],
     
     return  @[localContactPlayApp, localContactSayApp, localContactGatherApp, localContactConferenceApp, localContactConferenceAdminApp];
     
@@ -508,10 +508,18 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 
 #pragma mark - Helpers
 
-+ (NSArray *)getFilteredContactArray:(NSArray *)contactsArray{
++ (NSArray *)getNonDeletedFilteredContactArray:(NSArray *)contactsArray{
     //return non deleted contacts
     NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:@"deleted == NO"];
     return [contactsArray filteredArrayUsingPredicate:filterDeleted];
 }
+
+
++ (NSArray *)getDefaultFilteredContactArray:(NSArray *)contactsArray forDefault:(BOOL)returnDefaults{
+    //return non deleted contacts
+    NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"defaultNumber == %@", returnDefaults?@"YES":@"NO"]];
+    return [contactsArray filteredArrayUsingPredicate:filterDeleted];
+}
+
 
 @end

@@ -25,14 +25,20 @@
 
 @implementation LocalContact
 
-- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers{
+
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers andIsDefaultNumber:(BOOL)isDefault{
     self = [super init];
     if (self){
         _firstName = firstName;
         _lastName = lastName;
         _phoneNumbers = phoneNumbers;
+        _defaultNumber = isDefault;
     }
     return self;
+}
+
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers{
+    return [self initWithFirstName:firstName lastName:lastName andPhoneNumbers:phoneNumbers andIsDefaultNumber:NO];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -41,6 +47,7 @@
         self.lastName = [decoder decodeObjectForKey:@"lastName"];
         self.phoneNumbers = [decoder decodeObjectForKey:@"phoneNumbers"];
         self.deleted = [decoder decodeBoolForKey:@"deleted"];
+        self.defaultNumber = [decoder decodeBoolForKey:@"default"];
     }
     return self;
 }
@@ -50,6 +57,7 @@
     [encoder encodeObject:self.lastName forKey:@"lastName"];
     [encoder encodeObject:self.phoneNumbers forKey:@"phoneNumbers"];
     [encoder encodeBool:self.deleted forKey:@"deleted"];
+    [encoder encodeBool:self.defaultNumber forKey:@"default"];
 }
 
 

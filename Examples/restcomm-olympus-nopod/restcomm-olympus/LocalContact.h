@@ -28,6 +28,8 @@
 @property (nonatomic, copy) NSString *lastName;
 @property (nonatomic, retain) NSArray<NSString *> *phoneNumbers; //sip uri or phone numbers
 @property (nonatomic, assign) BOOL deleted;
+@property (nonatomic, assign) BOOL defaultNumber;
 
 - (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers;
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers andIsDefaultNumber:(BOOL)isDefault;
 @end

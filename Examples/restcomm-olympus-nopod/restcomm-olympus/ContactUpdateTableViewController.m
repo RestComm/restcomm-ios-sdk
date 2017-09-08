@@ -76,6 +76,7 @@
 {
     if (self.contactEditType == CONTACT_EDIT_TYPE_MODIFICATION) {
         [Utils updateContactWithSipUri:self.sipUriTxt.text alias:self.aliasTxt.text];
+        
         [self.delegate contactUpdateViewController:self didUpdateContactWithAlias:self.aliasTxt.text
                                             sipUri:self.sipUriTxt.text];
     }
