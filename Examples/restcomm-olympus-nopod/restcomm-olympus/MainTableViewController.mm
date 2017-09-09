@@ -144,7 +144,7 @@
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self andICEConfigType:kCustom];
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self andICEConfigType:kXirsysV2];
     
     if (self.device.state == RCDeviceStateOffline) {
         [self updateConnectivityStatus:self.device.state
