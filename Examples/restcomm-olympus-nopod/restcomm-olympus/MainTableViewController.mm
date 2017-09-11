@@ -99,7 +99,7 @@
                        @([Utils signalingSecure]), @"signaling-secure",
                        [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
-                       nil];s
+                       nil];
 /******************************/
 /* Xirsys v3 */
 /******************************/
