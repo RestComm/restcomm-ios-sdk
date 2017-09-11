@@ -25,6 +25,23 @@
 #import "RCUtilities.h"
 
 
+//keys
+NSString *const kContactKey = @"contacts";
+NSString *const kLastPeerKey = @"last-peer";
+NSString *const kChatHistoryKey = @"chat-history";
+NSString *const kSipIndentificationKey = @"sip-identification";
+NSString *const kSipPasswordKey = @"sip-password";
+NSString *const kSipRegistrarKey = @"sip-registrar";
+NSString *const kTurnEnabledKey = @"turn-enabled";
+NSString *const kTurnUrlKey = @"turn-url";
+NSString *const kTurnUsernameKey = @"turn-username";
+NSString *const kTurnPasswordKey = @"turn-password";
+NSString *const kSignalingSecureKey = @"signaling-secure";
+NSString *const kTurnCanidateTimeoutKey = @"turn-candidate-timeout";
+NSString *const kIsFirstTimeKey = @"is-first-time";
+NSString *const kPendingInterappKey = @"pending-interapp-uri";
+NSString *const kSignalingCertificateKey =@"signaling-certificate-dir";
+
 @implementation Utils
 
 NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
@@ -34,20 +51,20 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     
     // DOC: very important. To add a NSDictionary or NSArray as part of NSUserDefaults the key must always be an NSString!
     NSDictionary *basicDefaults = @{
-                                    @"is-first-time" : @(YES),
-                                    @"pending-interapp-uri" : @"",  // has another app sent us a URL to call?
-                                    @"sip-identification" : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
-                                    @"sip-password" : @"",
-                                    @"sip-registrar" : @"cloud.restcomm.com",
-                                    @"turn-enabled" : @(YES),
-                                    @"turn-url" : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
-                                    @"turn-username" : @"atsakiridis",  // @"iapprtc",
-                                    @"turn-password" : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
-                                    @"signaling-secure" : @(YES),  // by default signaling is secure
-                                    @"signaling-certificate-dir" : @"",
+                                    kIsFirstTimeKey : @(YES),
+                                    kPendingInterappKey : @"",  // has another app sent us a URL to call?
+                                    kSipIndentificationKey : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
+                                    kSipPasswordKey : @"",
+                                    kSipRegistrarKey : @"cloud.restcomm.com",
+                                    kTurnEnabledKey : @(YES),
+                                    kTurnUrlKey : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
+                                    kTurnUsernameKey : @"atsakiridis",  // @"iapprtc",
+                                    kTurnPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
+                                    kSignalingSecureKey : @(YES),  // by default signaling is secure
+                                    kSignalingCertificateKey : @"",
                                     //@"turn-candidate-timeout" : @"5",
-                                    @"contacts" : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
-                                    @"chat-history" : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
+                                    kContactKey : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
+                                    kChatHistoryKey : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
                                     };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
@@ -59,7 +76,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 {
     //index for contact is only for filtered array (non deleted contacts)
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
@@ -86,7 +103,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 + (NSString*)sipUri2Alias:(NSString*)sipUri
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
    
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
@@ -113,7 +130,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 
 + (int)contactCount
 {
-    NSData *contactsArrayData = [[NSUserDefaults standardUserDefaults] objectForKey:@"contacts"];
+    NSData *contactsArrayData = [[NSUserDefaults standardUserDefaults] objectForKey:kContactKey];
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
@@ -125,13 +142,12 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     return 0;
 }
 
-
 + (void)addContact:(LocalContact *)contact
 {
     NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
     
     NSMutableArray * mutable = nil;
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         if (contactsArray != nil){
@@ -158,7 +174,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         [mutable addObject:contact];
     }
     // update user defaults
-    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:kContactKey];
 }
 
 + (void)removeContact:(LocalContact *)localContact
@@ -166,7 +182,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     //contact will have the flag deleted set to true
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray * mutable = nil;
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
     
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
@@ -177,7 +193,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                 if ([fromNonFilteredContact isEqual:localContact]){
                     fromNonFilteredContact.deleted = YES;
                     // update user defaults
-                    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+                    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:kContactKey];
                     break;
                 }
             }
@@ -189,14 +205,13 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         // should never happen
         return;
     }
-    
-    
+
 }
 
 + (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
     
     if (contactsArrayData != nil) {
         NSArray *contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
@@ -214,7 +229,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                         LocalContact *fromNonFilteredContact = [mutable objectAtIndex:j];
                         if ([fromNonFilteredContact isEqual:localContact]){
                             localContact.firstName = alias;
-                            [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+                            [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:kContactKey];
                             return;
                         }
                     }
@@ -231,6 +246,17 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     
 }
 
++ (void)saveLastPeer:(NSString *)sipUri{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:sipUri forKey:kLastPeerKey];
+}
+
++ (NSString *)getLastPeer{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults objectForKey:kLastPeerKey];
+}
+
+
 #pragma mark - Messages
 
 + (NSArray*)messagesForSipUri:(NSString*)sipUri
@@ -238,8 +264,8 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     NSMutableArray *messages = [[NSMutableArray alloc] init];
     
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    if ([appDefaults dictionaryForKey:@"chat-history"] && [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri]) {
-        return [[appDefaults dictionaryForKey:@"chat-history"] objectForKey:sipUri];
+    if ([appDefaults dictionaryForKey:kChatHistoryKey] && [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri]) {
+        return [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri];
     }
     return messages;
 }
@@ -248,11 +274,11 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray * aliasMessages = [[NSMutableArray alloc] init];
-    if (![appDefaults dictionaryForKey:@"chat-history"]) {
+    if (![appDefaults dictionaryForKey:kChatHistoryKey]) {
         return;
     }
     
-    NSMutableDictionary * messages = [[appDefaults dictionaryForKey:@"chat-history"] mutableCopy];
+    NSMutableDictionary * messages = [[appDefaults dictionaryForKey:kChatHistoryKey] mutableCopy];
     if ([messages objectForKey:sipUri]) {
         aliasMessages = [[messages objectForKey:sipUri] mutableCopy];
     }
@@ -260,7 +286,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
     [messages setObject:aliasMessages forKey:sipUri];
     
-    [appDefaults setObject:messages forKey:@"chat-history"];
+    [appDefaults setObject:messages forKey:kChatHistoryKey];
 }
 
 #pragma mark - SIP
@@ -268,133 +294,133 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 + (NSString*)sipIdentification
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"sip-identification"];
+    return [appDefaults stringForKey:kSipIndentificationKey];
 }
 
 + (NSString*)sipPassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"sip-password"];
+    return [appDefaults stringForKey:kSipPasswordKey];
 }
 
 + (NSString*)sipRegistrar
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"sip-registrar"];
+    return [appDefaults stringForKey:kSipRegistrarKey];
 }
 
 + (BOOL)turnEnabled
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [[appDefaults stringForKey:@"turn-enabled"] boolValue];
+    return [[appDefaults stringForKey:kTurnEnabledKey] boolValue];
 }
 
 + (BOOL)signalingSecure
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [[appDefaults stringForKey:@"signaling-secure"] boolValue];
+    return [[appDefaults stringForKey:kSignalingSecureKey] boolValue];
 }
 
 + (NSString*)turnUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"turn-url"];
+    return [appDefaults stringForKey:kTurnUrlKey];
 }
 
 + (NSString*)turnUsername
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"turn-username"];
+    return [appDefaults stringForKey:kTurnUsernameKey];
 }
 
 + (NSString*)turnPassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"turn-password"];
+    return [appDefaults stringForKey:kTurnPasswordKey];
 }
 
 + (NSString*)turnCandidateTimeout
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"turn-candidate-timeout"];
+    return [appDefaults stringForKey:kTurnCanidateTimeoutKey];
 }
 
 + (BOOL)isFirstTime
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [[appDefaults stringForKey:@"is-first-time"] boolValue];
+    return [[appDefaults stringForKey:kIsFirstTimeKey] boolValue];
 }
 
 + (NSString*)pendingInterappUri
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:@"pending-interapp-uri"];
+    return [appDefaults stringForKey:kPendingInterappKey];
 }
 
 + (void)updateSipIdentification:(NSString*)sipIdentification
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:sipIdentification forKey:@"sip-identification"];
+    [appDefaults setObject:sipIdentification forKey:kSipIndentificationKey];
 }
 
 + (void)updateSipPassword:(NSString*)sipPassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:sipPassword forKey:@"sip-password"];
+    [appDefaults setObject:sipPassword forKey:kSipPasswordKey];
 }
 
 + (void)updateSipRegistrar:(NSString*)sipRegistrar
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:sipRegistrar forKey:@"sip-registrar"];
+    [appDefaults setObject:sipRegistrar forKey:kSipRegistrarKey];
 }
 
 + (void)updateTurnEnabled:(BOOL)turnEnabled
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:@(turnEnabled) forKey:@"turn-enabled"];
+    [appDefaults setObject:@(turnEnabled) forKey:kTurnEnabledKey];
 }
 
 + (void)updateTurnUrl:(NSString*)turnUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnUrl forKey:@"turn-url"];
+    [appDefaults setObject:turnUrl forKey:kTurnUrlKey];
 }
 
 + (void)updateTurnUsername:(NSString*)turnUsername
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnUsername forKey:@"turn-username"];
+    [appDefaults setObject:turnUsername forKey:kTurnUsernameKey];
 }
 
 + (void)updateTurnPassword:(NSString*)turnPassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnPassword forKey:@"turn-password"];
+    [appDefaults setObject:turnPassword forKey:kTurnPasswordKey];
 }
 
 + (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnCandidateTimeout forKey:@"turn-candidate-timeout"];
+    [appDefaults setObject:turnCandidateTimeout forKey:kTurnCanidateTimeoutKey];
 }
 
 + (void)updateIsFirstTime:(BOOL)isFirstTime
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:[NSNumber numberWithBool:isFirstTime] forKey:@"is-first-time"];
+    [appDefaults setObject:[NSNumber numberWithBool:isFirstTime] forKey:kIsFirstTimeKey];
 }
 
 + (void)updatePendingInterappUri:(NSString*)uri
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:uri forKey:@"pending-interapp-uri"];
+    [appDefaults setObject:uri forKey:kPendingInterappKey];
 }
 
 + (void)updateSignalingSecure:(BOOL)signalingSecure
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:@(signalingSecure) forKey:@"signaling-secure"];
+    [appDefaults setObject:@(signalingSecure) forKey:kSignalingSecureKey];
 }
 
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri
@@ -434,7 +460,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 + (NSArray *)getSortedContacts{
     NSArray *contactsArray = [[NSArray alloc] init];
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
+    NSData *contactsArrayData = [appDefaults objectForKey:kContactKey];
     
     if (contactsArrayData != nil) {
         contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
@@ -519,6 +545,21 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     //return non deleted contacts
     NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"defaultNumber == %@", returnDefaults?@"YES":@"NO"]];
     return [contactsArray filteredArrayUsingPredicate:filterDeleted];
+}
+
+#pragma mark - View animations
+
++ (void)shakeView:(UIView *)view {
+    
+    CABasicAnimation *shake = [CABasicAnimation animationWithKeyPath:@"position"];
+    [shake setDuration:0.2];
+    [shake setRepeatCount:2];
+    [shake setAutoreverses:YES];
+    [shake setFromValue:[NSValue valueWithCGPoint:
+                         CGPointMake(view.center.x - 10,view.center.y)]];
+    [shake setToValue:[NSValue valueWithCGPoint:
+                       CGPointMake(view.center.x + 10, view.center.y)]];
+    [view.layer addAnimation:shake forKey:@"position"];
 }
 
 

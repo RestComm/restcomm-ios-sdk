@@ -57,14 +57,21 @@
                                                          forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = grey;
     
+    //set button bar
     UIBarButtonItem * editButton = [self editButtonItem];
     [editButton setTintColor:grey];
+    
     UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                 target:self
                                                                                 action:@selector(invokeCreateContact)];
     [addButton setTintColor:grey];
     
-    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
+    UIBarButtonItem * bugButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                target:self
+                                                                                action:@selector(invokeBugReport)];
+    [bugButton setTintColor:grey];
+    
+    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, bugButton, nil];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -559,6 +566,16 @@
     
     [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
 }
+
+
+- (void)invokeBugReport
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
+    UINavigationController *bugReportNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"bug-report-nav-controller"];
+    [self presentViewController:bugReportNavigationController animated:YES completion:nil];
+}
+
 
 #pragma mark - Rotation/Orientation
 

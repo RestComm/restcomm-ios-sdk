@@ -23,6 +23,9 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A934B1C41F649DED00ED24E1 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A934B1C31F649DED00ED24E1 /* BugReportViewController.m */; };
+		A934B1C51F649DED00ED24E1 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A934B1C31F649DED00ED24E1 /* BugReportViewController.m */; };
+		A934B1C91F66836900ED24E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A934B1C81F66836900ED24E1 /* MessageUI.framework */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -226,6 +229,9 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A934B1C21F649DED00ED24E1 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugReportViewController.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/BugReportViewController.h"; sourceTree = "<group>"; };
+		A934B1C31F649DED00ED24E1 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BugReportViewController.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/BugReportViewController.m"; sourceTree = "<group>"; };
+		A934B1C81F66836900ED24E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
@@ -438,6 +444,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A934B1C91F66836900ED24E1 /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
@@ -497,6 +504,8 @@
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
 				A9CA4D841F5FEA750005A553 /* PhoneNumbersViewController.h */,
 				A9CA4D851F5FEA750005A553 /* PhoneNumbersViewController.m */,
+				A934B1C21F649DED00ED24E1 /* BugReportViewController.h */,
+				A934B1C31F649DED00ED24E1 /* BugReportViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -584,6 +593,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A934B1C81F66836900ED24E1 /* MessageUI.framework */,
 				A9CA4D821F5F33380005A553 /* Contacts.framework */,
 				A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */,
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
@@ -1145,6 +1155,7 @@
 				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
 				AE155F541CCF8658002F404E /* ToastController.m in Sources */,
 				AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */,
+				A934B1C41F649DED00ED24E1 /* BugReportViewController.m in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
 				AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */,
 				AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */,
@@ -1166,6 +1177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
+				A934B1C51F649DED00ED24E1 /* BugReportViewController.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

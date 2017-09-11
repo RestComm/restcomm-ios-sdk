@@ -24,6 +24,7 @@
 #import "RestCommClient.h"
 //#import "RCUtilities.h"
 #import "KeypadViewController.h"
+#import "Utils.h"
 
 @interface CallViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *hangupButton;
@@ -75,6 +76,9 @@
     
     // Add the tap gesture recognizer to the view
     [self.view addGestureRecognizer:tapRecognizer];
+    
+    //get sip uri (phone number) and save it as last peer for debug reporting
+    [Utils saveLastPeer:[self.parameters objectForKey:@"username"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

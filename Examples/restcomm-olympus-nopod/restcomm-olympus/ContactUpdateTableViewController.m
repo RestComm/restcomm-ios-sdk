@@ -93,6 +93,13 @@
                                          alertControllerWithTitle:@"Invalid Input"
                                          message:@"Please fill in Username and SIP URI fields"
                                          preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction
+                                       actionWithTitle:@"OK"
+                                       style:UIAlertActionStyleDefault
+                                       handler:nil];
+            [alert addAction:okAction];
+
 
             [self presentViewController:alert animated:YES completion:nil];
             return;
