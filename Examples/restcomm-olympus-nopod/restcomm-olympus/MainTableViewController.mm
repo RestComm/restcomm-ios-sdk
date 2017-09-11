@@ -362,6 +362,7 @@
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
+    cell.detailTextLabel.text = @"";
     
     //if there is more than 1 phone number, we are showing custom accessoryView
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
