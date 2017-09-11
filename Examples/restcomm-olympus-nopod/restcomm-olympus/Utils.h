@@ -27,15 +27,13 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 
 @interface Utils : NSObject
 + (void) setupUserDefaults;
-//+ (int)indexForContact:(NSString*)alias;
-// if contact is not found returns -1
-+ (NSString*)sipUri2Alias:(NSString*)sipUri;
++ (LocalContact*)getContactForSipUri:(NSString*)sipUri;
 + (NSArray *)getSortedContacts;
 + (int)indexForContact:(NSString*)sipUri;
 + (int)contactCount;
 + (void)addContact:(LocalContact *)contact;
 + (void)removeContact:(LocalContact *)localContact;
-+ (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias;
++ (void)updateContactWithSipUri:(NSString*)sipUri forAlias:(NSString*)alias;
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;

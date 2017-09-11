@@ -24,11 +24,10 @@
 #import "CallViewController.h"
 #import "MessageTableViewController.h"
 #import "ContactUpdateTableViewController.h"
+#import "Utils.h"
 
 @interface ContactDetailsTableViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *sipUriLbl;
-@property (weak, nonatomic) IBOutlet UILabel *aliaslLbl;
-@property (weak, nonatomic) IBOutlet UIImageView *videoCallImage;
+
 @end
 
 @implementation ContactDetailsTableViewController
@@ -37,13 +36,14 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
-    self.videoCallImage.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
-    // add edit button manually, to get the actions (from storyboard default actions for edit don't work)
-    //self.navigationItem.rightBarButtonItem = [self editButtonItem];
+   
+    //show right button (EDIT) for local contacts only
+    if (!self.localContact.phoneBookNumber){
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonSelected:)];
+    }
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonSelected:)];
     
-    self.navigationItem.title = @"Details";
+    self.navigationItem.title = @"Contact Details";
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -52,212 +52,132 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void) editButtonSelected:(id)sender
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
-    UINavigationController *contactUpdateNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"contact-update-nav-controller"];
-    ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
-    contactUpdateViewController.contactEditType = CONTACT_EDIT_TYPE_MODIFICATION;
-    contactUpdateViewController.alias = self.alias;
-    contactUpdateViewController.sipUri = self.sipUri;
-    contactUpdateViewController.delegate = self;
-    
-    [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
-    /*
-    if (self.tableView.editing) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonSelected:)];
-        [self.tableView setEditing:NO animated:YES];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonSelected:)];
-        [self.tableView setEditing:YES animated:YES];
-    }
-     */
-    
-}
-
-- (void)audioCallPressed
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
-    
-    // setup call view controller
-    callViewController.delegate = self;
-    callViewController.device = self.device;
-    callViewController.parameters = [[NSMutableDictionary alloc] init];
-    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:self.alias forKey:@"alias"];
-    [callViewController.parameters setObject:self.sipUri forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
-    
-    [self presentViewController:callViewController animated:YES completion:nil];
-}
-
-
-- (void)videoCallPressed
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
-    
-    // setup call view controller
-    callViewController.delegate = self;
-    callViewController.device = self.device;
-    callViewController.parameters = [[NSMutableDictionary alloc] init];
-    [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:self.alias forKey:@"alias"];
-    [callViewController.parameters setObject:self.sipUri forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
-    
-    [self presentViewController:callViewController animated:YES completion:nil];
-}
-
-- (void)messagePressed
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-
-    messageViewController.device = self.device;
-    messageViewController.parameters = [[NSMutableDictionary alloc] init];
-    [messageViewController.parameters setObject:self.alias forKey:@"alias"];
-    [messageViewController.parameters setObject:self.sipUri forKey:@"username"];
-    
-    [self.navigationController pushViewController:messageViewController animated:YES];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.sipUriLbl.text = self.sipUri;
-    self.aliaslLbl.text = self.alias;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-/*
+#pragma mark - Edit button selector
+
+- (void) editButtonSelected:(id)sender
+{
+    [self performSegueWithIdentifier:@"invoke-update" sender:nil];
+}
+
+
+#pragma mark - UITableViewDelegate, UITableViewDataSource methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2 ;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionName;
-    switch (section)
+    if(section == 0)
     {
-        case 0:
-            sectionName = NSLocalizedString(self.alias, self.alias);
-            break;
-        default:
-            sectionName = @"";
-            break;
+        return @"CONTACTS NAME";
     }
-    return sectionName;
+    else
+    {
+        if (self.localContact.phoneBookNumber){
+            if (self.localContact.phoneNumbers && [self.localContact.phoneNumbers count] > 1){
+                return @"PHONE NUMBERS";
+            } else {
+                return @"PHONE NUMBER";
+            }
+        } else {
+            return @"RESTCOMM NUMBER OR CLIENT";
+        }
+    }
 }
- */
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0){
+        return 1;
+    } else {
+        return [self.localContact.phoneNumbers count];
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *simpleTableIdentifier = @"simpleTable";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+    if (indexPath.section == 0){
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", self.localContact.firstName, self.localContact.lastName];
+    } else {
+        cell.textLabel.text = [self.localContact.phoneNumbers objectAtIndex:indexPath.row];
+    }
+    
+    return cell;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            [self videoCallPressed];
-        }
-        if (indexPath.row == 1) {
-            [self audioCallPressed];
-        }
-        if (indexPath.row == 2) {
-            [self messagePressed];
-        }
+    if (indexPath.section == 1){
+        [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
     }
 }
 
-// UITableView asks us if each of the rows are editable
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - Segue
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // our rows aren't editable
-    return NO;
+    NSString *alias;
+    NSString *username;
+    NSIndexPath * indexPath = sender;
+    alias = [NSString stringWithFormat:@"%@ %@", self.localContact.firstName, self.localContact.lastName];
+    
+    if ([segue.identifier isEqualToString:@"invoke-messages"]) {
+        
+        username = [self.localContact.phoneNumbers objectAtIndex:indexPath.row];
+        
+        MessageTableViewController *messageViewController = [segue destinationViewController];
+        messageViewController.device = self.device;
+        messageViewController.delegate = self;
+        
+        messageViewController.parameters = [[NSMutableDictionary alloc] init];
+        
+        [messageViewController.parameters setObject:alias forKey:@"alias"];
+        [messageViewController.parameters setObject:username forKey:@"username"];
+    
+    } else if ([segue.identifier isEqualToString:@"invoke-update"]){
+       
+        ContactUpdateTableViewController * contactUpdateViewController = [segue destinationViewController];
+        contactUpdateViewController.contactEditType = CONTACT_EDIT_TYPE_MODIFICATION;
+        contactUpdateViewController.delegate = self;
+       
+        username = [self.localContact.phoneNumbers objectAtIndex:0]; //we can edit only contacts we created (one phone number)
+        
+        contactUpdateViewController.alias = alias;
+        contactUpdateViewController.sipUri = username;   
+    }
 }
+
+#pragma mark - ContactUpdateDelegate method
 
 - (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
 {
-    self.sipUri = sipUri;
-    self.sipUriLbl.text = sipUri;
-    self.alias = alias;
-    self.aliaslLbl.text = alias;
-    
-    //todo: when we have edit number, save to user defaults
-    // notify main screen that we updated, so that contact table is updated as well
-    [self.delegate contactDetailsViewController:self
-                      didUpdateContactWithAlias:alias sipUri:sipUri];
+    self.localContact = [Utils getContactForSipUri:sipUri];
+    [self.tableView reloadData];
+}
+
+#pragma mark - MessageDelegate method
+
+- (void)messageViewController:(MessageTableViewController*)messageViewController
+       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    self.localContact = [Utils getContactForSipUri:sipUri];
+    [self.tableView reloadData];
 }
 
 
-/*
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
- */
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

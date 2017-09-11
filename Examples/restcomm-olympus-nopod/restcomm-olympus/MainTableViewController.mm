@@ -88,16 +88,13 @@
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
-                      // @([Utils turnEnabled]), @"turn-enabled",
+                       @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
-                       @(NO), @"signaling-secure",
-                       //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                          @([Utils signalingSecure]), @"signaling-secure",
-                          [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                       @([Utils signalingSecure]), @"signaling-secure",
+                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        nil];
-    
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
@@ -128,6 +125,11 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self reloadData];
 }
 
 
@@ -186,9 +188,12 @@
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         
         // search through the contacts if the given URI is known and if so use its alias, if not just use the URI
-        NSString * alias = [Utils sipUri2Alias:pendingInterapUri];
-        if ([alias isEqualToString:@""]) {
+        LocalContact *localContact = [Utils getContactForSipUri:pendingInterapUri];
+        NSString * alias;
+        if (!localContact) {
             alias = pendingInterapUri;
+        } else {
+            alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
         }
         [callViewController.parameters setObject:alias forKey:@"alias"];
         [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
@@ -241,10 +246,14 @@
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"] forKey:@"username"];
     // try to 'resolve' the from to the contact name if we do have a contact for that
-    NSString * alias = [Utils sipUri2Alias:[connection.parameters objectForKey:@"from"]];
-    if ([alias isEqualToString:@""]) {
+    LocalContact *localContact = [Utils getContactForSipUri:[connection.parameters objectForKey:@"from"]];
+    NSString * alias;
+    if (!localContact) {
         alias = [connection.parameters objectForKey:@"from"];
+    } else {
+       alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
     }
+    
     [callViewController.parameters setObject:alias forKey:@"alias"];
     
     // TODO: change this once I implement the incoming call caller id
@@ -255,8 +264,6 @@
                        animated:YES
                      completion:nil];
 }
-
-
 
 - (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
@@ -290,7 +297,8 @@
     }
     
     // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
-    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+    UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName]
+                                                                                   imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(invokeSettings)];
@@ -307,17 +315,6 @@
     }
     self.previousDeviceState = state;
 }
-
-#pragma mark - SipSettingsDelegate method
-// User requested new registration in 'Settings'
-- (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
-{
-    [self updateConnectivityStatus:RCDeviceStateOffline
-               andConnectivityType:RCDeviceConnectivityTypeNone
-                          withText:@""];
-}
-
-
 #pragma mark - ContactUpdateDelegate method
 
 - (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
@@ -342,6 +339,15 @@
     [self reloadData];
 }
 
+#pragma mark - SipSettingsDelegate method
+// User requested new registration in 'Settings'
+- (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
+{
+    [self updateConnectivityStatus:RCDeviceStateOffline
+               andConnectivityType:RCDeviceConnectivityTypeNone
+                          withText:@""];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -361,13 +367,10 @@
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
         cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
         if ([contact.phoneNumbers count] > 1){
-            UIImage *image = [UIImage imageNamed:@"settings-30x30.png"];
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            cell.accessoryType = UITableViewCellAccessoryDetailButton;
             
-            CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-            button.frame = frame;
-            [button setBackgroundImage:image forState:UIControlStateNormal];
-            
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+
             [button addTarget:self action:@selector(checkButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
             cell.backgroundColor = [UIColor clearColor];
             cell.accessoryView = button;
@@ -378,7 +381,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
+    [self performSegueWithIdentifier:@"invoke-details" sender:indexPath];
 }
 
 
@@ -394,40 +397,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    PhoneNumbersViewController *phoneNumbersViewController = (PhoneNumbersViewController *)[storyboard instantiateViewControllerWithIdentifier:@"phone-numbers"];
-    phoneNumbersViewController.localContact = self.contactsData[indexPath.row];
-    phoneNumbersViewController.phoneNumbersDelegate = self;
-    
-    phoneNumbersViewController.preferredContentSize = CGSizeMake(150, [phoneNumbersViewController.localContact.phoneNumbers count] * 50);
-    phoneNumbersViewController.modalPresentationStyle = UIModalPresentationPopover;
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    // configure the Popover presentation controller
-    UIPopoverPresentationController *popController = [phoneNumbersViewController popoverPresentationController];
-   
-    popController.delegate = self;
-    
-    //for the last 3 tableview rows
-    CGRect rectOfCellInTableView = [tableView rectForRowAtIndexPath: indexPath];
-    CGRect rectOfCellInSuperview = [tableView convertRect: rectOfCellInTableView toView: tableView.superview];
 
-    int viewHeight = self.view.frame.size.height -  self.navigationController.navigationBar.frame.size.height - 20;
-    if (rectOfCellInSuperview.origin.y + rectOfCellInSuperview.size.height  >= viewHeight){
-        popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
-    } else {
-        popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    }
-    popController.sourceRect = CGRectMake(2, 5, 10, 10);
-    popController.sourceView = cell.accessoryView;
-    [self presentViewController:phoneNumbersViewController animated:YES completion:nil];
-}
-
--(UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
-    return UIModalPresentationNone;
-}
 
 #pragma mark - AccessoryView button tap
 - (void)checkButtonTapped:(id)sender event:(id)event
@@ -439,7 +409,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: currentTouchPosition];
     if (indexPath != nil)
     {
-        [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath: indexPath];
+        [self performSegueWithIdentifier:@"invoke-details" sender:indexPath];
     }
 }
 
@@ -454,43 +424,19 @@
     }
     
     if ([segue.identifier isEqualToString:@"invoke-create-contact"]) {
-        UINavigationController *contactUpdateNavigationController = [segue destinationViewController];
-        ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
+        ContactUpdateTableViewController *contactUpdateViewController = [segue destinationViewController];
         contactUpdateViewController.delegate = self;
     }
     
-    if ([segue.identifier isEqualToString:@"invoke-messages"]) {
-        
-        NSString *alias;
-        NSString *username;
-        
-        
-        // retrieve info for the selected contact
-        if ([sender isKindOfClass:NSIndexPath.class]){
-            NSIndexPath * indexPath = sender;
-            LocalContact * contact = self.contactsData[(int)indexPath.row];
-            alias = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
-            if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
-                username = [contact.phoneNumbers objectAtIndex:0];
-            }
-        //its called PhoneNumbersDelegate
-        } else if ([sender isKindOfClass:NSDictionary.class]){
-            NSDictionary *contactDict = (NSDictionary *)sender;
-            alias = [contactDict valueForKey:@"alias"];
-            username = [contactDict valueForKey:@"username"];
-        }
-        
+    if ([segue.identifier isEqualToString:@"invoke-details"]) {
+        NSIndexPath * indexPath = sender;
+        LocalContact * contact = self.contactsData[(int)indexPath.row];
     
-        MessageTableViewController *messageViewController = [segue destinationViewController];
-        messageViewController.delegate = self;
-        messageViewController.device = self.device;
-        messageViewController.parameters = [[NSMutableDictionary alloc] init];
-        
-        [messageViewController.parameters setObject:alias forKey:@"alias"];
-        [messageViewController.parameters setObject:username forKey:@"username"];
-    
+        ContactDetailsTableViewController *contactDetailsTableViewController = [segue destinationViewController];
+        contactDetailsTableViewController.device = self.device;
+        contactDetailsTableViewController.delegate = self;
+        contactDetailsTableViewController.localContact = contact;
     }
-    
 }
 
 #pragma mark - Invoke methods
@@ -507,14 +453,7 @@
 
 - (void)invokeCreateContact
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
-    UINavigationController *contactUpdateNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"contact-update-nav-controller"];
-    ContactUpdateTableViewController * contactUpdateViewController =  [contactUpdateNavigationController.viewControllers objectAtIndex:0];
-    contactUpdateViewController.contactEditType = CONTACT_EDIT_TYPE_CREATION;
-    contactUpdateViewController.delegate = self;
-    
-    [self presentViewController:contactUpdateNavigationController animated:YES completion:nil];
+   [self performSegueWithIdentifier:@"invoke-create-contact" sender:nil];
 }
 
 #pragma mark - Rotation/Orientation
@@ -545,6 +484,7 @@
                     LocalContact *localContact = [[LocalContact alloc] init];
                     localContact.firstName = contact.givenName;
                     localContact.lastName = contact.familyName;
+                    localContact.phoneBookNumber = YES;
                     
                     if (contact.phoneNumbers.count > 0) {
                         for (int i=0; i<contact.phoneNumbers.count; i++){
@@ -586,15 +526,6 @@
             break;
     }
 };
-
-#pragma mark - PhoneNumbersDelegate method
-
-- (void) onPhoneNumberTap:(NSString *)alias andSipUri:(NSString *)sipUri{
-    NSLog(@"%@ %@", alias, sipUri);
-    
-    NSDictionary *contactDict = @{ @"alias" : alias, @"username" : sipUri};
-    [self performSegueWithIdentifier:@"invoke-messages" sender:contactDict];
-}
 
 #pragma mark - Spinner
 

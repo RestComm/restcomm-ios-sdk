@@ -83,7 +83,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     return -1;
 }
 
-+ (NSString*)sipUri2Alias:(NSString*)sipUri
++ (LocalContact*)getContactForSipUri:(NSString*)sipUri
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
@@ -97,18 +97,18 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                 
                 //Phone numbers
                 if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){
-                    return [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
+                    return localContact;
                 }
             }
         } else {
             // should never happen
-            return @"";
+            return nil;
         }
     } else {
         // should never happen
-        return @"";
+        return nil;
     }
-    return @"";
+    return nil;
 }
 
 + (int)contactCount
@@ -150,6 +150,11 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         LocalContact *savedContact = mutable[i];
         if ([savedContact isEqual:contact]){
             exists = YES;
+            if (![contact.phoneNumbers isEqualToArray:savedContact.phoneNumbers]){
+                //just copy numbers
+                savedContact.phoneNumbers = contact.phoneNumbers;
+                [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+            }
             break;
         }
     }
@@ -193,7 +198,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     
 }
 
-+ (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias
++ (void)updateContactWithSipUri:(NSString*)sipUri forAlias:(NSString*)alias
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSData *contactsArrayData = [appDefaults objectForKey:@"contacts"];
@@ -203,21 +208,13 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         if (contactsArray != nil){
             NSArray *filterdArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
             for (int i=0; i < filterdArray.count; i ++){
-                LocalContact *localContact = [filterdArray objectAtIndex:i];
-                
-                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){
-                    //phone numbers (sip uris)
-                    //update the actual object in non predicated array
-                    NSMutableArray *mutable = [contactsArray mutableCopy];
-                    
-                    for (int j=0; j < mutable.count; j ++){
-                        LocalContact *fromNonFilteredContact = [mutable objectAtIndex:j];
-                        if ([fromNonFilteredContact isEqual:localContact]){
-                            localContact.firstName = alias;
-                            [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
-                            return;
-                        }
-                    }
+                NSMutableArray *mutable = [contactsArray mutableCopy];
+                LocalContact *localContact = [mutable objectAtIndex:i];
+                NSString *localAlias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
+                if ([localAlias isEqualToString:alias]){
+                    localContact.phoneNumbers = @[sipUri];
+                    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:@"contacts"];
+                    return;
                 }
             }
         }else {
@@ -440,19 +437,11 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         contactsArray = [NSKeyedUnarchiver unarchiveObjectWithData: contactsArrayData];
         contactsArray = [Utils getNonDeletedFilteredContactArray:contactsArray];
         if (contactsArray != nil){
-            //we dont want the default nubers to be sorted, so we will split an array and have them
-            //concatenate with the new array
-            NSArray *defaults = [Utils getDefaultFilteredContactArray:contactsArray forDefault:YES];
-            NSArray *others = [Utils getDefaultFilteredContactArray:contactsArray forDefault:NO];
-            
-         
+  
             NSSortDescriptor *sortFirstName = [NSSortDescriptor sortDescriptorWithKey:@"firstName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
             NSSortDescriptor *sortLastName = [NSSortDescriptor sortDescriptorWithKey:@"lastName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
             
-            others = [others sortedArrayUsingDescriptors:@[sortFirstName, sortLastName]];
-           
-            //concatenate default and others
-            contactsArray = [defaults arrayByAddingObjectsFromArray:others];
+            contactsArray = [contactsArray sortedArrayUsingDescriptors:@[sortFirstName, sortLastName]];
         }
     }
     return contactsArray;
@@ -463,11 +452,30 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 + (NSArray *)getDefaultContacts{
 
     
-    LocalContact *localContactPlayApp = [[LocalContact alloc] initWithFirstName:@"Play" lastName:@"App" andPhoneNumbers:@[@"+1234"] andIsDefaultNumber:YES]; //@"sip:+1234@cloud.restcomm.com"],
-    LocalContact *localContactSayApp = [[LocalContact alloc] initWithFirstName:@"Say" lastName:@"App" andPhoneNumbers:@[@"+1235"] andIsDefaultNumber:YES]; //@"sip:+1235@cloud.restcomm.com"],
-    LocalContact *localContactGatherApp = [[LocalContact alloc] initWithFirstName:@"Gather" lastName:@"App" andPhoneNumbers:@[@"+1236"] andIsDefaultNumber:YES]; //@"sip:+1236@cloud.restcomm.com"],
-    LocalContact *localContactConferenceApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"App" andPhoneNumbers:@[@"+1310"] andIsDefaultNumber:YES]; //@"sip:+1311@cloud.restcomm.com"],
-    LocalContact *localContactConferenceAdminApp = [[LocalContact alloc] initWithFirstName:@"Conference" lastName:@"Admin App" andPhoneNumbers:@[@"+1311"] andIsDefaultNumber:YES]; //@"sip:+1310@cloud.restcomm.com"],
+    LocalContact *localContactPlayApp = [[LocalContact alloc] initWithFirstName:@"Play"
+                                                                       lastName:@"App"
+                                                                phoneNumbers:@[@"+1234"]
+                                                           andIsPhoneBookNumber:NO]; //@"sip:+1234@cloud.restcomm.com"],
+    
+    LocalContact *localContactSayApp = [[LocalContact alloc] initWithFirstName:@"Say"
+                                                                      lastName:@"App"
+                                                               phoneNumbers:@[@"+1235"]
+                                                          andIsPhoneBookNumber:NO]; //@"sip:+1235@cloud.restcomm.com"],
+    
+    LocalContact *localContactGatherApp = [[LocalContact alloc] initWithFirstName:@"Gather"
+                                                                         lastName:@"App"
+                                                                     phoneNumbers:@[@"+1236"]
+                                                             andIsPhoneBookNumber:NO]; //@"sip:+1236@cloud.restcomm.com"],
+    
+    LocalContact *localContactConferenceApp = [[LocalContact alloc] initWithFirstName:@"Conference"
+                                                                             lastName:@"App"
+                                                                         phoneNumbers:@[@"+1310"]
+                                                                 andIsPhoneBookNumber:NO]; //@"sip:+1311@cloud.restcomm.com"],
+    
+    LocalContact *localContactConferenceAdminApp = [[LocalContact alloc] initWithFirstName:@"Conference"
+                                                                                  lastName:@"Admin App"
+                                                                              phoneNumbers:@[@"+1311"]
+                                                                      andIsPhoneBookNumber: NO]; //@"sip:+1310@cloud.restcomm.com"],
     
     return  @[localContactPlayApp, localContactSayApp, localContactGatherApp, localContactConferenceApp, localContactConferenceAdminApp];
     
@@ -511,13 +519,6 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 + (NSArray *)getNonDeletedFilteredContactArray:(NSArray *)contactsArray{
     //return non deleted contacts
     NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:@"deleted == NO"];
-    return [contactsArray filteredArrayUsingPredicate:filterDeleted];
-}
-
-
-+ (NSArray *)getDefaultFilteredContactArray:(NSArray *)contactsArray forDefault:(BOOL)returnDefaults{
-    //return non deleted contacts
-    NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"defaultNumber == %@", returnDefaults?@"YES":@"NO"]];
     return [contactsArray filteredArrayUsingPredicate:filterDeleted];
 }
 

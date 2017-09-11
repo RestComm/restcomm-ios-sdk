@@ -33,9 +33,9 @@ typedef enum {
     CONTACT_EDIT_TYPE_MODIFICATION,
 } ContactEditType;
 
-@property (weak) RCDevice * device;
 @property NSString * alias;
 @property NSString * sipUri;
+
 @property ContactEditType contactEditType;
 @property (weak) id<ContactUpdateDelegate> delegate;
 @end

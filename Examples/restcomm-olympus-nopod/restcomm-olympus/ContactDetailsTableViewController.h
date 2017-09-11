@@ -25,13 +25,16 @@
 #import "RestCommClient.h"
 #import "CallViewController.h"
 #import "ContactUpdateTableViewController.h"
+#import "LocalContact.h"
+#import "MessageTableViewController.h"
 
 @protocol ContactDetailsDelegate;
 
-@interface ContactDetailsTableViewController : UITableViewController<CallDelegate, ContactUpdateDelegate>
-@property (weak) RCDevice * device;
+@interface ContactDetailsTableViewController : UITableViewController<CallDelegate, ContactUpdateDelegate, MessageDelegate>
+@property (weak) RCDevice *device;
 @property NSString * alias;
 @property NSString * sipUri;
+@property (nonatomic, strong) LocalContact *localContact;
 @property (weak) id<ContactDetailsDelegate> delegate;
 @end
 

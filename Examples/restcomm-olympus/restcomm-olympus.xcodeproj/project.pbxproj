@@ -26,7 +26,6 @@
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
-		A9CA4D861F5FEA750005A553 /* PhoneNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D851F5FEA750005A553 /* PhoneNumbersViewController.m */; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
@@ -230,8 +229,6 @@
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
 		A9CA4D821F5F33380005A553 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
-		A9CA4D841F5FEA750005A553 /* PhoneNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhoneNumbersViewController.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/PhoneNumbersViewController.h"; sourceTree = "<group>"; };
-		A9CA4D851F5FEA750005A553 /* PhoneNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhoneNumbersViewController.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/PhoneNumbersViewController.m"; sourceTree = "<group>"; };
 		AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
@@ -495,8 +492,6 @@
 				AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */,
 				AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */,
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
-				A9CA4D841F5FEA750005A553 /* PhoneNumbersViewController.h */,
-				A9CA4D851F5FEA750005A553 /* PhoneNumbersViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1138,7 +1133,6 @@
 				AEA496651C2997F6000D9762 /* InputAccessoryProxyView.m in Sources */,
 				A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */,
-				A9CA4D861F5FEA750005A553 /* PhoneNumbersViewController.m in Sources */,
 				AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */,
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,

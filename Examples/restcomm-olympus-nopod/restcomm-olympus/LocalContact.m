@@ -26,19 +26,19 @@
 @implementation LocalContact
 
 
-- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers andIsDefaultNumber:(BOOL)isDefault{
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName phoneNumbers:(NSArray<NSString *> *)phoneNumbers andIsPhoneBookNumber:(BOOL)isPhoneBookNumber{
     self = [super init];
     if (self){
         _firstName = firstName;
         _lastName = lastName;
         _phoneNumbers = phoneNumbers;
-        _defaultNumber = isDefault;
+        _phoneBookNumber = isPhoneBookNumber;
     }
     return self;
 }
 
 - (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers{
-    return [self initWithFirstName:firstName lastName:lastName andPhoneNumbers:phoneNumbers andIsDefaultNumber:NO];
+    return [self initWithFirstName:firstName lastName:lastName phoneNumbers:phoneNumbers andIsPhoneBookNumber:NO];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -47,7 +47,7 @@
         self.lastName = [decoder decodeObjectForKey:@"lastName"];
         self.phoneNumbers = [decoder decodeObjectForKey:@"phoneNumbers"];
         self.deleted = [decoder decodeBoolForKey:@"deleted"];
-        self.defaultNumber = [decoder decodeBoolForKey:@"default"];
+        self.phoneBookNumber = [decoder decodeBoolForKey:@"phoneBookNumber"];
     }
     return self;
 }
@@ -57,7 +57,7 @@
     [encoder encodeObject:self.lastName forKey:@"lastName"];
     [encoder encodeObject:self.phoneNumbers forKey:@"phoneNumbers"];
     [encoder encodeBool:self.deleted forKey:@"deleted"];
-    [encoder encodeBool:self.defaultNumber forKey:@"default"];
+    [encoder encodeBool:self.phoneBookNumber forKey:@"phoneBookNumber"];
 }
 
 
@@ -66,8 +66,8 @@
         return NO;
     }
     
-    BOOL haveEqualNames = [self.firstName isEqualToString:localContact.firstName];
-    BOOL haveEqualLastNames = [self.lastName isEqualToString:localContact.lastName];
+    BOOL haveEqualNames = (!self.firstName && !localContact.firstName) || [self.firstName isEqualToString:localContact.firstName];
+    BOOL haveEqualLastNames = (!self.lastName && !localContact.lastName) || [self.lastName isEqualToString:localContact.lastName];
     
     return haveEqualNames && haveEqualLastNames;
 }

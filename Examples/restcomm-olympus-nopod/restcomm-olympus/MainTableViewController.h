@@ -27,9 +27,10 @@
 #import "ContactUpdateTableViewController.h"
 #import "ContactDetailsTableViewController.h"
 #import "SipSettingsTableViewController.h"
-#import "PhoneNumbersViewController.h"
 
-@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate, ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate, PhoneNumbersDelegate, UIPopoverPresentationControllerDelegate>
+@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate,
+ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
+
 
 @property (nonatomic,retain) RCDevice* device;
 @property NSMutableDictionary * parameters;
