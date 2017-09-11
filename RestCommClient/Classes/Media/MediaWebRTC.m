@@ -66,8 +66,6 @@
 #import "WebRTC/RTCSessionDescription.h"
 #import "WebRTC/RTCRtpSender.h"
 
-#import "RestCommClient.h"
-
 #import "common.h"
 #import "RCUtilities.h"
 #import "RTCICEServer+JSON.h"
@@ -92,7 +90,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigTypeForMedia)iceConfigType
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -148,7 +146,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
          _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
          */
         
-         if (self.iceConfigType != kMCustom){
+         if (self.iceConfigType != kCustom){
             NSURL *turnRequestURL = nil;
              
             //create local response block
@@ -172,7 +170,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
              
             switch (self.iceConfigType) {
-                case kMXirsys2:
+                case kXirsysV2:
                    turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
                                           [_parameters objectForKey:@"turn-url"],
                                           [_parameters objectForKey:@"turn-username"],
@@ -182,7 +180,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
                     [_turnClient requestServersWithCompletionHandler:responseBlock];
                     break;
                
-                case kMXirsys3:
+                case kXirsysV3:
                     turnRequestURL = [NSURL URLWithString:@"https://ice.restcomm.io/_turn/restcomm"];
                     _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
                     [_turnClient requestServersWithUsername:[_parameters objectForKey:@"turn-username"] password: [_parameters objectForKey:@"turn-password"] andCompletionHandler:responseBlock];
@@ -192,7 +190,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
              }
             
          }else{
-             NSArray *turnServers =  [_parameters objectForKey:@"stun-turn-servers"];
+             NSArray *turnServers =  [_parameters objectForKey:@"ice-servers"];
              turnServers = [RTCIceServer serverFromXirsysArray:turnServers];
              
              if (!turnServers){

@@ -564,7 +564,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
         
         //NOTE: We dont want to create separate header for iceConfigType
         //so, we created a ICEConfigTypeForMedia and we should map ICEConfigType to it//
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params andICEConfigType:[self mapICEConfig:self.iceConfigType]];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params andICEConfigType:self.iceConfigType];
        
         [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"]
                 isInitiator:[[self.activeCallParams objectForKey:@"initiator"] boolValue]
@@ -1068,17 +1068,5 @@ ssize_t pipeToSofia(const char * msg, int fd)
     return YES;
 }
 
-- (ICEConfigTypeForMedia)mapICEConfig:(ICEConfigType)type{
-    switch (type) {
-        case kXirsysV2:
-            return kMXirsys2;
-        case kXirsysV3:
-            return kMXirsys3;
-        case kCustom:
-            return kMCustom;
-        default:
-            return kMCustom;
-    }
-}
 
 @end

@@ -94,14 +94,12 @@
                        [Utils sipPassword], @"password",
                        @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
-                       @(NO), @"signaling-secure",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
-//
-                       //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                          @([Utils signalingSecure]), @"signaling-secure",
-                          [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                       nil];
+                       @([Utils signalingSecure]), @"signaling-secure",
+                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+                       nil];s
 /******************************/
 /* Xirsys v3 */
 /******************************/
@@ -109,42 +107,42 @@
 //                       [Utils sipPassword], @"password",
 //                       @([Utils turnEnabled]), @"turn-enabled",
 //                       [Utils turnUrl], @"turn-url",
-//                       @"telestax", @"turn-username",
-//                       @"78a9a68c-55f3-11e7-b678-24aec531c807", @"turn-password",
-//                       @(NO), @"signaling-secure",
+//                       @"TURN URL", @"turn-username",
+//                       @"TURN PASSWORD", @"turn-password",
 //
-//                         //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
 //                       @([Utils signalingSecure]), @"signaling-secure",
 //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
 //                       nil];
- 
 /******************************/
  /* Xirsys custom */
 /******************************/
 //    NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
-//     @"46560f8e-94a7-11e7-bc4c-3c21a281eee8", @"username",
-//     @"turn:ice1.restcomm.io:80?transport=udp", @"url",
-//     @"4656101a-94a7-11e7-97ac-82fdfe2001f6", @"credential",
+//     @"46560f8e-94a7-11e7-bc4c-SOME_DATA", @"username",
+//     @"turn:Server:80?transport=udp", @"url",
+//     @"4656101a-94a7-11e7-97SOME_DATA", @"credential",
 //     nil];
-    
+//    
 //    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                                       @"stun:ice1.restcomm.io",@"url", nil];
+//                                       @"stun:Server",@"url", nil];
 //    
 //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-//                       [Utils sipPassword], @"password",
-//                       @([Utils turnEnabled]), @"turn-enabled",
-//                       [Utils turnUrl], @"turn-url",
-//                       @(NO), @"signaling-secure",
-//                       @[dictionaryServer, dictionaryServer2] , @"stun-turn-servers",
-//                       //[cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                       @([Utils signalingSecure]), @"signaling-secure",
-//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                       nil];
+//                    [Utils sipPassword], @"password",
+//                      @([Utils turnEnabled]), @"turn-enabled",
+//                      [Utils turnUrl], @"turn-url",
+//                      @"TURN URL", @"turn-username",
+//                      @"TURN PASSWORD", @"turn-password",
+//                      @([Utils signalingSecure]), @"signaling-secure",
+//                      [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                      [NSNumber numberWithInt:(int)kCustom] , @"ice-config-type",
+//                      @[dictionaryServer, dictionaryServer2] , @"ice-servers",
+//                      nil];
+/******************************/
    
     [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
     
     // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self andICEConfigType:kXirsysV2];
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
     
     if (self.device.state == RCDeviceStateOffline) {
         [self updateConnectivityStatus:self.device.state

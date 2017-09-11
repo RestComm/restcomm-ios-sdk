@@ -48,7 +48,7 @@ typedef enum {
  * ICE Config Type
  */
 typedef NS_ENUM(NSInteger, ICEConfigType) {
-    kXirsysV2,
+    kXirsysV2 = 0,
     kXirsysV3,
     kCustom
 };
@@ -126,7 +126,10 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>registrar</b>: Restcomm instance to use, like <i>'cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
  *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
-*     <b>stun-turn-servers</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ICEConfigType is 'kCustom'; Example with 2 servers:
+ *    <b>ice-config-type<b>: Should be integer value of the following  kXirsysV2 = 0, kXirsysV3 =1 , kCustom=2
+      for example, if we want to use XirsysV2 server value should be 1
+
+ *    <b>ice-servers</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is 'kCustom'; Example with 2 servers:
              NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
              @"46560f8e-94a7-11e7-FAKE", @"username",
              @"turn:iceSERVER:80?transport=udp", @"url",
@@ -143,7 +146,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @param iceConfigType   Type of the ICE configuration
  *  @return Newly initialized RCDevice object
  */
-- (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate andICEConfigType:(ICEConfigType)iceConfigType;
+- (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate;
 
 /**
  *  Initialize a new RCDevice object with capability token

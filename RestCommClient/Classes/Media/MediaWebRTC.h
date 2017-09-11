@@ -51,6 +51,7 @@
 #import "WebRTC/RTCPeerConnectionFactory.h"
 #import "ARDCEODTURNClient.h"
 #import "XirsysTURNClient.h"
+#import "RestCommClient.h"
 
 //#import "RTCPeerConnectionDelegate.h"
 //#import "WebRTC/RTCSessionDescriptionDelegate.h"
@@ -73,15 +74,9 @@ typedef enum {
     kARDSignalingMessageTypeBye,
 } ARDSignalingMessageType;
 
-typedef NS_ENUM(NSInteger, ICEConfigTypeForMedia) {
-    kMXirsys2,
-    kMXirsys3,
-    kMCustom
-};
-
 
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigTypeForMedia)iceConfigType;
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType;
 // TODO: change the name to something more appropriate
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed;
 - (void)disconnect;
@@ -102,7 +97,7 @@ typedef NS_ENUM(NSInteger, ICEConfigTypeForMedia) {
 @property BOOL candidatesGathered;
 @property NSDictionary* parameters;
 
-@property (nonatomic, readonly) ICEConfigTypeForMedia iceConfigType;
+@property (nonatomic, readonly) ICEConfigType iceConfigType;
 
 @end
 

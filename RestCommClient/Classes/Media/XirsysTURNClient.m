@@ -51,17 +51,17 @@
     [request setValue:authValue forHTTPHeaderField:@"Authorization"];
     [request setHTTPMethod:@"PUT"];
    
-    [self requstServersWithRequest:request andCompletionHandler:completionHandler];
+    [self requestServersWithRequest:request iceConfigType:kXirsysV3 andCompletionHandler:completionHandler];
     
 }
 
 - (void)requestServersWithCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_url];
-    [self requstServersWithRequest:request andCompletionHandler:completionHandler];
+    [self requestServersWithRequest:request iceConfigType:kXirsysV2 andCompletionHandler:completionHandler];
 }
 
-- (void)requstServersWithRequest:(NSMutableURLRequest *)request andCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler{
+- (void)requestServersWithRequest:(NSMutableURLRequest *)request iceConfigType:(ICEConfigType)iceConfigType andCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler{
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request
                 completionHandler:^(NSData *data,
@@ -88,12 +88,13 @@
                     }
                     
                     NSObject * status = [dict objectForKey:@"s"];
+                    
+                    
                     if (([status isKindOfClass:NSNumber.class] && [(NSNumber *)status integerValue] == 200)||
                         ([status isKindOfClass:NSString.class] && [(NSString *)status isEqualToString:@"ok"])){
                         
                         NSArray * iceServers = [[dict objectForKey:@"d"] objectForKey:@"iceServers"];
-                        //for v3, ice servers are "v"
-                        if (!iceServers){
+                        if (iceConfigType == kXirsysV3){
                             iceServers = [[dict objectForKey:@"v"] objectForKey:@"iceServers"];
                         }
                         
