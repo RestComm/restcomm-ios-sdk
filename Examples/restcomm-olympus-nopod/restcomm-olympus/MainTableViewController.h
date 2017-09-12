@@ -29,7 +29,8 @@
 #import "SipSettingsTableViewController.h"
 
 @interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate,
-ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
+ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate,
+UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
 
 @property (nonatomic,retain) RCDevice* device;

@@ -37,13 +37,16 @@
 #import "LocalContact.h"
 
 
-@interface MainTableViewController ()
+@interface MainTableViewController () 
 @property RCDeviceState previousDeviceState;
 
 @property (nonatomic, strong) CNContactStore *contactsStore;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) NSArray *contactsData;
+@property (nonatomic, strong) NSMutableArray *displayedContacts;
+@property (nonatomic, strong) NSMutableArray *filteredContactsData;
 @property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) UISearchController * searchController;
 
 @end
 
@@ -78,10 +81,29 @@
     self.isInitialized = NO;
     
     self.contactsData = [[NSArray alloc] init];
+    self.displayedContacts = [self.contactsData mutableCopy];
     
+    //filtered contacts
+    self.filteredContactsData = [[NSMutableArray alloc] init];
     
-    // TODO: capabilityTokens aren't handled yet
+    //TODO: capabilityTokens aren't handled yet
     //NSString* capabilityToken = @"";
+    
+    //create a Search controller
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.delegate = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.definesPresentationContext = YES;
+
+    [self.searchController.searchBar sizeToFit];
+    
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    
+    // Hides search bar initially
+    //When the user pulls down on the list, the search bar is revealed.
+    [self.tableView setContentOffset:CGPointMake(0, self.searchController.searchBar.frame.size.height)];
+
     
     NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
 
@@ -121,6 +143,8 @@
     
     //get contacts from phone
     [self checkContactsAccess];
+ 
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -351,14 +375,14 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.contactsData count];
+    return [self.displayedContacts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contact-reuse-identifier" forIndexPath:indexPath];
     
     // Configure the cell...
-    LocalContact * contact = self.contactsData[(int)indexPath.row];
+    LocalContact * contact = self.displayedContacts[(int)indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
     cell.detailTextLabel.text = @"";
     
@@ -386,7 +410,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [Utils removeContact:self.contactsData[indexPath.row]];
+        [Utils removeContact:self.displayedContacts[indexPath.row]];
+        //dismiss searchbar
+        [self.searchController dismissViewControllerAnimated:YES completion:nil];
+        self.searchController.searchBar.text = @"";
         [self reloadData];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Adding is handled in the separate screen
@@ -394,7 +421,31 @@
     }
 }
 
-
+#pragma mark - Search delegate methods
+// When the user types in the search bar, this method gets called.
+- (void)updateSearchResultsForSearchController:(UISearchController *)aSearchController {
+    NSLog(@"updateSearchResultsForSearchController");
+    
+    NSString *searchString = aSearchController.searchBar.text;
+    NSLog(@"searchString=%@", searchString);
+    
+    // Check if search is cancelled or deleted the search so
+    // we can display the full list instead.
+    if (![searchString isEqualToString:@""]) {
+        [self.filteredContactsData removeAllObjects];
+        for (LocalContact *localContact in self.contactsData) {
+            NSString *firstNameLastName = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
+            if ([firstNameLastName isEqualToString:@""] || [firstNameLastName localizedCaseInsensitiveContainsString:searchString] == YES) {
+                [self.filteredContactsData addObject:localContact];
+            }
+        }
+        self.displayedContacts = self.filteredContactsData;
+    }
+    else {
+        self.displayedContacts = [self.contactsData mutableCopy];
+    }
+    [self.tableView reloadData];
+}
 
 #pragma mark - AccessoryView button tap
 - (void)checkButtonTapped:(id)sender event:(id)event
@@ -418,7 +469,7 @@
     LocalContact * contact;
     if ([segue.identifier isEqualToString:@"invoke-details"] || [segue.identifier isEqualToString:@"invoke-messages"]){
         NSIndexPath * indexPath = sender;
-        contact = self.contactsData[(int)indexPath.row];
+        contact = self.displayedContacts[(int)indexPath.row];
     }
     
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
@@ -562,6 +613,7 @@
 
 - (void)reloadData{
     self.contactsData = [Utils getSortedContacts];
+    self.displayedContacts = [self.contactsData mutableCopy];
     [self.tableView reloadData];
 }
 
