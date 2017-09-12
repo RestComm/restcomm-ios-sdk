@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A904B62D1F67D2540046BD13 /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A904B62B1F67D2540046BD13 /* bug-grey-icon-25x25@2x.png */; };
+		A904B62E1F67D2540046BD13 /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A904B62C1F67D2540046BD13 /* bug-grey-icon-25x25@3x.png */; };
 		A934B1C41F649DED00ED24E1 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A934B1C31F649DED00ED24E1 /* BugReportViewController.m */; };
 		A934B1C51F649DED00ED24E1 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A934B1C31F649DED00ED24E1 /* BugReportViewController.m */; };
 		A934B1C91F66836900ED24E1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A934B1C81F66836900ED24E1 /* MessageUI.framework */; };
@@ -229,6 +231,8 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A904B62B1F67D2540046BD13 /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
+		A904B62C1F67D2540046BD13 /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A934B1C21F649DED00ED24E1 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugReportViewController.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/BugReportViewController.h"; sourceTree = "<group>"; };
 		A934B1C31F649DED00ED24E1 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BugReportViewController.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/BugReportViewController.m"; sourceTree = "<group>"; };
 		A934B1C81F66836900ED24E1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -631,6 +635,8 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				A904B62B1F67D2540046BD13 /* bug-grey-icon-25x25@2x.png */,
+				A904B62C1F67D2540046BD13 /* bug-grey-icon-25x25@3x.png */,
 				AE87C2D21DAE4CEB0064624B /* inapp-grey-icon-28x28.png */,
 				AE87C2D31DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png */,
 				AE87C2D41DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png */,
@@ -915,6 +921,7 @@
 				AE87C2C71DAE36E60064624B /* contact-icon-grey-36x36@2x.png in Resources */,
 				AE61A3F81DA69AD900347504 /* five-digit-74x74@2x.png in Resources */,
 				AEA496181C2997F6000D9762 /* back-74x74.png in Resources */,
+				A904B62D1F67D2540046BD13 /* bug-grey-icon-25x25@2x.png in Resources */,
 				AE61A3B21DA68E7D00347504 /* answer-video-50x50@3x.png in Resources */,
 				AEA496721C2997F6000D9762 /* dtmf1.wav in Resources */,
 				AE61A3A41DA68CDA00347504 /* hangup-74x74.png in Resources */,
@@ -1046,6 +1053,7 @@
 				AE87C2D51DAE4CEB0064624B /* inapp-grey-icon-28x28.png in Resources */,
 				AE3E52C71C57BB7B0057F5D0 /* cafile.pem in Resources */,
 				AEA4963E1C2997F6000D9762 /* message-remote-square-43x43.png in Resources */,
+				A904B62E1F67D2540046BD13 /* bug-grey-icon-25x25@3x.png in Resources */,
 				AE61A3FC1DA69AD900347504 /* hash-digit-74x74@2x.png in Resources */,
 				AEA496741C2997F6000D9762 /* dtmf3.wav in Resources */,
 				AE87C2BD1DAE25A10064624B /* send-message-icon-25x25.png in Resources */,
