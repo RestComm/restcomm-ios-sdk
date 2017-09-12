@@ -360,29 +360,25 @@
     // Configure the cell...
     LocalContact * contact = self.contactsData[(int)indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView = nil;
     cell.detailTextLabel.text = @"";
     
     //if there is more than 1 phone number, we are showing custom accessoryView
     if (contact.phoneNumbers && [contact.phoneNumbers count] > 0){
         cell.detailTextLabel.text = [contact.phoneNumbers objectAtIndex:0];
-        if ([contact.phoneNumbers count] > 1){
-            cell.accessoryType = UITableViewCellAccessoryDetailButton;
-            
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-
-            [button addTarget:self action:@selector(checkButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.accessoryView = button;
-        }
     }
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+
+    [button addTarget:self action:@selector(checkButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.accessoryView = button;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:@"invoke-details" sender:indexPath];
+    [self performSegueWithIdentifier:@"invoke-messages" sender:indexPath];
 }
 
 
@@ -419,6 +415,12 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    LocalContact * contact;
+    if ([segue.identifier isEqualToString:@"invoke-details"] || [segue.identifier isEqualToString:@"invoke-messages"]){
+        NSIndexPath * indexPath = sender;
+        contact = self.contactsData[(int)indexPath.row];
+    }
+    
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
         SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
         settingsTableViewController.device = self.device;
@@ -429,10 +431,23 @@
         contactUpdateViewController.delegate = self;
     }
     
+    if ([segue.identifier isEqualToString:@"invoke-messages"]){
+        NSString *alias = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
+        if (contact.phoneNumbers > 0){
+            NSString *username = [contact.phoneNumbers objectAtIndex:0];
+            
+            MessageTableViewController *messageViewController = [segue destinationViewController];
+            messageViewController.device = self.device;
+            messageViewController.delegate = self;
+            
+            messageViewController.parameters = [[NSMutableDictionary alloc] init];
+            
+            [messageViewController.parameters setObject:alias forKey:@"alias"];
+            [messageViewController.parameters setObject:username forKey:@"username"];
+        }
+    }
+  
     if ([segue.identifier isEqualToString:@"invoke-details"]) {
-        NSIndexPath * indexPath = sender;
-        LocalContact * contact = self.contactsData[(int)indexPath.row];
-    
         ContactDetailsTableViewController *contactDetailsTableViewController = [segue destinationViewController];
         contactDetailsTableViewController.device = self.device;
         contactDetailsTableViewController.delegate = self;
