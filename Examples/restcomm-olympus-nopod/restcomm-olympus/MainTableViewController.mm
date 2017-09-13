@@ -94,7 +94,7 @@
                        [Utils sipPassword], @"password",
                        @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
-                       @"", @"ice-domain",
+                       @"cloud.restcomm.com", @"ice-domain",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
                        @([Utils signalingSecure]), @"signaling-secure",
