@@ -180,10 +180,22 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
                     [_turnClient requestServersWithCompletionHandler:responseBlock];
                     break;
                
-                case kXirsysV3:
-                    turnRequestURL = [NSURL URLWithString:@"https://ice.restcomm.io/_turn/restcomm"];
-                    _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
-                    [_turnClient requestServersWithUsername:[_parameters objectForKey:@"turn-username"] password: [_parameters objectForKey:@"turn-password"] andCompletionHandler:responseBlock];
+                case kXirsysV3:{
+                    //get the ice-domain
+                    NSString *iceDomain = [_parameters objectForKey:@"ice-domain"];
+                    NSString *turnUrl = [_parameters objectForKey:@"turn-url"];
+                    if (iceDomain && turnUrl){
+                        turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", turnUrl, iceDomain]];
+                        _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
+                        [_turnClient requestServersWithUsername:[_parameters objectForKey:@"turn-username"] password: [_parameters objectForKey:@"turn-password"] andCompletionHandler:responseBlock];
+                    } else {
+                        if (!iceDomain){
+                            RCLogNotice("ice-domain not found.");
+                        } else {
+                            RCLogNotice("turn-url not found.");
+                        }
+                    }
+                }
                     break;
                 default:
                     break;
