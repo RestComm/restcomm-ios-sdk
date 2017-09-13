@@ -179,8 +179,8 @@ const int kPickerViewRowHeight = 45;
     NSString* timeZoneName = [timeZone localizedName:NSTimeZoneNameStyleStandard locale:[NSLocale currentLocale]];
    
 
-    NSString *emailTitle = @"[restcomm-android-sdk] User bug report for Olympus";
-    NSString *messageBody = @"Client: ios-sdk \n";
+    NSString *emailTitle = @"[restcomm-ios-sdk] User bug report for Olympus";
+    NSString *messageBody = [NSString stringWithFormat:@"Client: %@ \n", [Utils sipIdentification]];
 
     messageBody = [NSString stringWithFormat:@"%@Issue: %@ \n", messageBody, self.lblIssueType.text];
     messageBody = [NSString stringWithFormat:@"%@Additional Note: %@ \n", messageBody, self.tfAdditionalNote.text];
