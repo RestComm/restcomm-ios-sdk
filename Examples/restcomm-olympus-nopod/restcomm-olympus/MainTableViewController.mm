@@ -131,25 +131,24 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.contactsStore = [[CNContactStore alloc] init];
 
     //define spinner
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    //get contacts from phone
+    //get contacts first time
     [self checkContactsAccess];
- 
-    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self reloadData];
+
+- (void)appWillEnterForeground:(NSNotification *)notification{
+    //get contacts everytime app is back from background, maybe some contacts are updated/added
+    [self checkContactsAccess];
 }
 
 
@@ -157,7 +156,7 @@
 
 - (void)register:(NSNotification *)notification
 {
-    if (self.device && self.isInitialized) {
+      if (self.device && self.isInitialized) {
         [self register];
     }
 }
