@@ -100,10 +100,6 @@
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
     
-    // Hides search bar initially
-    //When the user pulls down on the list, the search bar is revealed.
-    [self.tableView setContentOffset:CGPointMake(0, self.searchController.searchBar.frame.size.height)];
-
     
     NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
 
@@ -552,16 +548,19 @@
                     localContact.firstName = contact.givenName;
                     localContact.lastName = contact.familyName;
                     localContact.phoneBookNumber = YES;
-                    
-                    if (contact.phoneNumbers.count > 0) {
+                  
+                    if (contact.phoneNumbers.count > 0 &&
+                        ((localContact.firstName && localContact.firstName.length > 0) ||
+                        (localContact.lastName && localContact.lastName.length > 0))) {
                         for (int i=0; i<contact.phoneNumbers.count; i++){
                             //add numbers to array
                             CNPhoneNumber *phoneNumber = (CNPhoneNumber *)contact.phoneNumbers[i].value;
                             [phoneNumbers addObject:[phoneNumber valueForKey:@"digits"]];
                         }
                         localContact.phoneNumbers = [NSArray arrayWithArray:phoneNumbers];
+                        [Utils addContact:localContact];
                     }
-                    [Utils addContact:localContact];
+                    
                 }];
                 
                 dispatch_async( dispatch_get_main_queue(), ^{
