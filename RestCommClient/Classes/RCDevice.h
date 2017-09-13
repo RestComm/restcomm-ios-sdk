@@ -127,14 +127,16 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
  *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling.
       agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
- *    <b>ice-config-type<b>: Should be integer value of the following  kXirsysV2 = 0, kXirsysV3 =1 , kCustom=2
-      for example, if we want to use XirsysV2 server value should be 0
+ *    <b>ice-config-type<b>:  Should be integer value of the following kXirsysV2 = 0, kXirsysV3 = 1 , kCustom = 2.
+        kXirsysV2 and kXirsysV3 is about utilizing an ICE configuration URL using Xirsys V2 or V3 respectively. 
+        kCustom is about discovering the ICE urls (i.e. STUN and TURN) in the App level and providing to the SDK directly 
+            without utilizing an ICE configuration URL. This is handy if you host your own ICE servers, or want more control
  *    <b>ice-domain</b> If ice-config-type is kXirsysV3, ice-domain must be provided; for example: restcomm
  *    <b>ice-servers</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is 'kCustom'; Example with 2 servers:
             parameter to pass (Array):
             @[
-                @{ @"46560f8e-94a7-11e7-FAKE", @"username", @"turn:iceSERVER:80?transport=udp", @"url", @"4656101a-94a7-11e7-97ac-FAKE", @"credential" },
-                @{ @"stun:ice1.SERVER",@"url" }
+                @{ @"url":@"URL", @"username":@"USERNAME_HERE", @"credential":@"KEY_HERE"},
+                @{ @"url":@"URL" }
             ]
  
  *  @param delegate        Delegate of RCDevice

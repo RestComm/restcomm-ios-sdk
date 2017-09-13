@@ -169,31 +169,32 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
              };
 
              
-            switch (self.iceConfigType) {
+             //get the ice-domain
+            NSString *iceDomain = [_parameters objectForKey:@"ice-domain"];
+            if (!iceDomain || iceDomain.length == 0){
+                 RCLogNotice("ice-domain not found");
+                 iceDomain = @"cloud.restcomm.com";
+            }
+            
+             switch (self.iceConfigType) {
                 case kXirsysV2:
                    turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
                                           [_parameters objectForKey:@"turn-url"],
                                           [_parameters objectForKey:@"turn-username"],
                                           [_parameters objectForKey:@"turn-password"],
-                                          @"cloud.restcomm.com"]];
+                                          iceDomain]];
                     _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
                     [_turnClient requestServersWithCompletionHandler:responseBlock];
                     break;
                
                 case kXirsysV3:{
-                    //get the ice-domain
-                    NSString *iceDomain = [_parameters objectForKey:@"ice-domain"];
                     NSString *turnUrl = [_parameters objectForKey:@"turn-url"];
-                    if (iceDomain && turnUrl){
+                    if (turnUrl && turnUrl.length > 0){
                         turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", turnUrl, iceDomain]];
                         _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
                         [_turnClient requestServersWithUsername:[_parameters objectForKey:@"turn-username"] password: [_parameters objectForKey:@"turn-password"] andCompletionHandler:responseBlock];
                     } else {
-                        if (!iceDomain){
-                            RCLogNotice("ice-domain not found.");
-                        } else {
-                            RCLogNotice("turn-url not found.");
-                        }
+                        RCLogNotice("turn-url not found.");
                     }
                 }
                     break;
