@@ -23,6 +23,10 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */; };
+		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
+		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
+		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -225,6 +229,12 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
+		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
+		A94A1B7F1F6A7E160034352E /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
+		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
+		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
@@ -435,6 +445,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
@@ -492,6 +503,8 @@
 				AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */,
 				AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */,
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
+				A94A1B7F1F6A7E160034352E /* BugReportViewController.m */,
+				A94A1B801F6A7E160034352E /* BugReportViewController.h */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -579,6 +592,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A94A1B841F6A7E790034352E /* MessageUI.framework */,
+				A94A1B821F6A7E330034352E /* Messages.framework */,
 				A9CA4D821F5F33380005A553 /* Contacts.framework */,
 				A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */,
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
@@ -616,6 +631,8 @@
 		AEA495791C2997F6000D9762 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */,
+				A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */,
 				AE87C2D21DAE4CEB0064624B /* inapp-grey-icon-28x28.png */,
 				AE87C2D31DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png */,
 				AE87C2D41DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png */,
@@ -955,6 +972,7 @@
 				AEA496281C2997F6000D9762 /* icon-40x40.png in Resources */,
 				AEA496271C2997F6000D9762 /* icon-29x29@2x.png in Resources */,
 				AEA4967E1C2997F6000D9762 /* star.wav in Resources */,
+				A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */,
 				AE61A3C41DA6918600347504 /* video-active-50x50@3x.png in Resources */,
 				AE61A3B81DA68F4200347504 /* audio-muted-50x50@3x.png in Resources */,
 				AEA4963D1C2997F6000D9762 /* message-local-square-43x43@2x.png in Resources */,
@@ -1005,6 +1023,7 @@
 				AEA496701C2997F6000D9762 /* calling.mp3 in Resources */,
 				AE20DA851CE31EC200695925 /* speaker-on-50x50@2x.png in Resources */,
 				AEA4965D1C2997F6000D9762 /* video-call-30x30.png in Resources */,
+				A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */,
 				AE61A3FF1DA69AD900347504 /* one-digit-74x74.png in Resources */,
 				AE61A3BC1DA6906400347504 /* video-muted-50x50.png in Resources */,
 				AEA4967B1C2997F6000D9762 /* message.mp3 in Resources */,
@@ -1142,6 +1161,7 @@
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
 				AE3E52A51C5649C50057F5D0 /* ICESettingsTableViewController.m in Sources */,
 				AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */,
+				A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */,
 				AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */,
 				AEA496661C2997F6000D9762 /* KeypadViewController.m in Sources */,
 				AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */,
