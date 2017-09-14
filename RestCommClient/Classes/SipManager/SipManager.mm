@@ -49,6 +49,38 @@ int read_pipe[2];
 @synthesize muted;
 @synthesize videoMuted;
 @synthesize speaker;
+
+
+#pragma mark - Init
+
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate params:(NSDictionary*)params andICEConfigType:(ICEConfigType)iceConfigType
+{
+    RCLogNotice("[SipManager initWithDelegate]");
+    self = [super init];
+    if (self) {
+        self.activeCallParams = [[NSMutableDictionary alloc] init];
+        
+        self.videoAllowed = NO;
+        
+        _signallingInstances = 0;
+        _signallingInstancesLock = [[NSRecursiveLock alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didSessionRouteChange:)
+                                                     name:AVAudioSessionRouteChangeNotification
+                                                   object:nil];
+        
+        _deviceDelegate = deviceDelegate;
+        _params = [params mutableCopy];
+        _iceConfigType = iceConfigType;
+        
+        //[RTCPeerConnectionFactory initializeSSL];
+        
+    }
+    return self;
+}
+
+
 // add input fd to the main run loop as a source. That way we can get notification without the need of an extra thread :)
 //static void addFdSourceToRunLoop(int fd)
 - (void) addFdSourceToRunLoop:(int)fd
@@ -304,39 +336,6 @@ static void inputCallback(CFFileDescriptorRef fdref, CFOptionFlags callBackTypes
     [sipManager addFdSourceToRunLoop:fd];
 }
 
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate
-{
-    RCLogNotice("[SipManager initWithDelegate]");
-    self = [super init];
-    if (self) {
-        self.activeCallParams = [[NSMutableDictionary alloc] init];
-        
-        self.videoAllowed = NO;
-
-        _signallingInstances = 0;
-        _signallingInstancesLock = [[NSRecursiveLock alloc] init];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didSessionRouteChange:)
-                                                     name:AVAudioSessionRouteChangeNotification
-                                                   object:nil];
-        
-        self.deviceDelegate = deviceDelegate;
-        self.params = [[NSMutableDictionary alloc] init];
-        //[RTCPeerConnectionFactory initializeSSL];
-        
-    }
-    return self;
-}
-
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params
-{
-    self = [self initWithDelegate:deviceDelegate];
-    [self.params setDictionary:params];
-    
-    return self;
-}
-
 - (void)didSessionRouteChange:(NSNotification *)notification
 {
     NSDictionary *interuptionDict = notification.userInfo;
@@ -562,7 +561,11 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (!self.media) {
         [self initializeAudioSession];
         
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
+        
+        //NOTE: We dont want to create separate header for iceConfigType
+        //so, we created a ICEConfigTypeForMedia and we should map ICEConfigType to it//
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params andICEConfigType:self.iceConfigType];
+       
         [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"]
                 isInitiator:[[self.activeCallParams objectForKey:@"initiator"] boolValue]
                   withVideo:self.videoAllowed];
@@ -1064,5 +1067,6 @@ ssize_t pipeToSofia(const char * msg, int fd)
     
     return YES;
 }
+
 
 @end

@@ -66,10 +66,9 @@
 #import "WebRTC/RTCSessionDescription.h"
 #import "WebRTC/RTCRtpSender.h"
 
-#import "RestCommClient.h"
-
 #import "common.h"
 #import "RCUtilities.h"
+#import "RTCICEServer+JSON.h"
 
 @implementation MediaWebRTC
 
@@ -90,7 +89,8 @@ static NSString * const kARDAudioTrackId = @"ARDAMSa0";
 static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters
+
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -103,6 +103,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         self.videoAllowed = NO;
         _candidatesGathered = NO;
         _parameters = parameters;
+        _iceConfigType = iceConfigType;
     }
     return self;
 }
@@ -144,34 +145,75 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
                                                       [_parameters objectForKey:@"turn-password"]]];
          _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
          */
-        NSURL *turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
-                                                      [_parameters objectForKey:@"turn-url"],
-                                                      [_parameters objectForKey:@"turn-username"],
-                                                      [_parameters objectForKey:@"turn-password"],
-                                                      @"cloud.restcomm.com"]];
-
         
-        _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
-        
-        __weak MediaWebRTC *weakSelf = self;
-        [_turnClient requestServersWithCompletionHandler:^(NSArray *turnServers,
+         if (self.iceConfigType != kCustom){
+            NSURL *turnRequestURL = nil;
+             
+            //create local response block
+            __weak MediaWebRTC *weakSelf = self;
+             void (^responseBlock)(NSArray*, NSError*) = ^(NSArray *turnServers,
                                                            NSError *error) {
-            if (error) {
-                RCLogError([error.localizedDescription UTF8String]);
-                [self.mediaDelegate mediaController:self didError:error];
-                return;
+                 if (error) {
+                     RCLogError([error.localizedDescription UTF8String]);
+                     [self.mediaDelegate mediaController:self didError:error];
+                     return;
+                 }
+
+                 MediaWebRTC *strongSelf = weakSelf;
+                 // Need to remove the single object that we prepopulate manually which is the STUN server,
+                 // because with Xirsys the STUN server is returned in the list of TURN servers
+                 [strongSelf.iceServers removeAllObjects];
+                 [strongSelf.iceServers addObjectsFromArray:turnServers];
+                 strongSelf.isTurnComplete = YES;
+                 [strongSelf startSignalingIfReady:sdp];
+             };
+
+             
+             //get the ice-domain
+            NSString *iceDomain = [_parameters objectForKey:@"ice-domain"];
+            if (!iceDomain || iceDomain.length == 0){
+                 RCLogNotice("ice-domain not found");
+                 iceDomain = @"cloud.restcomm.com";
             }
-            //NSArray * array = @[ [NSURL URLWithString:@""]];
-            MediaWebRTC *strongSelf = weakSelf;
-            // Need to remove the single object that we prepopulate manually which is the STUN server,
-            // because with Xirsys the STUN server is returned in the list of TURN servers
-            [strongSelf.iceServers removeAllObjects];
-            [strongSelf.iceServers addObjectsFromArray:turnServers];
-            strongSelf.isTurnComplete = YES;
-            [strongSelf startSignalingIfReady:sdp];
-        }];
-    }
-    else {
+            
+             switch (self.iceConfigType) {
+                case kXirsysV2:
+                   turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
+                                          [_parameters objectForKey:@"turn-url"],
+                                          [_parameters objectForKey:@"turn-username"],
+                                          [_parameters objectForKey:@"turn-password"],
+                                          iceDomain]];
+                    _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
+                    [_turnClient requestServersWithCompletionHandler:responseBlock];
+                    break;
+               
+                case kXirsysV3:{
+                    NSString *turnUrl = [_parameters objectForKey:@"turn-url"];
+                    if (turnUrl && turnUrl.length > 0){
+                        turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", turnUrl, iceDomain]];
+                        _turnClient = [[XirsysTURNClient alloc] initWithURL:turnRequestURL];
+                        [_turnClient requestServersWithUsername:[_parameters objectForKey:@"turn-username"] password: [_parameters objectForKey:@"turn-password"] andCompletionHandler:responseBlock];
+                    } else {
+                        RCLogNotice("turn-url not found.");
+                    }
+                }
+                    break;
+                default:
+                    break;
+             }
+            
+         }else{
+             NSArray *turnServers =  [_parameters objectForKey:@"ice-servers"];
+             turnServers = [RTCIceServer serverFromXirsysArray:turnServers];
+             
+             if (!turnServers){
+                 RCLogNotice("TurnServers not found for kCustom config.");
+             }
+             [_iceServers addObjectsFromArray:turnServers];
+             _isTurnComplete = YES;
+             [self startSignalingIfReady:sdp];
+         }
+    } else {
         self.isTurnComplete = YES;
         [self startSignalingIfReady:sdp];
     }
@@ -1022,5 +1064,6 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
     return [[RTCSessionDescription alloc] initWithType:description.type
                                                    sdp:mangledSdpString];
 }
+
 
 @end

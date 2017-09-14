@@ -81,6 +81,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     //[self.capabilities setValue:expiration forKey:@"expiration"];
 }
 
+
 - (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate
 {
     self = [super init];
@@ -102,9 +103,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         NSMutableDictionary * logParameters = [parameters mutableCopy];
         [logParameters removeObjectForKey:@"password"];
         [logParameters removeObjectForKey:@"turn-password"];
-
+        
         RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
-
+        
         // reachability
         self.hostActive = NO;
         // check for internet connection
@@ -118,8 +119,18 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
         
-        self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
-
+        ICEConfigType iceConfigType = kXirsysV2;
+        //if ice config is not set, we will use
+        if ([parameters objectForKey:@"ice-config-type"]
+            && [[parameters objectForKey:@"ice-config-type"] intValue] >= 0
+            && [[parameters objectForKey:@"ice-config-type"] intValue] <= 2){
+            iceConfigType = (ICEConfigType)[[parameters objectForKey:@"ice-config-type"] intValue];
+        } else {
+            RCLogNotice("ice-config-type not found or invalid.");
+        }
+        
+        self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters andICEConfigType:iceConfigType];
+        
         if (self.reachabilityStatus != NotReachable) {
             if (![parameters objectForKey:@"registrar"] ||
                 ([parameters objectForKey:@"registrar"] && [[parameters objectForKey:@"registrar"] length] == 0)) {
@@ -129,10 +140,11 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
             // start signalling eventLoop (i.e. Sofia)
             [self.sipManager eventLoop];
         }
-
+        
     }
     
     return self;
+
 }
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate

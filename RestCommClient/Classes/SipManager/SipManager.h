@@ -36,8 +36,7 @@ typedef enum {
 } UpdateParamsState;
 
 @interface SipManager : NSObject<MediaDelegate>
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate;
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params;
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate params:(NSDictionary*)params andICEConfigType:(ICEConfigType)iceConfigType;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)eventLoop;
 - (bool)register:(NSString*)registrar;
@@ -62,6 +61,7 @@ typedef enum {
 @property NSMutableDictionary* params;
 @property (nonatomic) BOOL muted, videoMuted, speaker;
 @property BOOL videoAllowed;
+@property (nonatomic, readonly) ICEConfigType iceConfigType;
 @end
 
 @protocol SipManagerDeviceDelegate <NSObject>

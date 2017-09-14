@@ -34,7 +34,7 @@
 
 @implementation XirsysTURNClient
 
-- (instancetype)initWithURL:(NSURL *)url {
+- (instancetype)initWithURL:(NSURL *)url{
     NSParameterAssert([url absoluteString].length);
     if (self = [super init]) {
         _url = url;
@@ -42,101 +42,67 @@
     return self;
 }
 
+- (void)requestServersWithUsername:(NSString *)username password:(NSString *)password andCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_url];
+    NSString *basic = [NSString stringWithFormat:@"%@:%@",username, password];
+    NSData *encodeData = [basic dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", [encodeData base64EncodedStringWithOptions:0]];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [request setHTTPMethod:@"PUT"];
+   
+    [self requestServersWithRequest:request iceConfigType:kXirsysV3 andCompletionHandler:completionHandler];
+    
+}
+
 - (void)requestServersWithCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler
 {
-    //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_url];
-    // We need to set origin because TURN provider whitelists requests based on
-    // origin.
-    //[request addValue:@"Mozilla/5.0" forHTTPHeaderField:@"user-agent"];
-    //[request addValue:kTURNOriginURLString forHTTPHeaderField:@"origin"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_url];
+    [self requestServersWithRequest:request iceConfigType:kXirsysV2 andCompletionHandler:completionHandler];
+}
+
+- (void)requestServersWithRequest:(NSMutableURLRequest *)request iceConfigType:(ICEConfigType)iceConfigType andCompletionHandler:(void (^)(NSArray *turnServers, NSError *error))completionHandler{
     NSURLSession *session = [NSURLSession sharedSession];
-    [[session dataTaskWithURL:_url
-            completionHandler:^(NSData *data,
-                                NSURLResponse *response,
-                                NSError *error) {
-                NSArray *turnServers = [NSArray array];
-                if (error) {
-                    completionHandler(turnServers, error);
-                    return;
-                }
-                NSError *jsonError = nil;
-                //NSDictionary *ss = [NSDictionary dictionaryWithJSONData:data];
-                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:NSJSONReadingMutableContainers
-                                                                       error:&jsonError];
-                if (jsonError) {
-                    NSError *responseError =
-                    [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                               code:ERROR_WEBRTC_TURN
-                                           userInfo:@{
-                                                      NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error parsing JSON containing TURN servers. Check your TURN service"],
-                                                      }];
-                    completionHandler(turnServers, responseError);
-                    return;
-                }
-                
-                NSNumber * status = [dict objectForKey:@"s"];
-                if ([status integerValue] != 200) {
-                    NSError *responseError =
-                    [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                               code:ERROR_WEBRTC_TURN
-                                           userInfo:@{
-                                                      NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error retrieving TURN servers: %@. Check your TURN service or disable TURN altogether", [dict objectForKey:@"e"]],
-                                                      }];
-                    completionHandler(turnServers, responseError);
-                    return;
-                }
-                
-                NSArray * iceServers = [[dict objectForKey:@"d"] objectForKey:@"iceServers"];
-                //turnServers = [RTCICEServer serversFromCEODJSONDictionary:dict];
-                
-                turnServers = [RTCIceServer serverFromXirsysArray:iceServers];
-                if (!turnServers) {
-                    NSError *responseError =
-                    [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                     // TODO: update error code once I get this working
-                                               code:100
-                                           userInfo:@{
-                                                      NSLocalizedDescriptionKey: @"Bad TURN response.",
-                                                      }];
-                    completionHandler(turnServers, responseError);
-                    return;
-                }
-                completionHandler(turnServers, nil);
-                
-            }] resume];
-    
-    /*
-    [NSURLConnection sendAsyncRequest:request
-                    completionHandler:^(NSURLResponse *response,
-                                        NSData *data,
-                                        NSError *error) {
-                        NSArray *turnServers = [NSArray array];
-                        if (error) {
-                            completionHandler(turnServers, error);
-                            return;
-                        }
-                        NSDictionary *dict = [NSDictionary dictionaryWithJSONData:data];
-                        NSNumber * status = [dict objectForKey:@"s"];
-                        if ([status integerValue] != 200) {
-                            NSError *responseError =
-                            [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                       code:ERROR_WEBRTC_TURN
-                                                   userInfo:@{
-                                                              NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error retrieving TURN servers: %@. Check your TURN service or disable TURN altogether", [dict objectForKey:@"e"]],
-                                                              }];
-                            completionHandler(turnServers, responseError);
-                            return;
-                        }
+    [[session dataTaskWithRequest:request
+                completionHandler:^(NSData *data,
+                                    NSURLResponse *response,
+                                    NSError *error) {
+                    NSArray *turnServers = [NSArray array];
+                    if (error) {
+                        completionHandler(turnServers, error);
+                        return;
+                    }
+                    NSError *jsonError = nil;
+                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                         options:NSJSONReadingMutableContainers
+                                                                           error:&jsonError];
+                    if (jsonError) {
+                        NSError *responseError =
+                        [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                   code:ERROR_WEBRTC_TURN
+                                               userInfo:@{
+                                                          NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error parsing JSON containing TURN servers. Check your TURN service"],
+                                                          }];
+                        completionHandler(turnServers, responseError);
+                        return;
+                    }
+                    
+                    NSObject * status = [dict objectForKey:@"s"];
+                    
+                    
+                    if (([status isKindOfClass:NSNumber.class] && [(NSNumber *)status integerValue] == 200)||
+                        ([status isKindOfClass:NSString.class] && [(NSString *)status isEqualToString:@"ok"])){
                         
                         NSArray * iceServers = [[dict objectForKey:@"d"] objectForKey:@"iceServers"];
-                        //turnServers = [RTCICEServer serversFromCEODJSONDictionary:dict];
+                        if (iceConfigType == kXirsysV3){
+                            iceServers = [[dict objectForKey:@"v"] objectForKey:@"iceServers"];
+                        }
                         
                         turnServers = [RTCIceServer serverFromXirsysArray:iceServers];
                         if (!turnServers) {
                             NSError *responseError =
                             [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                    // TODO: update error code once I get this working
+                             // TODO: update error code once I get this working
                                                        code:100
                                                    userInfo:@{
                                                               NSLocalizedDescriptionKey: @"Bad TURN response.",
@@ -145,8 +111,21 @@
                             return;
                         }
                         completionHandler(turnServers, nil);
-                    }];
-     */
+                        
+                    } else {
+                        NSError *responseError =
+                        [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                   code:ERROR_WEBRTC_TURN
+                                               userInfo:@{
+                                                          NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Error retrieving TURN servers: %@. Check your TURN service or disable TURN altogether", [dict objectForKey:@"e"]],
+                                                          }];
+                        completionHandler(turnServers, responseError);
+                        return;
+                        
+                    }
+                    
+                    
+                }] resume];
 }
 
 @end
