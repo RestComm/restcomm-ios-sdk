@@ -118,18 +118,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         [_hostReachable startNotifier];
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
-        
-        ICEConfigType iceConfigType = kXirsysV2;
-        //if ice config is not set, we will use
-        if ([parameters objectForKey:@"ice-config-type"]
-            && [[parameters objectForKey:@"ice-config-type"] intValue] >= 0
-            && [[parameters objectForKey:@"ice-config-type"] intValue] <= 2){
-            iceConfigType = (ICEConfigType)[[parameters objectForKey:@"ice-config-type"] intValue];
-        } else {
-            RCLogNotice("ice-config-type not found or invalid.");
-        }
-        
-        self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters andICEConfigType:iceConfigType];
+          
+        self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters];
         
         if (self.reachabilityStatus != NotReachable) {
             if (![parameters objectForKey:@"registrar"] ||

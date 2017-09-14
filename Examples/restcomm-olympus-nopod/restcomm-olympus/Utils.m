@@ -57,7 +57,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                                     kSipPasswordKey : @"",
                                     kSipRegistrarKey : @"cloud.restcomm.com",
                                     kTurnEnabledKey : @(YES),
-                                    kTurnUrlKey : @"https://service.xirsys.com/ice",  // @"https://computeengineondemand.appspot.com/turn",
+                                    kTurnUrlKey : @"https://es.xirsys.com/_turn", // @"https://service.xirsys.com/ice", // @"https://computeengineondemand.appspot.com/turn",
                                     kTurnUsernameKey : @"atsakiridis",  // @"iapprtc",
                                     kTurnPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
                                     kSignalingSecureKey : @(YES),  // by default signaling is secure

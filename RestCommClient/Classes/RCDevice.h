@@ -140,7 +140,6 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
             ]
  
  *  @param delegate        Delegate of RCDevice
- *  @param iceConfigType   Type of the ICE configuration
  *  @return Newly initialized RCDevice object
  */
 - (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate;

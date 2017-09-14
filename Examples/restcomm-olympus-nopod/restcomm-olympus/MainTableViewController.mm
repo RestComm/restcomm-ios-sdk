@@ -114,31 +114,31 @@
 /******************************/
 /* Xirsys v2 */
 /******************************/
+//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+//                       [Utils sipPassword], @"password",
+//                       @([Utils turnEnabled]), @"turn-enabled",
+//                       [Utils turnUrl], @"turn-url",
+//                       @"cloud.restcomm.com", @"ice-domain",
+//                       [Utils turnUsername], @"turn-username",
+//                       [Utils turnPassword], @"turn-password",
+//                       @([Utils signalingSecure]), @"signaling-secure",
+//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+//                       nil];
+/******************************/
+/* Xirsys v3 */
+/******************************/
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
                        [Utils sipPassword], @"password",
                        @([Utils turnEnabled]), @"turn-enabled",
                        [Utils turnUrl], @"turn-url",
-                       @"cloud.restcomm.com", @"ice-domain",
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
+                       @"cloud.restcomm.com", @"ice-domain",
                        @([Utils signalingSecure]), @"signaling-secure",
                        [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+                       [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
                        nil];
-/******************************/
-/* Xirsys v3 */
-/******************************/
-//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-//                       [Utils sipPassword], @"password",
-//                       @([Utils turnEnabled]), @"turn-enabled",
-//                       @"TURN URL", @"turn-url",
-//                       @"TURN USERNAME", @"turn-username",
-//                       @"TURN PASSWORD", @"turn-password",
-//                       @"ICE DOMAIN", @"ice-domain",
-//                       @([Utils signalingSecure]), @"signaling-secure",
-//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                       [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
-//                       nil];
 /******************************/
  /* Xirsys custom */
 /******************************/

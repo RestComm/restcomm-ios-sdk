@@ -76,7 +76,7 @@ typedef enum {
 
 
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType;
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters;
 // TODO: change the name to something more appropriate
 - (void)connect:(NSString*)sofia_handle sdp:(NSString*)sdp isInitiator:(BOOL)initiator withVideo:(BOOL)videoAllowed;
 - (void)disconnect;
@@ -96,8 +96,6 @@ typedef enum {
 @property BOOL videoAllowed;
 @property BOOL candidatesGathered;
 @property NSDictionary* parameters;
-
-@property (nonatomic, readonly) ICEConfigType iceConfigType;
 
 @end
 

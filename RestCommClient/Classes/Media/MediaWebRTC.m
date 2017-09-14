@@ -90,7 +90,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
 
 
 
-- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters andICEConfigType:(ICEConfigType)iceConfigType
+- (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters
 {
     RCLogNotice("[MediaWebRTC initWithDelegate]");
     self = [super init];
@@ -103,7 +103,6 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
         self.videoAllowed = NO;
         _candidatesGathered = NO;
         _parameters = parameters;
-        _iceConfigType = iceConfigType;
     }
     return self;
 }
@@ -146,7 +145,17 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
          _turnClient = [[ARDCEODTURNClient alloc] initWithURL:turnRequestURL];
          */
         
-         if (self.iceConfigType != kCustom){
+        ICEConfigType iceConfigType = kXirsysV2;
+        //if ice config is not set, we will use
+        if ([self.parameters objectForKey:@"ice-config-type"]
+            && [[self.parameters objectForKey:@"ice-config-type"] intValue] >= 0
+            && [[self.parameters objectForKey:@"ice-config-type"] intValue] <= 2){
+            iceConfigType = (ICEConfigType)[[self.parameters objectForKey:@"ice-config-type"] intValue];
+        } else {
+            RCLogNotice("ice-config-type not found or invalid.");
+        }
+
+         if (iceConfigType != kCustom){
             NSURL *turnRequestURL = nil;
              
             //create local response block
@@ -176,7 +185,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
                  iceDomain = @"cloud.restcomm.com";
             }
             
-             switch (self.iceConfigType) {
+             switch (iceConfigType) {
                 case kXirsysV2:
                    turnRequestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?ident=%@&secret=%@&domain=%@&application=default&room=default&secure=1",
                                           [_parameters objectForKey:@"turn-url"],

@@ -53,7 +53,7 @@ int read_pipe[2];
 
 #pragma mark - Init
 
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate params:(NSDictionary*)params andICEConfigType:(ICEConfigType)iceConfigType
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate params:(NSDictionary*)params
 {
     RCLogNotice("[SipManager initWithDelegate]");
     self = [super init];
@@ -72,8 +72,6 @@ int read_pipe[2];
         
         _deviceDelegate = deviceDelegate;
         _params = [params mutableCopy];
-        _iceConfigType = iceConfigType;
-        
         //[RTCPeerConnectionFactory initializeSSL];
         
     }
@@ -561,10 +559,7 @@ ssize_t pipeToSofia(const char * msg, int fd)
     if (!self.media) {
         [self initializeAudioSession];
         
-        
-        //NOTE: We dont want to create separate header for iceConfigType
-        //so, we created a ICEConfigTypeForMedia and we should map ICEConfigType to it//
-        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params andICEConfigType:self.iceConfigType];
+        self.media = [[MediaWebRTC alloc] initWithDelegate:self parameters:self.params];
        
         [self.media connect:nil sdp:[self.activeCallParams objectForKey:@"sdp"]
                 isInitiator:[[self.activeCallParams objectForKey:@"initiator"] boolValue]
