@@ -1201,6 +1201,94 @@
             </objects>
             <point key="canvasLocation" x="2118" y="-943"/>
         </scene>
+        <!--Report a bug-->
+        <scene sceneID="eqM-Uv-7fo">
+            <objects>
+                <viewController storyboardIdentifier="bug-report-controller" id="Rv4-sN-c4t" customClass="BugReportViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qM2-3E-dX9"/>
+                        <viewControllerLayoutGuide type="bottom" id="m4i-yC-EFH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Oe6-CR-Lir">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select issue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wmu-W8-Oua">
+                                <rect key="frame" x="16" y="80" width="343" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ytc-GJ-5E1">
+                                <rect key="frame" x="0.0" y="64" width="375" height="216"/>
+                            </pickerView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XPX-OM-gmr">
+                                <rect key="frame" x="16" y="169" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="78Y-qR-bhE">
+                                <rect key="frame" x="16" y="119" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enf-g8-fJE">
+                                <rect key="frame" x="16" y="219" width="343" height="161.5"/>
+                                <mutableString key="text">Please try to fill in the Additional Note stating your perception of the issue plus anything you think might be useful for the service team. For example 'I was having bad quality before the issue', or 'I could hear all the other participants to the conference but they couldn't hear me'.
+This is especially useful if your issue doesn't fall in any of the predefined list of issues on the top of the screen.</mutableString>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ytc-GJ-5E1" secondAttribute="trailing" id="0vA-C8-kP6"/>
+                            <constraint firstItem="XPX-OM-gmr" firstAttribute="leading" secondItem="78Y-qR-bhE" secondAttribute="leading" id="1FS-Yw-6dk"/>
+                            <constraint firstItem="78Y-qR-bhE" firstAttribute="trailing" secondItem="Wmu-W8-Oua" secondAttribute="trailing" id="2fA-9z-OZB"/>
+                            <constraint firstItem="ytc-GJ-5E1" firstAttribute="top" secondItem="qM2-3E-dX9" secondAttribute="bottom" id="505-s3-hiV"/>
+                            <constraint firstItem="XPX-OM-gmr" firstAttribute="top" secondItem="78Y-qR-bhE" secondAttribute="bottom" constant="20" id="7KE-5t-Kfc"/>
+                            <constraint firstItem="enf-g8-fJE" firstAttribute="leading" secondItem="XPX-OM-gmr" secondAttribute="leading" id="7tu-Uc-TCq"/>
+                            <constraint firstItem="enf-g8-fJE" firstAttribute="trailing" secondItem="XPX-OM-gmr" secondAttribute="trailing" id="8Hv-no-rdQ"/>
+                            <constraint firstItem="ytc-GJ-5E1" firstAttribute="top" secondItem="qM2-3E-dX9" secondAttribute="bottom" id="D7d-wT-83q"/>
+                            <constraint firstItem="Wmu-W8-Oua" firstAttribute="leading" secondItem="Oe6-CR-Lir" secondAttribute="leading" constant="16" id="GCj-2F-wuR"/>
+                            <constraint firstItem="78Y-qR-bhE" firstAttribute="leading" secondItem="Wmu-W8-Oua" secondAttribute="leading" id="JF8-x3-Her"/>
+                            <constraint firstItem="XPX-OM-gmr" firstAttribute="trailing" secondItem="78Y-qR-bhE" secondAttribute="trailing" id="N77-JY-LY7"/>
+                            <constraint firstItem="Wmu-W8-Oua" firstAttribute="top" secondItem="qM2-3E-dX9" secondAttribute="bottom" constant="16" id="PGe-Ai-JTY"/>
+                            <constraint firstItem="78Y-qR-bhE" firstAttribute="top" secondItem="Wmu-W8-Oua" secondAttribute="bottom" constant="19.5" id="QPi-yd-jox"/>
+                            <constraint firstAttribute="trailing" secondItem="Wmu-W8-Oua" secondAttribute="trailing" constant="16" id="jqz-V8-85M"/>
+                            <constraint firstItem="ytc-GJ-5E1" firstAttribute="leading" secondItem="Oe6-CR-Lir" secondAttribute="leading" id="mGV-ng-mBd"/>
+                            <constraint firstItem="enf-g8-fJE" firstAttribute="top" secondItem="XPX-OM-gmr" secondAttribute="bottom" constant="20" id="mXo-bV-QDA"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Report a bug" id="9Vu-XQ-LK7">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="pFm-CY-VZI">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="onCancelTap:" destination="Rv4-sN-c4t" id="Za9-Ea-PRB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="vaP-Jx-cEi">
+                            <color key="tintColor" red="0.92156862750000001" green="0.35686274509999999" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="onSendTap:" destination="Rv4-sN-c4t" id="SmT-XU-7hI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="lblDescription" destination="enf-g8-fJE" id="Oit-qy-6PU"/>
+                        <outlet property="lblIssueType" destination="Wmu-W8-Oua" id="h65-K5-pFe"/>
+                        <outlet property="pickerViewIssueType" destination="ytc-GJ-5E1" id="tIa-15-fxH"/>
+                        <outlet property="tfAdditionalNote" destination="78Y-qR-bhE" id="3kq-nR-I1Z"/>
+                        <outlet property="tfMostRecentPeer" destination="XPX-OM-gmr" id="3BQ-rk-k01"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4wA-aP-mE6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1932" y="-1678.1109445277364"/>
+        </scene>
         <!--Contact Update Table View Controller-->
         <scene sceneID="Rt8-LU-fWG">
             <objects>
@@ -1492,6 +1580,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ecy-Rj-JYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="767" y="1357"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gYi-Gg-iwW">
+            <objects>
+                <navigationController storyboardIdentifier="bug-report-nav-controller" automaticallyAdjustsScrollViewInsets="NO" id="1Xf-E7-flp" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qwp-qS-gUh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Rv4-sN-c4t" kind="relationship" relationship="rootViewController" id="EFs-OR-TbR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8fw-lD-Mck" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1090" y="-1678"/>
         </scene>
     </scenes>
     <resources>

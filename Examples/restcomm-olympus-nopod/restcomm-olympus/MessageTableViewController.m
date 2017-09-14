@@ -97,6 +97,9 @@
     UIBarButtonItem *btnAudioCall = [[UIBarButtonItem alloc] initWithCustomView:audioCallBtnView];
     
     [self.navigationItem setRightBarButtonItems:@[btnAudioCall, btnVideoCall] animated:YES];
+    
+    //get sip uri (phone number) and save it as last peer for debug reporting
+    [Utils saveLastPeer:[self.parameters objectForKey:@"username"]];
 }
 
 - (void)proxyViewPressed {

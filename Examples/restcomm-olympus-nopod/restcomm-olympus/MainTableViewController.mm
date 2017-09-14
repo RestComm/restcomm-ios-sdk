@@ -52,6 +52,7 @@
 
 @implementation MainTableViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -60,14 +61,19 @@
                                                          forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = grey;
     
+    //set button bar
     UIBarButtonItem * editButton = [self editButtonItem];
     [editButton setTintColor:grey];
+    
     UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                 target:self
                                                                                 action:@selector(invokeCreateContact)];
     [addButton setTintColor:grey];
     
-    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, nil];
+    
+    UIBarButtonItem *barBugButton = [[UIBarButtonItem alloc] initWithCustomView:[self getBugReportButton]];
+    
+    self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:editButton, addButton, barBugButton, nil];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -560,6 +566,16 @@
    [self performSegueWithIdentifier:@"invoke-create-contact" sender:nil];
 }
 
+
+- (void)invokeBugReport
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    // important: we are retrieving the navigation controller that hosts the contact update table view controller (due to the issue we had on the buttons showing wrong)
+    UINavigationController *bugReportNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"bug-report-nav-controller"];
+    [self presentViewController:bugReportNavigationController animated:YES completion:nil];
+}
+
+
 #pragma mark - Rotation/Orientation
 
 - (BOOL)shouldAutorotate
@@ -655,6 +671,16 @@
     self.contactsData = [Utils getSortedContacts];
     self.displayedContacts = [self.contactsData mutableCopy];
     [self.tableView reloadData];
+}
+
+#pragma mark - Helper
+
+- (UIButton *)getBugReportButton{
+    UIButton *bugButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    [bugButton setImage:[UIImage imageNamed:@"bug-grey-icon-25x25.png"] forState:UIControlStateNormal];
+    [bugButton addTarget:self action:@selector(invokeBugReport)forControlEvents:UIControlEventTouchUpInside];
+    [bugButton setFrame:CGRectMake(0, 0, 25, 25)];
+    return bugButton;
 }
 
 @end

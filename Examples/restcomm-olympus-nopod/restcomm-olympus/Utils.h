@@ -61,4 +61,8 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
+
++ (void)shakeView:(UIView *)view;
++ (void)saveLastPeer:(NSString *)sipUri;
++ (NSString *)getLastPeer;
 @end
