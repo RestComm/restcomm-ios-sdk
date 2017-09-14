@@ -20,25 +20,17 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#import "RestCommClient.h"
-#import "CallViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "LocalContact.h"
-#import "MessageTableViewController.h"
+@interface LocalContact : NSObject<NSCoding>
 
-@protocol ContactDetailsDelegate;
+@property (nonatomic, copy) NSString *firstName;
+@property (nonatomic, copy) NSString *lastName;
+@property (nonatomic, retain) NSArray<NSString *> *phoneNumbers; //sip uri or phone numbers
+@property (nonatomic, assign) BOOL phoneBookNumber; //if true its number from phone (non editable)
+@property (nonatomic, assign) BOOL deleted;
 
-@interface ContactDetailsTableViewController : UITableViewController<CallDelegate, ContactUpdateDelegate, MessageDelegate>
-@property (weak) RCDevice *device;
-@property NSString * alias;
-@property NSString * sipUri;
-@property (nonatomic, strong) LocalContact *localContact;
-@property (weak) id<ContactDetailsDelegate> delegate;
-@end
 
-@protocol ContactDetailsDelegate <NSObject>
-- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
-          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri;
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName andPhoneNumbers:(NSArray<NSString *> *)phoneNumbers;
+- (id)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName phoneNumbers:(NSArray<NSString *> *)phoneNumbers andIsPhoneBookNumber:(BOOL)isPhoneBookNumber;
 @end

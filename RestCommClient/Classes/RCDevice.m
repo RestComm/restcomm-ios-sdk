@@ -81,6 +81,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     //[self.capabilities setValue:expiration forKey:@"expiration"];
 }
 
+
 - (id)initWithParams:(NSDictionary*)parameters delegate:(id<RCDeviceDelegate>)delegate
 {
     self = [super init];
@@ -102,9 +103,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         NSMutableDictionary * logParameters = [parameters mutableCopy];
         [logParameters removeObjectForKey:@"password"];
         [logParameters removeObjectForKey:@"turn-password"];
-
+        
         RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
-
+        
         // reachability
         self.hostActive = NO;
         // check for internet connection
@@ -117,9 +118,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         [_hostReachable startNotifier];
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
+          
+        self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters];
         
-        self.sipManager = [[SipManager alloc] initWithDelegate:self andParams:parameters];
-
         if (self.reachabilityStatus != NotReachable) {
             if (![parameters objectForKey:@"registrar"] ||
                 ([parameters objectForKey:@"registrar"] && [[parameters objectForKey:@"registrar"] length] == 0)) {
@@ -129,10 +130,11 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
             // start signalling eventLoop (i.e. Sofia)
             [self.sipManager eventLoop];
         }
-
+        
     }
     
     return self;
+
 }
 
 - (id)initWithCapabilityToken:(NSString*)capabilityToken delegate:(id<RCDeviceDelegate>)delegate

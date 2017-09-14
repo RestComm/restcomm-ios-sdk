@@ -51,6 +51,8 @@
 #import "WebRTC/RTCPeerConnectionFactory.h"
 #import "ARDCEODTURNClient.h"
 #import "XirsysTURNClient.h"
+#import "RestCommClient.h"
+
 //#import "RTCPeerConnectionDelegate.h"
 //#import "WebRTC/RTCSessionDescriptionDelegate.h"
 
@@ -71,6 +73,7 @@ typedef enum {
     kARDSignalingMessageTypeAnswer,
     kARDSignalingMessageTypeBye,
 } ARDSignalingMessageType;
+
 
 @interface MediaWebRTC : NSObject  //<RTCPeerConnectionDelegate, RTCSessionDescriptionDelegate>
 - (id)initWithDelegate:(id<MediaDelegate>)mediaDelegate parameters:(NSDictionary*)parameters;

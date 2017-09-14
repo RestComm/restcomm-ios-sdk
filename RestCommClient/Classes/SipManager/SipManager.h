@@ -36,8 +36,7 @@ typedef enum {
 } UpdateParamsState;
 
 @interface SipManager : NSObject<MediaDelegate>
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate;
-- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate andParams:(NSDictionary*)params;
+- (id)initWithDelegate:(id<SipManagerDeviceDelegate>)deviceDelegate params:(NSDictionary*)params;
 // initialize Sofia, setup communication via pipe and enter event loop (notice that the event loop runs in a separate thread)
 - (bool)eventLoop;
 - (bool)register:(NSString*)registrar;

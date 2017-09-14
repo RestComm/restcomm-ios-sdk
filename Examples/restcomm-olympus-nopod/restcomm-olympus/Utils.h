@@ -21,20 +21,19 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "LocalContact.h"
 
 extern NSString* const RestCommClientSDKLatestGitHash;
 
 @interface Utils : NSObject
 + (void) setupUserDefaults;
-+ (NSArray*)contactForIndex:(int)index;
-//+ (int)indexForContact:(NSString*)alias;
-// if contact is not found returns -1
-+ (NSString*)sipUri2Alias:(NSString*)sipUri;
++ (LocalContact*)getContactForSipUri:(NSString*)sipUri;
++ (NSArray *)getSortedContacts;
 + (int)indexForContact:(NSString*)sipUri;
 + (int)contactCount;
-+ (void)addContact:(NSArray*)contact;
-+ (void)removeContactAtIndex:(int)index;
-+ (void)updateContactWithSipUri:(NSString*)sipUri alias:(NSString*)alias;
++ (void)addContact:(LocalContact *)contact;
++ (void)removeContact:(LocalContact *)localContact;
++ (void)updateContactWithSipUri:(NSString*)sipUri forAlias:(NSString*)alias;
 + (NSString*)sipIdentification;
 + (NSString*)sipPassword;
 + (NSString*)sipRegistrar;
@@ -62,4 +61,8 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
+
++ (void)shakeView:(UIView *)view;
++ (void)saveLastPeer:(NSString *)sipUri;
++ (NSString *)getLastPeer;
 @end
