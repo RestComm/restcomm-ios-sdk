@@ -846,7 +846,7 @@ void ssc_r_invite(int status, char const *phrase,
         if (status == 401 || status == 407) {
             ssc_store_pending_auth(ssc, op, sip, tags);
         }
-        else if (status == 486 || status == 600 || status == 603) {
+        else if (status == 486 || status == 600 || status == 603 || status == 480) {
             // notify the client application that we are ringing
             SofiaReply reply(OUTGOING_DECLINED, "");
             reply.Send(ssc->ssc_output_fd);
