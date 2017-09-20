@@ -229,6 +229,13 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 // To be used internally by the library -not for application usage
 - (void)clearCurrentConnection;
 
+
+/**
+ *  Register the application for the push notification
+ *  Ognjen
+ */
+- (void)registerPushToken:(NSString *)token;
+
 /* DEBUG:
 -(void)startSofia;
 -(void)stopSofia;

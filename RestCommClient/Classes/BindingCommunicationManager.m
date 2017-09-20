@@ -29,14 +29,6 @@
     NSString *pPassword;
 }
 
-+ (id)sharedInstanceWithUsername:(NSString *)username andPassword:(NSString *)password {
-    static BindingCommunicationManager *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] initWithUsername:username andPassword:password];
-    });
-    return sharedInstance;
-}
 
 - (id)initWithUsername:(NSString *)username andPassword:(NSString *)password{
     self = [super init];
@@ -168,9 +160,6 @@
             return;
         }
         NSError *jsonError = nil;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
         if (jsonError) {
             completionHandler([self getErrorWithDescription:@"Error parsing JSON containing account sid"]);
             return;
@@ -182,8 +171,29 @@
     
 }
 
-- (NSString *) getJsonFromBinding:(Binding *)binding{
+- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSError *error))completionHandler{
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSMutableURLRequest *request = [self createUrlRequestWithUrl:nil];
     
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            completionHandler(error);
+            return;
+        }
+        NSError *jsonError = nil;
+        if (jsonError) {
+            completionHandler([self getErrorWithDescription:@"Error parsing JSON containing account sid"]);
+            return;
+        }
+        
+        completionHandler(nil);
+        
+    }] resume];
+    
+}
+
+
+- (NSString *) getJsonFromBinding:(Binding *)binding{
    NSDictionary *propertyDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
      @"Identity", binding.identity,
      @"ApplicationSid", binding.applicationSid,

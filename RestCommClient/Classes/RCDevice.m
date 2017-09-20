@@ -683,4 +683,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 }
 */
 
+#pragma mark Push 
+- (void)registerPushToken:(NSString *)token{
+    
+}
+
 @end

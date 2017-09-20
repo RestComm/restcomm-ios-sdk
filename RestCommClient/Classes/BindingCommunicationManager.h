@@ -25,7 +25,7 @@
 
 @interface BindingCommunicationManager : NSObject
 
-+ (id)sharedInstanceWithUsername:(NSString *)username andPassword:(NSString *)password;
+- (id)initWithUsername:(NSString *)username andPassword:(NSString *)password;
 
 - (void)getAccountSidWithRequestWidthCompletionHandler:(void (^)( NSString *accountSid, NSError *error))completionHandler;
 
@@ -34,6 +34,8 @@
 - (void)getApplicationSidwithCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
 - (void)getBindingSidForBinding:(Binding *)binding andCompletionHandler:(void (^)( NSString *bindingSid, NSError *error))completionHandler;
+
+- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSError *error))completionHandler;
 
 - (void)updateBinding:(Binding *)binding forBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler;
 

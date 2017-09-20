@@ -27,6 +27,8 @@
 //keys
 NSString *const kAccountSidKey = @"accountSidKey";
 NSString *const kClientSidKey = @"clientSidKey";
+NSString *const kApplicationSidKey = @"applicationSidKey";
+NSString *const kBindingSidKey = @"bindingSidKey";
 
 @implementation PushHandler{
     BindingCommunicationManager *bindingCommManager;
@@ -35,7 +37,7 @@ NSString *const kClientSidKey = @"clientSidKey";
 - (id)initWithUsername:(NSString *)username andPassword:(NSString *)password{
     self = [super init];
     if (self){
-        bindingCommManager = [BindingCommunicationManager sharedInstanceWithUsername:username andPassword:password];
+        bindingCommManager = [[BindingCommunicationManager alloc] initWithUsername:username andPassword:password];
     }
     return self;
 }
@@ -59,6 +61,29 @@ NSString *const kClientSidKey = @"clientSidKey";
                 [self getClientSidForAccountSid:accountSid andWithCompletionHandler:^(NSString *clientSid) {
                     if (clientSid){
                         //get application sid
+                        [self getApplicationSidWithCompletionHandler:^(NSString *applicationSid) {
+                            //if binding sid is available, we should update
+                            NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+                            NSString *bindingSid = [appDefaults objectForKey:kBindingSidKey];
+                            
+                            //create the binding object
+                            Binding *binding = [[Binding alloc] initWithIdentity:clientSid
+                                                                  applicationSid:applicationSid
+                                                                      andAddress:pushNotificationToken];
+                            if (bindingSid && bindingSid.length > 0){
+                                [bindingCommManager updateBinding:binding forBindingSid:bindingSid andCompletionHandler:^(NSError *error) {
+                                    if (error){
+                                        RCLogError([error.localizedDescription UTF8String]);
+                                    }
+                                }];
+                            } else {
+                                [bindingCommManager createBinding:binding andCompletionHandler:^(NSError *error) {
+                                    if (error){
+                                        RCLogError([error.localizedDescription UTF8String]);
+                                    }
+                                }];
+                            }
+                        }];
                     }
                 }];
             }
@@ -75,27 +100,27 @@ NSString *const kClientSidKey = @"clientSidKey";
         completionHandler(accountSid);
     }
     
-    //the account sid is not found, we need to ask server for it
-    [bindingCommManager getApplicationSidwithCompletionHandler:^(NSString *applicationSid, NSError *error) {
+    //Account sid is not found, we need to ask server for it
+    [bindingCommManager getAccountSidWithRequestWidthCompletionHandler:^(NSString *accountSid, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
              completionHandler(nil);
         } else {
-            [appDefaults setObject:applicationSid forKey:kAccountSidKey];
+            [appDefaults setObject:accountSid forKey:kAccountSidKey];
             completionHandler(accountSid);
         }
     }];
 }
 
 - (void)getClientSidForAccountSid:(NSString *)accountSid andWithCompletionHandler:(void (^)(NSString *clientSid))completionHandler{
-    //check is account id is already saved in user defaults
+    //check is client id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSString *clientSid = [appDefaults objectForKey:kClientSidKey];
     if (clientSid && clientSid.length > 0){
         completionHandler(clientSid);
     }
     
-    //the account sid is not found, we need to ask server for it
+    //Client sid is not found, we need to ask server for it
     [bindingCommManager getClientSidWithAccountSid:accountSid andCompletionHandler:^(NSString *clientSid, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
@@ -106,6 +131,29 @@ NSString *const kClientSidKey = @"clientSidKey";
         }
     }];
 }
+
+
+- (void)getApplicationSidWithCompletionHandler:(void (^)(NSString *applicationSid))completionHandler{
+    //check is application id is already saved in user defaults
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *applicationSid = [appDefaults objectForKey:kApplicationSidKey];
+    if (applicationSid && applicationSid.length > 0){
+        completionHandler(applicationSid);
+    }
+    
+    //Application sid is not found, we need to ask server for it
+    [bindingCommManager getApplicationSidwithCompletionHandler:^(NSString *applicationSid, NSError *error) {
+        if (error){
+            RCLogError([error.localizedDescription UTF8String]);
+            completionHandler(nil);
+        } else {
+            [appDefaults setObject:applicationSid forKey:kApplicationSidKey];
+            completionHandler(applicationSid);
+        }
+    }];
+}
+
+
 
 
 
