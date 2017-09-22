@@ -24,8 +24,8 @@
 
 @interface PushHandler : NSObject
 
-- (id)initWithUsername:(NSString *)username andPassword:(NSString *)password;
+- (id)initWithParameters:(NSDictionary *)parameters;
 
-- (void)registerDeviceWithToken:(NSString *)pushNotificationToken;
+- (void)registerDevice;
 
 @end

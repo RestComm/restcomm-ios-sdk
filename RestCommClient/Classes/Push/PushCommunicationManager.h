@@ -23,17 +23,19 @@
 #import <Foundation/Foundation.h>
 #import "Binding.h"
 
-@interface BindingCommunicationManager : NSObject
+@interface PushCommunicationManager : NSObject
 
 - (id)initWithUsername:(NSString *)username andPassword:(NSString *)password;
 
-- (void)getAccountSidWithRequestWidthCompletionHandler:(void (^)( NSString *accountSid, NSError *error))completionHandler;
+- (void)getAccountSidWithRequestForEmail:(NSString *)email andCompletionHandler:(void (^)( NSString *accountSid, NSError *error))completionHandler;
 
-- (void)getClientSidWithAccountSid:(NSString *)accountSid andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler;
+- (void)getClientSidWithAccountSid:(NSString *)accountSid signalingUsername:(NSString *)signalingUsername andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler;
 
 - (void)getApplicationSidwithCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
-- (void)getBindingSidForBinding:(Binding *)binding andCompletionHandler:(void (^)( NSString *bindingSid, NSError *error))completionHandler;
+- (void)createApplicationWithFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
+
+- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName isSendBox:(BOOL)sendbox andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
 - (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSError *error))completionHandler;
 

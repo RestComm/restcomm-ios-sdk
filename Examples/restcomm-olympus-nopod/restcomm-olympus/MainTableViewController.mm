@@ -527,7 +527,7 @@
     
     if ([segue.identifier isEqualToString:@"invoke-messages"]){
         NSString *alias = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
-        if (contact.phoneNumbers > 0){
+        if (contact.phoneNumbers.count > 0){
             NSString *username = [contact.phoneNumbers objectAtIndex:0];
             
             MessageTableViewController *messageViewController = [segue destinationViewController];

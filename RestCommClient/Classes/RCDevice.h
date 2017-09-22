@@ -231,10 +231,23 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 
 
 /**
- *  Register the application for the push notification
- *  Ognjen
+ *  Register the application for the push notifications
+ * <b>username"</b>:username, for example: johndoe@telestax.com
+ * <b>password</b>: password for an account<br>
+ * <b>certificate</b>: Url encoded representation of the Certificate from APN. e.g.
+ *            ------Begin Certificate -------
+ *                    Adlsfjads
+ *            ------End Certificate -------
+ *
+ * <b>private-key</b>:Url encoded representation of the Private Key e.g.
+ *        --------- Begin RSA Private Key ---------
+ *                   Agadjslfkdjs
+ *       --------- End RSA Private Key -----------
+ * <b>token</b>: push notification token from the
+ * <b>rescomm-account-email</b> account's email
+ * <b>is-sandbox</b>: 
  */
-- (void)registerPushToken:(NSString *)token;
+- (void)registerPushToken:(NSDictionary*)parameters;
 
 /* DEBUG:
 -(void)startSofia;

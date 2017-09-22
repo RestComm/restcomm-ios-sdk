@@ -24,7 +24,6 @@
 
 @implementation Binding
 
-
 - (id)initWithIdentity:(NSString *)identity applicationSid:(NSString *)applicationSid andAddress:(NSString *)address{
     self = [super init];
     if (self){
