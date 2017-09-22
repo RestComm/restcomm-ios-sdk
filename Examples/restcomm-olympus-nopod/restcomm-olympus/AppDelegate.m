@@ -36,9 +36,17 @@
     // Override point for customization after application launch.
     //[TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
     
+    //register for the push notification
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:
+                                                                         (UIUserNotificationTypeSound |
+                                                                          UIUserNotificationTypeAlert |
+                                                                          UIUserNotificationTypeBadge) categories:nil]];
+    
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -88,4 +96,23 @@
     return YES;
 }
 
+#pragma mark - Push Notification
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSString * deviceTokenString = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+    NSLog(@"The generated device token string is : %@",deviceTokenString);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"Did Fail to Register for Remote Notifications");
+    NSLog(@"%@, %@", error, error.localizedDescription);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSLog(@"Dictionary: %@", [userInfo description]);
+}
 @end

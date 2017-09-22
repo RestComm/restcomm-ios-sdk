@@ -278,7 +278,6 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         completionHandler(nil);
         
     }] resume];
-    
 }
 
 
