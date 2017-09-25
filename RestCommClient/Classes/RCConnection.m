@@ -30,13 +30,13 @@
 #include "common.h"
 #include "RestCommClient.h"
 
-@interface RCConnection () <SipManagerConnectionDelegate, AVAudioPlayerDelegate>
+@interface RCConnection () <SipManagerConnectionDelegate>
 // private methods
 // which device owns this connection
 @property RCDevice * device;
 @property AVAudioPlayer * ringingPlayer;
 @property AVAudioPlayer * callingPlayer;
-@property AVAudioPlayer * busyPlayer;
+
 @property BOOL cancelPending;
 @end
 
@@ -170,10 +170,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
-    if ([self.busyPlayer isPlaying]) {
-        [self.busyPlayer stop];
-        self.busyPlayer.currentTime = 0.0;
-    }
+   
     
     [self handleDisconnected];
 }
@@ -304,10 +301,36 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self.callingPlayer stop];
         self.callingPlayer.currentTime = 0.0;
     }
+    
+    // We want to tell to delegate that connection is declined immediately
+    // so, we need to play busy tone i new thread because we dont know what client will do
+    // for example, if set instance on connection to nil, the sound will not be played
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        AVAudioPlayer * busyPlayer;
+        // busy
+        NSString *filename = @"busy_tone_sample.mp3";
+        // we are assuming the extension will always be the last 3 letters of the filename
+        NSString *file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                                                         ofType:[filename substringFromIndex:[filename length] - 3]];
+        
+        if (file) {
+            busyPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
+            if (!busyPlayer) {
+                NSLog(@"Error: %@", [error description]);
+                return;
+            }
+            
+        }
+        
+        [busyPlayer play];
+        sleep(2);
+    });
+    
     self.state = RCConnectionStateDisconnected;
-    
-    [self.busyPlayer play];
-    
+    [self.delegate connectionDidGetDeclined:self];
+    self.device.state = RCDeviceStateReady;
+    [self handleDisconnected];
 }
 
 - (void)sipManagerDidReceiveBye:(SipManager*)sipManager;
@@ -403,36 +426,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         }
         self.callingPlayer.numberOfLoops = -1; // repeat forever
     }
-    
-    // busy
-    filename = @"busy_tone_sample.mp3";
-    // we are assuming the extension will always be the last 3 letters of the filename
-    file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
-                                           ofType:[filename substringFromIndex:[filename length] - 3]];
-    
-    if (file) {
-        self.busyPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
-        if (!self.busyPlayer) {
-            NSLog(@"Error: %@", [error description]);
-            return;
-        }
-        self.busyPlayer.delegate = self;
-    }
 
-}
-
-#pragma mark Audioplayer callbacks
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
-    if ([player isEqual:self.busyPlayer]){
-        if ([self.busyPlayer isPlaying]) {
-            [self.busyPlayer stop];
-            self.busyPlayer.currentTime = 0.0;
-        }
-        
-        [self.delegate connectionDidGetDeclined:self];
-        self.device.state = RCDeviceStateReady;
-        [self handleDisconnected];
-    }
 }
 
 @end
