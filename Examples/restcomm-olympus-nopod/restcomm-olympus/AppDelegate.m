@@ -37,13 +37,7 @@
     //[TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
     
     //register for the push notification
-    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:
-                                                                         (UIUserNotificationTypeSound |
-                                                                          UIUserNotificationTypeAlert |
-                                                                          UIUserNotificationTypeBadge) categories:nil]];
-    
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
+    [self registerForPush];
     return YES;
 }
 
@@ -97,13 +91,51 @@
 }
 
 #pragma mark - Push Notification
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+- (void)registerForPush{
+    float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if(ver >= 10)
+    {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        center.delegate = self;
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error)
+         {
+             if( !error )
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
+                 });
+                 
+                 NSLog( @"Push registration success." );
+             }
+             else
+             {
+                 NSLog( @"Push registration FAILED" );
+                 NSLog( @"ERROR: %@ - %@", error.localizedFailureReason, error.localizedDescription );
+                 NSLog( @"SUGGESTIONS: %@ - %@", error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
+             }
+         }];
+    } else {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken{
     NSString * deviceTokenString = [[[[deviceToken description]
                                       stringByReplacingOccurrencesOfString: @"<" withString: @""]
                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
 
     NSLog(@"The generated device token string is : %@",deviceTokenString);
+    
+#warning this is only temporarly, we should move logic for RCDevice here; for now, we are sending local notification; and save it to UserDefaults
+    NSDictionary *userInfoObj = [NSDictionary dictionaryWithObject:deviceToken forKey:@"deviceTokenString"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TokenReceivedNotification" object:self userInfo:userInfoObj];
+    
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:deviceTokenString forKey:@"deviceToken"];
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -111,8 +143,22 @@
     NSLog(@"%@, %@", error, error.localizedDescription);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
-    NSLog(@"Dictionary: %@", [userInfo description]);
+#pragma mark - UNUserNotificationCenter Delegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+    NSLog( @"Handle push from foreground" );
+    // custom code to handle push while app is in the foreground
 }
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)())completionHandler
+{
+    NSLog( @"Handle push from background or closed" );
+    // if you set a member variable in didReceiveRemoteNotification, you will know if this is from closed or background
+}  
+
 @end

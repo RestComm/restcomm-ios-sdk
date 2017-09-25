@@ -29,7 +29,7 @@
     if (self){
         _identity = identity;
         _applicationSid = applicationSid;
-        _bindingType = @"apns";
+        _bindingType = @"apn";
         _address = address;
     }
     return self;

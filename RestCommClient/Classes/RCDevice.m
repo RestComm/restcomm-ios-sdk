@@ -698,10 +698,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
     //extend the parameters with:
     // - signaling
-    // - friendlyName
-    NSString *friendlyName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+   
     NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    [pushHandlerProperties setValue:friendlyName forKey:@"friendly-name"];
     [pushHandlerProperties setValue:self.signalingUsername forKey:@"signaling-username"];
   
     PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties];

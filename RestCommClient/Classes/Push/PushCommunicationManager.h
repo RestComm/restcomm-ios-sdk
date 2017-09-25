@@ -31,14 +31,18 @@
 
 - (void)getClientSidWithAccountSid:(NSString *)accountSid signalingUsername:(NSString *)signalingUsername andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler;
 
-- (void)getApplicationSidwithCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
+- (void)getApplicationSidForFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
 - (void)createApplicationWithFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
+- (void)getCredentialsSidWithCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
+
 - (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName isSendBox:(BOOL)sendbox andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
-- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSError *error))completionHandler;
+- (void)checkExistingBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler;
 
-- (void)updateBinding:(Binding *)binding forBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler;
+- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler;
+
+- (void)updateBinding:(Binding *)binding forBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler;
 
 @end

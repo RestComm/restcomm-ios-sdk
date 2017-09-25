@@ -187,6 +187,55 @@
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //get contacts first time
     [self checkContactsAccess];
+    
+#warning this will be moved into app delegate; for now we are handling it here
+    //if there is a token we got it before openning this viewcontroller (this is only
+    //for the first time when user takes up time to login
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceToken = [appDefaults objectForKey:@"deviceToken"];
+    
+    [self registerForPush:deviceToken];
+    
+    if (!deviceToken){
+        //otherwise subscribe to notification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(tokenReceivedNotification:)
+                                                     name:@"TokenReceivedNotification"
+                                                   object:nil];
+        
+    }
+    
+}
+
+- (void) tokenReceivedNotification:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"TokenReceivedNotification"]){
+        NSDictionary *userInfo = notification.userInfo;
+        NSString *deviceToken = [userInfo objectForKey:@"deviceTokenKey"];
+        [self registerForPush:deviceToken];
+    }
+}
+
+- (void) registerForPush:(NSString *)token{
+   if (token){
+        NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+        NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                    @"Olympus", @"friendly-name",
+                                    @"USER_NAME", @"username",
+                                    @"PASSWORD", @"password",
+                                    @"EMAIL", @"rescomm-account-email",
+                                    token, @"token",
+                                    pushCertificatesPathPublic, @"push-certificate-public-path",
+                                    pushCertificatesPathPrivate, @"push-certificate-private-path",
+                                    [NSNumber numberWithBool:YES], @"Sandbox", nil];
+                                    //for the production version Sandbox should be NO
+        
+        [self.device registerPushToken:dic];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"deviceToken"];
+    } else {
+        NSLog(@"deviceToken is missing!");
+    }
 }
 
 - (void)didReceiveMemoryWarning {

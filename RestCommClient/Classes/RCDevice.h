@@ -232,20 +232,16 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 
 /**
  *  Register the application for the push notifications
- * <b>username"</b>:username, for example: johndoe@telestax.com
+ * <b>firendly-name</b>: name of the client application
+ * <b>username"</b>: username, for example: johndoe@telestax.com
  * <b>password</b>: password for an account<br>
- * <b>certificate</b>: Url encoded representation of the Certificate from APN. e.g.
- *            ------Begin Certificate -------
- *                    Adlsfjads
- *            ------End Certificate -------
- *
- * <b>private-key</b>:Url encoded representation of the Private Key e.g.
- *        --------- Begin RSA Private Key ---------
- *                   Agadjslfkdjs
- *       --------- End RSA Private Key -----------
  * <b>token</b>: push notification token from the
  * <b>rescomm-account-email</b> account's email
- * <b>is-sandbox</b>: 
+ * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
+ * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
+ * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+ * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if push certifictes are for development version of the
+ * application, if its production it should be set to NO.
  */
 - (void)registerPushToken:(NSDictionary*)parameters;
 
