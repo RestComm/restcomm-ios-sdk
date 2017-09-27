@@ -125,7 +125,7 @@
 		AE87C2D61DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87C2D31DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png */; };
 		AE87C2D71DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87C2D41DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png */; };
 		AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495671C2997F6000D9762 /* AboutTableViewController.m */; };
-		AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495691C2997F6000D9762 /* AppDelegate.m */; };
+		AEA496031C2997F6000D9762 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA495691C2997F6000D9762 /* AppDelegate.mm */; };
 		AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */; };
 		AEA496051C2997F6000D9762 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA4956C1C2997F6000D9762 /* Main_iPad.storyboard */; };
 		AEA496061C2997F6000D9762 /* Main_Universal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA4956E1C2997F6000D9762 /* Main_Universal.storyboard */; };
@@ -172,7 +172,7 @@
 		AEA496671C2997F6000D9762 /* LocalMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DA1C2997F6000D9762 /* LocalMessageTableViewCell.m */; };
 		AEA496681C2997F6000D9762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DB1C2997F6000D9762 /* main.m */; };
 		AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DD1C2997F6000D9762 /* MainNavigationController.m */; };
-		AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */; };
+		AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.m */; };
 		AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E11C2997F6000D9762 /* MessageTableViewController.m */; };
 		AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */; };
 		AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */; };
@@ -345,7 +345,7 @@
 		AEA495661C2997F6000D9762 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		AEA495671C2997F6000D9762 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		AEA495681C2997F6000D9762 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		AEA495691C2997F6000D9762 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AEA495691C2997F6000D9762 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		AEA4956A1C2997F6000D9762 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
 		AEA4956D1C2997F6000D9762 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -401,7 +401,7 @@
 		AEA495DC1C2997F6000D9762 /* MainNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainNavigationController.h; sourceTree = "<group>"; };
 		AEA495DD1C2997F6000D9762 /* MainNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainNavigationController.m; sourceTree = "<group>"; };
 		AEA495DE1C2997F6000D9762 /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
-		AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainTableViewController.mm; sourceTree = "<group>"; };
+		AEA495DF1C2997F6000D9762 /* MainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewController.m; sourceTree = "<group>"; };
 		AEA495E01C2997F6000D9762 /* MessageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewController.h; sourceTree = "<group>"; };
 		AEA495E11C2997F6000D9762 /* MessageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewController.m; sourceTree = "<group>"; };
 		AEA495E21C2997F6000D9762 /* RemoteMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessageTableViewCell.h; sourceTree = "<group>"; };
@@ -497,7 +497,7 @@
 				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
 				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
 				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
-				AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */,
+				AEA495DF1C2997F6000D9762 /* MainTableViewController.m */,
 				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
 				AEA495E11C2997F6000D9762 /* MessageTableViewController.m */,
 				AEA495E61C2997F6000D9762 /* SettingsTableViewController.h */,
@@ -627,7 +627,7 @@
 				AEA4956E1C2997F6000D9762 /* Main_Universal.storyboard */,
 				AEA495D41C2997F6000D9762 /* InputAccessoryFragment.xib */,
 				AEA495681C2997F6000D9762 /* AppDelegate.h */,
-				AEA495691C2997F6000D9762 /* AppDelegate.m */,
+				AEA495691C2997F6000D9762 /* AppDelegate.mm */,
 				AEA495DB1C2997F6000D9762 /* main.m */,
 				AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */,
 				AEA495E51C2997F6000D9762 /* restcomm-olympus-Prefix.pch */,
@@ -1163,11 +1163,11 @@
 				AEA496681C2997F6000D9762 /* main.m in Sources */,
 				AEA496651C2997F6000D9762 /* InputAccessoryProxyView.m in Sources */,
 				A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */,
-				AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */,
+				AEA496031C2997F6000D9762 /* AppDelegate.mm in Sources */,
 				AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */,
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,
-				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
+				AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */,
 				AE155F541CCF8658002F404E /* ToastController.m in Sources */,
 				AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,

@@ -1,0 +1,420 @@
+/*
+ * TeleStax, Open Source Cloud Communications
+ * Copyright 2011-2015, Telestax Inc and individual contributors
+ * by the @authors tag.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * For questions related to commercial use licensing, please contact sales@telestax.com.
+ *
+ */
+
+#import "AppDelegate.h"
+#import "Utils.h"
+#import "MainNavigationController.h"
+#import "TestFairy/TestFairy.h"
+
+@implementation AppDelegate
+
+#pragma mark - AppDelegate lifecycle methods
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    NSLog(@"application:didFinishLaunchingWithOptions");
+    // register the preference defaults early with default values
+    [Utils setupUserDefaults];
+
+    // Override point for customization after application launch.
+    //[TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
+    
+    //register to RCDevice
+    [self registerRCDevice];
+    
+    //register for the push notification
+    [self registerForPush];
+    
+    return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+}
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
+{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    [Utils updatePendingInterappUri:[Utils convertInterappUri2RestcommUri:url]];
+    return YES;
+}
+
+#pragma mark - RCDevice methods
+
+- (void)registerRCDevice{
+    
+    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
+    //we should have those in settings in the future....
+    /******************************/
+    /* Xirsys v2 */
+    /******************************/
+    //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+    //                       [Utils sipPassword], @"password",
+    //                       @([Utils turnEnabled]), @"turn-enabled",
+    //                       [Utils turnUrl], @"turn-url",
+    //                       @"cloud.restcomm.com", @"ice-domain",
+    //                       [Utils turnUsername], @"turn-username",
+    //                       [Utils turnPassword], @"turn-password",
+    //                       @([Utils signalingSecure]), @"signaling-secure",
+    //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+    //                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+    //                       nil];
+    /******************************/
+    /* Xirsys v3 */
+    /******************************/
+    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+                       [Utils sipPassword], @"password",
+                       @([Utils turnEnabled]), @"turn-enabled",
+                       [Utils turnUrl], @"turn-url",
+                       [Utils turnUsername], @"turn-username",
+                       [Utils turnPassword], @"turn-password",
+                       @"cloud.restcomm.com", @"ice-domain",
+                       @([Utils signalingSecure]), @"signaling-secure",
+                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                       [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
+                       nil];
+    /******************************/
+    /* Xirsys custom */
+    /******************************/
+    //    NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
+    //     @"46560f8e-94a7-11e7-bc4c-SOME_DATA", @"username",
+    //     @"turn:Server:80?transport=udp", @"url",
+    //     @"4656101a-94a7-11e7-97SOME_DATA", @"credential",
+    //     nil];
+    //
+    //    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+    //                                       @"stun:Server",@"url", nil];
+    //
+    //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
+    //                    [Utils sipPassword], @"password",
+    //                      @([Utils turnEnabled]), @"turn-enabled",
+    //                      @([Utils signalingSecure]), @"signaling-secure",
+    //                      [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+    //                      [NSNumber numberWithInt:(int)kCustom] , @"ice-config-type",
+    //                      @[dictionaryServer, dictionaryServer2] , @"ice-servers",
+    //                      nil];
+    /******************************/
+    
+    [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
+    
+    // initialize RestComm Client by setting up an RCDevice
+    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
+    
+    if (self.device.state == RCDeviceStateOffline) {
+        [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
+    } else {
+        [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+
+}
+
+#pragma mark - UI events
+
+- (void)register:(NSNotification *)notification
+{
+    if (self.device) {
+        [self register];
+    }
+}
+
+- (void)register
+{
+    [self.device listen];
+    self.isRegistered = YES;
+}
+
+- (void)unregister:(NSNotification *)notification
+{
+    [self.device unlisten];
+    self.isRegistered = NO;
+}
+
+
+#pragma mark - Delegate methods for RCDeviceDelegate
+
+- (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
+{
+    //NSLog(@"------ didStopListeningForIncomingConnections: error: %p", error);
+    // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
+    if (error) {
+        [self updateConnectivityState:device.state
+                   andConnectivityType:device.connectivityType
+                              withText:error.localizedDescription];
+    }
+}
+
+- (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
+{
+    self.isInitialized = YES;
+    self.isRegistered = YES;
+    
+    [self updateConnectivityState:device.state
+               andConnectivityType:device.connectivityType
+                          withText:nil];
+    
+    NSString * pendingInterapUri = [Utils pendingInterappUri];
+    if (pendingInterapUri && ![pendingInterapUri isEqualToString:@""]) {
+        // we have a request from another iOS to make a call to the passed URI
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+        
+        callViewController.delegate = self;
+        callViewController.device = self.device;
+        callViewController.parameters = [[NSMutableDictionary alloc] init];
+        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+        
+        // search through the contacts if the given URI is known and if so use its alias, if not just use the URI
+        LocalContact *localContact = [Utils getContactForSipUri:pendingInterapUri];
+        NSString * alias;
+        if (!localContact) {
+            alias = pendingInterapUri;
+        } else {
+            alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
+        }
+        [callViewController.parameters setObject:alias forKey:@"alias"];
+        [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+        
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:callViewController animated:YES completion:nil];
+        
+        // clear it so that it doesn't pop again
+        [Utils updatePendingInterappUri:@""];
+    }
+}
+
+// received incoming message
+- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
+{
+    if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class]){
+        UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+        // Open message view if not already opened
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        if (![navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
+            MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+            //messageViewController.delegate = self;
+            messageViewController.device = self.device;
+            messageViewController.delegate = self;
+            messageViewController.parameters = [[NSMutableDictionary alloc] init];
+            [messageViewController.parameters setObject:message forKey:@"message-text"];
+            [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
+            [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
+            [messageViewController.parameters setObject:[RCUtilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
+            
+            messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [navigationController pushViewController:messageViewController animated:YES];
+        }
+        else {
+            // message view already opened, just append
+            MessageTableViewController * messageViewController = (MessageTableViewController*)navigationController.visibleViewController;
+            [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
+        }
+    }
+    
+}
+
+// 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
+- (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
+{
+    // Open call view
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+    callViewController.delegate = self;
+    callViewController.device = self.device;
+    callViewController.pendingIncomingConnection = connection;
+    callViewController.pendingIncomingConnection.delegate = callViewController;
+    callViewController.parameters = [[NSMutableDictionary alloc] init];
+    [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
+    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"] forKey:@"username"];
+    // try to 'resolve' the from to the contact name if we do have a contact for that
+    LocalContact *localContact = [Utils getContactForSipUri:[connection.parameters objectForKey:@"from"]];
+    NSString * alias;
+    if (!localContact) {
+        alias = [connection.parameters objectForKey:@"from"];
+    } else {
+        alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
+    }
+    
+    [callViewController.parameters setObject:alias forKey:@"alias"];
+    
+    // TODO: change this once I implement the incoming call caller id
+    //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
+    
+    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
+}
+
+- (void)updateConnectivityState:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
+{
+    //send notification to view controllers
+    NSMutableDictionary *propertyDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
+    [propertyDictionary setObject:[NSNumber numberWithInt:state] forKey:@"state"];
+    [propertyDictionary setObject:[NSNumber numberWithInt:status] forKey:@"status"];
+    if (text){
+        [propertyDictionary setObject:text forKey:@"text"];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateConnectivityStatus" object:self userInfo:propertyDictionary];
+    self.previousDeviceState = state;
+}
+
+#pragma mark - ContactUpdateDelegate method
+
+- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
+          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadData" object:self];
+}
+
+#pragma mark - ContactDetailsDelegate method
+
+- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
+           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadData" object:self];
+}
+
+#pragma mark - MessageDelegate method
+
+- (void)messageViewController:(MessageTableViewController*)messageViewController
+       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadData" object:self];
+}
+
+#pragma mark - SipSettingsDelegate method
+
+// User requested new registration in 'Settings'
+- (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
+{
+    [self updateConnectivityState:RCDeviceStateOffline
+              andConnectivityType:RCDeviceConnectivityTypeNone
+                         withText:@""];
+}
+
+#pragma mark - Push Notification
+
+- (void)registerForPush{
+    float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if(ver >= 10)
+    {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        center.delegate = self;
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error)
+         {
+             if( !error )
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
+                 });
+                 
+                 NSLog( @"Push registration success." );
+             }
+             else
+             {
+                 NSLog( @"Push registration FAILED" );
+                 NSLog( @"ERROR: %@ - %@", error.localizedFailureReason, error.localizedDescription );
+                 NSLog( @"SUGGESTIONS: %@ - %@", error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
+             }
+         }];
+    } else {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken{
+    NSString * deviceTokenString = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+    NSLog(@"The generated device token string is : %@",deviceTokenString);
+    
+    
+    //register to push to server
+#warning Uncomment this when we have server version ready
+//    NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+//    NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+//    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+//                                @"Olympus", @"friendly-name",
+//                                @"USER_NAME", @"username",
+//                                @"PASSWORD", @"password",
+//                                @"EMAIL", @"rescomm-account-email",
+//                                deviceTokenString, @"token",
+//                                pushCertificatesPathPublic, @"push-certificate-public-path",
+//                                pushCertificatesPathPrivate, @"push-certificate-private-path",
+//                                [NSNumber numberWithBool:YES], @"Sandbox", nil];
+    
+}
+
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"Did Fail to Register for Remote Notifications");
+    NSLog(@"%@, %@", error, error.localizedDescription);
+}
+
+#pragma mark - UNUserNotificationCenter Delegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+    NSLog( @"Handle push from foreground" );
+    if (self.device.state == RCDeviceStateOffline){
+        [self register];
+        //show call for example...
+    }
+    
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)())completionHandler
+{
+    NSLog( @"Handle push from background or closed" );
+  
+}  
+
+@end

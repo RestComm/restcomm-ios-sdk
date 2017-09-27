@@ -28,13 +28,5 @@
 #import "ContactDetailsTableViewController.h"
 #import "SipSettingsTableViewController.h"
 
-@interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate,
-ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate,
-UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
-
-
-@property (nonatomic,retain) RCDevice* device;
-@property NSMutableDictionary * parameters;
-@property BOOL isInitialized;
-@property BOOL isRegistered;
+@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 @end
