@@ -320,11 +320,11 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
                 NSLog(@"Error: %@", [error description]);
                 return;
             }
-            
+            [busyPlayer play];
+            sleep(busyPlayer.duration);
         }
         
-        [busyPlayer play];
-        sleep(2);
+       
     });
     
     self.state = RCConnectionStateDisconnected;
