@@ -240,7 +240,6 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
  * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
  * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
- * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if push certifictes are for development version of the
  * application, if its production it should be set to NO.
  */
 - (void)registerPushToken:(NSDictionary*)parameters;

@@ -39,7 +39,6 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     NSString *friendlyName;
     NSString *rescommAccountEmail;
     NSString *token;
-    BOOL sandbox;
     
     //certificate data directory
     NSString *certificatePublicPath;
@@ -57,7 +56,6 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
         certificatePrivatePath = [parameters objectForKey:@"push-certificate-private-path"];
         rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
         token = [parameters objectForKey:@"token"];
-        sandbox = [parameters objectForKey:@"is-sandbox"];
         
         pushCommManager = [[PushCommunicationManager alloc] initWithUsername:username andPassword:password];
     }
@@ -138,7 +136,6 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
         completionHandler(accountSid);
         return;
     }
-    RCLogError("Rescomm Account email is nil or empty.");
     
     //Account sid is not found, we need to ask server for it
     [pushCommManager getAccountSidWithRequestForEmail:rescommAccountEmail andCompletionHandler:^(NSString *accountSid, NSError *error) {
@@ -229,7 +226,14 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
                 NSString *certificate =  [NSString stringWithContentsOfFile:certificatePublicPath encoding:NSUTF8StringEncoding error:NULL];
                 NSString *privateKey =  [NSString stringWithContentsOfFile:certificatePrivatePath encoding:NSUTF8StringEncoding error:NULL];
                 
-                [pushCommManager createCredentialsWithCertificate:certificate privateKey:privateKey applicationSid:applicationSid friendlyName:friendlyName isSendBox:sandbox andCompletionHandler:^(NSString *credentialsSid, NSError *error) {
+            
+                
+                // Get NSString from NSData object in Base64
+                NSString *base64Certificate = [[certificate dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+                NSString *base64PrivateKey = [[privateKey dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+                
+                
+                [pushCommManager createCredentialsWithCertificate:base64Certificate privateKey:base64PrivateKey applicationSid:applicationSid friendlyName:friendlyName andCompletionHandler:^(NSString *credentialsSid, NSError *error) {
                     if (error){
                         RCLogError([error.localizedDescription UTF8String]);
                         completionHandler(nil);

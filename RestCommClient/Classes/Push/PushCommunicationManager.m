@@ -230,7 +230,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     }] resume];
 }
 
-- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName isSendBox:(BOOL)sendbox andCompletionHandler:(void (^)(NSString *credentialsSid, NSError *error))completionHandler{
+- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName andCompletionHandler:(void (^)(NSString *credentialsSid, NSError *error))completionHandler{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
@@ -240,9 +240,6 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     [nameDictionary setObject:@"apn" forKey:@"CredentialType"];
     [nameDictionary setObject:certificate forKey:@"Certificate"];
     [nameDictionary setObject:privateKey forKey:@"PrivateKey"];
-    if (sendbox){
-        [nameDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"Sandbox"];
-    }
     
     NSError *jsonSerializationError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];

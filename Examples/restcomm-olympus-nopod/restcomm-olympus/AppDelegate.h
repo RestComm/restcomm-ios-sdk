@@ -28,8 +28,9 @@
 #import "ContactDetailsTableViewController.h"
 #import "SipSettingsTableViewController.h"
 #import "RCUtilities.h"
+#import <PushKit/PushKit.h>
 
-@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, UNUserNotificationCenterDelegate,CallDelegate,
+@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, PKPushRegistryDelegate, CallDelegate,
 ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

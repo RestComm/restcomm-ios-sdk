@@ -37,7 +37,7 @@
 
 - (void)getCredentialsSidWithCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
-- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName isSendBox:(BOOL)sendbox andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
+- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
 - (void)checkExistingBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler;
 

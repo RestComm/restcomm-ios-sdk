@@ -29,7 +29,7 @@
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
 		A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666481F787EEE003305CF /* certificate_key_push.pem */; };
 		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
-		A9A117F41F7726DD000A83B3 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9A117F31F7726DC000A83B3 /* UserNotifications.framework */; };
+		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -240,6 +240,7 @@
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A96666481F787EEE003305CF /* certificate_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
 		A96666491F787EFC003305CF /* rsa_private_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
+		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
@@ -451,7 +452,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9A117F41F7726DD000A83B3 /* UserNotifications.framework in Frameworks */,
+				A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */,
 				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
@@ -601,6 +602,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A973B9991F7D135A00F16010 /* PushKit.framework */,
 				A9A117F31F7726DC000A83B3 /* UserNotifications.framework */,
 				A94A1B841F6A7E790034352E /* MessageUI.framework */,
 				A94A1B821F6A7E330034352E /* Messages.framework */,

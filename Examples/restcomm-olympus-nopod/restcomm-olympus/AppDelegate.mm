@@ -25,6 +25,10 @@
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
 
+@interface AppDelegate()
+@property (nonatomic, strong) PKPushRegistry * voipRegistry;
+@end
+
 @implementation AppDelegate
 
 #pragma mark - AppDelegate lifecycle methods
@@ -37,11 +41,11 @@
     // Override point for customization after application launch.
     //[TestFairy begin:@"#TESTFAIRY_APP_TOKEN"];
     
-    //register to RCDevice
-    [self registerRCDevice];
-    
     //register for the push notification
     [self registerForPush];
+    
+    //register to RCDevice
+    [self registerRCDevice];
     
     return YES;
 }
@@ -144,6 +148,11 @@
     } else {
         [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
     }
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:
+                                                                         UIUserNotificationTypeAlert|
+                                                                         UIUserNotificationTypeBadge|
+                                                                         UIUserNotificationTypeSound categories:nil]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -336,85 +345,38 @@
 #pragma mark - Push Notification
 
 - (void)registerForPush{
-    float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if(ver >= 10)
-    {
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        center.delegate = self;
-        [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error)
-         {
-             if( !error )
-             {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
-                 });
-                 
-                 NSLog( @"Push registration success." );
-             }
-             else
-             {
-                 NSLog( @"Push registration FAILED" );
-                 NSLog( @"ERROR: %@ - %@", error.localizedFailureReason, error.localizedDescription );
-                 NSLog( @"SUGGESTIONS: %@ - %@", error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
-             }
-         }];
-    } else {
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    }
+    [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    // Create a push registry object
+    self.voipRegistry = [[PKPushRegistry alloc] initWithQueue: mainQueue];
+    // Set the registry's delegate to self
+    self.voipRegistry.delegate = self;
+    // Set the push type to VoIP
+    self.voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken{
-    NSString * deviceTokenString = [[[[deviceToken description]
+// Handle updated push credentials
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials: (PKPushCredentials *)credentials forType:(NSString *)type {
+    if([credentials.token length] == 0) {
+        NSLog(@"voip token NULL");
+        return;
+    }
+    NSString * deviceTokenString = [[[[credentials.token description]
                                       stringByReplacingOccurrencesOfString: @"<" withString: @""]
                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"The generated device token string is : %@",deviceTokenString);
-    
-    
-    //register to push to server
-#warning Uncomment this when we have server version ready
-//    NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
-//    NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
-//    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-//                                @"Olympus", @"friendly-name",
-//                                @"USER_NAME", @"username",
-//                                @"PASSWORD", @"password",
-//                                @"EMAIL", @"rescomm-account-email",
-//                                deviceTokenString, @"token",
-//                                pushCertificatesPathPublic, @"push-certificate-public-path",
-//                                pushCertificatesPathPrivate, @"push-certificate-private-path",
-//                                [NSNumber numberWithBool:YES], @"Sandbox", nil];
-    
+    //save token to user defaults
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:deviceTokenString forKey:@"deviceToken"];
+}
+
+// Handle incoming pushes
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type {
+ // Process the received push
+    NSLog(@"");
 }
 
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    NSLog(@"Did Fail to Register for Remote Notifications");
-    NSLog(@"%@, %@", error, error.localizedDescription);
-}
-
-#pragma mark - UNUserNotificationCenter Delegate
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-       willPresentNotification:(UNNotification *)notification
-         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-{
-    NSLog( @"Handle push from foreground" );
-    if (self.device.state == RCDeviceStateOffline){
-        [self register];
-        //show call for example...
-    }
-    
-}
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)())completionHandler
-{
-    NSLog( @"Handle push from background or closed" );
-  
-}  
 
 @end
