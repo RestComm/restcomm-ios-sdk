@@ -36,6 +36,7 @@
 @property RCDevice * device;
 @property AVAudioPlayer * ringingPlayer;
 @property AVAudioPlayer * callingPlayer;
+
 @property BOOL cancelPending;
 @end
 
@@ -169,6 +170,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self.ringingPlayer stop];
         self.ringingPlayer.currentTime = 0.0;
     }
+   
     
     [self handleDisconnected];
 }
@@ -299,6 +301,32 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         [self.callingPlayer stop];
         self.callingPlayer.currentTime = 0.0;
     }
+    
+    // We want to tell to delegate that connection is declined immediately
+    // so, we need to play busy tone i new thread because we dont know what client will do
+    // for example, if set instance on connection to nil, the sound will not be played
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        AVAudioPlayer * busyPlayer;
+        // busy
+        NSString *filename = @"busy_tone_sample.mp3";
+        // we are assuming the extension will always be the last 3 letters of the filename
+        NSString *file = [[NSBundle mainBundle] pathForResource:[filename substringToIndex:[filename length] - 3 - 1]
+                                                         ofType:[filename substringFromIndex:[filename length] - 3]];
+        
+        if (file) {
+            busyPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:file] error:&error];
+            if (!busyPlayer) {
+                NSLog(@"Error: %@", [error description]);
+                return;
+            }
+            [busyPlayer play];
+            sleep(busyPlayer.duration);
+        }
+        
+       
+    });
+    
     self.state = RCConnectionStateDisconnected;
     [self.delegate connectionDidGetDeclined:self];
     self.device.state = RCDeviceStateReady;
@@ -398,6 +426,7 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         }
         self.callingPlayer.numberOfLoops = -1; // repeat forever
     }
+
 }
 
 @end
