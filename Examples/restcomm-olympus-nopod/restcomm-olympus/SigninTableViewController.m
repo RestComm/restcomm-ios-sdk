@@ -36,8 +36,14 @@
     [super viewWillAppear:animated];
     if (![Utils isFirstTime]) {
         // Open message view if not already opened
+        // initialize RCDEvice
+        RCDevice *rcDevice = [self registerRCDevice];
         // register push
-        [self registerForPushWithAccount:@"USERNAME_" password:@"PASSWORD_" andEmail:@"EMAIL_"];
+        
+        NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", [Utils sipIdentification]];
+        
+        [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
         MainTableViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"contacts-controller"];
         [self.navigationController pushViewController:mainViewController animated:NO];
@@ -94,21 +100,29 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //Register for push
-    [self registerForPushWithAccount:@"USERNAME_" password:@"PASSWORD_" andEmail:@"EMAIL_"];
-    
     [Utils updateSipIdentification:_usernameText.text];
     [Utils updateSipPassword:_passwordText.text];
     [Utils updateSipRegistrar:_domainText.text];
     [Utils updateIsFirstTime:NO];
+    
+    // initialize RCDEvice
+    RCDevice *rcDevice = [self registerRCDevice];
+    // register push
+    NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", _usernameText.text];
+    [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
 }
 
+- (RCDevice *)registerRCDevice{
+    //get device instance from App delegate
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    return [appDelegate registerRCDevice];
+}
 
-- (void)registerForPushWithAccount:(NSString *)account password:(NSString *)password andEmail:(NSString *)email{
+- (void)registerForPushWithAccount:(NSString *)account withRCDevice:(RCDevice *)rcDevice password:(NSString *)password andEmail:(NSString *)email{
     //get token from user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSString *deviceToken = [appDefaults objectForKey:@"deviceToken"];
-    if (deviceToken){
+    if (deviceToken && rcDevice){
         //get certificate strings
         NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
         NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
@@ -123,15 +137,12 @@
                                     deviceToken, @"token",
                                     pushCertificatesPathPublic, @"push-certificate-public-path",
                                     pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                    [NSNumber numberWithBool:YES], @"Sandbox", nil];
+                                    [NSNumber numberWithBool:YES], @"is-sandbox", nil];
         
-        //get device instance from App delegate
-        AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
-        if (appDelegate.device){
-            [appDelegate.device registerPushToken:dic];
-        }
+        [rcDevice registerPushToken:dic];
+        
     } else {
-        NSLog(@"Device Voip push token not found.");
+        NSLog(@"Device Voip push token not found, or RCDevice not initialized");
     }
 }
 

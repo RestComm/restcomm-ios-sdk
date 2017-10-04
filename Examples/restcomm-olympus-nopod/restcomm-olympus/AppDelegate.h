@@ -34,10 +34,10 @@
 ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property BOOL isInitialized;
-@property BOOL isRegistered;
 @property (nonatomic,retain) RCDevice* device;
 @property NSMutableDictionary * parameters;
 @property RCDeviceState previousDeviceState;
+
+- (RCDevice *)registerRCDevice;
 
 @end

@@ -182,7 +182,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
             NSString *iceDomain = [_parameters objectForKey:@"ice-domain"];
             if (!iceDomain || iceDomain.length == 0){
                  RCLogNotice("ice-domain not found");
-                 iceDomain = @"cloud.restcomm.com";
+                 iceDomain = @"staging.restcomm.com";
             }
             
              switch (iceConfigType) {

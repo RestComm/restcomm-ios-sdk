@@ -33,6 +33,7 @@
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
+		A9FD9E9E1F83D2670026255E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9A117F31F7726DC000A83B3 /* UserNotifications.framework */; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
@@ -246,6 +247,7 @@
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
 		A9CA4D821F5F33380005A553 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9FD9E9E1F83D2670026255E /* UserNotifications.framework in Frameworks */,
 				A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */,
 				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
@@ -602,6 +605,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */,
 				A973B9991F7D135A00F16010 /* PushKit.framework */,
 				A9A117F31F7726DC000A83B3 /* UserNotifications.framework */,
 				A94A1B841F6A7E790034352E /* MessageUI.framework */,

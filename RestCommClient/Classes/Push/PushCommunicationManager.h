@@ -33,13 +33,13 @@
 
 - (void)getApplicationSidForFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
-- (void)createApplicationWithFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
+- (void)createApplicationWithFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)isSendbox withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
 
 - (void)getCredentialsSidWithCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
 - (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
 
-- (void)checkExistingBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler;
+- (void)checkExistingBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error))completionHandler;
 
 - (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler;
 

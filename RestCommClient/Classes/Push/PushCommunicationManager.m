@@ -24,10 +24,16 @@
 #import "RestCommClient.h"
 #import "common.h"
 
-NSString *const kSignalingDomain = @"cloud.restcomm.com";
+//NSString *const kSignalingDomain = @"cloud.restcomm.com";
+//NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
+//NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
+//NSString *const kPushDomain = @"push.restcomm.com/push";
+
+NSString *const kSignalingDomain = @"staging.restcomm.com";
 NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
 NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
-NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
+NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
+
 
 @implementation PushCommunicationManager{
     NSString *pUsername;
@@ -61,6 +67,8 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     NSString *encodedEmail = [email stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@", kSignalingDomain, kAccountSidUrl, encodedEmail]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
+    
+    
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
@@ -110,10 +118,11 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
             if ([[dict objectForKey:@"login"] isEqualToString:signalingUsername]){
                 NSString *clientSid = [dict objectForKey:@"sid"];
                 completionHandler(clientSid, nil);
-                break;
+                return;
+
             }
         }
-
+        completionHandler(nil, nil);
     }] resume];
 }
 
@@ -185,12 +194,15 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 
-- (void)createApplicationWithFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler{
+- (void)createApplicationWithFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)isSendbox withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler{
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
     [nameDictionary setObject:friendlyName forKey:@"FriendlyName"];
+    if (isSendbox){
+        [nameDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"Sandbox"];
+    }
     
     NSError *jsonSerializationError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];
@@ -221,7 +233,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         }
         
         if (dict){
-            NSString *applicationSid = [dict objectForKey:@"sid"];
+            NSString *applicationSid = [dict objectForKey:@"Sid"];
             completionHandler(applicationSid, nil);
         } else {
             completionHandler(nil, nil);
@@ -281,28 +293,38 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 
-- (void)checkExistingBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings/%@", kPushDomain, bindingSid]];
+- (void)checkExistingBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error))completionHandler{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
-            completionHandler(error);
+            completionHandler(nil, nil, error);
             return;
         }
         NSError *jsonError = nil;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+        NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
                                                              options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
-        if (dict){
-            NSString *bindingSid = [dict objectForKey:@"Sid"];
-            if (bindingSid && bindingSid.length > 0){
-                completionHandler(nil);
-            } else {
-                completionHandler([self getErrorWithDescription:@"Warning, binding sid not found on server."]);
+                                                                error:&jsonError];
+        if (jsonError) {
+            completionHandler(nil, nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
+            return;
+        }
+        
+        if (jsonArray){
+            //chek to see if user have already sid for Binding type apn
+            NSArray *arr = (NSArray *)jsonArray;
+            for (int i=0; i< arr.count; i++){
+                NSDictionary *dict = arr[i];
+                if ([[dict objectForKey:@"BindingType"] isEqualToString:@"apn"]){
+                    NSString *bindingSid = [dict objectForKey:@"Sid"];
+                    NSString *savedTokenOnServer = [dict objectForKey:@"Address"];
+                    completionHandler(bindingSid, savedTokenOnServer, nil);
+                    return;
+                }
             }
         } else {
-            completionHandler(nil);
+            completionHandler(nil, nil, nil);
         }
     }] resume];
 }

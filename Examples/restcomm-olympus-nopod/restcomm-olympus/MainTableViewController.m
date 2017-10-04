@@ -108,9 +108,19 @@
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //get contacts first time
     [self checkContactsAccess];
+
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
+    // check connectivity
+    [self updateConnectivityState:appDelegate.device.state
+              andConnectivityType:appDelegate.device.connectivityType
+                         withText:@""];
+    
+    //notification handled from app delegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateStatusNotification:)
                                                  name:@"UpdateConnectivityStatus"
@@ -121,8 +131,13 @@
                                                  name:@"ReloadData"
                                                object:nil];
     
+    
 }
 
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
