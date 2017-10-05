@@ -71,7 +71,7 @@ typedef enum {
     ERROR_INITIALIZING_SIGNALING,
     ERROR_SECURE_SIGNALLING,
     ERROR_CODES_MAX,
-    ERRR_PUSH_REGISTSER
+    ERROR_PUSH_REGISTER
 } errorCodes;
 
 @property NSString * errorDomain;

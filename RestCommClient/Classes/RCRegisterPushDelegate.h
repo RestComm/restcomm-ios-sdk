@@ -25,15 +25,11 @@
 @protocol RCRegisterPushDelegate<NSObject>
 @optional
 /**
- *  @abstract Emitted when registering for push notification is successfull
+ *  @abstract Emitted when registering for push notification is done
+ *  @param error if nil, registering for push is successful,
+ *  if error is not nil, registering for push is unsuccessful and error will contain description
  *
  */
-- (void)rcRegisterPushSuccessfully;
-
-/**
- *  @abstract Emitted when registering for push notification was unsuccessful
- *
- */
-- (void)rcRegisterPushError:(NSError *)error;
+- (void)rcRegisteredForPush:(NSError *) error;
 
 @end

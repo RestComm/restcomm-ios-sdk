@@ -400,7 +400,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
 - (NSError *)getErrorWithDescription:(NSString *)description{
     return  [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                       code:ERRR_PUSH_REGISTSER
+                                       code:ERROR_PUSH_REGISTER
                                    userInfo:@{ NSLocalizedDescriptionKey: description}];
 }
 
