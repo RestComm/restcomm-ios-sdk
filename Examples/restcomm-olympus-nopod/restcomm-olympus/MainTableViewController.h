@@ -30,7 +30,7 @@
 
 @interface MainTableViewController : UITableViewController<RCDeviceDelegate, CallDelegate,
 ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate,
-UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, RCRegisterPushDelegate>
 
 
 @property (nonatomic,retain) RCDevice* device;

@@ -222,16 +222,16 @@
         NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                     @"Olympus", @"friendly-name",
-                                    @"USER_NAME", @"username",
+                                    @"USERNAME", @"username",
                                     @"PASSWORD", @"password",
                                     @"EMAIL", @"rescomm-account-email",
                                     token, @"token",
                                     pushCertificatesPathPublic, @"push-certificate-public-path",
                                     pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                    [NSNumber numberWithBool:YES], @"Sandbox", nil];
+                                    [NSNumber numberWithBool:NO], @"Sandbox", nil];
                                     //for the production version Sandbox should be NO
         
-        [self.device registerPushToken:dic];
+        [self.device registerPushToken:dic delegate:self];
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"deviceToken"];
     } else {
         NSLog(@"deviceToken is missing!");
@@ -731,5 +731,16 @@
     [bugButton setFrame:CGRectMake(0, 0, 25, 25)];
     return bugButton;
 }
+
+
+- (void)rcRegisterPushSuccessfully{
+   
+    NSLog(@"Push Register success");
+}
+
+- (void)rcRegisterPushError:(NSError *)error{
+   NSLog(@"Push Register error %@", error.description);
+}
+
 
 @end

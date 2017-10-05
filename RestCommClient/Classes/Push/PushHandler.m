@@ -22,17 +22,21 @@
 
 #import "PushHandler.h"
 #import "common.h"
-#import "PushCommunicationManager.h"
+#import "PushApiManager.h"
+#import "RestCommClient.h"
 
 //keys
 NSString *const kAccountSidKey = @"accountSidKey";
 NSString *const kClientSidKey = @"clientSidKey";
 NSString *const kApplicationSidKey = @"applicationSidKey";
-NSString *const kBindingSidKey = @"bindingSidKey";
 NSString *const kCredentialSidKey = @"credentialSidKey";
 
+@interface PushHandler()
+@property (nonatomic, weak) id<RCRegisterPushDelegate> delegate;
+@end
+
 @implementation PushHandler{
-    PushCommunicationManager *pushCommManager;
+    PushApiManager *pushApiManager;
     NSString *signalingUsername;
     NSString *username;
     NSString *password;
@@ -46,7 +50,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     NSString *certificatePrivatePath;
 }
 
-- (id)initWithParameters:(NSDictionary *)parameters{
+- (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate{
     self = [super init];
     if (self){
         username = [parameters objectForKey:@"username"];
@@ -57,9 +61,10 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
         certificatePrivatePath = [parameters objectForKey:@"push-certificate-private-path"];
         rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
         token = [parameters objectForKey:@"token"];
-        sandbox = [parameters objectForKey:@"is-sandbox"];
+        sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
         
-        pushCommManager = [[PushCommunicationManager alloc] initWithUsername:username andPassword:password];
+        pushApiManager = [[PushApiManager alloc] initWithUsername:username andPassword:password];
+        self.delegate = delegate;
     }
     return self;
 }
@@ -69,7 +74,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
         RCLogError("Push notification token is nil or empty.");
         return;
     }
-    
+    __weak PushHandler *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //before calling the pinding api, we need to get:
         //account sid
@@ -88,46 +93,77 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
                         [self getApplicationSidWithCompletionHandler:^(NSString *applicationSid) {
                             if (applicationSid){
                                 //get credentials sid
-                                [self getCredenitalsSid:applicationSid andWithCompletionHandler:^(NSString *credentialsSid) {
+                                [self getCredentialsSid:applicationSid andWithCompletionHandler:^(NSString *credentialsSid) {
                                     if (credentialsSid){
                                         //check existing binding sid
-                                        [self checkBindingSidWithCompletionHandler:^(NSString *bindingSid) {
-                                            //create the binding object
-                                            Binding *binding = [[Binding alloc] initWithIdentity:clientSid
-                                                                         applicationSid:applicationSid
-                                                                             andAddress:token];
-                                            
-                                            //its and existing sid, we should update sid
-                                            if (bindingSid && bindingSid.length > 0){
-                                                [pushCommManager updateBinding:binding forBindingSid:bindingSid andCompletionHandler:^(NSString *bindingSid, NSError *error) {
-                                                    if (error){
-                                                        RCLogError([error.localizedDescription UTF8String]);
-                                                    }
-                                                    //save binding sid
-                                                    [[NSUserDefaults standardUserDefaults] setObject:bindingSid forKey:kBindingSidKey];
-                                                }];
+                                        [self checkBindingSidWithCompletionHandler:^(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error) {
+                                            if (error){
+                                                RCLogError("Error checking binding sid: %@", error);
+                                                if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushError:)]){
+                                                     [weakSelf.delegate rcRegisterPushError:error];
+                                                }
                                             } else {
-                                                [pushCommManager createBinding:binding andCompletionHandler:^(NSString *bindingSid, NSError *error) {
-                                                    if (error){
-                                                        RCLogError([error.localizedDescription UTF8String]);
+                                                //create the binding object
+                                                Binding *binding = [[Binding alloc] initWithClientSid:clientSid
+                                                                                      applicationSid:applicationSid
+                                                                                          andAddress:token];
+                                                
+                                                //its and existing sid, we should update sid if savedTokenOnServer is different than token
+                                                if (bindingSid && bindingSid.length > 0){
+                                                    if (![savedTokenOnServer isEqualToString:token]){
+                                                        [pushApiManager updateBinding:binding forBindingSid:bindingSid andCompletionHandler:^(NSString *bindingSid, NSError *error) {
+                                                            if (error){
+                                                                if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushError:)]){
+                                                                    [weakSelf.delegate rcRegisterPushError:error];
+                                                                }
+                                                                RCLogError([error.localizedDescription UTF8String]);
+                                                            } else {
+                                                                if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushSuccessfully)]){
+                                                                    [weakSelf.delegate rcRegisterPushSuccessfully];
+                                                                }
+                                                            }
+                                                        }];
                                                     } else {
-                                                        //save binding sid
-                                                        [[NSUserDefaults standardUserDefaults] setObject:bindingSid forKey:kBindingSidKey];
+                                                        RCLogInfo("Binding sid is same on server.");
+                                                        if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushSuccessfully)]){
+                                                            [weakSelf.delegate rcRegisterPushSuccessfully];
+                                                        }
                                                     }
-                                                }];
+                                                } else {
+                                                    [pushApiManager createBinding:binding andCompletionHandler:^(NSString *bindingSid, NSError *error) {
+                                                        if (error){
+                                                            if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushError:)]){
+                                                                [weakSelf.delegate rcRegisterPushError:error];
+                                                            }
+                                                        } else {
+                                                            if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushSuccessfully)]){
+                                                                [weakSelf.delegate rcRegisterPushSuccessfully];
+                                                            }
+                                                        }
+                                                    }];
+                                                }
                                             }
-                                        }];  
+                                            
+                                        }];
+                                    } else {
+                                        [weakSelf formatAndDelegateError: @"CredentialsSid is nil or empty."];
                                     }
                                 }];
+                            } else {
+                                [weakSelf formatAndDelegateError: @"ApplicationSid is nil or empty."];
                             }
                         }];
+                    } else {
+                        [weakSelf formatAndDelegateError: @"ClientSid is nil or empty."];
                     }
                 }];
+            } else {
+                  [weakSelf formatAndDelegateError: @"Account sid is nil or empty."];
             }
         }];
         
     });
-
+    
 }
 
 - (void)getAccountSidWithCompletionHandler:(void (^)(NSString *accountSid))completionHandler{
@@ -138,14 +174,13 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
         completionHandler(accountSid);
         return;
     }
-    RCLogError("Rescomm Account email is nil or empty.");
     
     //Account sid is not found, we need to ask server for it
-    [pushCommManager getAccountSidWithRequestForEmail:rescommAccountEmail andCompletionHandler:^(NSString *accountSid, NSError *error) {
-    
+    [pushApiManager getAccountSidWithRequestForEmail:rescommAccountEmail andCompletionHandler:^(NSString *accountSid, NSError *error) {
+        
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
-             completionHandler(nil);
+            completionHandler(nil);
         } else {
             [appDefaults setObject:accountSid forKey:kAccountSidKey];
             completionHandler(accountSid);
@@ -163,7 +198,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     }
     
     //Client sid is not found, we need to ask server for it
-    [pushCommManager getClientSidWithAccountSid:accountSid signalingUsername:signalingUsername andCompletionHandler:^(NSString *clientSid, NSError *error) {
+    [pushApiManager getClientSidWithAccountSid:accountSid signalingUsername:signalingUsername andCompletionHandler:^(NSString *clientSid, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
             completionHandler(nil);
@@ -178,13 +213,13 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     //check is application id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSString *applicationSid = [appDefaults objectForKey:kApplicationSidKey];
+    
     if (applicationSid && applicationSid.length > 0){
         completionHandler(applicationSid);
         return;
     }
-    
     //Application sid is not found, we need to ask server for it
-    [pushCommManager getApplicationSidForFriendlyName:friendlyName withCompletionHandler:^(NSString *applicationSid, NSError *error) {
+    [pushApiManager getApplicationSidForFriendlyName:friendlyName withCompletionHandler:^(NSString *applicationSid, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
             completionHandler(nil);
@@ -195,7 +230,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
             } else {
                 //there is no application on the server
                 //we should add it : firendlyName
-                [pushCommManager createApplicationWithFriendlyName:friendlyName withCompletionHandler:^(NSString *applicationSid, NSError *error) {
+                [pushApiManager createApplicationWithFriendlyName:friendlyName isSendbox:sandbox withCompletionHandler:^(NSString *applicationSid, NSError *error) {
                     [appDefaults setObject:applicationSid forKey:kApplicationSidKey];
                     completionHandler(applicationSid);
                 }];
@@ -204,7 +239,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     }];
 }
 
-- (void)getCredenitalsSid:(NSString *)applicationSid andWithCompletionHandler:(void (^)(NSString *credentialsSid))completionHandler{
+- (void)getCredentialsSid:(NSString *)applicationSid andWithCompletionHandler:(void (^)(NSString *credentialsSid))completionHandler{
     //check is client id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSString *credentialSid = [appDefaults objectForKey:kCredentialSidKey];
@@ -214,7 +249,7 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     }
     
     //Credentials sid is not found, we need to ask server for it
-    [pushCommManager getCredentialsSidWithCompletionHandler:^(NSString *credentialsSid, NSError *error) {
+    [pushApiManager getCredentialsSidWithCompletionHandler:^(NSString *credentialsSid, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
             completionHandler(nil);
@@ -229,13 +264,20 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
                 NSString *certificate =  [NSString stringWithContentsOfFile:certificatePublicPath encoding:NSUTF8StringEncoding error:NULL];
                 NSString *privateKey =  [NSString stringWithContentsOfFile:certificatePrivatePath encoding:NSUTF8StringEncoding error:NULL];
                 
-                [pushCommManager createCredentialsWithCertificate:certificate privateKey:privateKey applicationSid:applicationSid friendlyName:friendlyName isSendBox:sandbox andCompletionHandler:^(NSString *credentialsSid, NSError *error) {
+                
+                
+                // Get NSString from NSData object in Base64
+                NSString *base64Certificate = [[certificate dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+                NSString *base64PrivateKey = [[privateKey dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+                
+                
+                [pushApiManager createCredentialsWithCertificate:base64Certificate privateKey:base64PrivateKey applicationSid:applicationSid friendlyName:friendlyName andCompletionHandler:^(NSString *credentialsSid, NSError *error) {
                     if (error){
                         RCLogError([error.localizedDescription UTF8String]);
                         completionHandler(nil);
                     } else {
-                        [appDefaults setObject:credentialSid forKey:kCredentialSidKey];
-                        completionHandler(credentialSid);
+                        [appDefaults setObject:credentialsSid forKey:kCredentialSidKey];
+                        completionHandler(credentialsSid);
                     }
                     
                 }];
@@ -244,26 +286,28 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     }];
 }
 
-- (void)checkBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid))completionHandler{
-    //if binding sid is available, we should update
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *bindingSid = [appDefaults objectForKey:kBindingSidKey];
-    if (bindingSid){
-        [pushCommManager checkExistingBindingSid:bindingSid andCompletionHandler:^(NSError *error) {
-            if (error){
-                //sid not found, we should save ni for existing sid
-                [appDefaults setObject:nil forKey:kBindingSidKey];
-                completionHandler(nil);
-                return;
-            }
-            //sid is existing, and its good
-            [appDefaults setObject:bindingSid forKey:kBindingSidKey];
-            completionHandler(bindingSid);
+- (void)checkBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error))completionHandler{
+    [pushApiManager checkExistingBindingSidWithCompletionHandler:^(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error) {
+        if (error){
+            completionHandler(nil, nil, error);
             return;
-        }];
-    } else {
-        completionHandler(nil);
+        }
+        completionHandler(bindingSid, savedTokenOnServer, nil);
+        return;
+    }];
+    
+}
+
+#pragma mark - Helpers
+- (void)formatAndDelegateError:(NSString *)errorDescription{
+    NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                 code:ERRR_PUSH_REGISTSER
+                                             userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisterPushError:)]){
+        [self.delegate rcRegisterPushError:errorForDelegate];
     }
+    RCLogError([errorDescription UTF8String]);
 }
 
 @end
+

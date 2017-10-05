@@ -19,20 +19,3 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
-
-#import "Binding.h"
-
-@implementation Binding
-
-- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address{
-    self = [super init];
-    if (self){
-        _clientSid = clientSid;
-        _applicationSid = applicationSid;
-        _bindingType = @"apn";
-        _address = address;
-    }
-    return self;
-}
-
-@end
