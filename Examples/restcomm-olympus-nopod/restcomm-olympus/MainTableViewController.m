@@ -29,16 +29,15 @@
 #import "ContactUpdateTableViewController.h"
 
 #import "ToastController.h"
-#import "RestCommClient.h"
 #import "RCUtilities.h"
 #import "Utils.h"
 
 #import <Contacts/Contacts.h>
 #import "LocalContact.h"
+#import "AppDelegate.h"
 
 
 @interface MainTableViewController () 
-@property RCDeviceState previousDeviceState;
 
 @property (nonatomic, strong) CNContactStore *contactsStore;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
@@ -47,18 +46,18 @@
 @property (nonatomic, strong) NSMutableArray *filteredContactsData;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) UISearchController * searchController;
-
 @end
 
-@implementation MainTableViewController
-
+@implementation MainTableViewController{
+   AppDelegate *appDelegate;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
     
     UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                                         forBarMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = grey;
     
     //set button bar
@@ -83,8 +82,6 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.isRegistered = NO;
-    self.isInitialized = NO;
     
     self.contactsData = [[NSArray alloc] init];
     self.displayedContacts = [self.contactsData mutableCopy];
@@ -103,83 +100,7 @@
     self.definesPresentationContext = YES;
 
     [self.searchController.searchBar sizeToFit];
-    
     self.tableView.tableHeaderView = self.searchController.searchBar;
-    
-    
-    NSString *cafilePath = [[NSBundle mainBundle] pathForResource:@"cafile" ofType:@"pem"];
-
-    
-//we should have those in settings in the future....
-/******************************/
-/* Xirsys v2 */
-/******************************/
-//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-//                       [Utils sipPassword], @"password",
-//                       @([Utils turnEnabled]), @"turn-enabled",
-//                       [Utils turnUrl], @"turn-url",
-//                       @"cloud.restcomm.com", @"ice-domain",
-//                       [Utils turnUsername], @"turn-username",
-//                       [Utils turnPassword], @"turn-password",
-//                       @([Utils signalingSecure]), @"signaling-secure",
-//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
-//                       nil];
-/******************************/
-/* Xirsys v3 */
-/******************************/
-    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-                       [Utils sipPassword], @"password",
-                       @([Utils turnEnabled]), @"turn-enabled",
-                       [Utils turnUrl], @"turn-url",
-                       [Utils turnUsername], @"turn-username",
-                       [Utils turnPassword], @"turn-password",
-                       @"cloud.restcomm.com", @"ice-domain",
-                       @([Utils signalingSecure]), @"signaling-secure",
-                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                       [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
-                       nil];
-/******************************/
- /* Xirsys custom */
-/******************************/
-//    NSDictionary *dictionaryServer = [[NSDictionary alloc] initWithObjectsAndKeys:
-//     @"46560f8e-94a7-11e7-bc4c-SOME_DATA", @"username",
-//     @"turn:Server:80?transport=udp", @"url",
-//     @"4656101a-94a7-11e7-97SOME_DATA", @"credential",
-//     nil];
-//    
-//    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                                       @"stun:Server",@"url", nil];
-//    
-//    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-//                    [Utils sipPassword], @"password",
-//                      @([Utils turnEnabled]), @"turn-enabled",
-//                      @([Utils signalingSecure]), @"signaling-secure",
-//                      [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-//                      [NSNumber numberWithInt:(int)kCustom] , @"ice-config-type",
-//                      @[dictionaryServer, dictionaryServer2] , @"ice-servers",
-//                      nil];
-/******************************/
-   
-    [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
-    
-    // initialize RestComm Client by setting up an RCDevice
-    self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
-    
-    if (self.device.state == RCDeviceStateOffline) {
-        [self updateConnectivityStatus:self.device.state
-                   andConnectivityType:self.device.connectivityType
-                              withText:@""];
-    }
-    else {
-        [self updateConnectivityStatus:self.device.state
-                   andConnectivityType:self.device.connectivityType
-                              withText:@""];
-    }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.contactsStore = [[CNContactStore alloc] init];
 
@@ -187,153 +108,67 @@
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //get contacts first time
     [self checkContactsAccess];
+
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    // check connectivity
+    [self updateConnectivityState:appDelegate.device.state
+              andConnectivityType:appDelegate.device.connectivityType
+                         withText:@""];
+    
+    //notification handled from app delegate
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateStatusNotification:)
+                                                 name:@"UpdateConnectivityStatus"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadData:)
+                                                 name:@"ReloadData"
+                                               object:nil];
+    
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Local notification
+
+- (void)updateStatusNotification:(NSNotification *) notification{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    RCDeviceState state = (RCDeviceState)[[userInfo valueForKey:@"state"] intValue];
+    RCDeviceConnectivityType status = (RCDeviceConnectivityType)[[userInfo valueForKey:@"status"] intValue];
+    
+    [self updateConnectivityState:state
+              andConnectivityType:status
+                         withText:[userInfo objectForKey:@"text"]];
+    
+}
+
+- (void)reloadData:(NSNotification *) notification{
+    [self reloadData];
+}
 
 - (void)appWillEnterForeground:(NSNotification *)notification{
     //get contacts everytime app is back from background, maybe some contacts are updated/added
     [self checkContactsAccess];
 }
 
+#pragma mark - Update connectivity state notification
 
-#pragma mark - UI events
-
-- (void)register:(NSNotification *)notification
-{
-      if (self.device && self.isInitialized) {
-        [self register];
-    }
-}
-
-- (void)register
-{
-    [self.device listen];
-    self.isRegistered = YES;
-}
-
-- (void)unregister:(NSNotification *)notification
-{
-    [self.device unlisten];
-    self.isRegistered = NO;
-}
-
-#pragma mark - Delegate methods for RCDeviceDelegate
-
-- (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
-{
-    //NSLog(@"------ didStopListeningForIncomingConnections: error: %p", error);
-    // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
-    if (error) {
-        [self updateConnectivityStatus:device.state
-                   andConnectivityType:device.connectivityType
-                              withText:error.localizedDescription];
-    }
-}
-
-- (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
-{
-    self.isInitialized = YES;
-    self.isRegistered = YES;
-    
-    [self updateConnectivityStatus:device.state
-               andConnectivityType:device.connectivityType
-                          withText:nil];
-    
-    NSString * pendingInterapUri = [Utils pendingInterappUri];
-    if (pendingInterapUri && ![pendingInterapUri isEqualToString:@""]) {
-        // we have a request from another iOS to make a call to the passed URI
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-        CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
-        
-        callViewController.delegate = self;
-        callViewController.device = self.device;
-        callViewController.parameters = [[NSMutableDictionary alloc] init];
-        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
-        
-        // search through the contacts if the given URI is known and if so use its alias, if not just use the URI
-        LocalContact *localContact = [Utils getContactForSipUri:pendingInterapUri];
-        NSString * alias;
-        if (!localContact) {
-            alias = pendingInterapUri;
-        } else {
-            alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
-        }
-        [callViewController.parameters setObject:alias forKey:@"alias"];
-        [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
-        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
-        
-        [self presentViewController:callViewController animated:YES completion:nil];
-        
-        // clear it so that it doesn't pop again
-        [Utils updatePendingInterappUri:@""];
-    }
-}
-
-// received incoming message
-- (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
-{
-    // Open message view if not already opened
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    if (![self.navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
-        MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-        //messageViewController.delegate = self;
-        messageViewController.device = self.device;
-        messageViewController.delegate = self;
-        messageViewController.parameters = [[NSMutableDictionary alloc] init];
-        [messageViewController.parameters setObject:message forKey:@"message-text"];
-        [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
-        [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
-        [messageViewController.parameters setObject:[RCUtilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
-        
-        messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController pushViewController:messageViewController animated:YES];
-    }
-    else {
-        // message view already opened, just append
-        MessageTableViewController * messageViewController = (MessageTableViewController*)self.navigationController.visibleViewController;
-        [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
-    }
-}
-
-// 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
-- (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
-{
-    // Open call view
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-    CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
-    callViewController.delegate = self;
-    callViewController.device = self.device;
-    callViewController.pendingIncomingConnection = connection;
-    callViewController.pendingIncomingConnection.delegate = callViewController;
-    callViewController.parameters = [[NSMutableDictionary alloc] init];
-    [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"] forKey:@"username"];
-    // try to 'resolve' the from to the contact name if we do have a contact for that
-    LocalContact *localContact = [Utils getContactForSipUri:[connection.parameters objectForKey:@"from"]];
-    NSString * alias;
-    if (!localContact) {
-        alias = [connection.parameters objectForKey:@"from"];
-    } else {
-       alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
-    }
-    
-    [callViewController.parameters setObject:alias forKey:@"alias"];
-    
-    // TODO: change this once I implement the incoming call caller id
-    //[callViewController.parameters setObject:@"CHANGEME" forKey:@"username"];
-    
-    callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:callViewController
-                       animated:YES
-                     completion:nil];
-}
-
-- (void)updateConnectivityStatus:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
-{
+- (void)updateConnectivityState:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text{
     //NSLog(@"------ updateConnectivityStatus: status: %d, text: %@", status, text);
     NSString * imageName = @"inapp-icon-28x28.png";
     
@@ -374,45 +209,13 @@
     
     self.navigationItem.leftBarButtonItems = itemsArray;
     
+    
     if (![text isEqualToString:@""] ||
-        (![text isEqualToString:@""] && status != self.previousDeviceState)) {
+        (![text isEqualToString:@""] && status != appDelegate.previousDeviceState)) {
         
         // Let's use toast notifications that are much more suitable now that we implemented them
         [[ToastController sharedInstance] showToastWithText:text withDuration:2.0];
     }
-    self.previousDeviceState = state;
-}
-#pragma mark - ContactUpdateDelegate method
-
-- (void)contactUpdateViewController:(ContactUpdateTableViewController*)contactUpdateViewController
-          didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
-{
-    [self reloadData];
-}
-
-#pragma mark - ContactDetailsDelegate method
-
-- (void)contactDetailsViewController:(ContactDetailsTableViewController*)contactDetailsViewController
-           didUpdateContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
-{
-    [self reloadData];
-}
-
-#pragma mark - MessageDelegate method
-
-- (void)messageViewController:(MessageTableViewController*)messageViewController
-       didAddContactWithAlias:(NSString *)alias sipUri:(NSString*)sipUri
-{
-    [self reloadData];
-}
-
-#pragma mark - SipSettingsDelegate method
-// User requested new registration in 'Settings'
-- (void)sipSettingsTableViewController:(SipSettingsTableViewController*)sipSettingsTableViewController didUpdateRegistrationWithString:(NSString *)registrar
-{
-    [self updateConnectivityStatus:RCDeviceStateOffline
-               andConnectivityType:RCDeviceConnectivityTypeNone
-                          withText:@""];
 }
 
 #pragma mark - Table view data source
@@ -491,6 +294,7 @@
 }
 
 #pragma mark - AccessoryView button tap
+
 - (void)checkButtonTapped:(id)sender event:(id)event
 {
     NSSet *touches = [event allTouches];
@@ -517,12 +321,12 @@
     
     if ([segue.identifier isEqualToString:@"invoke-settings"]) {
         SettingsTableViewController * settingsTableViewController = [segue destinationViewController];
-        settingsTableViewController.device = self.device;
+        settingsTableViewController.device = appDelegate.device;
     }
     
     if ([segue.identifier isEqualToString:@"invoke-create-contact"]) {
         ContactUpdateTableViewController *contactUpdateViewController = [segue destinationViewController];
-        contactUpdateViewController.delegate = self;
+        contactUpdateViewController.delegate = appDelegate;
     }
     
     if ([segue.identifier isEqualToString:@"invoke-messages"]){
@@ -531,8 +335,8 @@
             NSString *username = [contact.phoneNumbers objectAtIndex:0];
             
             MessageTableViewController *messageViewController = [segue destinationViewController];
-            messageViewController.device = self.device;
-            messageViewController.delegate = self;
+            messageViewController.device = appDelegate.device;
+            messageViewController.delegate = appDelegate;
             
             messageViewController.parameters = [[NSMutableDictionary alloc] init];
             
@@ -543,8 +347,8 @@
   
     if ([segue.identifier isEqualToString:@"invoke-details"]) {
         ContactDetailsTableViewController *contactDetailsTableViewController = [segue destinationViewController];
-        contactDetailsTableViewController.device = self.device;
-        contactDetailsTableViewController.delegate = self;
+        contactDetailsTableViewController.device = appDelegate.device;
+        contactDetailsTableViewController.delegate = appDelegate;
         contactDetailsTableViewController.localContact = contact;
     }
 }
@@ -555,7 +359,7 @@
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     SettingsTableViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"settings-view-controller"];
-    settingsViewController.device = self.device;
+    settingsViewController.device = appDelegate.device;
     
     [self.navigationController pushViewController:settingsViewController animated:YES];
     

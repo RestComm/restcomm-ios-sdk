@@ -21,9 +21,23 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
+#import "RestCommClient.h"
+#import "MessageTableViewController.h"
+#import "ContactUpdateTableViewController.h"
+#import "ContactDetailsTableViewController.h"
+#import "SipSettingsTableViewController.h"
+#import "RCUtilities.h"
+#import <PushKit/PushKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, PKPushRegistryDelegate, CallDelegate,
+ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic,retain) RCDevice* device;
+@property NSMutableDictionary * parameters;
+@property RCDeviceState previousDeviceState;
+
+- (RCDevice *)registerRCDevice;
 
 @end

@@ -28,9 +28,13 @@
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
+		A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666481F787EEE003305CF /* certificate_key_push.pem */; };
+		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
+		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
+		A9FD9E9E1F83D2670026255E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9A117F31F7726DC000A83B3 /* UserNotifications.framework */; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
@@ -123,7 +127,7 @@
 		AE87C2D61DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87C2D31DAE4CEB0064624B /* inapp-grey-icon-28x28@2x.png */; };
 		AE87C2D71DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87C2D41DAE4CEB0064624B /* inapp-grey-icon-28x28@3x.png */; };
 		AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495671C2997F6000D9762 /* AboutTableViewController.m */; };
-		AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495691C2997F6000D9762 /* AppDelegate.m */; };
+		AEA496031C2997F6000D9762 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA495691C2997F6000D9762 /* AppDelegate.mm */; };
 		AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */; };
 		AEA496051C2997F6000D9762 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA4956C1C2997F6000D9762 /* Main_iPad.storyboard */; };
 		AEA496061C2997F6000D9762 /* Main_Universal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA4956E1C2997F6000D9762 /* Main_Universal.storyboard */; };
@@ -170,7 +174,7 @@
 		AEA496671C2997F6000D9762 /* LocalMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DA1C2997F6000D9762 /* LocalMessageTableViewCell.m */; };
 		AEA496681C2997F6000D9762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DB1C2997F6000D9762 /* main.m */; };
 		AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DD1C2997F6000D9762 /* MainNavigationController.m */; };
-		AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */; };
+		AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.m */; };
 		AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E11C2997F6000D9762 /* MessageTableViewController.m */; };
 		AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */; };
 		AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */; };
@@ -237,10 +241,15 @@
 		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A96666481F787EEE003305CF /* certificate_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
+		A96666491F787EFC003305CF /* rsa_private_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
+		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
+		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
 		A9CA4D821F5F33380005A553 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
@@ -341,7 +350,7 @@
 		AEA495661C2997F6000D9762 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		AEA495671C2997F6000D9762 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		AEA495681C2997F6000D9762 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		AEA495691C2997F6000D9762 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AEA495691C2997F6000D9762 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		AEA4956A1C2997F6000D9762 /* ARDVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDVideoCallView.h; sourceTree = "<group>"; };
 		AEA4956B1C2997F6000D9762 /* ARDVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDVideoCallView.m; sourceTree = "<group>"; };
 		AEA4956D1C2997F6000D9762 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -397,7 +406,7 @@
 		AEA495DC1C2997F6000D9762 /* MainNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainNavigationController.h; sourceTree = "<group>"; };
 		AEA495DD1C2997F6000D9762 /* MainNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainNavigationController.m; sourceTree = "<group>"; };
 		AEA495DE1C2997F6000D9762 /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
-		AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainTableViewController.mm; sourceTree = "<group>"; };
+		AEA495DF1C2997F6000D9762 /* MainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewController.m; sourceTree = "<group>"; };
 		AEA495E01C2997F6000D9762 /* MessageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewController.h; sourceTree = "<group>"; };
 		AEA495E11C2997F6000D9762 /* MessageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewController.m; sourceTree = "<group>"; };
 		AEA495E21C2997F6000D9762 /* RemoteMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessageTableViewCell.h; sourceTree = "<group>"; };
@@ -447,6 +456,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9FD9E9E1F83D2670026255E /* UserNotifications.framework in Frameworks */,
+				A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */,
 				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
@@ -492,7 +503,7 @@
 				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
 				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
 				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
-				AEA495DF1C2997F6000D9762 /* MainTableViewController.mm */,
+				AEA495DF1C2997F6000D9762 /* MainTableViewController.m */,
 				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
 				AEA495E11C2997F6000D9762 /* MessageTableViewController.m */,
 				AEA495E61C2997F6000D9762 /* SettingsTableViewController.h */,
@@ -567,6 +578,8 @@
 			children = (
 				AE3E52C41C57BB7B0057F5D0 /* agent.pem */,
 				AE3E52C51C57BB7B0057F5D0 /* cafile.pem */,
+				A96666481F787EEE003305CF /* certificate_key_push.pem */,
+				A96666491F787EFC003305CF /* rsa_private_key_push.pem */,
 			);
 			path = cert;
 			sourceTree = "<group>";
@@ -594,6 +607,9 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */,
+				A973B9991F7D135A00F16010 /* PushKit.framework */,
+				A9A117F31F7726DC000A83B3 /* UserNotifications.framework */,
 				A94A1B841F6A7E790034352E /* MessageUI.framework */,
 				A94A1B821F6A7E330034352E /* Messages.framework */,
 				A9CA4D821F5F33380005A553 /* Contacts.framework */,
@@ -619,7 +635,7 @@
 				AEA4956E1C2997F6000D9762 /* Main_Universal.storyboard */,
 				AEA495D41C2997F6000D9762 /* InputAccessoryFragment.xib */,
 				AEA495681C2997F6000D9762 /* AppDelegate.h */,
-				AEA495691C2997F6000D9762 /* AppDelegate.m */,
+				AEA495691C2997F6000D9762 /* AppDelegate.mm */,
 				AEA495DB1C2997F6000D9762 /* main.m */,
 				AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */,
 				AEA495E51C2997F6000D9762 /* restcomm-olympus-Prefix.pch */,
@@ -875,10 +891,10 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -912,6 +928,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */,
+				A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */,
 				AEA4967D1C2997F6000D9762 /* ringing.mp3 in Resources */,
 				AE61A40F1DA69AD900347504 /* two-digit-74x74.png in Resources */,
 				AEA496051C2997F6000D9762 /* Main_iPad.storyboard in Resources */,
@@ -1155,11 +1173,11 @@
 				AEA496681C2997F6000D9762 /* main.m in Sources */,
 				AEA496651C2997F6000D9762 /* InputAccessoryProxyView.m in Sources */,
 				A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */,
-				AEA496031C2997F6000D9762 /* AppDelegate.m in Sources */,
+				AEA496031C2997F6000D9762 /* AppDelegate.mm in Sources */,
 				AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */,
 				AEA496071C2997F6000D9762 /* CallViewController.m in Sources */,
 				AEA496091C2997F6000D9762 /* ContactUpdateTableViewController.m in Sources */,
-				AEA4966A1C2997F6000D9762 /* MainTableViewController.mm in Sources */,
+				AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */,
 				AE155F541CCF8658002F404E /* ToastController.m in Sources */,
 				AECA05531C7772F800EB9737 /* SigninTableViewController.m in Sources */,
 				AEA496081C2997F6000D9762 /* ContactDetailsTableViewController.m in Sources */,
@@ -1329,9 +1347,11 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = "restcomm-olympus/restcomm-olympus.entitlements";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";
@@ -1369,9 +1389,11 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = "restcomm-olympus/restcomm-olympus.entitlements";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "restcomm-olympus/restcomm-olympus-Prefix.pch";

@@ -107,8 +107,16 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This App uses the camera for video calls</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This App requires contacts access</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This App uses the microphone for audio and video calls</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+		<string>voip</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_Universal</string>
 	<key>UIMainStoryboardFile~ipad</key>
@@ -121,8 +129,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSContactsUsageDescription</key>
-	<string>This App requires contacts access</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

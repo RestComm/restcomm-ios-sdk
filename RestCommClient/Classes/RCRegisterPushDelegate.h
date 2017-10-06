@@ -20,13 +20,16 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+@protocol RCRegisterPushDelegate<NSObject>
+@optional
+/**
+ *  @abstract Emitted when registering for push notification is done
+ *  @param error if nil, registering for push is successful,
+ *  if error is not nil, registering for push is unsuccessful and error will contain description
+ *
+ */
+- (void)registeredForPush:(NSError *) error;
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 @end

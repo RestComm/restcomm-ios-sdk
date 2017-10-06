@@ -10,6 +10,7 @@
 #import "MainTableViewController.h"
 #import "Utils.h"
 #import "RCUtilities.h"
+#import "AppDelegate.h"
 
 @interface SigninTableViewController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *usernameText;
@@ -35,11 +36,17 @@
     [super viewWillAppear:animated];
     if (![Utils isFirstTime]) {
         // Open message view if not already opened
+        // initialize RCDEvice
+        RCDevice *rcDevice = [self registerRCDevice];
+        // register push
+        
+        NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", [Utils sipIdentification]];
+        
+        [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
         MainTableViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"contacts-controller"];
         [self.navigationController pushViewController:mainViewController animated:NO];
-        //NSArray * viewControllers = [NSArray arrayWithObjects:mainViewController, nil];
-        //[self.navigationController setViewControllers:viewControllers];
     }
     self.usernameText.text = [Utils sipIdentification];
     self.passwordText.text = [Utils sipPassword];
@@ -97,60 +104,51 @@
     [Utils updateSipPassword:_passwordText.text];
     [Utils updateSipRegistrar:_domainText.text];
     [Utils updateIsFirstTime:NO];
-}
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
-    
-    return cell;
+    // initialize RCDEvice
+    RCDevice *rcDevice = [self registerRCDevice];
+    // register push
+    NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", _usernameText.text];
+    [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (RCDevice *)registerRCDevice{
+    //get device instance from App delegate
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    return [appDelegate registerRCDevice];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)registerForPushWithAccount:(NSString *)account withRCDevice:(RCDevice *)rcDevice password:(NSString *)password andEmail:(NSString *)email{
+    //get token from user defaults
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceToken = [appDefaults objectForKey:@"deviceToken"];
+    if (deviceToken && rcDevice){
+        //get certificate strings
+        NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+        NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+        
+      
+
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                    @"Olympus", @"friendly-name",
+                                    account, @"username",
+                                    password, @"password",
+                                    email, @"rescomm-account-email",
+                                    deviceToken, @"token",
+                                    pushCertificatesPathPublic, @"push-certificate-public-path",
+                                    pushCertificatesPathPrivate, @"push-certificate-private-path",
+                                    [NSNumber numberWithBool:NO], @"is-sandbox", nil];
+        
+        [rcDevice registerPushToken:dic delegate:self];
+        
+    } else {
+        NSLog(@"Device Voip push token not found, or RCDevice not initialized");
+    }
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+-(void)registeredForPush:(NSError *)error{
+    NSLog(@"%@", error?error.description:@"app registered for push");
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

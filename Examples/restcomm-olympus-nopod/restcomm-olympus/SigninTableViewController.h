@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RestCommClient.h"
 
-@interface SigninTableViewController : UITableViewController
+@interface SigninTableViewController : UITableViewController <RCRegisterPushDelegate>
 
 @end

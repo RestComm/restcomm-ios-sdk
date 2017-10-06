@@ -20,13 +20,19 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import "Binding.h"
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+@implementation Binding
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address{
+    self = [super init];
+    if (self){
+        _clientSid = clientSid;
+        _applicationSid = applicationSid;
+        _bindingType = @"apn";
+        _address = address;
+    }
+    return self;
+}
+
 @end

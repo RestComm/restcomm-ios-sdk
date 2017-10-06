@@ -19,14 +19,3 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
-
-#import <UIKit/UIKit.h>
-
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
-
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
-@end

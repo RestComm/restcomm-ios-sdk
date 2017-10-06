@@ -25,6 +25,7 @@
 #import "RCDevice.h"
 #import "RCDeviceDelegate.h"
 #import "RCPresenceEvent.h"
+#import "RCRegisterPushDelegate.h"
 
 #import <Foundation/Foundation.h>
 
@@ -70,6 +71,7 @@ typedef enum {
     ERROR_INITIALIZING_SIGNALING,
     ERROR_SECURE_SIGNALLING,
     ERROR_CODES_MAX,
+    ERROR_PUSH_REGISTER
 } errorCodes;
 
 @property NSString * errorDomain;
