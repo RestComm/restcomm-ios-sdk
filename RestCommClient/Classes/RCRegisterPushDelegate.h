@@ -30,6 +30,6 @@
  *  if error is not nil, registering for push is unsuccessful and error will contain description
  *
  */
-- (void)rcRegisteredForPush:(NSError *) error;
+- (void)registeredForPush:(NSError *) error;
 
 @end

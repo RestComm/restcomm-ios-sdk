@@ -732,7 +732,7 @@
     return bugButton;
 }
 
--(void)rcRegisteredForPush:(NSError *)error{
+-(void)registeredForPush:(NSError *)error{
     NSLog(@"%@", error?error.description:@"app registered for push");
 }
 

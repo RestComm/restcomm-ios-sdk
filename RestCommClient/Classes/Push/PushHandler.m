@@ -99,8 +99,8 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
                                         [self checkBindingSidWithCompletionHandler:^(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error) {
                                             if (error){
                                                 RCLogError("Error checking binding sid: %@", error);
-                                                if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisteredForPush:)]){
-                                                     [weakSelf.delegate rcRegisteredForPush:error];
+                                                if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+                                                     [weakSelf.delegate registeredForPush:error];
                                                 }
                                             } else {
                                                 //create the binding object
@@ -112,20 +112,20 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
                                                 if (bindingSid && bindingSid.length > 0){
                                                     if (![savedTokenOnServer isEqualToString:token]){
                                                         [pushApiManager updateBinding:binding forBindingSid:bindingSid andCompletionHandler:^(NSString *bindingSid, NSError *error) {
-                                                             if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisteredForPush:)]){
-                                                                  [weakSelf.delegate rcRegisteredForPush:error];
+                                                             if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+                                                                  [weakSelf.delegate registeredForPush:error];
                                                              }
                                                         }];
                                                     } else {
                                                         RCLogInfo("Binding sid is same on server.");
-                                                        if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisteredForPush:)]){
-                                                            [weakSelf.delegate rcRegisteredForPush:nil];
+                                                        if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+                                                            [weakSelf.delegate registeredForPush:nil];
                                                         }
                                                     }
                                                 } else {
                                                     [pushApiManager createBinding:binding andCompletionHandler:^(NSString *bindingSid, NSError *error) {
-                                                        if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisteredForPush:)]){
-                                                            [weakSelf.delegate rcRegisteredForPush:error];
+                                                        if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+                                                            [weakSelf.delegate registeredForPush:error];
                                                         }
                                                     }];
                                                 }
@@ -290,8 +290,8 @@ NSString *const kCredentialSidKey = @"credentialSidKey";
     NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
                                                  code:ERROR_PUSH_REGISTER
                                              userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
-    if(self.delegate && [self.delegate respondsToSelector:@selector(rcRegisteredForPush:)]){
-        [self.delegate rcRegisteredForPush:errorForDelegate];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+        [self.delegate registeredForPush:errorForDelegate];
     }
     RCLogError([errorDescription UTF8String]);
 }
