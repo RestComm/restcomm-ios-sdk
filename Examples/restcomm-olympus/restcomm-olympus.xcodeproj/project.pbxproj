@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A914661A1F6C169C00E1F728 /* busy_tone_sample.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */; };
 		A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */; };
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
@@ -233,6 +234,7 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy_tone_sample.mp3; sourceTree = "<group>"; };
 		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
 		A94A1B7F1F6A7E160034352E /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
@@ -793,6 +795,7 @@
 		AEA495EA1C2997F6000D9762 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */,
 				AEA495EB1C2997F6000D9762 /* calling.mp3 */,
 				AEA495EC1C2997F6000D9762 /* dtmf0.wav */,
 				AEA495ED1C2997F6000D9762 /* dtmf1.wav */,
@@ -958,6 +961,7 @@
 				AEA496391C2997F6000D9762 /* message-2-30x30@2x.png in Resources */,
 				AE49514A1C2ABCE9006335CE /* restcomm-logo-call-139x58.png in Resources */,
 				AE61A4171DA69AD900347504 /* zero-digit-74x74@2x.png in Resources */,
+				A914661A1F6C169C00E1F728 /* busy_tone_sample.mp3 in Resources */,
 				AE61A3C31DA6918600347504 /* video-active-50x50@2x.png in Resources */,
 				AEA496381C2997F6000D9762 /* message-2-30x30.png in Resources */,
 				AEA4963F1C2997F6000D9762 /* message-remote-square-43x43@2x.png in Resources */,
