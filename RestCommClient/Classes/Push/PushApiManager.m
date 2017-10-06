@@ -20,22 +20,22 @@
  *
  */
 
-#import "PushCommunicationManager.h"
+#import "PushApiManager.h"
 #import "RestCommClient.h"
 #import "common.h"
 
-//NSString *const kSignalingDomain = @"cloud.restcomm.com";
-//NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
-//NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
-//NSString *const kPushDomain = @"push.restcomm.com/push";
-
-NSString *const kSignalingDomain = @"staging.restcomm.com";
+NSString *const kSignalingDomain = @"cloud.restcomm.com";
 NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
 NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
-NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
+NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
+
+//NSString *const kSignalingDomain = @"staging.restcomm.com";
+//NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
+//NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
+//NSString *const kPushDomain = @"staging.restcomm.com/push";
 
 
-@implementation PushCommunicationManager{
+@implementation PushApiManager{
     NSString *pUsername;
     NSString *pPassword;
     NSURLSession *session;
@@ -98,7 +98,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
 - (void)getClientSidWithAccountSid:(NSString *)accountSid signalingUsername:(NSString *)signalingUsername andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler{
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@/Clients.json", kSignalingDomain, kClientSidUrl, accountSid]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
-
+    
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
             completionHandler(nil, error);
@@ -106,8 +106,8 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
         }
         NSError *jsonError = nil;
         NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&jsonError];
         if (jsonError) {
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing client sid"]);
             return;
@@ -119,7 +119,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
                 NSString *clientSid = [dict objectForKey:@"sid"];
                 completionHandler(clientSid, nil);
                 return;
-
+                
             }
         }
         completionHandler(nil, nil);
@@ -138,8 +138,8 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
         }
         NSError *jsonError = nil;
         NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&jsonError];
         if (jsonError) {
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing application sid"]);
             return;
@@ -155,7 +155,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
             }
         }
         completionHandler(nil, nil);
-
+        
         
     }] resume];
 }
@@ -206,7 +206,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
     
     NSError *jsonSerializationError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];
-
+    
     if (jsonSerializationError){
         completionHandler(nil, [self getErrorWithDescription:@"Error creating JSON for application request"]);
         return;
@@ -304,7 +304,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
         }
         NSError *jsonError = nil;
         NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:NSJSONReadingMutableContainers
+                                                              options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
             completionHandler(nil, nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
@@ -352,7 +352,7 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
     }
     
     NSMutableDictionary *propertyDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
-    [propertyDictionary setObject:binding.identity forKey:@"Identity"];
+    [propertyDictionary setObject:binding.clientSid forKey:@"Identity"];
     [propertyDictionary setObject:binding.applicationSid forKey:@"ApplicationSid"];
     [propertyDictionary setObject:binding.bindingType forKey:@"BindingType"];
     [propertyDictionary setObject:binding.address forKey:@"Address"];
@@ -366,12 +366,12 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
         return;
     }
     
-
+    
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"%lu", (long)[jsonData length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody: jsonData];
-   
+    
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
             completionHandler(nil, error);
@@ -400,9 +400,10 @@ NSString *const kPushDomain = @"staging.restcomm.com/pushNotifications";
 
 - (NSError *)getErrorWithDescription:(NSString *)description{
     return  [[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                       code:ERROR_WEBRTC_TURN
+                                       code:ERROR_PUSH_REGISTER
                                    userInfo:@{ NSLocalizedDescriptionKey: description}];
 }
 
 
 @end
+

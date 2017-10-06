@@ -20,19 +20,16 @@
  *
  */
 
-#import "Binding.h"
+#import <Foundation/Foundation.h>
 
-@implementation Binding
-
-- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address{
-    self = [super init];
-    if (self){
-        _clientSid = clientSid;
-        _applicationSid = applicationSid;
-        _bindingType = @"apn";
-        _address = address;
-    }
-    return self;
-}
+@protocol RCRegisterPushDelegate<NSObject>
+@optional
+/**
+ *  @abstract Emitted when registering for push notification is done
+ *  @param error if nil, registering for push is successful,
+ *  if error is not nil, registering for push is unsuccessful and error will contain description
+ *
+ */
+- (void)registeredForPush:(NSError *) error;
 
 @end

@@ -55,7 +55,7 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                                     kPendingInterappKey : @"",  // has another app sent us a URL to call?
                                     kSipIndentificationKey : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     kSipPasswordKey : @"",
-                                    kSipRegistrarKey : @"staging.restcomm.com",
+                                    kSipRegistrarKey : @"cloud.restcomm.com",
                                     kTurnEnabledKey : @(YES),
                                     kTurnUrlKey : @"https://es.xirsys.com/_turn", // @"https://service.xirsys.com/ice", // @"https://computeengineondemand.appspot.com/turn",
                                     kTurnUsernameKey : @"atsakiridis",  // @"iapprtc",

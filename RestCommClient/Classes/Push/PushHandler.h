@@ -21,11 +21,36 @@
 
 
 #import <Foundation/Foundation.h>
+#import "RCRegisterPushDelegate.h"
 
-@interface PushHandler : NSObject
+/**
+ *  Handles push notification registration to RestComm
+ */
+@interface PushHandler: NSObject
 
-- (id)initWithParameters:(NSDictionary *)parameters;
+/*
+ *  Initialize a new PushHandler with parameters and delegate
+ *
+ * @param parameters      Possible keys: <br>
+ * <b>signaling-username</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
+ * <b>firendly-name</b>: name of the client application
+ * <b>username"</b>: username, for example: johndoe@telestax.com
+ * <b>password</b>: password for an account<br>
+ * <b>token</b>: push notification token from the
+ * <b>rescomm-account-email</b> account's email
+ * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
+ * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
+ * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+ * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if push certifictes are for development version of the
+ * application, if its production it should be set to NO.
+ *
+ * @param The delegate object that will receive events when registering for push (success, error)
+ */
+- (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate;
 
+/*
+ *  Register device for the push notifications
+ */
 - (void)registerDevice;
 
 @end

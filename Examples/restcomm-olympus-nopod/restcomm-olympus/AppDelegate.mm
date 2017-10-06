@@ -281,35 +281,6 @@
     {
         //set connection object
         self.connection = connection;
-       
-//        UIMutableUserNotificationAction *notificationAction1 = [[UIMutableUserNotificationAction alloc] init];
-//        notificationAction1.identifier = @"Accept";
-//        notificationAction1.title = @"Accept";
-//        notificationAction1.activationMode = UIUserNotificationActivationModeBackground;
-//        notificationAction1.destructive = NO;
-//        notificationAction1.authenticationRequired = NO;
-//
-//        UIMutableUserNotificationAction *notificationAction2 = [[UIMutableUserNotificationAction alloc] init];
-//        notificationAction2.identifier = @"Decline";
-//        notificationAction2.title = @"Decline";
-//        notificationAction2.activationMode = UIUserNotificationActivationModeBackground;
-//        notificationAction2.destructive = YES;
-//        notificationAction2.authenticationRequired = YES;
-//
-//
-//        UIMutableUserNotificationCategory *notificationCategory = [[UIMutableUserNotificationCategory alloc] init];
-//        notificationCategory.identifier = @"INCOMINGCALL_CATEGORY";
-//        [notificationCategory setActions:@[notificationAction1,notificationAction2] forContext:UIUserNotificationActionContextDefault];
-//        [notificationCategory setActions:@[notificationAction1,notificationAction2] forContext:UIUserNotificationActionContextMinimal];
-//
-//        NSSet *categories = [NSSet setWithObjects:notificationCategory, nil];
-//
-//        UIUserNotificationType notificationType = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-//        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType categories:categories];
-        
-     //   [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-
-        
         
         UILocalNotification *localNotification=[[UILocalNotification alloc] init];
         localNotification.alertBody = [NSString stringWithFormat:@"Call from %@", [connection.parameters objectForKey:@"from"]];
@@ -428,11 +399,8 @@
 - (void)registerForPush{
     [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    // Create a push registry object
     self.voipRegistry = [[PKPushRegistry alloc] initWithQueue: mainQueue];
-    // Set the registry's delegate to self
     self.voipRegistry.delegate = self;
-    // Set the push type to VoIP
     self.voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
 
@@ -458,23 +426,11 @@
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive)
     {
-        NSLog(@"Ognjen, sta se ovo desava!");
         self.device = nil;
         self.device = [self registerRCDevice];
         [self.device listen];
     }
 }
-
-// Do this when we have 9.0 device to test actions 
-//    if (self.device){
-//        if (self.connection){
-//            [self.connection disconnect];
-//            self.connection = nil;
-//        }
-//        [self.device unlisten];
-//    }
-
-
 
 
 @end

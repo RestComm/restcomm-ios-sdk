@@ -25,11 +25,12 @@
 
 @interface Binding : NSObject
 
-@property (nonatomic, copy) NSString *identity;
+@property (nonatomic, copy) NSString *clientSid;
 @property (nonatomic, copy) NSString *applicationSid;
 @property (nonatomic, readonly) NSString *bindingType;
 @property (nonatomic, copy) NSString *address;
 
-- (id)initWithIdentity:(NSString *)identity applicationSid:(NSString *)applicationSid andAddress:(NSString *)address;
+
+- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address;
 
 @end

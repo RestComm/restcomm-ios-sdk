@@ -689,7 +689,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 */
 
 #pragma mark Push 
-- (void)registerPushToken:(NSDictionary*)parameters{
+- (void)registerPushToken:(NSDictionary*)parameters delegate:(id<RCRegisterPushDelegate>)delegate{
     NSMutableDictionary * logParameters = [parameters mutableCopy];
     [logParameters removeObjectForKey:@"password"];
     [logParameters removeObjectForKey:@"private-key"];
@@ -702,7 +702,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     [pushHandlerProperties setValue:self.signalingUsername forKey:@"signaling-username"];
   
-    PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties];
+    PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties andDelegate:delegate];
     [pushHandler registerDevice];
 }
 
