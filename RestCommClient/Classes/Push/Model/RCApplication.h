@@ -20,17 +20,16 @@
  *
  */
 
-
 #import <Foundation/Foundation.h>
 
-@interface Binding : NSObject
+@interface RCApplication : NSObject<NSCoding>
 
-@property (nonatomic, copy) NSString *clientSid;
-@property (nonatomic, copy) NSString *applicationSid;
-@property (nonatomic, readonly) NSString *bindingType;
-@property (nonatomic, copy) NSString *address;
+@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, copy) NSString *friendlyName;
+@property (nonatomic, assign) BOOL sandbox;
 
+- (id)initWithSid:(NSString *)sid friendlyName:(NSString *)friendlyName andSandbox:(BOOL)sandbox;
 
-- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

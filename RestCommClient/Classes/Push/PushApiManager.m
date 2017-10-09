@@ -29,12 +29,6 @@ NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
 NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
-//NSString *const kSignalingDomain = @"staging.restcomm.com";
-//NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
-//NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
-//NSString *const kPushDomain = @"staging.restcomm.com/push";
-
-
 @implementation PushApiManager{
     NSString *pUsername;
     NSString *pPassword;
@@ -127,7 +121,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 
-- (void)getApplicationSidForFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler{
+- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
@@ -148,9 +142,10 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         NSArray *arr = (NSArray *)jsonArray;
         for (int i=0; i<arr.count; i ++){
             NSDictionary *dict = arr[i];
-            if ([[dict objectForKey:@"FriendlyName"] isEqualToString:friendlyName]){
-                NSString *applicationSid = [dict objectForKey:@"Sid"];
-                completionHandler(applicationSid, nil);
+            if ([[dict objectForKey:@"FriendlyName"] isEqualToString:friendlyName] && [[dict objectForKey:@"Sandbox"]
+                                                                                       boolValue] == sandbox){
+                
+                completionHandler([[RCApplication alloc] initWithDictionary:dict], nil);
                 return;
             }
         }
@@ -160,47 +155,13 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     }] resume];
 }
 
-- (void)getCredentialsSidWithCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
-    NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
-    
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            completionHandler(nil, error);
-            return;
-        }
-        NSError *jsonError = nil;
-        NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
-                                                              options:NSJSONReadingMutableContainers
-                                                                error:&jsonError];
-        if (jsonError) {
-            completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing credentials sid"]);
-            return;
-        }
-        
-        NSArray *arr = (NSArray *)jsonArray;
-        for (int i=0; i< arr.count; i++){
-            NSDictionary *dict = arr[i];
-            if ([[dict objectForKey:@"CredentialType"] isEqualToString:@"apn"]){
-                NSString *applicationSid = [dict objectForKey:@"Sid"];
-                completionHandler(applicationSid, nil);
-                return;
-            }
-        }
-        completionHandler(nil, nil);
-        
-        
-    }] resume];
-}
-
-
-- (void)createApplicationWithFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)isSendbox withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler{
+- (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler{
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-    [nameDictionary setObject:friendlyName forKey:@"FriendlyName"];
-    if (isSendbox){
+    [nameDictionary setObject:application.friendlyName forKey:@"FriendlyName"];
+    if (application.sandbox){
         [nameDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"Sandbox"];
     }
     
@@ -233,8 +194,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         }
         
         if (dict){
-            NSString *applicationSid = [dict objectForKey:@"Sid"];
-            completionHandler(applicationSid, nil);
+            completionHandler([[RCApplication alloc] initWithDictionary:dict], nil);
         } else {
             completionHandler(nil, nil);
         }
@@ -242,16 +202,47 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     }] resume];
 }
 
-- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName andCompletionHandler:(void (^)(NSString *credentialsSid, NSError *error))completionHandler{
+- (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler{
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
+    NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
+
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            completionHandler(nil, error);
+            return;
+        }
+        NSError *jsonError = nil;
+        NSObject *jsonArray = [NSJSONSerialization JSONObjectWithData:data
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&jsonError];
+        if (jsonError) {
+            completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing credentials sid"]);
+            return;
+        }
+        
+        NSArray *arr = (NSArray *)jsonArray;
+        for (int i=0; i< arr.count; i++){
+            NSDictionary *dict = arr[i];
+            if ([[dict objectForKey:@"ApplicationSid"] isEqualToString:application.sid]){
+                completionHandler([[RCCredentials alloc] initWithDictionary:dict], nil);
+                return;
+            }
+        }
+        completionHandler(nil, nil);
+        
+        
+    }] resume];
+}
+
+- (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentials, NSError *error))completionHandler{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
-    [nameDictionary setObject:applicationSid forKey:@"ApplicationSid"];
-    [nameDictionary setObject:friendlyName forKey:@"FriendlyName"];
-    [nameDictionary setObject:@"apn" forKey:@"CredentialType"];
-    [nameDictionary setObject:certificate forKey:@"Certificate"];
-    [nameDictionary setObject:privateKey forKey:@"PrivateKey"];
+    [nameDictionary setObject:credentials.applicationSid forKey:@"ApplicationSid"];
+    [nameDictionary setObject:credentials.credentialType forKey:@"CredentialType"];
+    [nameDictionary setObject:credentials.certificate forKey:@"Certificate"];
+    [nameDictionary setObject:credentials.privateKey forKey:@"PrivateKey"];
     
     NSError *jsonSerializationError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];
@@ -283,8 +274,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         }
         
         if (dict){
-            NSString *credentialsSid = [dict objectForKey:@"Sid"];
-            completionHandler(credentialsSid, nil);
+            completionHandler([[RCCredentials alloc]initWithDictionary:dict], nil);
         } else {
             completionHandler(nil, nil);
         }
@@ -293,13 +283,13 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 
-- (void)checkExistingBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error))completionHandler{
+- (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", kPushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
-            completionHandler(nil, nil, error);
+            completionHandler(nil, error);
             return;
         }
         NSError *jsonError = nil;
@@ -307,7 +297,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
-            completionHandler(nil, nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
+            completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
             return;
         }
         
@@ -316,28 +306,27 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
             NSArray *arr = (NSArray *)jsonArray;
             for (int i=0; i< arr.count; i++){
                 NSDictionary *dict = arr[i];
-                if ([[dict objectForKey:@"BindingType"] isEqualToString:@"apn"]){
-                    NSString *bindingSid = [dict objectForKey:@"Sid"];
-                    NSString *savedTokenOnServer = [dict objectForKey:@"Address"];
-                    completionHandler(bindingSid, savedTokenOnServer, nil);
+                if ([[dict objectForKey:@"ApplicationSid"] isEqualToString:application.sid]){
+                    completionHandler([[RCBinding alloc]initWithDictionary:dict], nil);
                     return;
                 }
             }
+            completionHandler(nil, nil);
         } else {
-            completionHandler(nil, nil, nil);
+            completionHandler(nil, nil);
         }
     }] resume];
 }
 
-- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler{
+- (void)createBinding:(RCBinding *)binding andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     [self createOrUpdateBinding:binding forSid:nil andCompletionHandler:completionHandler];
 }
 
-- (void)updateBinding:(Binding *)binding forBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler{
-    [self createOrUpdateBinding:binding forSid:bindingSid andCompletionHandler:completionHandler];
+- (void)updateBinding:(RCBinding *)binding andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
+    [self createOrUpdateBinding:binding forSid:binding.sid andCompletionHandler:completionHandler];
 }
 
-- (void)createOrUpdateBinding:(Binding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler{
+- (void)createOrUpdateBinding:(RCBinding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", kPushDomain]];
     if (bindingSid){
@@ -352,7 +341,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
     }
     
     NSMutableDictionary *propertyDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
-    [propertyDictionary setObject:binding.clientSid forKey:@"Identity"];
+    [propertyDictionary setObject:binding.identity forKey:@"Identity"];
     [propertyDictionary setObject:binding.applicationSid forKey:@"ApplicationSid"];
     [propertyDictionary setObject:binding.bindingType forKey:@"BindingType"];
     [propertyDictionary setObject:binding.address forKey:@"Address"];
@@ -388,8 +377,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
         }
         
         if (dict){
-            NSString *bindingSid = [dict objectForKey:@"Sid"];
-            completionHandler(bindingSid, nil);
+            completionHandler([[RCBinding alloc]initWithDictionary:dict], nil);
         } else {
             completionHandler(nil, nil);
         }

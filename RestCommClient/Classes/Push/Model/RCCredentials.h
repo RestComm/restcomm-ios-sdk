@@ -20,19 +20,18 @@
  *
  */
 
-#import "Binding.h"
+#import <Foundation/Foundation.h>
 
-@implementation Binding
+@interface RCCredentials : NSObject
 
-- (id)initWithClientSid:(NSString *)clientSid applicationSid:(NSString *)applicationSid andAddress:(NSString *)address{
-    self = [super init];
-    if (self){
-        _clientSid = clientSid;
-        _applicationSid = applicationSid;
-        _bindingType = @"apn";
-        _address = address;
-    }
-    return self;
-}
+@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, copy) NSString *applicationSid;
+@property (nonatomic, copy) NSString *credentialType;
+@property (nonatomic, copy) NSString *certificate;
+@property (nonatomic, copy) NSString *privateKey;
+
+- (id)initWithSid:(NSString *)sid applicationSid:(NSString *)applicationSid credentialType:(NSString *)credentialType certificate:(NSString *)certificate andPrivateKey:(NSString *)privateKey;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -158,12 +158,8 @@
         // initialize RestComm Client by setting up an RCDevice
         self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
         
-        if (self.device.state == RCDeviceStateOffline) {
-            [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
-        } else {
-            [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
-        }
-        
+     
+        [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
         
     }
     return self.device;
@@ -197,7 +193,7 @@
 
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
-    //NSLog(@"------ didStopListeningForIncomingConnections: error: %p", error);
+    //NSLog(@"------   didStopListeningForIncomingConnections: error: %p", error);
     // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
     if (error) {
         [self updateConnectivityState:device.state
@@ -208,7 +204,7 @@
 
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
-    
+     //NSLog(@"------   deviceDidStartListeningForIncomingConnections");
     [self updateConnectivityState:device.state
                andConnectivityType:device.connectivityType
                           withText:nil];
@@ -431,6 +427,5 @@
         [self.device listen];
     }
 }
-
 
 @end

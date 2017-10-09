@@ -21,7 +21,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "Binding.h"
+#import "RCBinding.h"
+#import "RCApplication.h"
+#import "RCCredentials.h"
 
 /**
  *  Communicate with the Restcomm services
@@ -57,64 +59,64 @@
 - (void)getClientSidWithAccountSid:(NSString *)accountSid signalingUsername:(NSString *)signalingUsername andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler;
 
 /*
- *  Fetch the application sid from server for given friendly name
+ *  Fetch the application object from server for given friendly name
  *
  * @param friendlyName Name of the application for which we want sid
- *
- * @param completionHandler will be filled with the application sid if success, otherwise with NSError
- */
-- (void)getApplicationSidForFriendlyName:(NSString *)friendlyName withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
-
-/*
- *  Create the application with given friendly name
- *
- * @param friendlyName Name of the application we want to register
  * @param isSendbox should be true if we want to create an application with sendbox push capability
  *
- * @param completionHandler will be filled with the application sid if success, otherwise with NSError
+ * @param completionHandler will be filled with the application if success, otherwise with NSError
  */
-- (void)createApplicationWithFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)isSendbox withCompletionHandler:(void (^)( NSString *applicationSid, NSError *error))completionHandler;
+- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)sandbox withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler;
 
 /*
- *  Fetch the credentials sid
+ *  Create the application on server for given application object
  *
- * @param completionHandler will be filled with the credentials sid if success, otherwise with NSError
+ * @param application RCApplication object
+ *
+ * @param completionHandler will be filled with the application if success, otherwise with NSError
  */
-- (void)getCredentialsSidWithCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
+- (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler;
+
+/*
+ *  Fetch the credentials for the given application
+ *
+ * @param application RCApplication object
+ *
+ * @param completionHandler will be filled with the credentials if success, otherwise with NSError
+ */
+- (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler;
 
 /*
  *  Create the Credentials for given certificates, application sid and friendly name
  *
- * @param certificate base64 encoded string of public certificate
- * @param privateKey base64 encoded string of private RSA certificate
- * @param applicationSid application sid for which we want to create certificate
- * @param friendlyName friendly name of the application registered on server
+ * @param credentials RCCredentials object
  *
- * @param completionHandler will be filled with the credentials sid if success, otherwise with NSError
+ * @param completionHandler will be filled with the credentials  if success, otherwise with NSError
  */
-- (void)createCredentialsWithCertificate:(NSString *)certificate privateKey:(NSString *)privateKey applicationSid:(NSString *)applicationSid friendlyName:(NSString *)friendlyName andCompletionHandler:(void (^)( NSString *credentialsSid, NSError *error))completionHandler;
+- (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentialsSid, NSError *error))completionHandler;
 
 /*
  *  Fatch the bindingSid and token
  *
+ *  @param application RCApplication object
+ *
  *  @param completionHandler will be filled with the binding sid, and token for it, if success, otherwise with NSError
  */
-- (void)checkExistingBindingSidWithCompletionHandler:(void (^)(NSString *bindingSid, NSString *savedTokenOnServer, NSError *error))completionHandler;
+- (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler;
 
 /*
- *  Create the Binding
+ *  Create the RCBinding
  *  @param binding
- *  @param completionHandler will be filled with the binding sid if success, otherwise with NSError
+ *  @param completionHandler will be filled with the binding if success, otherwise with NSError
  */
-- (void)createBinding:(Binding *)binding andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler;
+- (void)createBinding:(RCBinding *)binding andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler;
 
 /*
- *  Update the Binding for binding sid
+ *  Update the RCBinding for binding sid
  *  @param binding
- *  @param bindingSid binding sid
- *  @param completionHandler will be filled with the binding sid if success, otherwise with NSError
+ *  @param completionHandler will be filled with the binding if success, otherwise with NSError
  */
-- (void)updateBinding:(Binding *)binding forBindingSid:(NSString *)bindingSid andCompletionHandler:(void (^)(NSString *bindingSid, NSError *error))completionHandler;
+- (void)updateBinding:(RCBinding *)binding andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler;
 
 @end
 

@@ -114,7 +114,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    [self reloadData];
     // check connectivity
     [self updateConnectivityState:appDelegate.device.state
               andConnectivityType:appDelegate.device.connectivityType
