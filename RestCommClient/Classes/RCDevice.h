@@ -226,7 +226,7 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *
  *  @return If update of parameters was successful. Typical reason to fail is connectivity issues.
  */
-- (BOOL) updateParams:(NSDictionary*)params;
+- (BOOL)updateParams:(NSDictionary*)params;
 
 // To be used internally by the library -not for application usage
 - (void)clearCurrentConnection;

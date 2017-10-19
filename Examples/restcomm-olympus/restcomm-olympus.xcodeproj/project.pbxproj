@@ -31,6 +31,9 @@
 		A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666481F787EEE003305CF /* certificate_key_push.pem */; };
 		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
+		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
+		A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
+		A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -245,6 +248,9 @@
 		A96666491F787EFC003305CF /* rsa_private_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitProvider.h; sourceTree = "<group>"; };
+		A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitProvider.m; sourceTree = "<group>"; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
@@ -456,6 +462,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */,
 				A9FD9E9E1F83D2670026255E /* UserNotifications.framework in Frameworks */,
 				A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */,
 				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
@@ -485,6 +492,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A9C0B0D51F964CFB00ED58AA /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */,
+				A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */,
+			);
+			name = Provider;
+			sourceTree = "<group>";
+		};
 		A9CA4D781F5ED9D00005A553 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -501,7 +517,6 @@
 				AEA495DC1C2997F6000D9762 /* MainNavigationController.h */,
 				AEA495DD1C2997F6000D9762 /* MainNavigationController.m */,
 				AECA05511C7772F800EB9737 /* SigninTableViewController.h */,
-				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
 				AEA495DE1C2997F6000D9762 /* MainTableViewController.h */,
 				AEA495DF1C2997F6000D9762 /* MainTableViewController.m */,
 				AEA495E01C2997F6000D9762 /* MessageTableViewController.h */,
@@ -514,6 +529,7 @@
 				AE3E52A41C5649C50057F5D0 /* ICESettingsTableViewController.m */,
 				AEED2F0A1C7F252000006E76 /* SIPSettingsNavigationController.h */,
 				AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */,
+				AECA05521C7772F800EB9737 /* SigninTableViewController.m */,
 				AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */,
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
 				A94A1B7F1F6A7E160034352E /* BugReportViewController.m */,
@@ -607,6 +623,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */,
 				A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */,
 				A973B9991F7D135A00F16010 /* PushKit.framework */,
 				A9A117F31F7726DC000A83B3 /* UserNotifications.framework */,
@@ -623,6 +640,7 @@
 		AEA495651C2997F6000D9762 /* restcomm-olympus */ = {
 			isa = PBXGroup;
 			children = (
+				A9C0B0D51F964CFB00ED58AA /* Provider */,
 				A9CA4D7D1F5EDAD60005A553 /* Model */,
 				A9CA4D781F5ED9D00005A553 /* ViewController */,
 				A9CA4D7A1F5EDA540005A553 /* View */,
@@ -1193,6 +1211,7 @@
 				AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */,
 				AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */,
 				AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */,
+				A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				AEA496811C2997F6000D9762 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1201,6 +1220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 			);
