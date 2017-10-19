@@ -217,6 +217,7 @@
         
         callViewController.delegate = self;
         callViewController.device = self.device;
+        callViewController.connection = self.connection;
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         
