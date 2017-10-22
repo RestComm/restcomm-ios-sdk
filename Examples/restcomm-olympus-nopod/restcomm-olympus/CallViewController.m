@@ -153,10 +153,8 @@
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
             //check is it from notification, if it is anser it
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
-            if (self.fromNotification || self.rcCallKitProvider){
-                if (self.rcCallKitProvider){
-                    [self.rcCallKitProvider performAnswerCall];
-                }
+          
+            if (self.rcCallKitProvider){
                 [self answer:self.isVideoCall];
             } else {
                 self.statusLabel.text = @"Call received";

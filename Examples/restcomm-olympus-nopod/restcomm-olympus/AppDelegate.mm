@@ -28,7 +28,6 @@
 
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
-@property (nonatomic, strong) RCConnection * connection;
 @property (nonatomic, strong) RCCallKitProvider *callKitProvider;
 
 @end
@@ -47,9 +46,6 @@
     
     //register for the push notification
     [self registerForPush];
-    
-//    //register to RCDevice
-//    [self registerRCDevice];
     
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center removeAllDeliveredNotifications];
@@ -270,49 +266,18 @@
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
     NSLog(@"Ognjen ------   didReceiveIncomingConnection");
-    //set connection object
-    self.connection = connection;
-    self.callKitProvider.connection = connection;
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-
-   if (([[[UIDevice currentDevice] systemVersion] floatValue] < 10) && (state == UIApplicationStateBackground ||state == UIApplicationStateInactive))
-   {
-       //local notification
-        NSLog(@"Ognjen ------   floatValue < 10, state == UIApplicationStateBackground ||state == UIApplicationStateInactive");
-        UILocalNotification *localNotification=[[UILocalNotification alloc] init];
-        localNotification.alertBody = [NSString stringWithFormat:@"Call from %@", [connection.parameters objectForKey:@"from"]];
-        localNotification.soundName = @"default";
-        localNotification.alertTitle = @"INCOMING CALL";
-        localNotification.alertAction = @"answer";
-        localNotification.category = @"INCOMINGCALL_CATEGORY";
-        localNotification.applicationIconBadgeNumber = -1;
-    
-        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-   } else if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 10) && (state == UIApplicationStateBackground || state == UIApplicationStateInactive)){
-        NSLog(@"Ognjen ------   floatValue > 10, state == UIApplicationStateBackground ||state == UIApplicationStateInactive");
-        NSLog(@"Ognjen ------   floatValue > 10 stet is: %i", state);
-        //CallKit
+    if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
+        //Answer with callkit
+        self.callKitProvider.connection = connection;
         [self.callKitProvider answerWithCallKit];
    } else {
-       [self openCallView:connection isFromNotification:NO];
+       [self openCallView:connection isFromCallKit:NO];
    }
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    if (self.connection){
-        [self openCallView:self.connection isFromNotification:YES];
-    }
-}
-
--(void)openCallView:(RCConnection *)connection isFromNotification:(BOOL)fromNotification{
-    [self openCallView:connection isFromNotification:fromNotification isFromCallKit:NO];
-}
 
 -(void)openCallView:(RCConnection *)connection isFromCallKit:(BOOL)fromCallKit{
-    [self openCallView:connection isFromNotification:NO isFromCallKit:(BOOL)fromCallKit];
-}
-
--(void)openCallView:(RCConnection *)connection isFromNotification:(BOOL)fromNotification isFromCallKit:(BOOL)fromCallKit{
     // Open call view
     NSLog(@"Ognjen ------- openCallView");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
@@ -321,7 +286,6 @@
     callViewController.device = self.device;
     callViewController.pendingIncomingConnection = connection;
     callViewController.pendingIncomingConnection.delegate = callViewController;
-    callViewController.fromNotification = fromNotification;
 
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
@@ -399,14 +363,6 @@
 
 #pragma mark - Push Notification
 
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)notification  completionHandler: (void (^)())completionHandler {
-    if ([identifier isEqualToString: @"first_button"]) {
-        NSLog(@"First notification button was pressed");
-    } else {
-        NSLog(@"Second notification button was pressed");
-    }
-}
-
 - (void)registerForPush{
     [[UIApplication sharedApplication] registerForRemoteNotifications]; // required to get the app to do anything at all about push notifications
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
@@ -438,31 +394,7 @@
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive)
     {
-        if (self.device){
-             NSLog(@"Mosa Mosa  =-=0=0=0=0=0=0=0=0= %@", self.device);
-//            [self.device unlisten];
-//            self.device = nil;
-//            self.device.delegate = nil;
-//
-//            NSLog(@"Ognjen --- before timer");
-////            // Because the unlisten is async, we need to wait some time to proper unlisten
-////            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-////                NSLog(@"Ognjen --- after timer");
-////                self.device = [self registerRCDevice];
-////                [self.device listen];
-////            });
-//
-//
-//     //      sleep(1);
-//
-//                    NSLog(@"Ognjen --- after timer");
-//                    self.device = [self registerRCDevice];
-//                    [self.device listen];
-//
-            
-                
-           
-        } else {
+        if (!self.device){
             //no need to wait, register and listen
             self.device = [self registerRCDevice];
             [self.device listen];
@@ -486,7 +418,10 @@
 
 
 #pragma mark RCCallKitProviderDelegate method
-- (void)newIncomingCall:(RCConnection *)connection{
+- (void)newIncomingCallAnswered:(RCConnection *)connection{
+    if ([[[UIApplication sharedApplication] keyWindow] rootViewController]){
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:NO completion:nil];
+    }
     [self openCallView:connection isFromCallKit:YES];
 }
 

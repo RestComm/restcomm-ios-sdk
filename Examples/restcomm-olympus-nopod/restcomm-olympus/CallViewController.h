@@ -35,7 +35,6 @@
 @property (nonatomic,retain) RCConnection* pendingIncomingConnection;
 @property (weak) id<CallDelegate> delegate;
 @property NSMutableDictionary * parameters;
-@property (nonatomic, assign) BOOL fromNotification;
 @property (nonatomic, strong) RCCallKitProvider *rcCallKitProvider;
 @end
 

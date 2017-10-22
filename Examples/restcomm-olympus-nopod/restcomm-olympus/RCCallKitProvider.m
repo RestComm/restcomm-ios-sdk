@@ -12,7 +12,6 @@
 @property (nonatomic, strong) CXCallController *callKitCallController;
 @property (nonatomic, assign) id<RCCallKitProviderDelegate> delegate;
 @property (nonatomic, strong) CXProvider *callKitProvider;
-@property (nonatomic, assign) BOOL openCallView; //it will be true if we need to open our callview controller
 @end
 
 @implementation RCCallKitProvider
@@ -70,17 +69,15 @@
 }
 - (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action{
     NSLog(@"CXProvider performAnswerCallAction");
-    if (self.connection){
-        //we need to know is it called from unlocked phone
-        if (self.openCallView){
-            [self.delegate newIncomingCall:self.connection];
-            self.openCallView = NO;
-        } else{
-            [self.connection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
-                                                            forKey:@"video-enabled"]];
-        }
-    }
+    
+    //there is no way to know is the device locked or not.
+    [self.delegate newIncomingCallAnswered:self.connection];
+    
     [action fulfill];
+}
+
+- (void)reportOutgoingCallWithUUID:(NSUUID *)UUID connectedAtDate:(nullable NSDate *)dateConnected{
+    NSLog(@"Ognjne");
 }
 
 //-(BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler{
@@ -157,14 +154,6 @@
     [self.callKitProvider reportNewIncomingCallWithUUID:self.currentUdid update:callUpdate completion:^(NSError *error) {
         if (!error) {
             NSLog(@"CallKit Incoming call successfully reported. UUID: %@", self.currentUdid);
-
-                if (self.connection){
-                    NSLog(@"CallKit self connection is not null %@", self.delegate);
-                    self.openCallView = YES;
-                }else{
-                    NSLog(@"CallKit self connection is null");
-                }
-            
         } else {
             NSLog(@"Failed to report incoming call successfully; uuid: %@ error: %@.", self.currentUdid, [error localizedDescription]);
             self.currentUdid = nil;
@@ -202,26 +191,6 @@
             
             [self.callKitProvider reportCallWithUUID:self.currentUdid updated:callUpdate];
             [startCallAction fulfillWithDateStarted:[NSDate date]];
-        }
-    }];
-}
-- (void)performAnswerCall{
-    
-    NSLog(@"CallKit performAnswerCall with UUID %@", self.currentUdid);
-    if (self.currentUdid == nil) {
-        return;
-    }
-    
-    CXAnswerCallAction *answerCallAction = [[CXAnswerCallAction alloc] initWithCallUUID:self.currentUdid];
-    CXTransaction *transaction = [[CXTransaction alloc] initWithAction:answerCallAction];
-    
-    [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
-        if (error) {
-            NSLog(@"CallKit performAnswerCall transaction request failed: %@", [error localizedDescription]);
-            [answerCallAction fail];
-        } else {
-            NSLog(@"CallKit performAnswerCall transaction request successful");
-            [answerCallAction fulfillWithDateConnected:[NSDate date]];
         }
     }];
 }

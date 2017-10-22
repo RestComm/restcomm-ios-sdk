@@ -13,11 +13,11 @@
 
 @protocol RCCallKitProviderDelegate
 /**
- *  @abstract newIncomingCall is called when call needs to be handled by the app
+ *  @abstract newIncomingCallAnswered is called when call needs to be handled by the app
  *  (when the app is not in inactive mode)
  *  @param connection The RCConnection instance
  */
-- (void)newIncomingCall:(RCConnection *)connection;
+- (void)newIncomingCallAnswered:(RCConnection *)connection;
 
 /*
  *  Will be called when call is Ended from Callkit (locked phone mode)
@@ -43,8 +43,6 @@
 - (void)reportConnected;
 
 - (void)performStartCall:(NSString *)handle;
-
-- (void)performAnswerCall;
 
 - (void)performEndCallAction;
 
