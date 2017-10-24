@@ -153,7 +153,8 @@
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
             //check is it from notification, if it is anser it
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
-            if (self.fromNotification){
+          
+            if (self.rcCallKitProvider){
                 [self answer:self.isVideoCall];
             } else {
                 self.statusLabel.text = @"Call received";
@@ -226,7 +227,11 @@
 
 - (IBAction)hangUpPressed:(id)sender
 {
+
     NSLog(@"[CallViewController hangUpPressed]");
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider performEndCallAction];
+    }
     if (self.pendingIncomingConnection) {
         // incomind ringing
         self.statusLabel.text = @"Rejecting Call...";
@@ -247,6 +252,7 @@
         }
     }
     NSLog(@"[CallViewController hangUpPressed], dismissing");
+    
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -275,11 +281,16 @@
     self.pendingIncomingConnection = nil;
     [self stopVideoRendering];
     
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider performEndCallAction];
+    }
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCConnection Error"
                                                     message:[[error userInfo] objectForKey:NSLocalizedDescriptionKey]
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
+    
     [alert show];
 }
 
@@ -289,6 +300,9 @@
 {
     NSLog(@"connectionDidStartConnecting");
     self.statusLabel.text = @"Did start connecting";
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider reportConnecting];
+    }
 }
 
 - (void)connectionDidConnect:(RCConnection*)connection
@@ -303,11 +317,17 @@
 
     self.durationLabel.hidden = NO;
     [self timerAction];
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider reportConnected];
+    }
 }
 
 - (void)connectionDidCancel:(RCConnection*)connection
 {
     NSLog(@"connectionDidCancel");
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider performEndCallAction];
+    }
     
     if (self.pendingIncomingConnection) {
         self.statusLabel.text = @"Remote party Cancelled";
@@ -318,6 +338,7 @@
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:nil];
     }
+    
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection
@@ -360,6 +381,10 @@
     if (self.durationTimer && [self.durationTimer isValid]) {
         [self.durationTimer invalidate];
     }
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider performEndCallAction];
+    }
+    
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection
@@ -373,6 +398,10 @@
 
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
+    if (self.rcCallKitProvider){
+        [self.rcCallKitProvider performEndCallAction];
+    }
+    
 }
 
 - (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack

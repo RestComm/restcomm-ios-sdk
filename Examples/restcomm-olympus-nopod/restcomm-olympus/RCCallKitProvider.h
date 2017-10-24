@@ -20,26 +20,42 @@
  *
  */
 
-#import <UIKit/UIKit.h>
-#import <UserNotifications/UserNotifications.h>
+#import <Foundation/Foundation.h>
+#import <CallKit/CXCall.h>
+#import <CallKit/CallKit.h>
 #import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
-#import "RCUtilities.h"
-#import <PushKit/PushKit.h>
 
+@protocol RCCallKitProviderDelegate
+/**
+ *  @abstract newIncomingCallAnswered is called when call needs to be handled by the app
+ *
+ *  (when the app is not in inactive mode)
+ *  @param connection The RCConnection instance
+ */
+- (void)newIncomingCallAnswered:(RCConnection *)connection;
 
+/*
+ *  Will be called when call is Ended from Callkit (locked phone mode)
+ */
+- (void)callEnded;
+@end
 
-@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, PKPushRegistryDelegate, CallDelegate,
-ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
+@interface RCCallKitProvider : NSObject <CXProviderDelegate, RCConnectionDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
-@property (nonatomic,retain) RCDevice* device;
-@property NSMutableDictionary * parameters;
-@property RCDeviceState previousDeviceState;
+@property (nonatomic, strong) RCConnection * connection;
+@property (nonatomic, strong) NSUUID *currentUdid;
 
-- (RCDevice *)registerRCDevice;
+- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate;
+
+- (void)initRCConnection:(RCConnection *)connection;
+
+- (void)answerWithCallKit;
+
+- (void)reportConnecting;
+
+- (void)reportConnected;
+
+- (void)performEndCallAction;
+
 
 @end
