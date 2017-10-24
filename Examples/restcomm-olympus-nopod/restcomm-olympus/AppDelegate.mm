@@ -64,25 +64,9 @@
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-}
-
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     application.applicationIconBadgeNumber = 0;
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
@@ -169,7 +153,7 @@
 - (void)register:(NSNotification *)notification
 {
     if (self.device) {
-        NSLog(@"Ognjen --- listen register AppDelegate");
+        NSLog(@"AppDelegate --- listen register");
         [self.device listen];
     }
 }
@@ -185,7 +169,7 @@
 
 - (void)device:(RCDevice*)device didStopListeningForIncomingConnections:(NSError*)error
 {
-    NSLog(@"Ognjen ------   didStopListeningForIncomingConnections: error: %p", error);
+    NSLog(@"AppDelegate ------   didStopListeningForIncomingConnections: error: %p", error);
     // if error is nil then this is not an error condition, but an event that we have stopped listening after user request, like RCDevice.unlinsten
     if (error) {
         [self updateConnectivityState:device.state
@@ -196,7 +180,7 @@
 
 - (void)deviceDidStartListeningForIncomingConnections:(RCDevice*)device
 {
-     NSLog(@"Ognjen ------   deviceDidStartListeningForIncomingConnections");
+     NSLog(@"AppDelegate ------   deviceDidStartListeningForIncomingConnections");
     [self updateConnectivityState:device.state
                andConnectivityType:device.connectivityType
                           withText:nil];
@@ -234,7 +218,7 @@
 // received incoming message
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
-    NSLog(@"Ognjen ------   didReceiveIncomingMessage:  %@", message);
+    NSLog(@"AppDelegate ------   didReceiveIncomingMessage:  %@", message);
     if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class] ){
         UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
         // Open message view if not already opened
@@ -265,7 +249,7 @@
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
 - (void)device:(RCDevice*)device didReceiveIncomingConnection:(RCConnection*)connection
 {
-    NSLog(@"Ognjen ------   didReceiveIncomingConnection");
+    NSLog(@"AppDelegate ------   didReceiveIncomingConnection");
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
         //Answer with callkit
@@ -279,7 +263,7 @@
 
 -(void)openCallView:(RCConnection *)connection isFromCallKit:(BOOL)fromCallKit{
     // Open call view
-    NSLog(@"Ognjen ------- openCallView");
+    NSLog(@"AppDelegate ------- openCallView");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
     CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
     callViewController.delegate = self;
@@ -374,7 +358,7 @@
 // Handle updated push credentials
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials: (PKPushCredentials *)credentials forType:(NSString *)type {
     if([credentials.token length] == 0) {
-        NSLog(@"voip token NULL");
+        NSLog(@"AppDelegate ---voip token NULL");
         return;
     }
     NSString * deviceTokenString = [[[[credentials.token description]
@@ -390,7 +374,7 @@
 
 // Handle incoming pushes
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type {
-    NSLog(@"Ognjen ---pushReceived");
+    NSLog(@"AppDelegate ---pushReceived");
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive)
     {
@@ -403,18 +387,7 @@
 }
 
 #pragma mark Starting call
-- (void)openMessagesScreen{
-//    NSString *username = [contact.phoneNumbers objectAtIndex:0];
-//    
-//    MessageTableViewController *messageViewController = [segue destinationViewController];
-//    messageViewController.device = appDelegate.device;
-//    messageViewController.delegate = appDelegate;
-//    
-//    messageViewController.parameters = [[NSMutableDictionary alloc] init];
-//    
-//    [messageViewController.parameters setObject:alias forKey:@"alias"];
-//    [messageViewController.parameters setObject:username forKey:@"username"];
-}
+//needs to be implemented
 
 
 #pragma mark RCCallKitProviderDelegate method
@@ -426,7 +399,6 @@
 }
 
 - (void)callEnded{
-    
     if (self.device){
         [self.device unlisten];
         self.device = nil;

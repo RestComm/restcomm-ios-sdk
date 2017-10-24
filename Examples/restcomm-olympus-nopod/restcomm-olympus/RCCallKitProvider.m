@@ -1,10 +1,24 @@
-//
-//  RCCallKitProvider.m
-//  restcomm-olympus
-//
-//  Created by Manevski Ognjen on 10/17/17.
-//  Copyright © 2017 TeleStax. All rights reserved.
-//
+/*
+ * TeleStax, Open Source Cloud Communications
+ * Copyright 2011-2015, Telestax Inc and individual contributors
+ * by the @authors tag.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * For questions related to commercial use licensing, please contact sales@telestax.com.
+ *
+ */
 
 #import "RCCallKitProvider.h"
 
@@ -46,7 +60,6 @@
 
 - (void)provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action{
     NSLog(@"CXProvider performEndCallAction");
-    //[self performEndCallActionWithUUID:self.currentUdid];
     [self.delegate callEnded];
     [action fulfill];
 }
@@ -55,18 +68,30 @@
     NSLog(@"CXProvider performSetHeldCallAction");
     [action fulfill];
 }
+
 - (void)provider:(CXProvider *)provider performSetMutedCallAction:(CXSetMutedCallAction *)action{
     NSLog(@"CXProvider performSetMutedCallAction");
+    [self.connection setMuted:action.muted];
     [action fulfill];
 }
+
 - (void)provider:(CXProvider *)provider performSetGroupCallAction:(CXSetGroupCallAction *)action{
     NSLog(@"CXProvider performSetGroupCallAction");
     [action fulfill];
 }
+
 - (void)provider:(CXProvider *)provider performPlayDTMFCallAction:(CXPlayDTMFCallAction *)action{
+    NSLog(@"CXProvider performPlayDTMFCallAction");
+    [self.connection sendDigits:action.digits];
+    NSLog(@"%@", action.digits);
+    [action fulfill];
+}
+
+- (void)provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action {
     NSLog(@"CXProvider performPlayDTMFCallAction");
     [action fulfill];
 }
+
 - (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action{
     NSLog(@"CXProvider performAnswerCallAction");
     
@@ -76,20 +101,11 @@
     [action fulfill];
 }
 
-- (void)reportOutgoingCallWithUUID:(NSUUID *)UUID connectedAtDate:(nullable NSDate *)dateConnected{
-    NSLog(@"Ognjne");
-}
-
-//-(BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler{
-//    NSString *a = @"";
-//    return NO;
-//}
-
 - (void)providerDidReset:(CXProvider *)provider{
     NSLog(@"CXProvider providerDidReset");
     if (self.connection){
         self.currentUdid = nil;
-        [self.connection disconnect];//?oggie review
+        [self.connection disconnect];
     }
 }
 
@@ -131,12 +147,13 @@
 }
 
 - (void)connection:(RCConnection *)connection didReceiveLocalVideo:(RTCVideoTrack *)localVideoTrack{
-    
+    //do nothing
 }
 
 - (void)connection:(RCConnection *)connection didReceiveRemoteVideo:(RTCVideoTrack *)remoteVideoTrack{
-    
+    //do nothing
 }
+
 
 #pragma mark Provider methods
 - (void)reportIncomingCallFrom:(NSString *) from {
@@ -161,40 +178,6 @@
     }];
 }
 
-
-#warning not implemented yet  Ogi
-- (void)performStartCall:(NSString *)handle {
-    
-    NSLog(@"CallKit performStartCallActionWithUUID with UUID %@", self.currentUdid);
-    if (self.currentUdid == nil || handle == nil) {
-        return;
-    }
-    
-    CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
-    CXStartCallAction *startCallAction = [[CXStartCallAction alloc] initWithCallUUID:self.currentUdid handle:callHandle];
-    CXTransaction *transaction = [[CXTransaction alloc] initWithAction:startCallAction];
-    
-    [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
-        if (error) {
-            NSLog(@"CallKit StartCallAction transaction request failed: %@", [error localizedDescription]);
-            [startCallAction fail];
-        } else {
-            NSLog(@"CallKit StartCallAction transaction request successful");
-            
-            CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
-            callUpdate.remoteHandle = callHandle;
-            callUpdate.supportsDTMF = YES;
-            callUpdate.supportsHolding = NO;
-            callUpdate.supportsGrouping = NO;
-            callUpdate.supportsUngrouping = NO;
-            callUpdate.hasVideo = NO; //Ogi, need to get from connection
-            
-            [self.callKitProvider reportCallWithUUID:self.currentUdid updated:callUpdate];
-            [startCallAction fulfillWithDateStarted:[NSDate date]];
-        }
-    }];
-}
-
 - (void)performEndCallAction{
     NSLog(@"CallKit performEndCallAction UDID: %@", self.currentUdid);
     
@@ -213,8 +196,6 @@
         }
         else {
             NSLog(@"CallKit EndCallAction transaction request successful for UUID: %@", self.currentUdid);
-            [endCallAction fulfillWithDateEnded:[NSDate date]];
-            
         }
     }];
 }
