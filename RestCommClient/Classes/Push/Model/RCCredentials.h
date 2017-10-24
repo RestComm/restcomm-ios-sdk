@@ -20,13 +20,18 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+@interface RCCredentials : NSObject
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, copy) NSString *applicationSid;
+@property (nonatomic, copy) NSString *credentialType;
+@property (nonatomic, copy) NSString *certificate;
+@property (nonatomic, copy) NSString *privateKey;
+
+- (id)initWithSid:(NSString *)sid applicationSid:(NSString *)applicationSid credentialType:(NSString *)credentialType certificate:(NSString *)certificate andPrivateKey:(NSString *)privateKey;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary;
+
 @end

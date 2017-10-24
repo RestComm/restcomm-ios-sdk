@@ -31,6 +31,7 @@
 
 #include "common.h"
 #include "RCUtilities.h"
+#include "PushHandler.h"
 
 @interface RCDevice () <SipManagerDeviceDelegate>
 // private stuff
@@ -47,6 +48,9 @@
 @property Reachability* internetReachable;
 @property Reachability* hostReachable;
 @property NetworkStatus reachabilityStatus;
+
+@property NSString *signalingUsername;
+
 @property BOOL hostActive;
 
 // used with beginBackgroundTaskWithExpirationHandler
@@ -131,6 +135,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
             [self.sipManager eventLoop];
         }
         
+        self.signalingUsername = [parameters objectForKey:@"aor"];
     }
     
     return self;
@@ -682,5 +687,23 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 */
+
+#pragma mark Push 
+- (void)registerPushToken:(NSDictionary*)parameters delegate:(id<RCRegisterPushDelegate>)delegate{
+    NSMutableDictionary * logParameters = [parameters mutableCopy];
+    [logParameters removeObjectForKey:@"password"];
+    [logParameters removeObjectForKey:@"private-key"];
+    
+    RCLogNotice("[RCDevice registerPushToken: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
+
+    //extend the parameters with:
+    // - signaling
+   
+    NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    [pushHandlerProperties setValue:self.signalingUsername forKey:@"signaling-username"];
+  
+    PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties andDelegate:delegate];
+    [pushHandler registerDevice];
+}
 
 @end

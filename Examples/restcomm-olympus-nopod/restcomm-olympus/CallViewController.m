@@ -151,8 +151,15 @@
         }
         if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            //check is it from notification, if it is anser it
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
-            self.statusLabel.text = @"Call received";
+            if (self.fromNotification){
+                [self answer:self.isVideoCall];
+            } else {
+                self.statusLabel.text = @"Call received";
+            }
+           
+            
         }
     }
 }

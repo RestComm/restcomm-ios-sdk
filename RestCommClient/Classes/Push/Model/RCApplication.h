@@ -20,13 +20,16 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+@interface RCApplication : NSObject<NSCoding>
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, copy) NSString *friendlyName;
+@property (nonatomic, assign) BOOL sandbox;
+
+- (id)initWithSid:(NSString *)sid friendlyName:(NSString *)friendlyName andSandbox:(BOOL)sandbox;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary;
+
 @end

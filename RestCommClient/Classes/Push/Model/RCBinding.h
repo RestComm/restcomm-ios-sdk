@@ -20,13 +20,19 @@
  *
  */
 
-#import <UIKit/UIKit.h>
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+#import <Foundation/Foundation.h>
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+@interface RCBinding : NSObject<NSCoding>
+
+@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, copy) NSString *identity;
+@property (nonatomic, copy) NSString *applicationSid;
+@property (nonatomic, copy) NSString *bindingType;
+@property (nonatomic, copy) NSString *address;
+
+- (id)initWithSid:(NSString *)sid identity:(NSString *)identity applicationSid:(NSString *)applicationSid andAddress:(NSString *)address;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary;
+
 @end
