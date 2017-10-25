@@ -249,6 +249,7 @@
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		A9C091191FA013CD002A161A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitProvider.h; sourceTree = "<group>"; };
 		A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitProvider.m; sourceTree = "<group>"; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -623,6 +624,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9C091191FA013CD002A161A /* AVFoundation.framework */,
 				A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */,
 				A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */,
 				A973B9991F7D135A00F16010 /* PushKit.framework */,

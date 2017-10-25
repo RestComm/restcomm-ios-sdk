@@ -28,8 +28,6 @@
 @protocol RCCallKitProviderDelegate
 /**
  *  @abstract newIncomingCallAnswered is called when call needs to be handled by the app
- *
- *  (when the app is not in inactive mode)
  *  @param connection The RCConnection instance
  */
 - (void)newIncomingCallAnswered:(RCConnection *)connection;
@@ -56,6 +54,8 @@
 - (void)reportConnected;
 
 - (void)performEndCallAction;
+
+
 
 
 @end

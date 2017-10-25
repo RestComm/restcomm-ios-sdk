@@ -40,16 +40,14 @@
         configuration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypeGeneric],[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
         UIImage *callkitIcon = [UIImage imageNamed:@"restcomm-logo-call-139x58.png"];
         configuration.iconTemplateImageData = UIImagePNGRepresentation(callkitIcon);
-        self.delegate = delegate;
         
         self.callKitProvider = [[CXProvider alloc] initWithConfiguration:configuration];
         [self.callKitProvider setDelegate:self queue:nil];
-        
+        self.delegate = delegate;
         self.callKitCallController = [[CXCallController alloc] init];
     }
     return self;
 }
-
 
 - (void)initRCConnection:(RCConnection *)connection{
     self.connection = connection;
@@ -61,6 +59,7 @@
 - (void)provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action{
     NSLog(@"CXProvider performEndCallAction");
     [self.delegate callEnded];
+    
     [action fulfill];
 }
 
@@ -97,7 +96,6 @@
     
     //there is no way to know is the device locked or not.
     [self.delegate newIncomingCallAnswered:self.connection];
-    
     [action fulfill];
 }
 

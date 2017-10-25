@@ -25,6 +25,8 @@
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
 #import "RCCallKitProvider.h"
+#import "AVFoundation/AVFoundation.h"
+
 
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
@@ -60,12 +62,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self];
-
     return YES;
 }
 
+
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    
     application.applicationIconBadgeNumber = 0;
 }
 
@@ -193,7 +196,6 @@
         
         callViewController.delegate = self;
         callViewController.device = self.device;
-        callViewController.connection = self.connection;
         callViewController.parameters = [[NSMutableDictionary alloc] init];
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         
@@ -257,6 +259,7 @@
         self.callKitProvider.connection = connection;
         [self.callKitProvider answerWithCallKit];
    } else {
+
        [self openCallView:connection isFromCallKit:NO];
    }
 }
@@ -272,6 +275,7 @@
     callViewController.pendingIncomingConnection = connection;
     callViewController.pendingIncomingConnection.delegate = callViewController;
 
+    
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"]  forKey:@"username"];
@@ -292,11 +296,13 @@
     callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     if (fromCallKit){
+        [self routeAudioToSpeaker];
         callViewController.rcCallKitProvider = self.callKitProvider;
     }
     [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
     
 }
+
 
 - (void)updateConnectivityState:(RCDeviceState)state andConnectivityType:(RCDeviceConnectivityType)status withText:(NSString *)text
 {
@@ -376,6 +382,7 @@
 // Handle incoming pushes
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type {
     NSLog(@"AppDelegate ---pushReceived");
+    
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive)
     {
@@ -393,17 +400,31 @@
 
 #pragma mark RCCallKitProviderDelegate method
 - (void)newIncomingCallAnswered:(RCConnection *)connection{
-    if ([[[UIApplication sharedApplication] keyWindow] rootViewController]){
-        [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:NO completion:nil];
+      [self openCallView:connection isFromCallKit:YES];
+}
+
+- (void)routeAudioToSpeaker {
+    NSError *error = nil;
+    if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                                                 mode:AVAudioSessionModeVoiceChat
+                                              options:(AVAudioSessionCategoryOptionDefaultToSpeaker) error:&error]) {
+        NSLog(@"Unable to reroute audio: %@", [error localizedDescription]);
     }
-    [self openCallView:connection isFromCallKit:YES];
 }
 
 - (void)callEnded{
-    if (self.device){
-        [self.device unlisten];
-        self.device = nil;
-        self.device.delegate = nil;
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state == UIApplicationStateBackground){
+        //clear view controller
+        if ([[[UIApplication sharedApplication] keyWindow] rootViewController]){
+            [[[[UIApplication sharedApplication] keyWindow] rootViewController] dismissViewControllerAnimated:NO completion:nil];
+        }
+       
+        if (self.device){
+            [self.device unlisten];
+            self.device = nil;
+            self.device.delegate = nil;
+        }
     }
 }
 @end
