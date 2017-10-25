@@ -25,6 +25,7 @@
 #import "ICESettingsTableViewController.h"
 #import "SIPSettingsNavigationController.h"
 #import "ICESettingsNavigationController.h"
+#import "PushSettingsViewController.h"
 
 @implementation SettingsTableViewController
 

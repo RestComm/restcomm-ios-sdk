@@ -53,7 +53,6 @@ NSString *const kCredentialsKey = @"credentialsKey";
 - (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate{
     self = [super init];
     if (self){
-        username = [parameters objectForKey:@"username"];
         password = [parameters objectForKey:@"password"];
         signalingUsername = [parameters objectForKey:@"signaling-username"];
         friendlyName = [parameters objectForKey:@"friendly-name"];
@@ -62,8 +61,9 @@ NSString *const kCredentialsKey = @"credentialsKey";
         rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
         token = [parameters objectForKey:@"token"];
         sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
+        NSString *domain = [parameters objectForKey:@"push-domain"];
         
-        pushApiManager = [[PushApiManager alloc] initWithUsername:username andPassword:password];
+        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password andPushDomain:domain];
         self.delegate = delegate;
     }
     return self;

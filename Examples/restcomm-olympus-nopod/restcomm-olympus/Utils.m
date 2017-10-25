@@ -40,11 +40,19 @@ NSString *const kSignalingSecureKey = @"signaling-secure";
 NSString *const kTurnCanidateTimeoutKey = @"turn-candidate-timeout";
 NSString *const kIsFirstTimeKey = @"is-first-time";
 NSString *const kPendingInterappKey = @"pending-interapp-uri";
-NSString *const kSignalingCertificateKey =@"signaling-certificate-dir";
+NSString *const kSignalingCertificateKey = @"signaling-certificate-dir";
+
+NSString *const kPushAccountKey = @"push-account";
+NSString *const kPushPasswordKey = @"push-password";
+NSString *const kPushDomainKey = @"push-domain";
+NSString *const kPushTokenKey = @"push-token";
+
+
 
 @implementation Utils
 
 NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
+NSString* const kFriendlyName = @"Olympus";
 
 + (void) setupUserDefaults
 {
@@ -62,6 +70,10 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                                     kTurnPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
                                     kSignalingSecureKey : @(YES),  // by default signaling is secure
                                     kSignalingCertificateKey : @"",
+                                    kPushAccountKey: @"",
+                                    kPushPasswordKey: @"",
+                                    kPushTokenKey: @"",
+                                    kPushDomainKey: @"https://push.restcomm.com",
                                     //@"turn-candidate-timeout" : @"5",
                                     kContactKey : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
                                     kChatHistoryKey : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
@@ -472,6 +484,52 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
         }
     }
     return contactsArray;
+}
+
+#pragma mark - Push Notifications
+
++ (NSString *)pushAccount{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushAccountKey];
+}
+
++ (NSString *)pushPassword{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushPasswordKey];
+}
+
++ (NSString *)pushDomain{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushDomainKey];
+}
+
++ (NSString *)pushToken{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushTokenKey];
+}
+
++ (void)updatePushAccount:(NSString *)pushAccount
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushAccount forKey:kPushAccountKey];
+}
+
++ (void)updatePushPassword:(NSString *)pushPassword
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushPassword forKey:kPushPasswordKey];
+}
+
++ (void)updatePushDomain:(NSString *)pushDomain
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushDomain forKey:kPushDomainKey];
+}
+
++ (void)updatePushToken:(NSString *)pushToken
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushToken forKey:kPushTokenKey];
 }
 
 #pragma mark - Default values

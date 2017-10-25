@@ -32,6 +32,8 @@
 		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
+		A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
+		A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
 		A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
 		A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
@@ -250,6 +252,8 @@
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		A9C091191FA013CD002A161A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A9C0911A1FA01B4D002A161A /* PushSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushSettingsViewController.h; sourceTree = "<group>"; };
+		A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushSettingsViewController.m; sourceTree = "<group>"; };
 		A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitProvider.h; sourceTree = "<group>"; };
 		A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitProvider.m; sourceTree = "<group>"; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -535,6 +539,8 @@
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
 				A94A1B7F1F6A7E160034352E /* BugReportViewController.m */,
 				A94A1B801F6A7E160034352E /* BugReportViewController.h */,
+				A9C0911A1FA01B4D002A161A /* PushSettingsViewController.h */,
+				A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1209,6 +1215,7 @@
 				AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */,
 				AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */,
 				AEA4966E1C2997F6000D9762 /* SettingsTableViewController.m in Sources */,
+				A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,
 				AEA496671C2997F6000D9762 /* LocalMessageTableViewCell.m in Sources */,
 				AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */,
 				AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */,
@@ -1225,6 +1232,7 @@
 				A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
+				A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

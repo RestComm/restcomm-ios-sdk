@@ -374,8 +374,7 @@
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
 
     //save token to user defaults
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:deviceTokenString forKey:@"deviceToken"];
+    [Utils updatePushToken:deviceTokenString];
 }
 
 

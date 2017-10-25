@@ -37,12 +37,9 @@
     if (![Utils isFirstTime]) {
         // Open message view if not already opened
         // initialize RCDEvice
-        RCDevice *rcDevice = [self registerRCDevice];
+        [self registerRCDevice];
         // register push
-        
-        NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", [Utils sipIdentification]];
-        
-        [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
+        [self registerForPush];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
         MainTableViewController *mainViewController = [storyboard instantiateViewControllerWithIdentifier:@"contacts-controller"];
@@ -106,10 +103,9 @@
     [Utils updateIsFirstTime:NO];
     
     // initialize RCDEvice
-    RCDevice *rcDevice = [self registerRCDevice];
+    [self registerRCDevice];
     // register push
-    NSString *userName = [NSString stringWithFormat:@"%@@telestax.com", _usernameText.text];
-    [self registerForPushWithAccount:userName withRCDevice:rcDevice password:[Utils sipPassword] andEmail:userName];
+    [self registerForPush];
 }
 
 - (RCDevice *)registerRCDevice{
@@ -118,32 +114,37 @@
     return [appDelegate registerRCDevice];
 }
 
-- (void)registerForPushWithAccount:(NSString *)account withRCDevice:(RCDevice *)rcDevice password:(NSString *)password andEmail:(NSString *)email{
-    //get token from user defaults
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *deviceToken = [appDefaults objectForKey:@"deviceToken"];
-    if (deviceToken && rcDevice){
-        //get certificate strings
-        NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
-        NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
-        
-      
-
-        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                    @"Olympus", @"friendly-name",
-                                    account, @"username",
-                                    password, @"password",
-                                    email, @"rescomm-account-email",
-                                    deviceToken, @"token",
-                                    pushCertificatesPathPublic, @"push-certificate-public-path",
-                                    pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                    [NSNumber numberWithBool:YES], @"is-sandbox", nil];
-        
-        [rcDevice registerPushToken:dic delegate:self];
-        
-    } else {
-        NSLog(@"Device Voip push token not found, or RCDevice not initialized");
+- (void)registerForPush{
+    NSString *deviceToken = [Utils pushToken];
+    NSString *pushAccount = [Utils pushAccount];
+    
+    if (deviceToken && pushAccount){
+        AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+        RCDevice *rcDevice = [appDelegate registerRCDevice];
+        if (rcDevice){
+            //get certificate strings
+            NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+            NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+            
+            
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                        kFriendlyName, @"friendly-name",
+                                        [Utils pushAccount], @"rescomm-account-email",
+                                        [Utils pushPassword], @"password",
+                                        [Utils pushDomain], @"push-domain",
+                                        deviceToken, @"token",
+                                        pushCertificatesPathPublic, @"push-certificate-public-path",
+                                        pushCertificatesPathPrivate, @"push-certificate-private-path",
+                                        [NSNumber numberWithBool:NO], @"is-sandbox", nil];
+            
+            [rcDevice registerPushToken:dic delegate:self];
+        } else {
+            NSLog(@"Device Voip push token not found, or RCDevice not initialized");
+        }
+    }else {
+        NSLog(@"Device token or restcomm push account are not initialized");
     }
+    
 }
 
 -(void)registeredForPush:(NSError *)error{

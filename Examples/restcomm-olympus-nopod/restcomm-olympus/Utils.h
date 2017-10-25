@@ -24,6 +24,7 @@
 #import "LocalContact.h"
 
 extern NSString* const RestCommClientSDKLatestGitHash;
+extern NSString* const kFriendlyName;
 
 @interface Utils : NSObject
 + (void) setupUserDefaults;
@@ -65,4 +66,14 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (void)shakeView:(UIView *)view;
 + (void)saveLastPeer:(NSString *)sipUri;
 + (NSString *)getLastPeer;
+
+//push notifications
++ (NSString *)pushAccount;
++ (NSString *)pushPassword;
++ (NSString *)pushDomain;
++ (NSString *)pushToken;
++ (void)updatePushAccount:(NSString *)pushAccount;
++ (void)updatePushPassword:(NSString *)pushPassword;
++ (void)updatePushDomain:(NSString *)pushDomain;
++ (void)updatePushToken:(NSString *)pushToken;
 @end

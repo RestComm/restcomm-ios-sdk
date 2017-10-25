@@ -27,21 +27,22 @@
 NSString *const kSignalingDomain = @"cloud.restcomm.com";
 NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
 NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
-NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
 @implementation PushApiManager{
     NSString *pUsername;
     NSString *pPassword;
     NSURLSession *session;
+    NSString *pushDomain;
 }
 
 
-- (id)initWithUsername:(NSString *)username andPassword:(NSString *)password{
+- (id)initWithUsername:(NSString *)username password:(NSString *)password andPushDomain:(NSString *)domain{
     self = [super init];
     if (self){
         pUsername = username;
         pPassword = password;
         session = [NSURLSession sharedSession];
+        pushDomain = domain;
     }
     return self;
 }
@@ -122,7 +123,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
 
 - (void)getApplicationForFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", kPushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -156,7 +157,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 - (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", kPushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -203,7 +204,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 - (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
 
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -235,7 +236,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 }
 
 - (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", kPushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
@@ -284,7 +285,7 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
 
 - (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", kPushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -328,9 +329,9 @@ NSString *const kPushDomain = @"push.restcomm.com/pushNotifications";
 
 - (void)createOrUpdateBinding:(RCBinding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", kPushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", pushDomain]];
     if (bindingSid){
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings/%@", kPushDomain, bindingSid]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings/%@", pushDomain, bindingSid]];
     }
     
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
