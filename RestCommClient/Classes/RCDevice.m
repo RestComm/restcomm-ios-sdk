@@ -90,7 +90,6 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 {
     self = [super init];
     if (self) {
-        NSLog(@"Ognjen -----RCDevice Init");
         self.delegate = delegate;
         self.capabilities = nil;
         self.incomingSoundEnabled = YES;
@@ -164,7 +163,6 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
 - (void)listen
 {
-    NSLog(@"Ognjen --- listen [RCDevice listen], state: %d", _state);
     RCLogNotice("[RCDevice listen], state: %d", _state);
     if (_state == RCDeviceStateOffline) {
         NetworkStatus status = [_internetReachable currentReachabilityStatus];
@@ -579,7 +577,6 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
                 [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
             }
              */
-            NSLog(@"Ognjen --- listen checkNetworkStatus RCDevice");
             [self listen];
         }
     }
