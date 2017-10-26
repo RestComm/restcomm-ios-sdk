@@ -27,6 +27,8 @@
 NSString *const kSignalingDomain = @"cloud.restcomm.com";
 NSString *const kAccountSidUrl = @"/restcomm/2012-04-24/Accounts.json";
 NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
+NSString *const kPushPath = @"pushNotifications";
+
 
 @implementation PushApiManager{
     NSString *pUsername;
@@ -129,7 +131,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 
 
 - (void)getApplicationForFriendlyName:(NSString *)friendlyName isSandbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/applications", pushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", pushDomain, kPushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getApplicationForFriendlyName for friendlyName: %@; isSandbox: %@", friendlyName, sandbox?@"YES":@"NO"] UTF8String]);
@@ -167,7 +169,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/applications", pushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", pushDomain, kPushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createApplication with %@", application] UTF8String]);
@@ -220,7 +222,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/credentials", pushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", pushDomain, kPushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
 
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getCredentialsForApplication for %@", application] UTF8String]);
@@ -257,7 +259,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/credentials", pushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", pushDomain, kPushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createCredentials with %@", credentials] UTF8String]);
@@ -312,7 +314,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 
 
 - (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings", pushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", pushDomain, kPushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: checkExistingBindingSidForApplication for %@", application] UTF8String]);
@@ -361,9 +363,9 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 
 - (void)createOrUpdateBinding:(RCBinding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding with %@", binding] UTF8String]);
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings", pushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", pushDomain, kPushPath]];
     if (bindingSid){
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings/%@", pushDomain, bindingSid]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings/%@", pushDomain, kPushPath, bindingSid]];
     }
     
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
