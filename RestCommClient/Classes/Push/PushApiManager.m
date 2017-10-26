@@ -63,10 +63,10 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@", kSignalingDomain, kAccountSidUrl, encodedEmail]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
-    
-    
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getAccountSidWithRequestForEmail for email: %@", email] UTF8String]);
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getAccountSidWithRequestForEmail ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -75,12 +75,14 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                              options:NSJSONReadingMutableContainers
                                                                error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getAccountSidWithRequestForEmail ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing account sid"]);
             return;
         }
         
         if (dict){
             NSString *accountSid = [dict objectForKey:@"sid"];
+            RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getAccountSidWithRequestForEmail SUCCESS, account sid: %@", accountSid] UTF8String]);
             completionHandler(accountSid, nil);
         } else {
             completionHandler(nil, nil);
@@ -94,8 +96,10 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@/Clients.json", kSignalingDomain, kClientSidUrl, accountSid]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getClientSidWithAccountSid for accountSid: %@; signalingUsername: %@", accountSid, signalingUsername] UTF8String]);
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getClientSidWithAccountSid ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -104,6 +108,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getClientSidWithAccountSid ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing client sid"]);
             return;
         }
@@ -112,6 +117,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
             NSDictionary *dict = arr[i];
             if ([[dict objectForKey:@"login"] isEqualToString:signalingUsername]){
                 NSString *clientSid = [dict objectForKey:@"sid"];
+                RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getClientSidWithAccountSid SUCCESS, client sid: %@", clientSid] UTF8String]);
                 completionHandler(clientSid, nil);
                 return;
                 
@@ -122,12 +128,14 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 
-- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", pushDomain]];
+- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSandbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/applications", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getApplicationForFriendlyName for friendlyName: %@; isSandbox: %@", friendlyName, sandbox?@"YES":@"NO"] UTF8String]);
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getApplicationForFriendlyName ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -136,6 +144,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getApplicationForFriendlyName ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing application sid"]);
             return;
         }
@@ -145,8 +154,9 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
             NSDictionary *dict = arr[i];
             if ([[dict objectForKey:@"FriendlyName"] isEqualToString:friendlyName] && [[dict objectForKey:@"Sandbox"]
                                                                                        boolValue] == sandbox){
-                
-                completionHandler([[RCApplication alloc] initWithDictionary:dict], nil);
+                RCApplication *rcApplication = [[RCApplication alloc] initWithDictionary:dict];
+                RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getApplicationForFriendlyName SUCCESS-> %@", rcApplication] UTF8String]);
+                completionHandler(rcApplication, nil);
                 return;
             }
         }
@@ -157,9 +167,10 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/applications", pushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/applications", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createApplication with %@", application] UTF8String]);
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
     [nameDictionary setObject:application.friendlyName forKey:@"FriendlyName"];
     if (application.sandbox){
@@ -170,6 +181,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];
     
     if (jsonSerializationError){
+        RCLogError([[NSString stringWithFormat:@"PushApiManager: createApplication ERROR: %@", jsonSerializationError.description] UTF8String]);
         completionHandler(nil, [self getErrorWithDescription:@"Error creating JSON for application request"]);
         return;
     }
@@ -182,6 +194,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createApplication ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -190,12 +203,15 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                              options:NSJSONReadingMutableContainers
                                                                error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createApplication ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing application sid"]);
             return;
         }
         
         if (dict){
-            completionHandler([[RCApplication alloc] initWithDictionary:dict], nil);
+            RCApplication *rcApplication = [[RCApplication alloc] initWithDictionary:dict];
+            RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createApplication SUCCESS-> %@", rcApplication] UTF8String]);
+            completionHandler(rcApplication, nil);
         } else {
             completionHandler(nil, nil);
         }
@@ -204,11 +220,13 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", pushDomain]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/credentials", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
 
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getCredentialsForApplication for %@", application] UTF8String]);
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getCredentialsForApplication ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -217,6 +235,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: getCredentialsForApplication ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing credentials sid"]);
             return;
         }
@@ -225,7 +244,9 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
         for (int i=0; i< arr.count; i++){
             NSDictionary *dict = arr[i];
             if ([[dict objectForKey:@"ApplicationSid"] isEqualToString:application.sid]){
-                completionHandler([[RCCredentials alloc] initWithDictionary:dict], nil);
+                RCCredentials *rcCredentials = [[RCCredentials alloc] initWithDictionary:dict];
+                RCLogInfo([[NSString stringWithFormat:@"PushApiManager: getCredentialsForApplication SUCCESS -> %@", rcCredentials] UTF8String]);
+                completionHandler(rcCredentials, nil);
                 return;
             }
         }
@@ -236,9 +257,10 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/credentials", pushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/credentials", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createCredentials with %@", credentials] UTF8String]);
     NSMutableDictionary *nameDictionary = [NSMutableDictionary dictionaryWithCapacity:6];
     [nameDictionary setObject:credentials.applicationSid forKey:@"ApplicationSid"];
     [nameDictionary setObject:credentials.credentialType forKey:@"CredentialType"];
@@ -249,6 +271,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nameDictionary options:NSJSONWritingPrettyPrinted error:&jsonSerializationError];
     
     if (jsonSerializationError){
+        RCLogError([[NSString stringWithFormat:@"PushApiManager: createCredentials ERROR: %@", jsonSerializationError.description] UTF8String]);
         completionHandler(nil, [self getErrorWithDescription:@"Error creating JSON for application request"]);
         return;
     }
@@ -261,6 +284,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createCredentials ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -270,12 +294,15 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                                error:&jsonError];
         
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createCredentials ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing credentials sid"]);
             return;
         }
         
         if (dict){
-            completionHandler([[RCCredentials alloc]initWithDictionary:dict], nil);
+            RCCredentials *rcCredentials = [[RCCredentials alloc] initWithDictionary:dict];
+            RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createCredentials SUCCESS -> %@", rcCredentials] UTF8String]);
+            completionHandler(rcCredentials, nil);
         } else {
             completionHandler(nil, nil);
         }
@@ -285,11 +312,13 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 
 
 - (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", pushDomain]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings", pushDomain]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: checkExistingBindingSidForApplication for %@", application] UTF8String]);
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: checkExistingBindingSidForApplication ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -298,6 +327,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&jsonError];
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: checkExistingBindingSidForApplication ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
             return;
         }
@@ -308,7 +338,9 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
             for (int i=0; i< arr.count; i++){
                 NSDictionary *dict = arr[i];
                 if ([[dict objectForKey:@"ApplicationSid"] isEqualToString:application.sid]){
-                    completionHandler([[RCBinding alloc]initWithDictionary:dict], nil);
+                    RCBinding *rcBinding = [[RCBinding alloc]initWithDictionary:dict];
+                    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: checkExistingBindingSidForApplication SUCCESS -> %@", rcBinding] UTF8String]);
+                    completionHandler(rcBinding, nil);
                     return;
                 }
             }
@@ -328,10 +360,10 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
 }
 
 - (void)createOrUpdateBinding:(RCBinding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings", pushDomain]];
+    RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding with %@", binding] UTF8String]);
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings", pushDomain]];
     if (bindingSid){
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/bindings/%@", pushDomain, bindingSid]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/pushNotifications/bindings/%@", pushDomain, bindingSid]];
     }
     
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
@@ -352,6 +384,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     NSData *jsonData=[NSJSONSerialization dataWithJSONObject:propertyDictionary options:NSJSONWritingPrettyPrinted error:&error];
     
     if (error){
+        RCLogError([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding ERROR: %@", error.description] UTF8String]);
         completionHandler(nil, [self getErrorWithDescription:@"Error creating JSON from bind object"]);
         return;
     }
@@ -364,6 +397,7 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
     
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding ERROR: %@", error.description] UTF8String]);
             completionHandler(nil, error);
             return;
         }
@@ -373,12 +407,15 @@ NSString *const kClientSidUrl = @"/restcomm/2012-04-24/Accounts";
                                                                error:&jsonError];
         
         if (jsonError) {
+            RCLogError([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding ERROR: %@", jsonError.description] UTF8String]);
             completionHandler(nil, [self getErrorWithDescription:@"Error parsing JSON containing binding sid"]);
             return;
         }
         
         if (dict){
-            completionHandler([[RCBinding alloc]initWithDictionary:dict], nil);
+            RCBinding *rcBinding = [[RCBinding alloc]initWithDictionary:dict];
+            RCLogInfo([[NSString stringWithFormat:@"PushApiManager: createOrUpdateBinding SUCCESS -> %@", rcBinding] UTF8String]);
+            completionHandler(rcBinding, nil);
         } else {
             completionHandler(nil, nil);
         }

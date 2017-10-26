@@ -10,5 +10,4 @@
 #import "RestCommClient.h"
 
 @interface SIPSettingsNavigationController : UINavigationController
-@property (weak) RCDevice * device;
 @end

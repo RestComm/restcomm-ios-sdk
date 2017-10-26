@@ -24,6 +24,7 @@
 #import "MainNavigationController.h"
 #import "ICESettingsNavigationController.h"
 #import "Utils.h"
+#import "AppDelegate.h"
 
 @interface ICESettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *turnUrlText;
@@ -62,7 +63,8 @@
     [self.view addGestureRecognizer:tapGesture];
     [self registerForKeyboardNotifications];
     
-    self.device = ((ICESettingsNavigationController*)self.navigationController).device;
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    self.device = appDelegate.device;
     
     self.navigationItem.title = @"ICE Settings";
 }

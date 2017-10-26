@@ -63,7 +63,6 @@ extern NSString* const kFriendlyName;
 + (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
 
-+ (void)shakeView:(UIView *)view;
 + (void)saveLastPeer:(NSString *)sipUri;
 + (NSString *)getLastPeer;
 
@@ -72,8 +71,16 @@ extern NSString* const kFriendlyName;
 + (NSString *)pushPassword;
 + (NSString *)pushDomain;
 + (NSString *)pushToken;
++ (BOOL)isServerEnabledForPushNotifications;
++ (BOOL)isSandbox;
 + (void)updatePushAccount:(NSString *)pushAccount;
 + (void)updatePushPassword:(NSString *)pushPassword;
 + (void)updatePushDomain:(NSString *)pushDomain;
 + (void)updatePushToken:(NSString *)pushToken;
++ (void)updateServerEnabledForPush:(BOOL)enabled;
++ (void)updateIsSandboxPush:(BOOL)enabled;
+
+//animations
++ (void)shakeView:(UIView *)view;
++ (void)shakeTableViewCell:(UITableViewCell *)cell;
 @end

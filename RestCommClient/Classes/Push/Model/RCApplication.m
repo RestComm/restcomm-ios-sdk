@@ -59,5 +59,8 @@
     [encoder encodeBool:self.sandbox forKey:@"sandbox"];
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat: @"RCApplication: sid=%@ friendlyName=%@ sandbox=%@", self.sid, self.friendlyName, self.sandbox?@"YES":@"NO"];
+}
 
 @end

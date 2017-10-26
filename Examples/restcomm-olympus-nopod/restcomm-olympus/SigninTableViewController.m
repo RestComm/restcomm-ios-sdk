@@ -36,8 +36,10 @@
     [super viewWillAppear:animated];
     if (![Utils isFirstTime]) {
         // Open message view if not already opened
-        // initialize RCDEvice
+        
+        // initialize RCDevice
         [self registerRCDevice];
+     
         // register push
         [self registerForPush];
         
@@ -55,40 +57,38 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
-}
-*/
-
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
     if ([self.usernameText.text isEqualToString:@""] || [self.domainText.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
-                                                        message:@"Username and Domain fields are mandatory"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Validation Error"
+                                     message:@"Username and Domain fields are mandatory"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:nil];
+        [alert addAction:okAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
         return NO;
     }
     
     //if ([self.usernameText.text containsString:@"sip:"] || [self.usernameText.text containsString:@"@"]) {
     if ([RCUtilities string:self.usernameText.text containsString:@"sip:"] || [RCUtilities string:self.usernameText.text containsString:@"@"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Validation Error"
-                                                        message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Validation Error"
+                                     message:@"Please avoid using a SIP URI for Username. Use a plain username instead, like 'bob' or 'alice'"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:nil];
+        [alert addAction:okAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
         return NO;
     }
  
@@ -104,6 +104,7 @@
     
     // initialize RCDEvice
     [self registerRCDevice];
+   
     // register push
     [self registerForPush];
 }
@@ -115,40 +116,44 @@
 }
 
 - (void)registerForPush{
-    NSString *deviceToken = [Utils pushToken];
-    NSString *pushAccount = [Utils pushAccount];
-    
-    if (deviceToken && pushAccount){
-        AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
-        RCDevice *rcDevice = [appDelegate registerRCDevice];
-        if (rcDevice){
-            //get certificate strings
-            NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
-            NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
-            
-            
-            NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                        kFriendlyName, @"friendly-name",
-                                        [Utils pushAccount], @"rescomm-account-email",
-                                        [Utils pushPassword], @"password",
-                                        [Utils pushDomain], @"push-domain",
-                                        deviceToken, @"token",
-                                        pushCertificatesPathPublic, @"push-certificate-public-path",
-                                        pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                        [NSNumber numberWithBool:NO], @"is-sandbox", nil];
-            
-            [rcDevice registerPushToken:dic delegate:self];
-        } else {
-            NSLog(@"Device Voip push token not found, or RCDevice not initialized");
+    //before setting the push token, we need to check is push enabled (server can handle it)
+    if ([Utils isServerEnabledForPushNotifications]){
+        NSLog(@"Start registering for push on server");
+        NSString *deviceToken = [Utils pushToken];
+        NSString *pushAccount = [Utils pushAccount];
+        
+        if (deviceToken && pushAccount){
+            AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+            RCDevice *rcDevice = [appDelegate registerRCDevice];
+            if (rcDevice){
+                //get certificate strings
+                NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+                NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+                
+                
+                NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                            kFriendlyName, @"friendly-name",
+                                            [Utils pushAccount], @"rescomm-account-email",
+                                            [Utils pushPassword], @"password",
+                                            [Utils pushDomain], @"push-domain",
+                                            deviceToken, @"token",
+                                            pushCertificatesPathPublic, @"push-certificate-public-path",
+                                            pushCertificatesPathPrivate, @"push-certificate-private-path",
+                                            [NSNumber numberWithBool:[Utils isSandbox]], @"is-sandbox", nil];
+                
+                [rcDevice registerPushToken:dic delegate:self];
+            } else {
+                NSLog(@"Device Voip push token not found, or RCDevice not initialized");
+            }
+        }else {
+            NSLog(@"Device token or restcomm push account are not initialized");
         }
-    }else {
-        NSLog(@"Device token or restcomm push account are not initialized");
     }
     
 }
 
 -(void)registeredForPush:(NSError *)error{
-    NSLog(@"%@", error?error.description:@"app registered for push");
+    NSLog(@"%@", error?error.description:@"App registered for push");
 }
 
 

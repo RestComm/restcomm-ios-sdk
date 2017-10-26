@@ -46,6 +46,8 @@ NSString *const kPushAccountKey = @"push-account";
 NSString *const kPushPasswordKey = @"push-password";
 NSString *const kPushDomainKey = @"push-domain";
 NSString *const kPushTokenKey = @"push-token";
+NSString *const kPushServerEnabledKey = @"push-server-enabled";
+NSString *const kPushIsSandboxKey = @"push-is-sandbox";
 
 
 
@@ -73,7 +75,9 @@ NSString* const kFriendlyName = @"Olympus";
                                     kPushAccountKey: @"",
                                     kPushPasswordKey: @"",
                                     kPushTokenKey: @"",
-                                    kPushDomainKey: @"https://push.restcomm.com",
+                                    kPushDomainKey: @"push.restcomm.com",
+                                    kPushServerEnabledKey: @(NO), //by default we assume push is not enabled for account on server
+                                    kPushIsSandboxKey: @(NO),
                                     //@"turn-candidate-timeout" : @"5",
                                     kContactKey : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
                                     kChatHistoryKey : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
@@ -508,6 +512,16 @@ NSString* const kFriendlyName = @"Olympus";
     return [appDefaults stringForKey:kPushTokenKey];
 }
 
++ (BOOL)isServerEnabledForPushNotifications{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:kPushServerEnabledKey] boolValue];
+}
+
++ (BOOL)isSandbox{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:kPushIsSandboxKey] boolValue];
+}
+
 + (void)updatePushAccount:(NSString *)pushAccount
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -532,6 +546,15 @@ NSString* const kFriendlyName = @"Olympus";
     [appDefaults setObject:pushToken forKey:kPushTokenKey];
 }
 
++ (void)updateServerEnabledForPush:(BOOL)enabled{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSNumber numberWithBool:enabled] forKey:kPushServerEnabledKey];
+}
+
++ (void)updateIsSandboxPush:(BOOL)enabled{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSNumber numberWithBool:enabled] forKey:kPushIsSandboxKey];
+}
 #pragma mark - Default values
 
 + (NSArray *)getDefaultContacts{
@@ -623,5 +646,25 @@ NSString* const kFriendlyName = @"Olympus";
     [view.layer addAnimation:shake forKey:@"position"];
 }
 
++ (void)shakeTableViewCell:(UITableViewCell *)cell{
+    CGPoint position = cell.center;
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(position.x, position.y)];
+    [path addLineToPoint:CGPointMake(position.x-20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x+20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x-20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x+20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x, position.y)];
+    
+    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    positionAnimation.path = path.CGPath;
+    positionAnimation.duration = .8f;
+    positionAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    
+    [CATransaction begin];
+    [cell.layer addAnimation:positionAnimation forKey:nil];
+    [CATransaction commit];
+}
 
 @end

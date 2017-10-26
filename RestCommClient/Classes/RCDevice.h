@@ -242,7 +242,15 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
  * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
  * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
- * application, if its production it should be set to NO.
+ * NOTE:
+ * By default APNS provides to developer '.p12' SSL certificate. Restcomm Push Notification Server requires a couple of modifications with this file.
+ * Generate '.pem' certificate:
+ *      openssl pkcs12 -in /path/to/cert.p12 -nokeys -out /path/to/cert.pem -nodes
+ * Generate '.pem' private key:
+ *      openssl pkcs12 -in /path/to/cert.p12 -nocerts -out /path/to/key.pem -nodes
+ * Format '.pem' private key to pkcs8:
+ *      openssl pkcs8 -topk8 -inform pem -in /path/to/key(pkcs12).pem -outform pem -nocrypt -out /path/to/key(pkcs8).pem
+ *
  * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
  * application, if its production it should be set to NO.
  *

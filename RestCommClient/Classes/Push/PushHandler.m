@@ -98,9 +98,11 @@ NSString *const kCredentialsKey = @"credentialsKey";
                                         //check existing binding sid
                                         [self checkBindingSidWithCompletionHandler:^(RCBinding *binding, NSError *error) {
                                             if (error){
-                                                RCLogError("Error checking binding sid: %@", error);
+                                                RCLogError([[NSString stringWithFormat:@"Error checking binding sid: %@", error] UTF8String]);
                                                 if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                     [weakSelf.delegate registeredForPush:error];
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [weakSelf.delegate registeredForPush:error];
+                                                    });
                                                 }
                                             } else {
                                                 //its and existing sid, we should update sid if savedTokenOnServer is different than token
@@ -109,20 +111,26 @@ NSString *const kCredentialsKey = @"credentialsKey";
                                                         binding.address = token;
                                                         [pushApiManager updateBinding:binding andCompletionHandler:^(RCBinding *binding, NSError *error) {
                                                              if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                                  [weakSelf.delegate registeredForPush:error];
+                                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                                      [weakSelf.delegate registeredForPush:error];
+                                                                  });
                                                              }
                                                         }];
                                                     } else {
                                                         RCLogInfo("Binding sid is same on server. No need to update");
                                                         if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                            [weakSelf.delegate registeredForPush:nil];
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 [weakSelf.delegate registeredForPush:nil];
+                                                             });
                                                         }
                                                     }
                                                 } else {
                                                     RCBinding *bindingToSend = [[RCBinding alloc] initWithSid:@"" identity:clientSid applicationSid:applicationSid andAddress:token];
                                                     [pushApiManager createBinding:bindingToSend andCompletionHandler:^(RCBinding *binding, NSError *error) {
                                                         if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                            [weakSelf.delegate registeredForPush:error];
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 [weakSelf.delegate registeredForPush:error];
+                                                             });
                                                         }
                                                     }];
                                                 }
@@ -206,7 +214,7 @@ NSString *const kCredentialsKey = @"credentialsKey";
         return;
     }
     //Application sid is not found, we need to ask server for it
-    [pushApiManager getApplicationForFriendlyName:friendlyName isSendbox:sandbox withCompletionHandler:^(RCApplication *application, NSError *error) {
+    [pushApiManager getApplicationForFriendlyName:friendlyName isSandbox:sandbox withCompletionHandler:^(RCApplication *application, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
             completionHandler(nil);
@@ -307,13 +315,15 @@ NSString *const kCredentialsKey = @"credentialsKey";
 
 #pragma mark - Helpers
 - (void)formatAndDelegateError:(NSString *)errorDescription{
-    NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                 code:ERROR_PUSH_REGISTER
-                                             userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
-    if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-        [self.delegate registeredForPush:errorForDelegate];
-    }
-    RCLogError([errorDescription UTF8String]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                     code:ERROR_PUSH_REGISTER
+                                                 userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
+        if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+            [self.delegate registeredForPush:errorForDelegate];
+        }
+        RCLogError([errorDescription UTF8String]);
+    });
 }
 
 @end

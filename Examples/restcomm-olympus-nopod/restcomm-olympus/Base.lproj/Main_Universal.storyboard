@@ -167,11 +167,11 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="uQ8-fJ-et3"/>
-                                                    <exclude reference="SRe-5D-FOR"/>
                                                     <exclude reference="AMl-sb-AzX"/>
                                                     <exclude reference="R3n-xY-wb4"/>
                                                     <exclude reference="S8e-r8-eAr"/>
+                                                    <exclude reference="SRe-5D-FOR"/>
+                                                    <exclude reference="uQ8-fJ-et3"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -490,6 +490,9 @@
                                                 <constraint firstAttribute="centerX" secondItem="aDV-fy-LYa" secondAttribute="centerX" constant="-17" id="nz5-mW-xxG"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="dhE-RO-aWf" kind="modal" id="od8-ms-Chz"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="prK-gQ-aUM">
                                         <rect key="frame" x="0.0" y="167" width="375" height="44"/>
@@ -524,9 +527,6 @@
                             <outlet property="delegate" destination="3fM-ZH-tYr" id="UaP-mT-U8e"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <segue destination="dhE-RO-aWf" kind="presentation" identifier="invoke-push-notification-settings" id="72s-oX-rjm"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kS0-oL-efS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -749,9 +749,9 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="5R1-Xq-Mbm"/>
-                                                    <exclude reference="xEH-83-3lw"/>
-                                                    <exclude reference="QwL-37-fhi"/>
                                                     <exclude reference="7hw-pk-x9k"/>
+                                                    <exclude reference="QwL-37-fhi"/>
+                                                    <exclude reference="xEH-83-3lw"/>
                                                 </mask>
                                             </variation>
                                         </imageView>
@@ -789,8 +789,8 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="reJ-p5-wsR"/>
                                             <exclude reference="Dnd-rp-QJ0"/>
+                                            <exclude reference="reJ-p5-wsR"/>
                                             <exclude reference="MKd-YH-lTk"/>
                                         </mask>
                                     </variation>
@@ -866,11 +866,11 @@
                                         <mask key="constraints">
                                             <exclude reference="Iaq-q2-7M7"/>
                                             <exclude reference="k9g-I9-pHN"/>
+                                            <exclude reference="6mZ-Gy-zS8"/>
+                                            <exclude reference="MVg-1i-TZj"/>
                                             <exclude reference="dW0-zg-9W0"/>
                                             <exclude reference="dcH-3i-EP2"/>
                                             <exclude reference="wTk-FG-0cd"/>
-                                            <exclude reference="6mZ-Gy-zS8"/>
-                                            <exclude reference="MVg-1i-TZj"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -922,18 +922,18 @@
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="2uh-pO-Dp9"/>
-                                        <exclude reference="1Sf-z8-SoK"/>
-                                        <exclude reference="ykf-w4-9T7"/>
                                         <exclude reference="1H7-15-kRK"/>
+                                        <exclude reference="1Sf-z8-SoK"/>
+                                        <exclude reference="2uh-pO-Dp9"/>
                                         <exclude reference="IoE-q3-fhX"/>
                                         <exclude reference="ucC-vB-re9"/>
+                                        <exclude reference="ykf-w4-9T7"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
-                                        <exclude reference="ykf-w4-9T7"/>
                                         <exclude reference="IoE-q3-fhX"/>
+                                        <exclude reference="ykf-w4-9T7"/>
                                     </mask>
                                 </variation>
                                 <connections>
@@ -957,11 +957,11 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="INw-lR-SF4"/>
-                                        <exclude reference="Wl3-1m-7bM"/>
                                         <exclude reference="V7o-y5-kzb"/>
-                                        <exclude reference="qI1-zN-Ccd"/>
+                                        <exclude reference="Wl3-1m-7bM"/>
                                         <exclude reference="fai-Rg-eQ9"/>
                                         <exclude reference="lh1-Xg-GNH"/>
+                                        <exclude reference="qI1-zN-Ccd"/>
                                         <exclude reference="wwf-m8-Fww"/>
                                     </mask>
                                 </variation>
@@ -969,8 +969,8 @@
                                     <mask key="constraints">
                                         <exclude reference="INw-lR-SF4"/>
                                         <exclude reference="Wl3-1m-7bM"/>
-                                        <exclude reference="qI1-zN-Ccd"/>
                                         <exclude reference="lh1-Xg-GNH"/>
+                                        <exclude reference="qI1-zN-Ccd"/>
                                     </mask>
                                 </variation>
                                 <connections>
@@ -993,20 +993,20 @@
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="VXy-gJ-Jyg"/>
-                                        <exclude reference="crd-zS-4lC"/>
+                                        <exclude reference="2xU-qu-ZAM"/>
                                         <exclude reference="Kjt-Uv-WOE"/>
                                         <exclude reference="Umy-mL-cDH"/>
-                                        <exclude reference="2xU-qu-ZAM"/>
-                                        <exclude reference="tYC-yy-CT7"/>
                                         <exclude reference="VD1-f5-EmP"/>
+                                        <exclude reference="VXy-gJ-Jyg"/>
+                                        <exclude reference="crd-zS-4lC"/>
+                                        <exclude reference="tYC-yy-CT7"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
-                                        <exclude reference="VXy-gJ-Jyg"/>
-                                        <exclude reference="Kjt-Uv-WOE"/>
                                         <exclude reference="2xU-qu-ZAM"/>
+                                        <exclude reference="Kjt-Uv-WOE"/>
+                                        <exclude reference="VXy-gJ-Jyg"/>
                                         <exclude reference="tYC-yy-CT7"/>
                                     </mask>
                                 </variation>
@@ -1160,28 +1160,28 @@
                                 <exclude reference="Jcx-Bc-TnA"/>
                                 <exclude reference="8Pd-Ij-oqp"/>
                                 <exclude reference="EU4-Eb-rja"/>
+                                <exclude reference="3ra-Fo-UHI"/>
                                 <exclude reference="Omt-ww-yGJ"/>
                                 <exclude reference="g8f-bW-lpM"/>
                                 <exclude reference="nqb-6S-jKu"/>
-                                <exclude reference="3ra-Fo-UHI"/>
-                                <exclude reference="wyI-ae-76j"/>
-                                <exclude reference="oIN-IW-376"/>
                                 <exclude reference="aIS-Ed-jrb"/>
+                                <exclude reference="oIN-IW-376"/>
                                 <exclude reference="qVi-Fj-2h1"/>
-                                <exclude reference="dET-qF-b5x"/>
+                                <exclude reference="wyI-ae-76j"/>
                                 <exclude reference="NCk-jv-4Uc"/>
                                 <exclude reference="SUc-n4-wz3"/>
+                                <exclude reference="dET-qF-b5x"/>
+                                <exclude reference="GyH-ze-A0H"/>
+                                <exclude reference="uxm-Sd-YTn"/>
+                                <exclude reference="NJ1-y4-clI"/>
                                 <exclude reference="SSD-zd-h6h"/>
                                 <exclude reference="i0b-vw-qMj"/>
-                                <exclude reference="NJ1-y4-clI"/>
-                                <exclude reference="uxm-Sd-YTn"/>
-                                <exclude reference="GyH-ze-A0H"/>
-                                <exclude reference="Nyg-FK-kbz"/>
-                                <exclude reference="fix-gm-lCx"/>
-                                <exclude reference="ZOG-6J-cQ3"/>
-                                <exclude reference="rvi-pe-wcm"/>
-                                <exclude reference="V5e-5p-vPb"/>
                                 <exclude reference="4e9-LU-6l4"/>
+                                <exclude reference="Nyg-FK-kbz"/>
+                                <exclude reference="V5e-5p-vPb"/>
+                                <exclude reference="ZOG-6J-cQ3"/>
+                                <exclude reference="fix-gm-lCx"/>
+                                <exclude reference="rvi-pe-wcm"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1660,8 +1660,8 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Push Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FHf-Di-A0B">
-                                                    <rect key="frame" x="8" y="13" width="175" height="18"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server handles push notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="FHf-Di-A0B">
+                                                    <rect key="frame" x="8" y="13" width="290" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="102" id="OvE-IK-wTw"/>
                                                     </constraints>
@@ -1675,12 +1675,16 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                                     </variation>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D8h-d3-6BB">
-                                                    <rect key="frame" x="318" y="7" width="51" height="31"/>
+                                                    <rect key="frame" x="308" y="7" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="onEnablePushNotifications:" destination="6WW-La-Z1d" eventType="valueChanged" id="BIl-iY-IDY"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="D8h-d3-6BB" firstAttribute="centerY" secondItem="bnD-pu-exK" secondAttribute="centerY" id="3gD-Dw-tcN"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="D8h-d3-6BB" secondAttribute="trailing" id="PTg-32-S8L"/>
+                                                <constraint firstItem="D8h-d3-6BB" firstAttribute="leading" secondItem="FHf-Di-A0B" secondAttribute="trailing" constant="10" id="9UD-Ba-s4j"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="D8h-d3-6BB" secondAttribute="trailing" constant="10" id="PTg-32-S8L"/>
                                                 <constraint firstItem="FHf-Di-A0B" firstAttribute="centerY" secondItem="bnD-pu-exK" secondAttribute="centerY" id="RcN-w2-n19"/>
                                                 <constraint firstItem="FHf-Di-A0B" firstAttribute="centerY" secondItem="D8h-d3-6BB" secondAttribute="centerY" id="ZrA-Iu-5AN"/>
                                                 <constraint firstItem="FHf-Di-A0B" firstAttribute="centerY" secondItem="bnD-pu-exK" secondAttribute="centerY" id="bEN-Cx-tzP"/>
@@ -1691,10 +1695,10 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="ZrA-Iu-5AN"/>
                                                     <exclude reference="RcN-w2-n19"/>
-                                                    <exclude reference="sp3-4f-afe"/>
+                                                    <exclude reference="ZrA-Iu-5AN"/>
                                                     <exclude reference="dum-JJ-WOl"/>
+                                                    <exclude reference="sp3-4f-afe"/>
                                                     <exclude reference="zuS-x1-jJ4"/>
                                                 </mask>
                                             </variation>
@@ -1745,7 +1749,7 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gqv-dA-b3t">
                                                     <rect key="frame" x="8" y="7" width="359" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1770,7 +1774,7 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aHc-7h-deJ">
                                                     <rect key="frame" x="8" y="8" width="359" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                    <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1804,6 +1808,10 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="accountTVCell" destination="vHW-ux-aKw" id="887-cF-O9N"/>
+                        <outlet property="domainTVCell" destination="5hw-Bv-g4F" id="ROd-Fn-rYF"/>
+                        <outlet property="enableSwitch" destination="D8h-d3-6BB" id="ZDw-0d-G6e"/>
+                        <outlet property="passwordTVCell" destination="7bo-rp-KXU" id="9CB-9i-cEt"/>
                         <outlet property="pushAccountText" destination="zCw-EX-6j4" id="Vhv-4O-PJk"/>
                         <outlet property="pushDomainText" destination="aHc-7h-deJ" id="3kp-el-fMg"/>
                         <outlet property="pushPasswordText" destination="gqv-dA-b3t" id="akZ-ck-iwQ"/>

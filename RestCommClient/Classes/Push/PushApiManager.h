@@ -63,11 +63,11 @@
  *  Fetch the application object from server for given friendly name
  *
  * @param friendlyName Name of the application for which we want sid
- * @param isSendbox should be true if we want to create an application with sendbox push capability
+ * @param isSandbox should be true if we want to create an application with sandbox push capability
  *
  * @param completionHandler will be filled with the application if success, otherwise with NSError
  */
-- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSendbox:(BOOL)sandbox withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler;
+- (void)getApplicationForFriendlyName:(NSString *)friendlyName isSandbox:(BOOL)sandbox withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler;
 
 /*
  *  Create the application on server for given application object

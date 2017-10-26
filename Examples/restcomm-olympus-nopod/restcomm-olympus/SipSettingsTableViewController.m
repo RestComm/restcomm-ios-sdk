@@ -24,6 +24,7 @@
 #import "SIPSettingsNavigationController.h"
 #import "RCUtilities.h"
 #import "Utils.h"
+#import "AppDelegate.h"
 
 @interface SipSettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
@@ -59,7 +60,9 @@
     
     self.navigationItem.title = @"SIP Settings";
     
-    self.device = ((SIPSettingsNavigationController*)self.navigationController).device;
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    self.device = appDelegate.device;
+    
     // main screen (i.e. contacts) should be at index 1 of the stack (index 0 is the signin screen that however only shows up the first time; the rest of the times it just pushes the contacts screen right away and isn't visible at all)
     SIPSettingsNavigationController * settingsNavigationController = (SIPSettingsNavigationController*)self.navigationController;
     // remember that the SettingsNavigationController has as parent another Navigation Controller the root one

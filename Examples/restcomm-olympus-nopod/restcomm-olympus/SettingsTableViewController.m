@@ -54,15 +54,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"invoke-sip-settings"]) {
-        SIPSettingsNavigationController * settingsNavigationController = [segue destinationViewController];
-        settingsNavigationController.device = self.device;
-    }
-    if ([segue.identifier isEqualToString:@"invoke-ice-settings"]) {
-        ICESettingsNavigationController * settingsNavigationController = [segue destinationViewController];
-        settingsNavigationController.device = self.device;
-    }
-}
 @end

@@ -12,10 +12,17 @@
 #import "AppDelegate.h"
 
 @interface PushSettingsViewController () <UITextFieldDelegate, RCRegisterPushDelegate>
+
+@property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *accountTVCell;
+@property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *passwordTVCell;
+@property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *domainTVCell;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushAccountText;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushPasswordText;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushDomainText;
 @property UITextField * activeField;
+@property (unsafe_unretained, nonatomic) IBOutlet UISwitch *enableSwitch;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
+
 @end
 
 @implementation PushSettingsViewController
@@ -44,6 +51,20 @@
     [self registerForKeyboardNotifications];
     
     self.navigationItem.title = @"Push Notifications Settings";
+    
+    //check is push server is enabled, if it is, eanble all input fields
+    //otherwise disable them
+    BOOL isServerEnabled = [Utils isServerEnabledForPushNotifications];
+    [self.enableSwitch setOn:isServerEnabled];
+    [self enableTextFields:isServerEnabled];
+    
+    //set input data
+    self.pushAccountText.text = [Utils pushAccount];
+    self.pushPasswordText.text = [Utils pushPassword];
+    self.pushDomainText.text = [Utils pushDomain];
+    
+    //define spinner
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -65,52 +86,63 @@
 
 - (void)update
 {
-    
-    //trim settings inputs for spaces
-    NSString * pushAccount = [self.pushAccountText.text stringByTrimmingCharactersInSet:
-                              [NSCharacterSet whitespaceCharacterSet]];
-    
-    NSString * pushPassword = [self.pushPasswordText.text stringByTrimmingCharactersInSet:
-                              [NSCharacterSet whitespaceCharacterSet]];
-   
-    NSString * pushDomain = [self.pushDomainText.text stringByTrimmingCharactersInSet:
-                               [NSCharacterSet whitespaceCharacterSet]];
-   
-    if ([pushAccount length] == 0){
-        [Utils shakeView:self.pushAccountText];
-        return;
+    if (self.enableSwitch.on){
+        //trim settings inputs for spaces
+        NSString * pushAccount = [self.pushAccountText.text stringByTrimmingCharactersInSet:
+                                  [NSCharacterSet whitespaceCharacterSet]];
+        
+        NSString * pushPassword = [self.pushPasswordText.text stringByTrimmingCharactersInSet:
+                                  [NSCharacterSet whitespaceCharacterSet]];
+       
+        NSString * pushDomain = [self.pushDomainText.text stringByTrimmingCharactersInSet:
+                                   [NSCharacterSet whitespaceCharacterSet]];
+       
+        if ([pushAccount length] == 0){
+            [Utils shakeTableViewCell:self.accountTVCell];
+            return;
+        }
+        
+        if ([pushPassword length] == 0){
+            [Utils shakeTableViewCell:self.passwordTVCell];
+            return;
+        }
+        
+        if ([pushDomain length] == 0){
+            [Utils shakeTableViewCell:self.domainTVCell];
+            return;
+        }
+       
+        [self showSpinner];
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+        
+        //save account, password and domain
+        [Utils updatePushAccount:pushAccount];
+        [Utils updatePushPassword:pushPassword];
+        [Utils updatePushDomain:pushDomain];
+        
+        //get certificate strings
+        NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
+        NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
+        
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                    kFriendlyName, @"friendly-name",
+                                    pushAccount, @"rescomm-account-email",
+                                    pushPassword, @"password",
+                                    pushDomain, @"push-domain",
+                                    [Utils pushToken], @"token",
+                                    pushCertificatesPathPublic, @"push-certificate-public-path",
+                                    pushCertificatesPathPrivate, @"push-certificate-private-path",
+                                    [NSNumber numberWithBool:[Utils isSandbox]], @"is-sandbox", nil];
+        
+        AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+        RCDevice  *rcDevice = [appDelegate registerRCDevice];
+        if (rcDevice){
+            [rcDevice registerPushToken:dic delegate:self];
+        }
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    if ([pushPassword length] == 0){
-        [Utils shakeView:self.pushPasswordText];
-        return;
-    }
-    
-    if ([pushDomain length] == 0){
-        [Utils shakeView:self.pushDomainText];
-        return;
-    }
-   
-    //get certificate strings
-    NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
-    NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
-    
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                kFriendlyName, @"friendly-name",
-                                pushAccount, @"rescomm-account-email",
-                                pushPassword, @"password",
-                                pushDomain, @"push-domain",
-                                [Utils pushToken], @"token",
-                                pushCertificatesPathPublic, @"push-certificate-public-path",
-                                pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                [NSNumber numberWithBool:NO], @"is-sandbox", nil];
-    
-    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
-    RCDevice  *rcDevice = [appDelegate registerRCDevice];
-    if (rcDevice){
-        [rcDevice registerPushToken:dic delegate:self];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [Utils updateServerEnabledForPush:self.enableSwitch.on];
 }
 
 - (IBAction)cancelPressed:(id)sender
@@ -121,7 +153,6 @@
 - (IBAction)savePressed:(id)sender
 {
     [self update];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,9 +220,41 @@
 
 }
 
+- (void)enableTextFields:(BOOL)enable{
+    self.pushAccountText.enabled = enable;
+    self.pushPasswordText.enabled = enable;
+    self.pushDomainText.enabled = enable;
+    
+    if (enable){
+        self.pushAccountText.alpha = 1.0;
+        self.pushPasswordText.alpha = 1.0;
+        self.pushDomainText.alpha = 1.0;
+    } else {
+        self.pushAccountText.alpha = 0.5;
+        self.pushPasswordText.alpha = 0.5;
+        self.pushDomainText.alpha = 0.5;
+    }
+}
+
 - (BOOL)shouldAutorotate
 {
     return YES;
+}
+-(void) showSpinner{
+    self.spinner.center = self.view.center;
+    self.spinner.hidesWhenStopped = YES;
+    [self.view addSubview:self.spinner];
+    [self.view bringSubviewToFront:self.spinner];
+    
+    [self.spinner startAnimating];
+}
+
+-(void) hideSpinner{
+    [self.spinner removeFromSuperview];
+}
+
+- (IBAction)onEnablePushNotifications:(id)sender {
+    [self enableTextFields:self.enableSwitch.on];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -200,7 +263,26 @@
 }
 
 -(void)registeredForPush:(NSError *)error{
-    NSLog(@"%@", error?error.description:@"app registered for push");
+    [self hideSpinner];
+    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+     if (error){
+         [Utils updateServerEnabledForPush:NO];
+         UIAlertController * alert = [UIAlertController
+                                      alertControllerWithTitle:@"Registering for push notification Error"
+                                      message:[NSString stringWithFormat:@"Error while saving data to server. Error: %@", error]
+                                      preferredStyle:UIAlertControllerStyleAlert];
+         
+         UIAlertAction *okAction = [UIAlertAction
+                                    actionWithTitle:@"OK"
+                                    style:UIAlertActionStyleDefault
+                                    handler:nil];
+         [alert addAction:okAction];
+         [self presentViewController:alert animated:YES completion:nil];
+         [self.enableSwitch setOn:NO];
+     } else {
+         [self dismissViewControllerAnimated:YES completion:nil];
+     }
+     NSLog(@"%@", error?error.description:@"app registered for push");
 }
 
 @end
