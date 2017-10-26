@@ -135,8 +135,10 @@
                        [Utils turnUsername], @"turn-username",
                        [Utils turnPassword], @"turn-password",
                        @"cloud.restcomm.com", @"ice-domain",
-                       @([Utils signalingSecure]), @"signaling-secure",
-                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+//                       @([Utils signalingSecure]), @"signaling-secure",
+//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
+                       @(NO), @"signaling-secure",
+//                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
                        [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
                        nil];
 /******************************/
@@ -211,6 +213,7 @@
 
 - (void)register
 {
+    NSLog(@"--- MainTableViewController register");
     [self.device listen];
     self.isRegistered = YES;
 }

@@ -278,7 +278,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
                                      SIPTAG_FROM_STR(conf->ssc_aor)),
 
                               // timeout timer (SIP B Timer which defaults to 32 secs)
-                              NTATAG_SIP_T1X64(8000),
+                              //NTATAG_SIP_T1X64(8000),
                               
                               TAG_IF(proxy,
                                      NUTAG_PROXY(proxy)),

@@ -80,7 +80,7 @@ extern su_log_t iptsec_log[];
 extern su_log_t nea_log[];
 extern su_log_t nth_client_log[];
 extern su_log_t nth_server_log[];
-//extern su_log_t soa_log[];
+extern su_log_t soa_log[];
 extern su_log_t sresolv_log[];
 extern su_log_t stun_log[];
 
@@ -356,7 +356,8 @@ static int sofsip_init(cli_t *cli, int ac, char *av[])
   su_log_set_level(sresolv_log, 9);
   su_log_set_level(stun_log, 9);
   su_log_set_level(tport_log, 9);
-  
+  su_log_set_level(iptsec_log, 9);
+  su_log_set_level(soa_log, 9);
   
   // set default level to 2: non-critical errors
   //su_log_set_level(iptsec_log, 9);
