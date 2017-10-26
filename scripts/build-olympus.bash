@@ -7,7 +7,7 @@ PLIST_BUDDY="/usr/libexec/PlistBuddy"
 SDK_COMMON_HEADER=RestCommClient/Classes/common.h
 OLYMPUS_UTILS=Examples/restcomm-olympus/restcomm-olympus/Utils.m
 OLYMPUS_PLIST=Examples/restcomm-olympus/restcomm-olympus/restcomm-olympus-Info.plist
-OLYMPUS_APP_DELEGATE=Examples/restcomm-olympus/restcomm-olympus/AppDelegate.m
+OLYMPUS_APP_DELEGATE=Examples/restcomm-olympus/restcomm-olympus/AppDelegate.mm
 
 echo "-- Installing CocoaPod dependencies"
 pod install --project-directory=Examples/restcomm-olympus
