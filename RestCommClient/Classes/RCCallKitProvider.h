@@ -20,10 +20,9 @@
  *
  */
 
-#import <Foundation/Foundation.h>
 #import <CallKit/CXCall.h>
 #import <CallKit/CallKit.h>
-#import "RestCommClient.h"
+#import "RCConnection.h"
 
 @protocol RCCallKitProviderDelegate
 /**
@@ -38,24 +37,31 @@
 - (void)callEnded;
 @end
 
+/**
+ *  @abstract RCCallKitProvider handles the CallKit logic.
+ *  @param connection The RCConnection instance
+ */
 @interface RCCallKitProvider : NSObject <CXProviderDelegate, RCConnectionDelegate>
 
 @property (nonatomic, strong) RCConnection * connection;
-@property (nonatomic, strong) NSUUID *currentUdid;
 
-- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate;
+/**
+ *  @abstract Initialize a new instance
+ *  @param delegate The RCCallKitProviderDelegate delegate instance
+ *  @param imageName Resource's image name which will be shown on callkit view 
+ */
+- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate andImage:(NSString *)imageName;
 
-- (void)initRCConnection:(RCConnection *)connection;
-
-- (void)answerWithCallKit;
+/**
+ *  @abstract It will present the callkit layout for incoming call
+ *  @param connection The RCConnection instance
+ */
+- (void)presentIncomingCall;
 
 - (void)reportConnecting;
 
 - (void)reportConnected;
 
-- (void)performEndCallAction;
-
-
-
+- (void)endCall;
 
 @end

@@ -26,19 +26,21 @@
 @property (nonatomic, strong) CXCallController *callKitCallController;
 @property (nonatomic, assign) id<RCCallKitProviderDelegate> delegate;
 @property (nonatomic, strong) CXProvider *callKitProvider;
+@property (nonatomic, strong) NSUUID *currentUdid;
 @end
 
 @implementation RCCallKitProvider
 
-- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate{
+- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate andImage:(NSString *)imageName{
     self = [super init];
     if (self){
         NSLog(@"Configuring CallKit");
-        CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Resctomm"];
+        CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Restcomm"];
         configuration.maximumCallGroups = 1;
         configuration.maximumCallsPerCallGroup = 1;
         configuration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypeGeneric],[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
-        UIImage *callkitIcon = [UIImage imageNamed:@"restcomm-logo-call-139x58.png"];
+       
+        UIImage *callkitIcon = [UIImage imageNamed:imageName];
         configuration.iconTemplateImageData = UIImagePNGRepresentation(callkitIcon);
         
         self.callKitProvider = [[CXProvider alloc] initWithConfiguration:configuration];
@@ -47,11 +49,6 @@
         self.callKitCallController = [[CXCallController alloc] init];
     }
     return self;
-}
-
-- (void)initRCConnection:(RCConnection *)connection{
-    self.connection = connection;
-    self.connection.delegate = self;
 }
 
 #pragma mark - CXProvider callback methods
@@ -206,7 +203,7 @@
     [self.callKitProvider reportOutgoingCallWithUUID:self.currentUdid connectedAtDate:[NSDate date]];
 }
 
-- (void)answerWithCallKit{
+- (void)presentIncomingCall{
     self.connection.delegate = self;
     self.currentUdid = [NSUUID UUID];
     NSLog(@"CallKit Current udid %@", self.currentUdid);

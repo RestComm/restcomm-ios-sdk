@@ -24,7 +24,6 @@
 #import "Utils.h"
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
-#import "RCCallKitProvider.h"
 #import "AVFoundation/AVFoundation.h"
 
 
@@ -61,7 +60,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
-    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self];
+    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self andImage:@"restcomm-logo-call-139x58.png"];
     return YES;
 }
 
@@ -257,7 +256,7 @@
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
         //Answer with callkit
         self.callKitProvider.connection = connection;
-        [self.callKitProvider answerWithCallKit];
+        [self.callKitProvider presentIncomingCall];
    } else {
 
        [self openCallView:connection isFromCallKit:NO];

@@ -32,8 +32,6 @@
 		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
-		A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
-		A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -180,7 +178,6 @@
 		AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.m */; };
 		AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E11C2997F6000D9762 /* MessageTableViewController.m */; };
 		AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */; };
-		AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */; };
 		AEA4966E1C2997F6000D9762 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E71C2997F6000D9762 /* SettingsTableViewController.m */; };
 		AEA496701C2997F6000D9762 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEA495EB1C2997F6000D9762 /* calling.mp3 */; };
 		AEA496711C2997F6000D9762 /* dtmf0.wav in Resources */ = {isa = PBXBuildFile; fileRef = AEA495EC1C2997F6000D9762 /* dtmf0.wav */; };
@@ -250,8 +247,6 @@
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		A9C091191FA013CD002A161A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitProvider.h; sourceTree = "<group>"; };
-		A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitProvider.m; sourceTree = "<group>"; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
@@ -493,15 +488,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A9C0B0D51F964CFB00ED58AA /* Provider */ = {
-			isa = PBXGroup;
-			children = (
-				A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */,
-				A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */,
-			);
-			name = Provider;
-			sourceTree = "<group>";
-		};
 		A9CA4D781F5ED9D00005A553 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -642,7 +628,6 @@
 		AEA495651C2997F6000D9762 /* restcomm-olympus */ = {
 			isa = PBXGroup;
 			children = (
-				A9C0B0D51F964CFB00ED58AA /* Provider */,
 				A9CA4D7D1F5EDAD60005A553 /* Model */,
 				A9CA4D781F5ED9D00005A553 /* ViewController */,
 				A9CA4D7A1F5EDA540005A553 /* View */,
@@ -962,7 +947,6 @@
 				AEA496721C2997F6000D9762 /* dtmf1.wav in Resources */,
 				AE61A3A41DA68CDA00347504 /* hangup-74x74.png in Resources */,
 				AEA496731C2997F6000D9762 /* dtmf2.wav in Resources */,
-				AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */,
 				AE20DA861CE31EC200695925 /* speaker-on-50x50@3x.png in Resources */,
 				AEA520551DACE2210081DB57 /* phone-icon-28x28@2x.png in Resources */,
 				AEA496481C2997F6000D9762 /* settings-22x22.png in Resources */,
@@ -1213,7 +1197,6 @@
 				AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */,
 				AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */,
 				AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */,
-				A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				AEA496811C2997F6000D9762 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1222,7 +1205,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 			);

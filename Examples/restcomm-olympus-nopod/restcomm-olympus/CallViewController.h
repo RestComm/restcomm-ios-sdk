@@ -23,7 +23,6 @@
 #import <UIKit/UIKit.h>
 #import "ARDVideoCallView.h"
 #import "RestCommClient.h"
-#import "RCCallKitProvider.h"
 
 @protocol CallDelegate;
 
