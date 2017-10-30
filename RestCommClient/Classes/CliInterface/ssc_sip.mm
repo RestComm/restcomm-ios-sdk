@@ -264,7 +264,7 @@ ssc_t *ssc_create(su_home_t *home, su_root_t *root, const ssc_conf_t *conf, cons
         else {
             contact = "sip:";
             contact += [address UTF8String];
-            contact += ":*;transport=tcp";
+            contact += ":*;transport=udp";
             //contact +=  ":5090;transport=tcp";
         }
     }
