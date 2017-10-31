@@ -388,7 +388,6 @@
         if (!self.device){
             //no need to wait, register and listen
             self.device = [self registerRCDevice];
-            [self.device listen];
         }
     }
 }

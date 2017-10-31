@@ -24,12 +24,13 @@
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
 		A914661A1F6C169C00E1F728 /* busy_tone_sample.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */; };
+		A91C5CA41FA8C3A500F4F1B8 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */; };
+		A91C5CA61FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */; };
+		A91C5CA71FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */; };
 		A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */; };
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
-		A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666481F787EEE003305CF /* certificate_key_push.pem */; };
-		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
@@ -235,14 +236,14 @@
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
 		A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy_tone_sample.mp3; sourceTree = "<group>"; };
+		A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
+		A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
 		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
 		A94A1B7F1F6A7E160034352E /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		A96666481F787EEE003305CF /* certificate_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
-		A96666491F787EFC003305CF /* rsa_private_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
@@ -579,10 +580,10 @@
 		AE3E52C31C57BB7B0057F5D0 /* cert */ = {
 			isa = PBXGroup;
 			children = (
+				A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */,
+				A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */,
 				AE3E52C41C57BB7B0057F5D0 /* agent.pem */,
 				AE3E52C51C57BB7B0057F5D0 /* cafile.pem */,
-				A96666481F787EEE003305CF /* certificate_key_push.pem */,
-				A96666491F787EFC003305CF /* rsa_private_key_push.pem */,
 			);
 			path = cert;
 			sourceTree = "<group>";
@@ -933,11 +934,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */,
-				A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */,
 				AEA4967D1C2997F6000D9762 /* ringing.mp3 in Resources */,
 				AE61A40F1DA69AD900347504 /* two-digit-74x74.png in Resources */,
 				AEA496051C2997F6000D9762 /* Main_iPad.storyboard in Resources */,
+				A91C5CA41FA8C3A500F4F1B8 /* rsa_private_key_push.pem in Resources */,
 				AE61A3F51DA69AD900347504 /* eight-digit-74x74.png in Resources */,
 				AEA496501C2997F6000D9762 /* splash-320x480@2x.png in Resources */,
 				AE87C2C71DAE36E60064624B /* contact-icon-grey-36x36@2x.png in Resources */,
@@ -979,6 +979,7 @@
 				AE87C2B81DAE23BA0064624B /* phone-icon-28x28@3x.png in Resources */,
 				AE61A3CF1DA692AB00347504 /* keypad-50x50@2x.png in Resources */,
 				AE87C2C81DAE36E60064624B /* contact-icon-coral-36x36@2x.png in Resources */,
+				A91C5CA61FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */,
 				AEA520651DAD5F730081DB57 /* dtmf-done-30x30.png in Resources */,
 				AEA496441C2997F6000D9762 /* plus-sign-30x30.png in Resources */,
 				AEA520671DAD5F730081DB57 /* dtmf-done-30x30@3x.png in Resources */,
@@ -1090,6 +1091,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */,
+				A91C5CA71FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

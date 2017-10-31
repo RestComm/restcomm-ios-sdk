@@ -39,7 +39,6 @@
 
 /**
  *  @abstract RCCallKitProvider handles the CallKit logic.
- *  @param connection The RCConnection instance
  */
 @interface RCCallKitProvider : NSObject <CXProviderDelegate, RCConnectionDelegate>
 
@@ -48,20 +47,32 @@
 /**
  *  @abstract Initialize a new instance
  *  @param delegate The RCCallKitProviderDelegate delegate instance
- *  @param imageName Resource's image name which will be shown on callkit view 
+ *  @param imageName Resource's image name which will be shown on callkit view
+ *  The icon image should be a square with side length of 40 points.
+ *  The alpha channel of the image is used to create a white image mask,
+ *  which is used in the system native in-call UI for the button which takes
+ *  the user from this system UI to the 3rd-party app.
  */
 - (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate andImage:(NSString *)imageName;
 
 /**
- *  @abstract It will present the callkit layout for incoming call
- *  @param connection The RCConnection instance
+ *  @abstract It will present the callkit layout for incoming call and report the call to callkit
  */
 - (void)presentIncomingCall;
 
+/**
+ *  @abstract Reports connecting to the callkit
+ */
 - (void)reportConnecting;
 
+/**
+ *  @abstract Reports connected state of the call to callkit
+ */
 - (void)reportConnected;
 
+/**
+ *  @abstract Reports end call to callkit
+ */
 - (void)endCall;
 
 @end

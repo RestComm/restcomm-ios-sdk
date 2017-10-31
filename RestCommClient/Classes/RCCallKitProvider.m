@@ -108,7 +108,7 @@
 
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error{
     NSLog(@"CallKit connection:(RCConnection*)connection didFailWithError ===> Error: %@", error);
-    [self performEndCallAction];
+    [self endCall];
     self.connection = nil;
 }
 
@@ -124,19 +124,19 @@
 
 - (void)connectionDidCancel:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidCancel:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidGetDeclined:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
     [self.connection disconnect];
     self.connection = nil;
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidDisconnect:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
     [self.connection disconnect];
     self.connection = nil;
 }
@@ -173,7 +173,7 @@
     }];
 }
 
-- (void)performEndCallAction{
+- (void)endCall{
     NSLog(@"CallKit performEndCallAction UDID: %@", self.currentUdid);
     
     if (self.currentUdid == nil) {
