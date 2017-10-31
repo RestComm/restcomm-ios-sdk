@@ -307,6 +307,7 @@ static NSString * const kARDVideoTrackId = @"ARDAMSv0";
     RTCMediaConstraints *constraints = [self defaultPeerConnectionConstraints];
     RTCConfiguration *config = [[RTCConfiguration alloc] init];
     config.iceServers = _iceServers;
+    config.bundlePolicy = RTCBundlePolicyMaxCompat;
     _peerConnection = [_factory peerConnectionWithConfiguration:config
                                                     constraints:constraints
                                                        delegate:self];

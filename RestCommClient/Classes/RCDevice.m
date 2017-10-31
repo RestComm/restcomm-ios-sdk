@@ -284,9 +284,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 - (void)asyncDeviceDidStartListeningForIncomingConnections
 {
     RCLogNotice("[RCDevice asyncDeviceDidStartListeningForIncomingConnections], connectivity type: %d", self.connectivityType);
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
+    //if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
         [self.delegate deviceDidStartListeningForIncomingConnections:self];
-    }
+    //}
 }
 
 - (void)asyncDeviceDidStopListeningForIncomingConnections:(NSError*)error

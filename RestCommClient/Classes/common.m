@@ -56,7 +56,7 @@ void initializeLogging(void)
 {
     if (!loggingInitialized) {
         // device console
-        asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(ASL_LEVEL_NOTICE));
+        asl_set_filter(NULL, ASL_FILTER_MASK_UPTO(ASL_LEVEL_DEBUG));
 
         if (SYSTEM_VERSION_LESS_THAN(@"10.0")) {
             // For earlier versions that iOS 10.0, we need additional handling so that logs show up in xcode console (otherwise they only show in device console.

@@ -85,7 +85,8 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                 LocalContact *localContact = [filterdArray objectAtIndex:i];
                 
                 //Phone numbers
-                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){                            return i;
+                if (localContact.phoneNumbers && localContact.phoneNumbers.count > 0 && [localContact.phoneNumbers containsObject:sipUri]){
+                    return i;
                 }
             }
         } else {

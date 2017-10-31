@@ -137,7 +137,7 @@
                                     deviceToken, @"token",
                                     pushCertificatesPathPublic, @"push-certificate-public-path",
                                     pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                    [NSNumber numberWithBool:NO], @"is-sandbox", nil];
+                                    [NSNumber numberWithBool:YES], @"is-sandbox", nil];
         
         [rcDevice registerPushToken:dic delegate:self];
         

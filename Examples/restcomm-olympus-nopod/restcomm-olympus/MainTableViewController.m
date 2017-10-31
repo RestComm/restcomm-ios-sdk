@@ -200,7 +200,7 @@
     
     // Important: use imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal to avoid the default blue tint!
     UIBarButtonItem * restcommIconButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:imageName]
-                                                                                   imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                                    imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(invokeSettings)];
