@@ -19,43 +19,14 @@
  * For questions related to commercial use licensing, please contact sales@telestax.com.
  *
  */
-
 #import <Foundation/Foundation.h>
-#import <CallKit/CXCall.h>
-#import <CallKit/CallKit.h>
-#import "RestCommClient.h"
 
-@protocol RCCallKitProviderDelegate
-/**
- *  @abstract newIncomingCallAnswered is called when call needs to be handled by the app
- *  @param connection The RCConnection instance
- */
-- (void)newIncomingCallAnswered:(RCConnection *)connection;
+@interface LocalMessage : NSObject<NSCoding>
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, assign) double time;
 
-/*
- *  Will be called when call is Ended from Callkit (locked phone mode)
- */
-- (void)callEnded;
-@end
-
-@interface RCCallKitProvider : NSObject <CXProviderDelegate, RCConnectionDelegate>
-
-@property (nonatomic, strong) RCConnection * connection;
-@property (nonatomic, strong) NSUUID *currentUdid;
-
-- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate;
-
-- (void)initRCConnection:(RCConnection *)connection;
-
-- (void)answerWithCallKit;
-
-- (void)reportConnecting;
-
-- (void)reportConnected;
-
-- (void)performEndCallAction;
-
-
-
+- (id)initWithUsername:(NSString *)username message:(NSString *)message type:(NSString *)type;
 
 @end

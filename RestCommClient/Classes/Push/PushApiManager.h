@@ -36,9 +36,10 @@
  *  @param parameters Possible keys: <br>
  *  <b>username"</b>: username <br>
  *  <b>password</b>: password for an account<br>
- *  <b>domain</b>: push notification domain<br>
+ *  <b>pushDomain</b>: push notification domain<br>
+ *  <b>domain</b>: domain<br>
  */
-- (id)initWithUsername:(NSString *)username password:(NSString *)password andPushDomain:(NSString *)domain;
+- (id)initWithUsername:(NSString *)username password:(NSString *)password pushDomain:(NSString *)pushDomain andDomain:(NSString *)domain;
 
 /*
  *  Fetch an account sid from server for given email

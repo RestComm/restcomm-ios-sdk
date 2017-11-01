@@ -24,9 +24,10 @@
 #import "Utils.h"
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
-#import "RCCallKitProvider.h"
 #import "AVFoundation/AVFoundation.h"
 
+NSString * const kLocalMessagingFromKey = @"local-messaging-from";
+NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
@@ -61,7 +62,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
-    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self];
+    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self andImage:@"restcomm-logo-call-139x58.png"];
     return YES;
 }
 
@@ -222,31 +223,29 @@
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
     NSLog(@"AppDelegate ------   didReceiveIncomingMessage:  %@", message);
-    if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class] ){
-        UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
         // Open message view if not already opened
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-        if (![navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
-            MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-            //messageViewController.delegate = self;
-            messageViewController.device = self.device;
-            messageViewController.delegate = self;
-            messageViewController.parameters = [[NSMutableDictionary alloc] init];
-            [messageViewController.parameters setObject:message forKey:@"message-text"];
-            [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
-            [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
-            [messageViewController.parameters setObject:[RCUtilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
-            
-            messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [navigationController pushViewController:messageViewController animated:YES];
-        }
-        else {
-            // message view already opened, just append
-            MessageTableViewController * messageViewController = (MessageTableViewController*)navigationController.visibleViewController;
-            [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
-        }
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
+        UILocalNotification *localNotification=[[UILocalNotification alloc] init];
+        localNotification.alertBody = message;
+        localNotification.soundName = @"default";
+        localNotification.alertTitle = [NSString stringWithFormat:@"New message from %@", [params objectForKey:@"from"]];
+        localNotification.category = @"Message";
+        localNotification.applicationIconBadgeNumber = -1;
+        NSDictionary *messageData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [params objectForKey:@"from"], kLocalMessagingFromKey,
+                                     message,kLocaMessagingMessageKey, nil];
+
+        localNotification.userInfo = messageData;
+        
+        //make sure we save the incoming message
+        LocalMessage *messageObj = [[LocalMessage alloc] initWithUsername:[params objectForKey:@"from"] message:message type:@"remote"];
+        [Utils addMessage:messageObj];
+        
+        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    } else {
+        [self openMessageScreen:message withUser:[params objectForKey:@"from"] isFromLocalNotification:NO];
     }
-    
 }
 
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
@@ -257,9 +256,8 @@
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
         //Answer with callkit
         self.callKitProvider.connection = connection;
-        [self.callKitProvider answerWithCallKit];
+        [self.callKitProvider presentIncomingCall];
    } else {
-
        [self openCallView:connection isFromCallKit:NO];
    }
 }
@@ -300,7 +298,35 @@
         callViewController.rcCallKitProvider = self.callKitProvider;
     }
     [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
-    
+}
+
+- (void)openMessageScreen:(NSString *)message withUser:(NSString *)user isFromLocalNotification:(BOOL)isFromNotification{
+    if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class] ){
+        UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        if (![navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
+            MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+            messageViewController.device = self.device;
+            messageViewController.delegate = self;
+            messageViewController.parameters = [[NSMutableDictionary alloc] init];
+            [messageViewController.parameters setObject:message forKey:@"message-text"];
+            if (!isFromNotification){
+                //we don't want to tell to message view controller that we get new message
+                //because message is already added with local notification
+                [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
+            }
+            [messageViewController.parameters setObject:user forKey:@"username"];
+            [messageViewController.parameters setObject:[RCUtilities usernameFromUri:user] forKey:@"alias"];
+            
+            messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [navigationController pushViewController:messageViewController animated:YES];
+        }
+        else {
+            // message view already opened, just append
+            MessageTableViewController * messageViewController = (MessageTableViewController*)navigationController.visibleViewController;
+            [messageViewController appendToDialog:message sender:user];
+        }
+    }
 }
 
 
@@ -317,6 +343,14 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateConnectivityStatus" object:self userInfo:propertyDictionary];
     self.previousDeviceState = state;
 }
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    NSDictionary *dic = notification.userInfo;
+    if (dic){
+        [self openMessageScreen:[dic objectForKey:kLocaMessagingMessageKey] withUser:[dic objectForKey:kLocalMessagingFromKey] isFromLocalNotification:YES];
+    }
+}
+
 
 #pragma mark - ContactUpdateDelegate method
 
@@ -373,6 +407,7 @@
                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
 
+    NSLog(@"AppDelegate ---voip token %@", deviceTokenString);
     //save token to user defaults
     [Utils updatePushToken:deviceTokenString];
 }
@@ -388,7 +423,6 @@
         if (!self.device){
             //no need to wait, register and listen
             self.device = [self registerRCDevice];
-            [self.device listen];
         }
     }
 }

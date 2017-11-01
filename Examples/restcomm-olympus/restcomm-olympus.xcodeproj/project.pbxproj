@@ -24,12 +24,17 @@
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
 		A914661A1F6C169C00E1F728 /* busy_tone_sample.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */; };
+		A91C5CA41FA8C3A500F4F1B8 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */; };
+		A91C5CA61FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */; };
+		A91C5CA71FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */; };
 		A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */; };
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
 		A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666481F787EEE003305CF /* certificate_key_push.pem */; };
 		A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A96666491F787EFC003305CF /* rsa_private_key_push.pem */; };
+		A964D1D61FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
+		A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
 		A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
@@ -182,7 +187,6 @@
 		AEA4966A1C2997F6000D9762 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495DF1C2997F6000D9762 /* MainTableViewController.m */; };
 		AEA4966B1C2997F6000D9762 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E11C2997F6000D9762 /* MessageTableViewController.m */; };
 		AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E31C2997F6000D9762 /* RemoteMessageTableViewCell.m */; };
-		AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AEA495E41C2997F6000D9762 /* restcomm-olympus-Info.plist */; };
 		AEA4966E1C2997F6000D9762 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA495E71C2997F6000D9762 /* SettingsTableViewController.m */; };
 		AEA496701C2997F6000D9762 /* calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEA495EB1C2997F6000D9762 /* calling.mp3 */; };
 		AEA496711C2997F6000D9762 /* dtmf0.wav in Resources */ = {isa = PBXBuildFile; fileRef = AEA495EC1C2997F6000D9762 /* dtmf0.wav */; };
@@ -240,12 +244,16 @@
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
 		A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy_tone_sample.mp3; sourceTree = "<group>"; };
+		A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
+		A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
 		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
 		A94A1B7F1F6A7E160034352E /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A964D1D41FA3DEBC005B3234 /* LocalMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LocalMessage.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.h"; sourceTree = "<group>"; };
+		A964D1D51FA3DEBC005B3234 /* LocalMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LocalMessage.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.m"; sourceTree = "<group>"; };
 		A96666481F787EEE003305CF /* certificate_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
 		A96666491F787EFC003305CF /* rsa_private_key_push.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
@@ -497,15 +505,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A9C0B0D51F964CFB00ED58AA /* Provider */ = {
-			isa = PBXGroup;
-			children = (
-				A9C0B0D11F964CE700ED58AA /* RCCallKitProvider.h */,
-				A9C0B0D21F964CE700ED58AA /* RCCallKitProvider.m */,
-			);
-			name = Provider;
-			sourceTree = "<group>";
-		};
 		A9CA4D781F5ED9D00005A553 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +591,8 @@
 			children = (
 				A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */,
 				A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */,
+				A964D1D41FA3DEBC005B3234 /* LocalMessage.h */,
+				A964D1D51FA3DEBC005B3234 /* LocalMessage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -599,10 +600,10 @@
 		AE3E52C31C57BB7B0057F5D0 /* cert */ = {
 			isa = PBXGroup;
 			children = (
+				A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */,
+				A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */,
 				AE3E52C41C57BB7B0057F5D0 /* agent.pem */,
 				AE3E52C51C57BB7B0057F5D0 /* cafile.pem */,
-				A96666481F787EEE003305CF /* certificate_key_push.pem */,
-				A96666491F787EFC003305CF /* rsa_private_key_push.pem */,
 			);
 			path = cert;
 			sourceTree = "<group>";
@@ -648,7 +649,6 @@
 		AEA495651C2997F6000D9762 /* restcomm-olympus */ = {
 			isa = PBXGroup;
 			children = (
-				A9C0B0D51F964CFB00ED58AA /* Provider */,
 				A9CA4D7D1F5EDAD60005A553 /* Model */,
 				A9CA4D781F5ED9D00005A553 /* ViewController */,
 				A9CA4D7A1F5EDA540005A553 /* View */,
@@ -954,11 +954,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A94BD7991F78856800F7C387 /* certificate_key_push.pem in Resources */,
-				A94BD79A1F78856800F7C387 /* rsa_private_key_push.pem in Resources */,
 				AEA4967D1C2997F6000D9762 /* ringing.mp3 in Resources */,
 				AE61A40F1DA69AD900347504 /* two-digit-74x74.png in Resources */,
 				AEA496051C2997F6000D9762 /* Main_iPad.storyboard in Resources */,
+				A91C5CA41FA8C3A500F4F1B8 /* rsa_private_key_push.pem in Resources */,
 				AE61A3F51DA69AD900347504 /* eight-digit-74x74.png in Resources */,
 				AEA496501C2997F6000D9762 /* splash-320x480@2x.png in Resources */,
 				AE87C2C71DAE36E60064624B /* contact-icon-grey-36x36@2x.png in Resources */,
@@ -968,7 +967,6 @@
 				AEA496721C2997F6000D9762 /* dtmf1.wav in Resources */,
 				AE61A3A41DA68CDA00347504 /* hangup-74x74.png in Resources */,
 				AEA496731C2997F6000D9762 /* dtmf2.wav in Resources */,
-				AEA4966D1C2997F6000D9762 /* restcomm-olympus-Info.plist in Resources */,
 				AE20DA861CE31EC200695925 /* speaker-on-50x50@3x.png in Resources */,
 				AEA520551DACE2210081DB57 /* phone-icon-28x28@2x.png in Resources */,
 				AEA496481C2997F6000D9762 /* settings-22x22.png in Resources */,
@@ -1001,6 +999,7 @@
 				AE87C2B81DAE23BA0064624B /* phone-icon-28x28@3x.png in Resources */,
 				AE61A3CF1DA692AB00347504 /* keypad-50x50@2x.png in Resources */,
 				AE87C2C81DAE36E60064624B /* contact-icon-coral-36x36@2x.png in Resources */,
+				A91C5CA61FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */,
 				AEA520651DAD5F730081DB57 /* dtmf-done-30x30.png in Resources */,
 				AEA496441C2997F6000D9762 /* plus-sign-30x30.png in Resources */,
 				AEA520671DAD5F730081DB57 /* dtmf-done-30x30@3x.png in Resources */,
@@ -1112,6 +1111,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED0B0641A0976F8008A6057 /* InfoPlist.strings in Resources */,
+				A91C5CA71FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1212,6 +1212,7 @@
 				A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */,
 				AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */,
 				AEA496661C2997F6000D9762 /* KeypadViewController.m in Sources */,
+				A964D1D61FA3DEBC005B3234 /* LocalMessage.m in Sources */,
 				AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */,
 				AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */,
 				AEA4966E1C2997F6000D9762 /* SettingsTableViewController.m in Sources */,
@@ -1220,7 +1221,6 @@
 				AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */,
 				AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */,
 				AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */,
-				A9C0B0D31F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				AEA496811C2997F6000D9762 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1229,8 +1229,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9C0B0D41F964CE700ED58AA /* RCCallKitProvider.m in Sources */,
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
+				A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 				A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,
 			);

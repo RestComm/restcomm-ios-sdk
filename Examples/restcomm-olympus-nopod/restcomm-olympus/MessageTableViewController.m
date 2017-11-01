@@ -292,10 +292,10 @@
 
     //NSLog(@"Adding new message to data store");
     // update the backing store and NSUserDefaults
-    [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
-    [Utils addMessageForSipUri:self.username
-                          text:msg
-                          type:type];
+    LocalMessage *message = [[LocalMessage alloc] initWithUsername:self.username message:msg type:type];
+    [self.messages addObject:message];
+    [Utils addMessage:message];
+    
     [self.tableView beginUpdates];
 
     // trigger the new table row creation
@@ -321,16 +321,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"cellForRowAtIndexPath, row: %d, section: %d", indexPath.row, indexPath.section);
-    NSString *type = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"type"];
-    if ([type isEqualToString:@"local"]) {
+    LocalMessage *messageObj = [self.messages objectAtIndex:indexPath.row];
+    if ([messageObj.type isEqualToString:@"local"]) {
         LocalMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"local-message-reuse-identifier" forIndexPath:indexPath];
-        cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderText.text = messageObj.message;
         cell.senderName.text = @"me";
         return cell;
-    }
-    else {
+    } else {
         RemoteMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"remote-message-reuse-identifier" forIndexPath:indexPath];
-        cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderText.text =  messageObj.message;
         cell.senderName.text = self.username;
         return cell;
     }

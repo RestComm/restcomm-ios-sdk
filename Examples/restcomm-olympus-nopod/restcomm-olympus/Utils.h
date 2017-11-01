@@ -22,6 +22,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LocalContact.h"
+#import "LocalMessage.h"
 
 extern NSString* const RestCommClientSDKLatestGitHash;
 extern NSString* const kFriendlyName;
@@ -60,7 +61,7 @@ extern NSString* const kFriendlyName;
 + (void)updateSignalingSecure:(BOOL)signalingSecure;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
-+ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
++ (void)addMessage:(LocalMessage *)message;
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
 
 + (void)saveLastPeer:(NSString *)sipUri;

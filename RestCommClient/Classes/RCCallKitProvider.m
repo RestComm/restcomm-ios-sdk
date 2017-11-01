@@ -26,19 +26,21 @@
 @property (nonatomic, strong) CXCallController *callKitCallController;
 @property (nonatomic, assign) id<RCCallKitProviderDelegate> delegate;
 @property (nonatomic, strong) CXProvider *callKitProvider;
+@property (nonatomic, strong) NSUUID *currentUdid;
 @end
 
 @implementation RCCallKitProvider
 
-- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate{
+- (id)initWithDelegate:(id<RCCallKitProviderDelegate>)delegate andImage:(NSString *)imageName{
     self = [super init];
     if (self){
         NSLog(@"Configuring CallKit");
-        CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Resctomm"];
+        CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Restcomm"];
         configuration.maximumCallGroups = 1;
         configuration.maximumCallsPerCallGroup = 1;
         configuration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypeGeneric],[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
-        UIImage *callkitIcon = [UIImage imageNamed:@"restcomm-logo-call-139x58.png"];
+       
+        UIImage *callkitIcon = [UIImage imageNamed:imageName];
         configuration.iconTemplateImageData = UIImagePNGRepresentation(callkitIcon);
         
         self.callKitProvider = [[CXProvider alloc] initWithConfiguration:configuration];
@@ -49,10 +51,6 @@
     return self;
 }
 
-- (void)initRCConnection:(RCConnection *)connection{
-    self.connection = connection;
-    self.connection.delegate = self;
-}
 
 #pragma mark - CXProvider callback methods
 
@@ -111,7 +109,7 @@
 
 - (void)connection:(RCConnection*)connection didFailWithError:(NSError*)error{
     NSLog(@"CallKit connection:(RCConnection*)connection didFailWithError ===> Error: %@", error);
-    [self performEndCallAction];
+    [self endCall];
     self.connection = nil;
 }
 
@@ -127,19 +125,19 @@
 
 - (void)connectionDidCancel:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidCancel:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
 }
 
 - (void)connectionDidGetDeclined:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidGetDeclined:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
     [self.connection disconnect];
     self.connection = nil;
 }
 
 - (void)connectionDidDisconnect:(RCConnection*)connection{
     NSLog(@"CallKit connectionDidDisconnect:(RCConnection*)connection");
-    [self performEndCallAction];
+    [self endCall];
     [self.connection disconnect];
     self.connection = nil;
 }
@@ -176,7 +174,7 @@
     }];
 }
 
-- (void)performEndCallAction{
+- (void)endCall{
     NSLog(@"CallKit performEndCallAction UDID: %@", self.currentUdid);
     
     if (self.currentUdid == nil) {
@@ -206,7 +204,7 @@
     [self.callKitProvider reportOutgoingCallWithUUID:self.currentUdid connectedAtDate:[NSDate date]];
 }
 
-- (void)answerWithCallKit{
+- (void)presentIncomingCall{
     self.connection.delegate = self;
     self.currentUdid = [NSUUID UUID];
     NSLog(@"CallKit Current udid %@", self.currentUdid);

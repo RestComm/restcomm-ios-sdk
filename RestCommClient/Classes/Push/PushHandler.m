@@ -61,13 +61,16 @@ NSString *const kCredentialsKey = @"credentialsKey";
         rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
         token = [parameters objectForKey:@"token"];
         sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
-        NSString *domain = [parameters objectForKey:@"push-domain"];
+        NSString *pushDomain = [parameters objectForKey:@"push-domain"];
+        NSString *signalingDomain = [parameters objectForKey:@"signaling-domain"];
         
-        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password andPushDomain:domain];
+        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password pushDomain:pushDomain andDomain:signalingDomain];
         self.delegate = delegate;
     }
     return self;
 }
+
+#pragma mark - Register Device
 
 - (void)registerDevice{
     if (!token || token.length == 0){
@@ -158,6 +161,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     
 }
 
+#pragma mark - Account Sid
+
 - (void)getAccountSidWithCompletionHandler:(void (^)(NSString *accountSid))completionHandler{
     //check is account id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -180,6 +185,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     }];
 }
 
+#pragma mark - Client Sid
+
 - (void)getClientSidForAccountSid:(NSString *)accountSid andWithCompletionHandler:(void (^)(NSString *clientSid))completionHandler{
     //check is client id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -200,6 +207,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
         }
     }];
 }
+
+#pragma mark - Application Sid
 
 - (void)getApplicationSidWithCompletionHandler:(void (^)(NSString *applicationSid))completionHandler{
     //check is application id is already saved in user defaults
@@ -237,6 +246,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
         }
     }];
 }
+
+#pragma mark - Credentials Sid
 
 - (void)getCredentialsSid:(NSString *)applicationSid andWithCompletionHandler:(void (^)(NSString *credentialsSid))completionHandler{
     //check is client id is already saved in user defaults
@@ -293,6 +304,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     }];
 }
 
+#pragma mark - Binding Sid
+
 - (void)checkBindingSidWithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSData *applicationData = [appDefaults objectForKey:kApplicationKey];
@@ -314,6 +327,7 @@ NSString *const kCredentialsKey = @"credentialsKey";
 }
 
 #pragma mark - Helpers
+
 - (void)formatAndDelegateError:(NSString *)errorDescription{
     dispatch_async(dispatch_get_main_queue(), ^{
         NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]

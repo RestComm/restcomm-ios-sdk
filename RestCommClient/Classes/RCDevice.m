@@ -56,6 +56,9 @@
 // used with beginBackgroundTaskWithExpirationHandler
 @property UIBackgroundTaskIdentifier backgroundTaskId;
 
+//used for signaling and push
+@property NSString *signalingDomain;
+
 @end
 
 
@@ -122,12 +125,13 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         [_hostReachable startNotifier];
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
-          
+        
+        self.signalingDomain = [parameters objectForKey:@"registrar"];
         self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters];
         
         if (self.reachabilityStatus != NotReachable) {
-            if (![parameters objectForKey:@"registrar"] ||
-                ([parameters objectForKey:@"registrar"] && [[parameters objectForKey:@"registrar"] length] == 0)) {
+            if (!self.signalingDomain ||
+                (self.signalingDomain && [self.signalingDomain length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
             }
@@ -697,10 +701,14 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     RCLogNotice("[RCDevice registerPushToken: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
 
     //extend the parameters with:
-    // - signaling
+    // - signaling username
+    // - signaling domain
    
     NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     [pushHandlerProperties setValue:self.signalingUsername forKey:@"signaling-username"];
+    NSString *signalingDomain =  self.signalingDomain ? self.signalingDomain: @"cloud.restcomm.com";
+    [pushHandlerProperties setValue:signalingDomain forKey:@"signaling-domain"];
+    
   
     PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties andDelegate:delegate];
     [pushHandler registerDevice];

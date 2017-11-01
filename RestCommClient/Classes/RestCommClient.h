@@ -26,6 +26,7 @@
 #import "RCDeviceDelegate.h"
 #import "RCPresenceEvent.h"
 #import "RCRegisterPushDelegate.h"
+#import "RCCallKitProvider.h"
 
 #import <Foundation/Foundation.h>
 

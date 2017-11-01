@@ -28,7 +28,6 @@
 //keys
 NSString *const kContactKey = @"contacts";
 NSString *const kLastPeerKey = @"last-peer";
-NSString *const kChatHistoryKey = @"chat-history";
 NSString *const kSipIndentificationKey = @"sip-identification";
 NSString *const kSipPasswordKey = @"sip-password";
 NSString *const kSipRegistrarKey = @"sip-registrar";
@@ -80,9 +79,8 @@ NSString* const kFriendlyName = @"Olympus";
                                     kPushIsSandboxKey: @(NO),
                                     //@"turn-candidate-timeout" : @"5",
                                     kContactKey : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
-                                    kChatHistoryKey : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
                                     };
-    
+    [self addDefaultChatHistory];
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
 }
 
@@ -275,32 +273,40 @@ NSString* const kFriendlyName = @"Olympus";
 
 + (NSArray*)messagesForSipUri:(NSString*)sipUri
 {
-    NSMutableArray *messages = [[NSMutableArray alloc] init];
-    
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    if ([appDefaults dictionaryForKey:kChatHistoryKey] && [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri]) {
-        return [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri];
+    NSArray *messages = [[NSArray alloc] init];
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *messageArrayData = [appDefaults objectForKey:sipUri];
+    if (messageArrayData){
+        messages = [NSKeyedUnarchiver unarchiveObjectWithData: messageArrayData];
     }
+    
     return messages;
 }
 
-+ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type
-{
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray * aliasMessages = [[NSMutableArray alloc] init];
-    if (![appDefaults dictionaryForKey:kChatHistoryKey]) {
-        return;
++ (void)addMessage:(LocalMessage *)message
+{    
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray * mutable = nil;
+    NSData *messageArrayData = [appDefaults objectForKey:message.username];
+    if (messageArrayData != nil) {
+        NSArray *messageArray = [NSKeyedUnarchiver unarchiveObjectWithData: messageArrayData];
+        if (messageArray != nil){
+            mutable = [messageArray mutableCopy];
+        } else {
+            mutable = [[NSMutableArray alloc] init];
+        }
     }
     
-    NSMutableDictionary * messages = [[appDefaults dictionaryForKey:kChatHistoryKey] mutableCopy];
-    if ([messages objectForKey:sipUri]) {
-        aliasMessages = [[messages objectForKey:sipUri] mutableCopy];
-    }
-    
-    [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
-    [messages setObject:aliasMessages forKey:sipUri];
-    
-    [appDefaults setObject:messages forKey:kChatHistoryKey];
+
+    [mutable addObject:message];
+
+    // update user defaults
+    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:message.username];
+}
+
++ (void)removeMessagesForSipUri:(NSString *)sipUri{
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[[NSArray alloc] init]] forKey:sipUri];
 }
 
 #pragma mark - SIP
@@ -589,37 +595,28 @@ NSString* const kFriendlyName = @"Olympus";
     
 }
 
-+ (NSDictionary *)getDefaultChatHistory{
-   return @{
-      @"alice" : @[  //@"sip:alice@cloud.restcomm.com" : @[
-              @{
-                  @"text" : @"Hello Alice",
-                  @"type" : @"local",
-                  },
-              @{
-                  @"text" : @"Hello",
-                  @"type" : @"remote",
-                  },
-              @{
-                  @"text" : @"What's up?",
-                  @"type" : @"local",
-                  },
-              ],
-      @"bob" : @[  //@"sip:bob@cloud.restcomm.com" : @[
-              @{
-                  @"text" : @"Is Bob around?",
-                  @"type" : @"local",
-                  },
-              @{
-                  @"text" : @"Yes, I'm here",
-                  @"type" : @"remote",
-                  },
-              @{
-                  @"text" : @"Great",
-                  @"type" : @"local",
-                  },
-              ],
-      };
++ (void)addDefaultChatHistory{
+    
+    [self removeMessagesForSipUri:@"alice"];
+    LocalMessage *message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"Hello Alice" type:@"local"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"Hello" type:@"remote"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"What's up?" type:@"local"];
+    [self addMessage:message];
+    
+    [self removeMessagesForSipUri:@"bob"];
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Is Bob around?" type:@"local"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Yes, I'm here" type:@"remote"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Great" type:@"local"];
+    [self addMessage:message];
+
 }
 
 #pragma mark - Helpers

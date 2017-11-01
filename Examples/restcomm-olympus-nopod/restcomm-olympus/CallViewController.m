@@ -230,7 +230,7 @@
 
     NSLog(@"[CallViewController hangUpPressed]");
     if (self.rcCallKitProvider){
-        [self.rcCallKitProvider performEndCallAction];
+        [self.rcCallKitProvider endCall];
     }
     if (self.pendingIncomingConnection) {
         // incomind ringing
@@ -282,7 +282,7 @@
     [self stopVideoRendering];
     
     if (self.rcCallKitProvider){
-        [self.rcCallKitProvider performEndCallAction];
+        [self.rcCallKitProvider endCall];
     }
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"RCConnection Error"
@@ -326,7 +326,7 @@
 {
     NSLog(@"connectionDidCancel");
     if (self.rcCallKitProvider){
-        [self.rcCallKitProvider performEndCallAction];
+        [self.rcCallKitProvider endCall];
     }
     
     if (self.pendingIncomingConnection) {
@@ -382,7 +382,7 @@
         [self.durationTimer invalidate];
     }
     if (self.rcCallKitProvider){
-        [self.rcCallKitProvider performEndCallAction];
+        [self.rcCallKitProvider endCall];
     }
     
 }
@@ -399,7 +399,7 @@
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
     if (self.rcCallKitProvider){
-        [self.rcCallKitProvider performEndCallAction];
+        [self.rcCallKitProvider endCall];
     }
     
 }
