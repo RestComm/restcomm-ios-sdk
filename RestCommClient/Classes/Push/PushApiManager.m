@@ -38,19 +38,18 @@ NSString *const kPushPathStaging = @"push";
     
     //these will change upon push domain (staging or cloud)
     NSString *pushPath;
-    NSString *domainPath;
+    NSString *domain;
 }
 
-- (id)initWithUsername:(NSString *)username password:(NSString *)password pushDomain:(NSString *)pushDomain andDomain:(NSString *)domain{
+- (id)initWithUsername:(NSString *)username password:(NSString *)password pushDomain:(NSString *)pushDomain{
     self = [super init];
     if (self){
         pUsername = username;
         pPassword = password;
         session = [NSURLSession sharedSession];
-        pushDomain = pushDomain;
-        domainPath = domain;
+        domain = pushDomain;
         
-        if ([domain isEqualToString:@"staging.restcomm.com"]){
+        if ([pushDomain isEqualToString:@"staging.restcomm.com"]){
             pushPath = kPushPathStaging;
         } else {
             pushPath = kPushPathCloud;
@@ -75,7 +74,7 @@ NSString *const kPushPathStaging = @"push";
 
 - (void)getAccountSidWithRequestForEmail:(NSString *)email andCompletionHandler:(void (^)( NSString *accountSid, NSError *error))completionHandler{
     NSString *encodedEmail = [email stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@", domainPath, kAccountSidUrl, encodedEmail]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@", domain, kAccountSidUrl, encodedEmail]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ for email: %@", NSStringFromSelector(_cmd), email] UTF8String]);
@@ -111,7 +110,7 @@ NSString *const kPushPathStaging = @"push";
 #pragma mark - Get Client Sid
 
 - (void)getClientSidWithAccountSid:(NSString *)accountSid signalingUsername:(NSString *)signalingUsername andCompletionHandler:(void (^)( NSString *clientSid, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@/Clients.json", domainPath, kClientSidUrl, accountSid]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@/%@/Clients.json", domain, kClientSidUrl, accountSid]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ for accountSid: %@; signalingUsername: %@", NSStringFromSelector(_cmd), accountSid, signalingUsername] UTF8String]);
@@ -149,7 +148,7 @@ NSString *const kPushPathStaging = @"push";
 #pragma mark - Application related methods (get, create)
 
 - (void)getApplicationForFriendlyName:(NSString *)friendlyName isSandbox:(BOOL)sandbox withCompletionHandler:(void (^)(RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", domainPath, pushPath]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", domain, pushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ for friendlyName: %@; isSandbox: %@", NSStringFromSelector(_cmd), friendlyName, sandbox?@"YES":@"NO"] UTF8String]);
@@ -189,7 +188,7 @@ NSString *const kPushPathStaging = @"push";
 }
 
 - (void)createApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCApplication *application, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", domainPath, pushPath]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/applications", domain, pushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ with %@", NSStringFromSelector(_cmd), application] UTF8String]);
@@ -245,7 +244,7 @@ NSString *const kPushPathStaging = @"push";
 #pragma mark - Credentials related methods (get, create)
 
 - (void)getCredentialsForApplication:(RCApplication *)application withCompletionHandler:(void (^)( RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", domainPath, pushPath]];
+    NSURL *url =  [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", domain, pushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
 
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ for %@", NSStringFromSelector(_cmd), application] UTF8String]);
@@ -283,7 +282,7 @@ NSString *const kPushPathStaging = @"push";
 }
 
 - (void)createCredentials:(RCCredentials *)credentials withCompletionHandler:(void (^)(RCCredentials *credentials, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", domainPath, pushPath]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/credentials", domain, pushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ with %@", NSStringFromSelector(_cmd), credentials] UTF8String]);
@@ -340,7 +339,7 @@ NSString *const kPushPathStaging = @"push";
 #pragma mark - Binding related methods (get, create, update)
 
 - (void)checkExistingBindingSidForApplication:(RCApplication *)application WithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", domainPath, pushPath]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", domain, pushPath]];
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
     
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ for %@", NSStringFromSelector(_cmd), application] UTF8String]);
@@ -390,9 +389,9 @@ NSString *const kPushPathStaging = @"push";
 
 - (void)createOrUpdateBinding:(RCBinding *)binding forSid:(NSString *)bindingSid andCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     RCLogInfo([[NSString stringWithFormat:@"PushApiManager: %@ with %@", NSStringFromSelector(_cmd), binding] UTF8String]);
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", domainPath, pushPath]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings", domain, pushPath]];
     if (bindingSid){
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings/%@", domainPath, pushPath, bindingSid]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@/bindings/%@", domain, pushPath, bindingSid]];
     }
     
     NSMutableURLRequest *request = [self createUrlRequestWithUrl:url];
