@@ -63,7 +63,9 @@ NSString *const kCredentialsKey = @"credentialsKey";
         sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
         NSString *pushDomain = [parameters objectForKey:@"push-domain"];
         
-        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password pushDomain:pushDomain];
+        NSString *signalingDomain = [parameters objectForKey:@"signaling-domain"];
+        
+        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password pushDomain:pushDomain andDomain:signalingDomain];
         self.delegate = delegate;
     }
     return self;
