@@ -92,8 +92,8 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
     
     if (self.isIncoming && self.state == RCConnectionStateConnecting) {
         BOOL videoAllowed = NO;
-        if ([parameters objectForKey:@"video-enabled"]) {
-            videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
+        if ([parameters objectForKey:RCVideoEnabled]) {
+            videoAllowed = [[parameters objectForKey:RCVideoEnabled] boolValue];
         };
 
         [self.sipManager answerWithVideo:videoAllowed];

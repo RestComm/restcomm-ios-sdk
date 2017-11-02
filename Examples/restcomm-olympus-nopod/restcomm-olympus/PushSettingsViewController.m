@@ -1,10 +1,24 @@
-//
-//  PushSettingsViewController.m
-//  restcomm-olympus
-//
-//  Created by Manevski Ognjen on 10/14/17.
-//  Copyright © 2017 TeleStax. All rights reserved.
-//
+/*
+ * TeleStax, Open Source Cloud Communications
+ * Copyright 2011-2015, Telestax Inc and individual contributors
+ * by the @authors tag.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * For questions related to commercial use licensing, please contact sales@telestax.com.
+ *
+ */
 
 #import "PushSettingsViewController.h"
 #import "Utils.h"
@@ -50,7 +64,7 @@
     [self.view addGestureRecognizer:tapGesture];
     [self registerForKeyboardNotifications];
     
-    self.navigationItem.title = @"Push Notifications Settings";
+    self.navigationItem.title = @"Push Settings";
     
     //check is push server is enabled, if it is, eanble all input fields
     //otherwise disable them
@@ -125,14 +139,14 @@
         NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
         
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                    kFriendlyName, @"friendly-name",
-                                    pushAccount, @"rescomm-account-email",
-                                    pushPassword, @"password",
-                                    pushDomain, @"push-domain",
-                                    [Utils pushToken], @"token",
-                                    pushCertificatesPathPublic, @"push-certificate-public-path",
-                                    pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                    [NSNumber numberWithBool:[Utils isSandbox]], @"is-sandbox", nil];
+                                    kFriendlyName, RCPushFriendlyNameKey,
+                                    pushAccount, RCRestcommAccountEmailKey,
+                                    pushPassword, RCRestcommAccountPasswordKey,
+                                    pushDomain, RCPushDomainKey,
+                                    [Utils pushToken], RCPushTokenKey,
+                                    pushCertificatesPathPublic, RCPushCertificatesPathPublicKey,
+                                    pushCertificatesPathPrivate, RCPushCertificatesPathPrivateKey,
+                                    [NSNumber numberWithBool:[Utils isSandbox]], RCPushIsSandbox, nil];
         
         AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
         RCDevice  *rcDevice = [appDelegate registerRCDevice];
@@ -278,6 +292,7 @@
                                     handler:nil];
          [alert addAction:okAction];
          [self presentViewController:alert animated:YES completion:nil];
+         [self enableTextFields:NO];
          [self.enableSwitch setOn:NO];
      } else {
          [self dismissViewControllerAnimated:YES completion:nil];

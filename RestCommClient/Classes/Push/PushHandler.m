@@ -53,17 +53,17 @@ NSString *const kCredentialsKey = @"credentialsKey";
 - (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate{
     self = [super init];
     if (self){
-        password = [parameters objectForKey:@"password"];
-        signalingUsername = [parameters objectForKey:@"signaling-username"];
-        friendlyName = [parameters objectForKey:@"friendly-name"];
-        certificatePublicPath = [parameters objectForKey:@"push-certificate-public-path"];
-        certificatePrivatePath = [parameters objectForKey:@"push-certificate-private-path"];
-        rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
-        token = [parameters objectForKey:@"token"];
-        sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
-        NSString *pushDomain = [parameters objectForKey:@"push-domain"];
+        password = [parameters objectForKey: RCRestcommAccountPasswordKey];
+        signalingUsername = [parameters objectForKey:RCAorKey];
+        friendlyName = [parameters objectForKey:RCPushFriendlyNameKey];
+        certificatePublicPath = [parameters objectForKey:RCPushCertificatesPathPublicKey];
+        certificatePrivatePath = [parameters objectForKey:RCPushCertificatesPathPrivateKey];
+        rescommAccountEmail = [parameters objectForKey:RCRestcommAccountEmailKey];
+        token = [parameters objectForKey:RCPushTokenKey];
+        sandbox = [[parameters objectForKey:RCPushIsSandbox] boolValue];
+        NSString *pushDomain = [parameters objectForKey:RCPushDomainKey];
         
-        NSString *signalingDomain = [parameters objectForKey:@"signaling-domain"];
+        NSString *signalingDomain = [parameters objectForKey:RCRegistrarKey];
         
         pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password pushDomain:pushDomain andDomain:signalingDomain];
         self.delegate = delegate;
@@ -75,7 +75,9 @@ NSString *const kCredentialsKey = @"credentialsKey";
 
 - (void)registerDevice{
     if (!token || token.length == 0){
-        RCLogError("Push notification token is nil or empty.");
+        NSString *errorStr = @"Push notification token is nil or empty.";
+        RCLogError([errorStr UTF8String]);
+        [self formatAndDelegateError:errorStr];
         return;
     }
     __weak PushHandler *weakSelf = self;

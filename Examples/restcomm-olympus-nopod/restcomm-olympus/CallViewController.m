@@ -78,7 +78,7 @@
     [self.view addGestureRecognizer:tapRecognizer];
     
     //get sip uri (phone number) and save it as last peer for debug reporting
-    [Utils saveLastPeer:[self.parameters objectForKey:@"username"]];
+    [Utils saveLastPeer:[self.parameters objectForKey:RCUsername]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -125,7 +125,7 @@
                 return;
             }
             
-            if ([[self.parameters objectForKey:@"video-enabled"] boolValue] == YES) {
+            if ([[self.parameters objectForKey:RCVideoEnabled] boolValue] == YES) {
                 self.isVideoCall = YES;
             }
             else {
@@ -214,11 +214,11 @@
         self.statusLabel.text = @"Answering Call...";
         if (allowVideo) {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
-                                                                               forKey:@"video-enabled"]];
+                                                                               forKey:RCVideoEnabled]];
         }
         else {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO]
-                                                                               forKey:@"video-enabled"]];
+                                                                               forKey:RCVideoEnabled]];
         }
         self.connection = self.pendingIncomingConnection;
         self.pendingIncomingConnection = nil;

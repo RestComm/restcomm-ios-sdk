@@ -129,17 +129,17 @@
                 //get certificate strings
                 NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
                 NSString *pushCertificatesPathPrivate = [[NSBundle mainBundle] pathForResource:@"rsa_private_key_push" ofType:@"pem"];
-                
+              
                 
                 NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                            kFriendlyName, @"friendly-name",
-                                            [Utils pushAccount], @"rescomm-account-email",
-                                            [Utils pushPassword], @"password",
-                                            [Utils pushDomain], @"push-domain",
-                                            deviceToken, @"token",
-                                            pushCertificatesPathPublic, @"push-certificate-public-path",
-                                            pushCertificatesPathPrivate, @"push-certificate-private-path",
-                                            [NSNumber numberWithBool:[Utils isSandbox]], @"is-sandbox", nil];
+                                            kFriendlyName, RCPushFriendlyNameKey,
+                                            [Utils pushAccount], RCRestcommAccountEmailKey,
+                                            [Utils pushPassword], RCRestcommAccountPasswordKey,
+                                            [Utils pushDomain], RCPushDomainKey,
+                                            deviceToken, RCPushTokenKey,
+                                            pushCertificatesPathPublic, RCPushCertificatesPathPublicKey,
+                                            pushCertificatesPathPrivate, RCPushCertificatesPathPrivateKey,
+                                            [NSNumber numberWithBool:[Utils isSandbox]], RCPushIsSandbox, nil];
                 
                 [rcDevice registerPushToken:dic delegate:self];
             } else {

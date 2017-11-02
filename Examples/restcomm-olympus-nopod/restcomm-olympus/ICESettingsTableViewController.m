@@ -217,13 +217,13 @@
     // For now let's save always
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     [Utils updateTurnEnabled:self.switchOnOff.on];
-    [params setObject:@(self.switchOnOff.on) forKey:@"turn-enabled"];
+    [params setObject:@(self.switchOnOff.on) forKey:RCTurnEnabledKey];
     [Utils updateTurnUrl:self.turnUrlText.text];
-    [params setObject:self.turnUrlText.text forKey:@"turn-url"];
+    [params setObject:self.turnUrlText.text forKey:RCTurnUrlKey];
     [Utils updateTurnUsername:self.turnUsernameText.text];
-    [params setObject:self.turnUsernameText.text forKey:@"turn-username"];
+    [params setObject:self.turnUsernameText.text forKey:RCTurnUsernameKey];
     [Utils updateTurnPassword:self.turnPasswordText.text];
-    [params setObject:self.turnPasswordText.text forKey:@"turn-password"];
+    [params setObject:self.turnPasswordText.text forKey:RCTurnPasswordKey];
     //[Utils updateTurnCandidateTimeout:self.secondsLabel.text];
     //[params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
 
