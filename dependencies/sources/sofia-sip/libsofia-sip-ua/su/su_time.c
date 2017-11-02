@@ -38,7 +38,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <time.h>
 
@@ -146,7 +145,6 @@ double su_time_diff(su_time_t const t1, su_time_t const t2)
 su_time_t su_now(void)
 {
   su_time_t retval;
-  memset(&retval, 0, sizeof(su_time_t));
   su_time(&retval);
   return retval;
 }

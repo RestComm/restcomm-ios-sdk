@@ -201,7 +201,6 @@
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
 		AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */; };
-		E50B4F2E9CDA5DEF7AE31858 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8C81B4E7D67F06BF21E485 /* libPods-restcomm-olympus.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,8 +227,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		100DE3B948EBB394A29F80B5 /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
-		6CAD75BD848F27D8780ABE18 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy_tone_sample.mp3; sourceTree = "<group>"; };
 		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
@@ -439,7 +436,6 @@
 		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIPSettingsNavigationController.m; sourceTree = "<group>"; };
 		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsNavigationController.h; sourceTree = "<group>"; };
 		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsNavigationController.m; sourceTree = "<group>"; };
-		FC8C81B4E7D67F06BF21E485 /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,7 +447,6 @@
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
-				E50B4F2E9CDA5DEF7AE31858 /* libPods-restcomm-olympus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,15 +460,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A753FF95C737E22EED9D257E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6CAD75BD848F27D8780ABE18 /* Pods-restcomm-olympus.debug.xcconfig */,
-				100DE3B948EBB394A29F80B5 /* Pods-restcomm-olympus.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A9CA4D781F5ED9D00005A553 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,7 +564,6 @@
 				AE79D31719BC8DAD0023306C /* Products */,
 				AEA495651C2997F6000D9762 /* restcomm-olympus */,
 				AED0B05F1A0976F8008A6057 /* restcomm-olympusTests */,
-				A753FF95C737E22EED9D257E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -599,7 +584,6 @@
 				A9CA4D821F5F33380005A553 /* Contacts.framework */,
 				A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */,
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
-				FC8C81B4E7D67F06BF21E485 /* libPods-restcomm-olympus.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -826,13 +810,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-olympus" */;
 			buildPhases = (
-				C7CF7A31ABF1731538027C96 /* [CP] Check Pods Manifest.lock */,
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
 				AE7D36491D9E707F00610033 /* Embed Frameworks */,
-				BD1B3AA0197D1845C3282278 /* [CP] Embed Pods Frameworks */,
-				4B53E967C9353C757314E1D5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1074,24 +1055,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4B53E967C9353C757314E1D5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-resources.sh",
-				"${PODS_ROOT}/TestFairy/upload-dsym.sh",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		AED9718819E98B77000F7A8E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1117,44 +1080,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${PROJECT_DIR}/doc\"\ndoxygen Doxyfile";
-		};
-		BD1B3AA0197D1845C3282278 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh",
-				"${PODS_ROOT}/sofia-sip-library/Frameworks/sofiasip.framework",
-				"${PODS_ROOT}/webrtc-framework/Frameworks/WebRTC.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sofiasip.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C7CF7A31ABF1731538027C96 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-restcomm-olympus-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1331,7 +1256,6 @@
 		};
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CAD75BD848F27D8780ABE18 /* Pods-restcomm-olympus.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1371,7 +1295,6 @@
 		};
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 100DE3B948EBB394A29F80B5 /* Pods-restcomm-olympus.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

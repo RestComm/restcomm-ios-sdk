@@ -39,6 +39,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "sofia-sip/su_types.h"
 #include "sofia-sip/su_time.h"
@@ -80,6 +81,12 @@ void su_time(su_time_t *tv)
 {
 #if HAVE_GETTIMEOFDAY
   if (tv) {
+    // In iOS gettimeofday() didn't set the whole su_time_t structure for some
+    // reason and we ended up having some garbage bytes that mess up the value.
+    // The most likely issue is that su_time_t is larger than system timeval
+    // struct.  For now I'm using defensive logic to memset the whole tv
+    // structure that fixes the issue
+    memset(tv, 0, sizeof(su_time_t));
     gettimeofday((struct timeval *)tv, NULL);
     tv->tv_sec += NTP_EPOCH;
   }
