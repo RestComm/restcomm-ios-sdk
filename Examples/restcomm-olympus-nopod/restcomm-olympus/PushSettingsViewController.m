@@ -30,9 +30,13 @@
 @property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *accountTVCell;
 @property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *passwordTVCell;
 @property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *domainTVCell;
+@property (unsafe_unretained, nonatomic) IBOutlet UITableViewCell *httpDomainTVCell;
+
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushAccountText;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushPasswordText;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *pushDomainText;
+@property (unsafe_unretained, nonatomic) IBOutlet UITextField *httpDomainText;
+
 @property UITextField * activeField;
 @property (unsafe_unretained, nonatomic) IBOutlet UISwitch *enableSwitch;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
@@ -49,6 +53,7 @@
     self.pushAccountText.delegate = self;
     self.pushPasswordText.delegate = self;
     self.pushDomainText.delegate = self;
+    self.httpDomainText.delegate = self;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
     
@@ -56,6 +61,7 @@
     self.pushAccountText.autocorrectionType = UITextAutocorrectionTypeNo;
     self.pushPasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
     self.pushDomainText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.httpDomainText.autocorrectionType = UITextAutocorrectionTypeNo;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -76,6 +82,7 @@
     self.pushAccountText.text = [Utils pushAccount];
     self.pushPasswordText.text = [Utils pushPassword];
     self.pushDomainText.text = [Utils pushDomain];
+    self.httpDomainText.text = [Utils httpDomain];
     
     //define spinner
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -110,6 +117,9 @@
        
         NSString * pushDomain = [self.pushDomainText.text stringByTrimmingCharactersInSet:
                                    [NSCharacterSet whitespaceCharacterSet]];
+        
+        NSString * httpDomain = [self.httpDomainText.text stringByTrimmingCharactersInSet:
+                                 [NSCharacterSet whitespaceCharacterSet]];
        
         if ([pushAccount length] == 0){
             [Utils shakeTableViewCell:self.accountTVCell];
@@ -125,6 +135,11 @@
             [Utils shakeTableViewCell:self.domainTVCell];
             return;
         }
+        
+        if ([httpDomain length] == 0){
+            [Utils shakeTableViewCell:self.httpDomainTVCell];
+            return;
+        }
        
         [self showSpinner];
         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
@@ -133,6 +148,7 @@
         [Utils updatePushAccount:pushAccount];
         [Utils updatePushPassword:pushPassword];
         [Utils updatePushDomain:pushDomain];
+        [Utils updateHttpDomain:httpDomain];
         
         //get certificate strings
         NSString *pushCertificatesPathPublic = [[NSBundle mainBundle] pathForResource:@"certificate_key_push" ofType:@"pem"];
@@ -146,6 +162,7 @@
                                     [Utils pushToken], RCPushTokenKey,
                                     pushCertificatesPathPublic, RCPushCertificatesPathPublicKey,
                                     pushCertificatesPathPrivate, RCPushCertificatesPathPrivateKey,
+                                    httpDomain, RCHttpDomainKey,
                                     [NSNumber numberWithBool:[Utils isSandbox]], RCPushIsSandbox, nil];
         
         AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
@@ -238,15 +255,18 @@
     self.pushAccountText.enabled = enable;
     self.pushPasswordText.enabled = enable;
     self.pushDomainText.enabled = enable;
+    self.httpDomainText.enabled = enable;
     
     if (enable){
         self.pushAccountText.alpha = 1.0;
         self.pushPasswordText.alpha = 1.0;
         self.pushDomainText.alpha = 1.0;
+        self.httpDomainText.alpha = 1.0;
     } else {
         self.pushAccountText.alpha = 0.5;
         self.pushPasswordText.alpha = 0.5;
         self.pushDomainText.alpha = 0.5;
+        self.httpDomainText.alpha = 0.5;
     }
 }
 

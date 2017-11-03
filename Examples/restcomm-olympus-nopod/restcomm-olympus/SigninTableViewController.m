@@ -139,6 +139,7 @@
                                             deviceToken, RCPushTokenKey,
                                             pushCertificatesPathPublic, RCPushCertificatesPathPublicKey,
                                             pushCertificatesPathPrivate, RCPushCertificatesPathPrivateKey,
+                                            [Utils httpDomain], RCHttpDomainKey,
                                             [NSNumber numberWithBool:[Utils isSandbox]], RCPushIsSandbox, nil];
                 
                 [rcDevice registerPushToken:dic delegate:self];

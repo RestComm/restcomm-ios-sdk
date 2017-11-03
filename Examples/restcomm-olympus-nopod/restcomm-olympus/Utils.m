@@ -44,6 +44,7 @@ NSString *const kSignalingCertificateKey = @"signaling-certificate-dir";
 NSString *const kPushAccountKey = @"push-account";
 NSString *const kPushPasswordKey = @"push-password";
 NSString *const kPushDomainKey = @"push-domain";
+NSString *const kHttpDomainKey = @"http-domain";
 NSString *const kPushTokenKey = @"push-token";
 NSString *const kPushServerEnabledKey = @"push-server-enabled";
 NSString *const kPushIsSandboxKey = @"push-is-sandbox";
@@ -75,6 +76,7 @@ NSString* const kFriendlyName = @"Olympus";
                                     kPushPasswordKey: @"",
                                     kPushTokenKey: @"",
                                     kPushDomainKey: @"push.restcomm.com",
+                                    kHttpDomainKey: @"cloud.restcomm.com",
                                     kPushServerEnabledKey: @(NO), //by default we assume push is not enabled for account on server
                                     kPushIsSandboxKey: @(NO),
                                     //@"turn-candidate-timeout" : @"5",
@@ -523,6 +525,11 @@ NSString* const kFriendlyName = @"Olympus";
     return [[appDefaults stringForKey:kPushServerEnabledKey] boolValue];
 }
 
++ (NSString *)httpDomain{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kHttpDomainKey];
+}
+
 + (BOOL)isSandbox{
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     return [[appDefaults stringForKey:kPushIsSandboxKey] boolValue];
@@ -561,6 +568,13 @@ NSString* const kFriendlyName = @"Olympus";
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     [appDefaults setObject:[NSNumber numberWithBool:enabled] forKey:kPushIsSandboxKey];
 }
+
++ (void)updateHttpDomain:(NSString *)httpDomain
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:httpDomain forKey:kHttpDomainKey];
+}
+
 #pragma mark - Default values
 
 + (NSArray *)getDefaultContacts{

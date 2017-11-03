@@ -72,6 +72,8 @@ extern NSString* const kFriendlyName;
 + (NSString *)pushPassword;
 + (NSString *)pushDomain;
 + (NSString *)pushToken;
++ (NSString *)httpDomain;
+
 + (BOOL)isServerEnabledForPushNotifications;
 + (BOOL)isSandbox;
 + (void)updatePushAccount:(NSString *)pushAccount;
@@ -80,6 +82,7 @@ extern NSString* const kFriendlyName;
 + (void)updatePushToken:(NSString *)pushToken;
 + (void)updateServerEnabledForPush:(BOOL)enabled;
 + (void)updateIsSandboxPush:(BOOL)enabled;
++ (void)updateHttpDomain:(NSString *)httpDomain;
 
 //animations
 + (void)shakeView:(UIView *)view;

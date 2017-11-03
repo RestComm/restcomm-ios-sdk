@@ -93,7 +93,7 @@ extern NSString* const RCPushCertificatesPathPublicKey;
 extern NSString* const RCPushCertificatesPathPrivateKey;
 extern NSString* const RCPushIsSandbox;
 extern NSString* const RCRestcommAccountPasswordKey;
-
+extern NSString* const RCHttpDomainKey;
 
 @class RCConnection;
 @protocol SipManagerDeviceDelegate;
@@ -282,8 +282,9 @@ extern NSString* const RCRestcommAccountPasswordKey;
  * Format '.pem' private key to pkcs8:
  *      openssl pkcs8 -topk8 -inform pem -in /path/to/key(pkcs12).pem -outform pem -nocrypt -out /path/to/key(pkcs8).pem
  *
- * <b>RCPushIsSandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
+ * <b>RCPushIsSandbox</b>: BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
  * application, if its production it should be set to NO.
+ * <b>RCHttpDomainKey</b>: Restcomm HTTP domain, like 'cloud.restcomm.com'
  *
  * @param delegate The delegate object that will receive events when registering for push (success, error)
  */

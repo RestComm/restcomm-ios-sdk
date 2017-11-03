@@ -1787,6 +1787,31 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="HTTP domain" footerTitle="Restcomm HTTP domain, like 'cloud.restcomm.com'" id="fhu-mL-39q" userLabel="Http Domain">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uAt-xZ-6DQ">
+                                        <rect key="frame" x="0.0" y="545" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uAt-xZ-6DQ" id="UdO-1b-gw6">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XHG-Yz-YtW">
+                                                    <rect key="frame" x="8" y="8" width="359" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="XHG-Yz-YtW" secondAttribute="leading" id="CI2-bh-H0g"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XHG-Yz-YtW" secondAttribute="trailing" id="HLP-nj-mcJ"/>
+                                                <constraint firstAttribute="topMargin" secondItem="XHG-Yz-YtW" secondAttribute="top" id="LFX-w3-UPs"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XHG-Yz-YtW" secondAttribute="bottom" constant="-2" id="wYu-cS-rEJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="6WW-La-Z1d" id="bXZ-Wa-atv"/>
@@ -1811,6 +1836,8 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                         <outlet property="accountTVCell" destination="vHW-ux-aKw" id="887-cF-O9N"/>
                         <outlet property="domainTVCell" destination="5hw-Bv-g4F" id="ROd-Fn-rYF"/>
                         <outlet property="enableSwitch" destination="D8h-d3-6BB" id="ZDw-0d-G6e"/>
+                        <outlet property="httpDomainTVCell" destination="uAt-xZ-6DQ" id="xPv-ol-QRA"/>
+                        <outlet property="httpDomainText" destination="XHG-Yz-YtW" id="66o-nU-2R3"/>
                         <outlet property="passwordTVCell" destination="7bo-rp-KXU" id="9CB-9i-cEt"/>
                         <outlet property="pushAccountText" destination="zCw-EX-6j4" id="Vhv-4O-PJk"/>
                         <outlet property="pushDomainText" destination="aHc-7h-deJ" id="3kp-el-fMg"/>

@@ -99,6 +99,7 @@ NSString* const RCPushTokenKey = @"token";
 NSString* const RCPushCertificatesPathPublicKey = @"push-certificate-public-path";
 NSString* const RCPushCertificatesPathPrivateKey = @"push-certificate-private-path";
 NSString* const RCPushIsSandbox = @"is-sandbox";
+NSString* const RCHttpDomainKey = @"http-domain";
 
 const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
@@ -730,12 +731,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
     //extend the parameters with:
     // - signaling username
-    // - signaling domain
    
     NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     [pushHandlerProperties setValue:self.signalingUsername forKey:RCAorKey];
-    NSString *signalingDomain =  self.signalingDomain ? self.signalingDomain: @"cloud.restcomm.com";
-    [pushHandlerProperties setValue:signalingDomain forKey:RCRegistrarKey];
   
     PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties andDelegate:delegate];
     [pushHandler registerDevice];
