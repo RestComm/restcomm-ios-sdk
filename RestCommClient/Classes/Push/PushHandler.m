@@ -53,25 +53,31 @@ NSString *const kCredentialsKey = @"credentialsKey";
 - (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate{
     self = [super init];
     if (self){
-        username = [parameters objectForKey:@"username"];
-        password = [parameters objectForKey:@"password"];
-        signalingUsername = [parameters objectForKey:@"signaling-username"];
-        friendlyName = [parameters objectForKey:@"friendly-name"];
-        certificatePublicPath = [parameters objectForKey:@"push-certificate-public-path"];
-        certificatePrivatePath = [parameters objectForKey:@"push-certificate-private-path"];
-        rescommAccountEmail = [parameters objectForKey:@"rescomm-account-email"];
-        token = [parameters objectForKey:@"token"];
-        sandbox = [[parameters objectForKey:@"is-sandbox"] boolValue];
+        password = [parameters objectForKey: RCRestcommAccountPasswordKey];
+        signalingUsername = [parameters objectForKey:RCAorKey];
+        friendlyName = [parameters objectForKey:RCPushFriendlyNameKey];
+        certificatePublicPath = [parameters objectForKey:RCPushCertificatesPathPublicKey];
+        certificatePrivatePath = [parameters objectForKey:RCPushCertificatesPathPrivateKey];
+        rescommAccountEmail = [parameters objectForKey:RCRestcommAccountEmailKey];
+        token = [parameters objectForKey:RCPushTokenKey];
+        sandbox = [[parameters objectForKey:RCPushIsSandbox] boolValue];
+        NSString *pushDomain = [parameters objectForKey:RCPushDomainKey];
         
-        pushApiManager = [[PushApiManager alloc] initWithUsername:username andPassword:password];
+        NSString *httpDomain = [parameters objectForKey:RCHttpDomainKey];
+        
+        pushApiManager = [[PushApiManager alloc] initWithUsername:rescommAccountEmail password:password pushDomain:pushDomain andDomain:httpDomain];
         self.delegate = delegate;
     }
     return self;
 }
 
+#pragma mark - Register Device
+
 - (void)registerDevice{
     if (!token || token.length == 0){
-        RCLogError("Push notification token is nil or empty.");
+        NSString *errorStr = @"Push notification token is nil or empty.";
+        RCLogError([errorStr UTF8String]);
+        [self formatAndDelegateError:errorStr];
         return;
     }
     __weak PushHandler *weakSelf = self;
@@ -98,9 +104,11 @@ NSString *const kCredentialsKey = @"credentialsKey";
                                         //check existing binding sid
                                         [self checkBindingSidWithCompletionHandler:^(RCBinding *binding, NSError *error) {
                                             if (error){
-                                                RCLogError("Error checking binding sid: %@", error);
+                                                RCLogError([[NSString stringWithFormat:@"Error checking binding sid: %@", error] UTF8String]);
                                                 if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                     [weakSelf.delegate registeredForPush:error];
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [weakSelf.delegate registeredForPush:error];
+                                                    });
                                                 }
                                             } else {
                                                 //its and existing sid, we should update sid if savedTokenOnServer is different than token
@@ -109,20 +117,26 @@ NSString *const kCredentialsKey = @"credentialsKey";
                                                         binding.address = token;
                                                         [pushApiManager updateBinding:binding andCompletionHandler:^(RCBinding *binding, NSError *error) {
                                                              if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                                  [weakSelf.delegate registeredForPush:error];
+                                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                                      [weakSelf.delegate registeredForPush:error];
+                                                                  });
                                                              }
                                                         }];
                                                     } else {
                                                         RCLogInfo("Binding sid is same on server. No need to update");
                                                         if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                            [weakSelf.delegate registeredForPush:nil];
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 [weakSelf.delegate registeredForPush:nil];
+                                                             });
                                                         }
                                                     }
                                                 } else {
                                                     RCBinding *bindingToSend = [[RCBinding alloc] initWithSid:@"" identity:clientSid applicationSid:applicationSid andAddress:token];
                                                     [pushApiManager createBinding:bindingToSend andCompletionHandler:^(RCBinding *binding, NSError *error) {
                                                         if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-                                                            [weakSelf.delegate registeredForPush:error];
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 [weakSelf.delegate registeredForPush:error];
+                                                             });
                                                         }
                                                     }];
                                                 }
@@ -150,6 +164,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     
 }
 
+#pragma mark - Account Sid
+
 - (void)getAccountSidWithCompletionHandler:(void (^)(NSString *accountSid))completionHandler{
     //check is account id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -172,6 +188,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     }];
 }
 
+#pragma mark - Client Sid
+
 - (void)getClientSidForAccountSid:(NSString *)accountSid andWithCompletionHandler:(void (^)(NSString *clientSid))completionHandler{
     //check is client id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -193,6 +211,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     }];
 }
 
+#pragma mark - Application Sid
+
 - (void)getApplicationSidWithCompletionHandler:(void (^)(NSString *applicationSid))completionHandler{
     //check is application id is already saved in user defaults
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
@@ -206,7 +226,7 @@ NSString *const kCredentialsKey = @"credentialsKey";
         return;
     }
     //Application sid is not found, we need to ask server for it
-    [pushApiManager getApplicationForFriendlyName:friendlyName isSendbox:sandbox withCompletionHandler:^(RCApplication *application, NSError *error) {
+    [pushApiManager getApplicationForFriendlyName:friendlyName isSandbox:sandbox withCompletionHandler:^(RCApplication *application, NSError *error) {
         if (error){
             RCLogError([error.localizedDescription UTF8String]);
             completionHandler(nil);
@@ -229,6 +249,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
         }
     }];
 }
+
+#pragma mark - Credentials Sid
 
 - (void)getCredentialsSid:(NSString *)applicationSid andWithCompletionHandler:(void (^)(NSString *credentialsSid))completionHandler{
     //check is client id is already saved in user defaults
@@ -285,6 +307,8 @@ NSString *const kCredentialsKey = @"credentialsKey";
     }];
 }
 
+#pragma mark - Binding Sid
+
 - (void)checkBindingSidWithCompletionHandler:(void (^)(RCBinding *binding, NSError *error))completionHandler{
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
     NSData *applicationData = [appDefaults objectForKey:kApplicationKey];
@@ -306,14 +330,17 @@ NSString *const kCredentialsKey = @"credentialsKey";
 }
 
 #pragma mark - Helpers
+
 - (void)formatAndDelegateError:(NSString *)errorDescription{
-    NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
-                                                 code:ERROR_PUSH_REGISTER
-                                             userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
-    if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
-        [self.delegate registeredForPush:errorForDelegate];
-    }
-    RCLogError([errorDescription UTF8String]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSError *errorForDelegate =[[NSError alloc] initWithDomain:[[RestCommClient sharedInstance] errorDomain]
+                                                     code:ERROR_PUSH_REGISTER
+                                                 userInfo:@{ NSLocalizedDescriptionKey: errorDescription}];
+        if(self.delegate && [self.delegate respondsToSelector:@selector(registeredForPush:)]){
+            [self.delegate registeredForPush:errorForDelegate];
+        }
+        RCLogError([errorDescription UTF8String]);
+    });
 }
 
 @end

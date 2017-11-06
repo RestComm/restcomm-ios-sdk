@@ -67,5 +67,8 @@
     [encoder encodeObject:self.address forKey:@"address"];
 }
 
-
+- (NSString *)description {
+    return [NSString stringWithFormat: @"RCBinding: sid=%@ identity=%@ applicationSid=%@ bindingType=%@ address=%@",
+            self.sid, self.identity, self.applicationSid, self.bindingType, self.address];
+}
 @end

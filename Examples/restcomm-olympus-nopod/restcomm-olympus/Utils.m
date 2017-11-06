@@ -28,7 +28,6 @@
 //keys
 NSString *const kContactKey = @"contacts";
 NSString *const kLastPeerKey = @"last-peer";
-NSString *const kChatHistoryKey = @"chat-history";
 NSString *const kSipIndentificationKey = @"sip-identification";
 NSString *const kSipPasswordKey = @"sip-password";
 NSString *const kSipRegistrarKey = @"sip-registrar";
@@ -40,11 +39,22 @@ NSString *const kSignalingSecureKey = @"signaling-secure";
 NSString *const kTurnCanidateTimeoutKey = @"turn-candidate-timeout";
 NSString *const kIsFirstTimeKey = @"is-first-time";
 NSString *const kPendingInterappKey = @"pending-interapp-uri";
-NSString *const kSignalingCertificateKey =@"signaling-certificate-dir";
+NSString *const kSignalingCertificateKey = @"signaling-certificate-dir";
+
+NSString *const kPushAccountKey = @"push-account";
+NSString *const kPushPasswordKey = @"push-password";
+NSString *const kPushDomainKey = @"push-domain";
+NSString *const kHttpDomainKey = @"http-domain";
+NSString *const kPushTokenKey = @"push-token";
+NSString *const kPushServerEnabledKey = @"push-server-enabled";
+NSString *const kPushIsSandboxKey = @"push-is-sandbox";
+
+
 
 @implementation Utils
 
 NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
+NSString* const kFriendlyName = @"Olympus";
 
 + (void) setupUserDefaults
 {
@@ -62,11 +72,17 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
                                     kTurnPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
                                     kSignalingSecureKey : @(YES),  // by default signaling is secure
                                     kSignalingCertificateKey : @"",
+                                    kPushAccountKey: @"",
+                                    kPushPasswordKey: @"",
+                                    kPushTokenKey: @"",
+                                    kPushDomainKey: @"push.restcomm.com",
+                                    kHttpDomainKey: @"cloud.restcomm.com",
+                                    kPushServerEnabledKey: @(NO), //by default we assume push is not enabled for account on server
+                                    kPushIsSandboxKey: @(NO),
                                     //@"turn-candidate-timeout" : @"5",
                                     kContactKey : [NSKeyedArchiver archivedDataWithRootObject:[Utils getDefaultContacts]],
-                                    kChatHistoryKey : [Utils getDefaultChatHistory], // a dictionary of chat histories (key is remote party full sip URI)
                                     };
-    
+    [self addDefaultChatHistory];
     [[NSUserDefaults standardUserDefaults] registerDefaults:basicDefaults];
 }
 
@@ -259,32 +275,40 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
 
 + (NSArray*)messagesForSipUri:(NSString*)sipUri
 {
-    NSMutableArray *messages = [[NSMutableArray alloc] init];
-    
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    if ([appDefaults dictionaryForKey:kChatHistoryKey] && [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri]) {
-        return [[appDefaults dictionaryForKey:kChatHistoryKey] objectForKey:sipUri];
+    NSArray *messages = [[NSArray alloc] init];
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *messageArrayData = [appDefaults objectForKey:sipUri];
+    if (messageArrayData){
+        messages = [NSKeyedUnarchiver unarchiveObjectWithData: messageArrayData];
     }
+    
     return messages;
 }
 
-+ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type
-{
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray * aliasMessages = [[NSMutableArray alloc] init];
-    if (![appDefaults dictionaryForKey:kChatHistoryKey]) {
-        return;
++ (void)addMessage:(LocalMessage *)message
+{    
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray * mutable = nil;
+    NSData *messageArrayData = [appDefaults objectForKey:message.username];
+    if (messageArrayData != nil) {
+        NSArray *messageArray = [NSKeyedUnarchiver unarchiveObjectWithData: messageArrayData];
+        if (messageArray != nil){
+            mutable = [messageArray mutableCopy];
+        } else {
+            mutable = [[NSMutableArray alloc] init];
+        }
     }
     
-    NSMutableDictionary * messages = [[appDefaults dictionaryForKey:kChatHistoryKey] mutableCopy];
-    if ([messages objectForKey:sipUri]) {
-        aliasMessages = [[messages objectForKey:sipUri] mutableCopy];
-    }
-    
-    [aliasMessages addObject:[NSDictionary dictionaryWithObjectsAndKeys:text, @"text", type, @"type", nil]];
-    [messages setObject:aliasMessages forKey:sipUri];
-    
-    [appDefaults setObject:messages forKey:kChatHistoryKey];
+
+    [mutable addObject:message];
+
+    // update user defaults
+    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:mutable] forKey:message.username];
+}
+
++ (void)removeMessagesForSipUri:(NSString *)sipUri{
+    NSUserDefaults *appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[[NSArray alloc] init]] forKey:sipUri];
 }
 
 #pragma mark - SIP
@@ -474,6 +498,83 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     return contactsArray;
 }
 
+#pragma mark - Push Notifications
+
++ (NSString *)pushAccount{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushAccountKey];
+}
+
++ (NSString *)pushPassword{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushPasswordKey];
+}
+
++ (NSString *)pushDomain{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushDomainKey];
+}
+
++ (NSString *)pushToken{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kPushTokenKey];
+}
+
++ (BOOL)isServerEnabledForPushNotifications{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:kPushServerEnabledKey] boolValue];
+}
+
++ (NSString *)httpDomain{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults stringForKey:kHttpDomainKey];
+}
+
++ (BOOL)isSandbox{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [[appDefaults stringForKey:kPushIsSandboxKey] boolValue];
+}
+
++ (void)updatePushAccount:(NSString *)pushAccount
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushAccount forKey:kPushAccountKey];
+}
+
++ (void)updatePushPassword:(NSString *)pushPassword
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushPassword forKey:kPushPasswordKey];
+}
+
++ (void)updatePushDomain:(NSString *)pushDomain
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushDomain forKey:kPushDomainKey];
+}
+
++ (void)updatePushToken:(NSString *)pushToken
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:pushToken forKey:kPushTokenKey];
+}
+
++ (void)updateServerEnabledForPush:(BOOL)enabled{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSNumber numberWithBool:enabled] forKey:kPushServerEnabledKey];
+}
+
++ (void)updateIsSandboxPush:(BOOL)enabled{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:[NSNumber numberWithBool:enabled] forKey:kPushIsSandboxKey];
+}
+
++ (void)updateHttpDomain:(NSString *)httpDomain
+{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setObject:httpDomain forKey:kHttpDomainKey];
+}
+
 #pragma mark - Default values
 
 + (NSArray *)getDefaultContacts{
@@ -508,37 +609,28 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     
 }
 
-+ (NSDictionary *)getDefaultChatHistory{
-   return @{
-      @"alice" : @[  //@"sip:alice@cloud.restcomm.com" : @[
-              @{
-                  @"text" : @"Hello Alice",
-                  @"type" : @"local",
-                  },
-              @{
-                  @"text" : @"Hello",
-                  @"type" : @"remote",
-                  },
-              @{
-                  @"text" : @"What's up?",
-                  @"type" : @"local",
-                  },
-              ],
-      @"bob" : @[  //@"sip:bob@cloud.restcomm.com" : @[
-              @{
-                  @"text" : @"Is Bob around?",
-                  @"type" : @"local",
-                  },
-              @{
-                  @"text" : @"Yes, I'm here",
-                  @"type" : @"remote",
-                  },
-              @{
-                  @"text" : @"Great",
-                  @"type" : @"local",
-                  },
-              ],
-      };
++ (void)addDefaultChatHistory{
+    
+    [self removeMessagesForSipUri:@"alice"];
+    LocalMessage *message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"Hello Alice" type:@"local"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"Hello" type:@"remote"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"alice" message:@"What's up?" type:@"local"];
+    [self addMessage:message];
+    
+    [self removeMessagesForSipUri:@"bob"];
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Is Bob around?" type:@"local"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Yes, I'm here" type:@"remote"];
+    [self addMessage:message];
+    
+    message = [[LocalMessage alloc] initWithUsername:@"bob" message:@"Great" type:@"local"];
+    [self addMessage:message];
+
 }
 
 #pragma mark - Helpers
@@ -565,5 +657,25 @@ NSString* const RestCommClientSDKLatestGitHash = @"#GIT-HASH";
     [view.layer addAnimation:shake forKey:@"position"];
 }
 
++ (void)shakeTableViewCell:(UITableViewCell *)cell{
+    CGPoint position = cell.center;
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(position.x, position.y)];
+    [path addLineToPoint:CGPointMake(position.x-20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x+20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x-20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x+20, position.y)];
+    [path addLineToPoint:CGPointMake(position.x, position.y)];
+    
+    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    positionAnimation.path = path.CGPath;
+    positionAnimation.duration = .8f;
+    positionAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    
+    [CATransaction begin];
+    [cell.layer addAnimation:positionAnimation forKey:nil];
+    [CATransaction commit];
+}
 
 @end

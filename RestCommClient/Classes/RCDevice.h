@@ -64,6 +64,37 @@ extern NSString* const RCDeviceCapabilityApplicationSIDKey;
 extern NSString* const RCDeviceCapabilityApplicationParametersKey;
 extern NSString* const RCDeviceCapabilityClientNameKey;
 
+extern NSString* const RCAorKey;
+extern NSString* const RCPasswordKey;
+extern NSString* const RCTurnEnabledKey;
+extern NSString* const RCTurnUrlKey;
+extern NSString* const RCTurnUsernameKey;
+extern NSString* const RCTurnPasswordKey;
+extern NSString* const RCIceDomainKey;
+extern NSString* const RCSignalingSecureKey;
+extern NSString* const RCSignalingCertificateDirKey;
+extern NSString* const RCIceConfigTypeKey;
+extern NSString* const RCIceServersKey;
+extern NSString* const RCRegistrarKey;
+
+extern NSString* const RCUsername;
+extern NSString* const RCVideoEnabled;
+extern NSString* const RCSipHeaders;
+extern NSString* const RCMessage;
+
+
+//push related
+extern NSString* const RCPushFriendlyNameKey;
+extern NSString* const RCRestcommAccountPasswordKey;
+extern NSString* const RCRestcommAccountEmailKey;
+extern NSString* const RCPushDomainKey;
+extern NSString* const RCPushTokenKey;
+extern NSString* const RCPushCertificatesPathPublicKey;
+extern NSString* const RCPushCertificatesPathPrivateKey;
+extern NSString* const RCPushIsSandbox;
+extern NSString* const RCRestcommAccountPasswordKey;
+extern NSString* const RCHttpDomainKey;
+
 @class RCConnection;
 @protocol SipManagerDeviceDelegate;
 @protocol RCDeviceDelegate;
@@ -119,22 +150,22 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  Initialize a new RCDevice object with the given parameters
  *
  *  @param parameters      Parameters for the Device entity. Possible keys: <br>
- *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
- *    <b>password</b>: password for the client <br>
- *    <b>turn-enabled</b>: should TURN be enabled? <br>
- *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i> <br>
- *    <b>turn-username</b>: TURN username <br>
- *    <b>turn-password</b>: TURN password <br>
- *    <b>registrar</b>: Restcomm instance to use, like <i>'cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
- *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
- *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling.
+ *    <b>RCAorKey</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
+ *    <b>RCPasswordKey</b>: password for the client <br>
+ *    <b>RCTurnEnabledKey</b>: should TURN be enabled? <br>
+ *    <b>RCTurnUrlKey</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i> <br>
+ *    <b>RCTurnUsernameKey</b>: TURN username <br>
+ *    <b>RCTurnPasswordKey</b>: TURN password <br>
+ *    <b>RCRegistrarKey</b>: Restcomm instance to use, like <i>'cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
+ *    <b>RCSignalingSecureKey</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
+ *    <b>RCSignalingCertificateDirKey</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling.
       agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
- *    <b>ice-config-type<b>:  Should be integer value of the following kXirsysV2 = 0, kXirsysV3 = 1 , kCustom = 2.
+ *    <b>RCIceConfigTypeKey<b>:  Should be integer value of the following kXirsysV2 = 0, kXirsysV3 = 1 , kCustom = 2.
         kXirsysV2 and kXirsysV3 is about utilizing an ICE configuration URL using Xirsys V2 or V3 respectively. 
         kCustom is about discovering the ICE urls (i.e. STUN and TURN) in the App level and providing to the SDK directly 
             without utilizing an ICE configuration URL. This is handy if you host your own ICE servers, or want more control
- *    <b>ice-domain</b> If ice-config-type is kXirsysV3, ice-domain must be provided; for example: restcomm
- *    <b>ice-servers</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is 'kCustom'; Example with 2 servers:
+ *    <b>RCIceDomainKey</b> If ice-config-type is kXirsysV3, ice-domain must be provided; for example: restcomm
+ *    <b>RCIceServersKey</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is 'kCustom'; Example with 2 servers:
             parameter to pass (Array):
             @[
                 @{ @"url":@"URL", @"username":@"USERNAME_HERE", @"credential":@"KEY_HERE"},
@@ -184,22 +215,23 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @abstract Create an outgoing connection to an endpoint
  *
  *  @param parameters Parameters for the outgoing connection. Possible keys: <br>
- *    <b>username</b>: Who is the called number, like <i>'+1235'</i> or <i>'sip:+1235@cloud.restcomm.com'</i> <br>
- *    <b>video-enabled</b>: Whether we want WebRTC video enabled or not <br>
- *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br>
+ *    <b>RCUsername</b>: Who is the called number, like <i>'+1235'</i> or <i>'sip:+1235@cloud.restcomm.com'</i> <br>
+ *    <b>RCVideoEnabled</b>: Whether we want WebRTC video enabled or not <br>
+ *    <b>RCSipHeaders</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br>
  *  @param delegate   The delegate object that will receive events when the connection state changes
  *
  *  @return An RCConnection object representing the new connection
  */
 - (RCConnection*)connect:(NSDictionary*)parameters delegate:(id<RCConnectionDelegate>)delegate;
 
+
 /**
  *  @abstract Send a text message 
  *
  *  @param parameters  Message parameters. Possible keys are:  <br>
- *    <b>username</b>: Who is the recepient of the text message, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
- *    <b>message</b>: Content of the message <br>
- *    <b>sip-headers</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br>
+ *    <b>RCUsername</b>: Who is the recepient of the text message, like <i>'sip:+1235@cloud.restcomm.com'</i> <br>
+ *    <b>RCMessage</b>: Content of the message <br>
+ *    <b>RCSipHeaders</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br>
  *
  *  @return A boolean whether message was sent or not.
  */
@@ -214,15 +246,15 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
  *  @abstract Update RCDevice parameters
  *
  *  @param params Dictionary of key/value pairs of the parameters that will be updated: <br>
- *    <b>aor</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
- *    <b>password</b>: password for the client <br>
- *    <b>turn-enabled</b>: should TURN be enabled? <br>
- *    <b>turn-url</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i> <br>
- *    <b>turn-username</b>: TURN username <br>
- *    <b>turn-password</b>: TURN password <br>
- *    <b>registrar</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
- *    <b>signaling-secure</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
- *    <b>signaling-certificate-dir</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
+ *    <b>RCAorKey</b>: identity (or address of record) for the client, like <i>'sip:ios-sdk@cloud.restcomm.com'</i> <br>
+ *    <b>RCPasswordKey</b>: password for the client <br>
+ *    <b>RCTurnEnabledKey</b>: should TURN be enabled? <br>
+ *    <b>RCTurnUrlKey</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>'https://turn.provider.com/turn'</i> <br>
+ *    <b>RCTurnUsernameKey</b>: TURN username <br>
+ *    <b>RCTurnPasswordKey</b>: TURN password <br>
+ *    <b>RCRegistrarKey</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com'</i>. Leave empty for registrar-less mode <br>
+ *    <b>RCSignalingSecureKey</b>: Should signaling traffic be encrypted? For traffic to be encrypted the 'signaling-certificate-dir' below should be provided as well <br>
+ *    <b>RCSignalingCertificateDirKey</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs
  *
  *  @return If update of parameters was successful. Typical reason to fail is connectivity issues.
  */
@@ -231,20 +263,28 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 // To be used internally by the library -not for application usage
 - (void)clearCurrentConnection;
 
-
 /**
  *  Register the application for the push notifications
- * <b>firendly-name</b>: name of the client application
- * <b>username"</b>: username, for example: johndoe@telestax.com
- * <b>password</b>: password for an account<br>
- * <b>token</b>: push notification token from the
- * <b>rescomm-account-email</b> account's email
- * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
- * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
+ * <b>RCPushFriendlyNameKey</b>: name of the client application
+ * <b>RCRestcommAccountEmailKey</b> account's email
+ * <b>RCRestcommAccountPasswordKey</b>: password for an account<br>
+ * <b>RCPushDomainKey</b> domain for the push notifications; for example: push.restcomm.com
+ * <b>RCPushTokenKey</b>: push notification token from the APN
+ * <b>RCPushCertificatesPathPublicKey</b>: Path where exported APN's public certificate file is installed inside the App bundle.
+ * <b>RCPushCertificatesPathPrivateKey</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
  * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+ * NOTE:
+ * By default APNS provides to developer '.p12' SSL certificate. Restcomm Push Notification Server requires a couple of modifications with this file.
+ * Generate '.pem' certificate:
+ *      openssl pkcs12 -in /path/to/cert.p12 -nokeys -out /path/to/cert.pem -nodes
+ * Generate '.pem' private key:
+ *      openssl pkcs12 -in /path/to/cert.p12 -nocerts -out /path/to/key.pem -nodes
+ * Format '.pem' private key to pkcs8:
+ *      openssl pkcs8 -topk8 -inform pem -in /path/to/key(pkcs12).pem -outform pem -nocrypt -out /path/to/key(pkcs8).pem
+ *
+ * <b>RCPushIsSandbox</b>: BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
  * application, if its production it should be set to NO.
- * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
- * application, if its production it should be set to NO.
+ * <b>RCHttpDomainKey</b>: Restcomm HTTP domain, like 'cloud.restcomm.com'
  *
  * @param delegate The delegate object that will receive events when registering for push (success, error)
  */

@@ -26,6 +26,8 @@
 #import "TestFairy/TestFairy.h"
 #import "AVFoundation/AVFoundation.h"
 
+NSString * const kLocalMessagingFromKey = @"local-messaging-from";
+NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
@@ -93,30 +95,32 @@
         /******************************/
         /* Xirsys v2 */
         /******************************/
-        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-        //                       [Utils sipPassword], @"password",
-        //                       @([Utils turnEnabled]), @"turn-enabled",
-        //                       [Utils turnUrl], @"turn-url",
-        //                       @"cloud.restcomm.com", @"ice-domain",
-        //                       [Utils turnUsername], @"turn-username",
-        //                       [Utils turnPassword], @"turn-password",
-        //                       @([Utils signalingSecure]), @"signaling-secure",
-        //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-        //                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        //                       [Utils sipIdentification], RCAorKey,
+        //                       [Utils sipPassword], RCPasswordKey,
+        //                       @([Utils turnEnabled]), RCTurnEnabledKey,
+        //                       [Utils turnUrl], RCTurnUrlKey,
+        //                       @"cloud.restcomm.com", RCIceDomainKey,
+        //                       [Utils turnUsername], RCTurnUsernameKey,
+        //                       [Utils turnPassword], RCTurnPasswordKey,
+        //                       @([Utils signalingSecure]), RCSignalingSecureKey,
+        //                       [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+        //                       [NSNumber numberWithInt:(int)kXirsysV2] , RCIceConfigTypeKey,
         //                       nil];
         /******************************/
         /* Xirsys v3 */
         /******************************/
-        self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-                           [Utils sipPassword], @"password",
-                           @([Utils turnEnabled]), @"turn-enabled",
-                           [Utils turnUrl], @"turn-url",
-                           [Utils turnUsername], @"turn-username",
-                           [Utils turnPassword], @"turn-password",
-                           @"cloud.restcomm.com", @"ice-domain",
-                           @([Utils signalingSecure]), @"signaling-secure",
-                           [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                           [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
+        self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                           [Utils sipIdentification], RCAorKey,
+                           [Utils sipPassword], RCPasswordKey,
+                           @([Utils turnEnabled]), RCTurnEnabledKey,
+                           [Utils turnUrl], RCTurnUrlKey,
+                           [Utils turnUsername], RCTurnUsernameKey,
+                           [Utils turnPassword], RCTurnPasswordKey,
+                           @"cloud.restcomm.com", RCIceDomainKey,
+                           @([Utils signalingSecure]), RCSignalingSecureKey,
+                           [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+                           [NSNumber numberWithInt:(int)kXirsysV3] , RCIceConfigTypeKey,
                            nil];
         /******************************/
         /* Xirsys custom */
@@ -130,22 +134,24 @@
         //    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
         //                                       @"stun:Server",@"url", nil];
         //
-        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-        //                    [Utils sipPassword], @"password",
-        //                      @([Utils turnEnabled]), @"turn-enabled",
-        //                      @([Utils signalingSecure]), @"signaling-secure",
-        //                      [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-        //                      [NSNumber numberWithInt:(int)kCustom] , @"ice-config-type",
-        //                      @[dictionaryServer, dictionaryServer2] , @"ice-servers",
+        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        //                      [Utils sipIdentification], RCAorKey,
+        //                      [Utils sipPassword], RCPasswordKey,
+        //                      @([Utils turnEnabled]), RCTurnEnabledKey,
+        //                      @([Utils signalingSecure]), RCSignalingSecureKey,
+        //                      [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+        //                      [NSNumber numberWithInt:(int)kCustom] , RCIceConfigTypeKey,
+        //                      @[dictionaryServer, dictionaryServer2] , RCIceServersKey,
         //                      nil];
         /******************************/
         
-        [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
+        [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:RCRegistrarKey];
         
         // initialize RestComm Client by setting up an RCDevice
         self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
-        [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
+        
     }
+    [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
     return self.device;
     
 }
@@ -207,8 +213,8 @@
             alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
         }
         [callViewController.parameters setObject:alias forKey:@"alias"];
-        [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
-        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+        [callViewController.parameters setObject:pendingInterapUri forKey:RCUsername];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:RCVideoEnabled];
         
         [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:callViewController animated:YES completion:nil];
         
@@ -221,31 +227,30 @@
 - (void)device:(RCDevice *)device didReceiveIncomingMessage:(NSString *)message withParams:(NSDictionary *)params
 {
     NSLog(@"AppDelegate ------   didReceiveIncomingMessage:  %@", message);
-    if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class] ){
-        UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
         // Open message view if not already opened
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
-        if (![navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
-            MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
-            //messageViewController.delegate = self;
-            messageViewController.device = self.device;
-            messageViewController.delegate = self;
-            messageViewController.parameters = [[NSMutableDictionary alloc] init];
-            [messageViewController.parameters setObject:message forKey:@"message-text"];
-            [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
-            [messageViewController.parameters setObject:[params objectForKey:@"from"] forKey:@"username"];
-            [messageViewController.parameters setObject:[RCUtilities usernameFromUri:[params objectForKey:@"from"]] forKey:@"alias"];
-            
-            messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [navigationController pushViewController:messageViewController animated:YES];
-        }
-        else {
-            // message view already opened, just append
-            MessageTableViewController * messageViewController = (MessageTableViewController*)navigationController.visibleViewController;
-            [messageViewController appendToDialog:message sender:[params objectForKey:@"from"]];
-        }
-    }
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
+        UILocalNotification *localNotification=[[UILocalNotification alloc] init];
+        localNotification.alertBody = message;
+        localNotification.soundName = @"default";
+        localNotification.alertTitle = [NSString stringWithFormat:@"New message from %@", [params objectForKey:@"from"]];
+        localNotification.category = @"Message";
+        localNotification.applicationIconBadgeNumber = -1;
+        NSDictionary *messageData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [params objectForKey:@"from"], kLocalMessagingFromKey,
+                                     message,kLocaMessagingMessageKey, nil];
+
+        localNotification.userInfo = messageData;
+        
+        //make sure we save the incoming message
+        LocalMessage *messageObj = [[LocalMessage alloc] initWithUsername:[params objectForKey:@"from"] message:message type:@"remote"];
+        [Utils addMessage:messageObj];
+        
+        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
     
+    } else {
+        [self openMessageScreen:message withUser:[params objectForKey:@"from"] isFromLocalNotification:NO];
+    }
 }
 
 // 'ringing' for incoming connections -let's animate the 'Answer' button to give a hint to the user
@@ -258,7 +263,6 @@
         self.callKitProvider.connection = connection;
         [self.callKitProvider presentIncomingCall];
    } else {
-
        [self openCallView:connection isFromCallKit:NO];
    }
 }
@@ -277,7 +281,7 @@
     
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"]  forKey:@"username"];
+    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"]  forKey:RCUsername];
     // try to 'resolve' the from to the contact name if we do have a contact for that
     LocalContact *localContact = [Utils getContactForSipUri:[connection.parameters objectForKey:@"from"]];
     NSString * alias;
@@ -299,7 +303,35 @@
         callViewController.rcCallKitProvider = self.callKitProvider;
     }
     [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
-    
+}
+
+- (void)openMessageScreen:(NSString *)message withUser:(NSString *)user isFromLocalNotification:(BOOL)isFromNotification{
+    if ([[[[UIApplication sharedApplication] keyWindow] rootViewController] isKindOfClass:UINavigationController.class] ){
+        UINavigationController *navigationController = (UINavigationController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        if (![navigationController.visibleViewController isKindOfClass:[MessageTableViewController class]]) {
+            MessageTableViewController *messageViewController = [storyboard instantiateViewControllerWithIdentifier:@"message-controller"];
+            messageViewController.device = self.device;
+            messageViewController.delegate = self;
+            messageViewController.parameters = [[NSMutableDictionary alloc] init];
+            [messageViewController.parameters setObject:message forKey:@"message-text"];
+            if (!isFromNotification){
+                //we don't want to tell to message view controller that we get new message
+                //because message is already added with local notification
+                [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
+            }
+            [messageViewController.parameters setObject:user forKey:RCUsername];
+            [messageViewController.parameters setObject:[RCUtilities usernameFromUri:user] forKey:@"alias"];
+            
+            messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [navigationController pushViewController:messageViewController animated:YES];
+        }
+        else {
+            // message view already opened, just append
+            MessageTableViewController * messageViewController = (MessageTableViewController*)navigationController.visibleViewController;
+            [messageViewController appendToDialog:message sender:user];
+        }
+    }
 }
 
 
@@ -316,6 +348,14 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateConnectivityStatus" object:self userInfo:propertyDictionary];
     self.previousDeviceState = state;
 }
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    NSDictionary *dic = notification.userInfo;
+    if (dic){
+        [self openMessageScreen:[dic objectForKey:kLocaMessagingMessageKey] withUser:[dic objectForKey:kLocalMessagingFromKey] isFromLocalNotification:YES];
+    }
+}
+
 
 #pragma mark - ContactUpdateDelegate method
 
@@ -372,9 +412,9 @@
                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
 
+    NSLog(@"AppDelegate ---voip token %@", deviceTokenString);
     //save token to user defaults
-    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:deviceTokenString forKey:@"deviceToken"];
+    [Utils updatePushToken:deviceTokenString];
 }
 
 

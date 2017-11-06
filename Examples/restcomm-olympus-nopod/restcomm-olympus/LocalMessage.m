@@ -20,47 +20,37 @@
  *
  */
 
-#import "RCApplication.h"
+#import "LocalMessage.h"
 
-@implementation RCApplication
+@implementation LocalMessage
 
-- (id)initWithSid:(NSString *)sid friendlyName:(NSString *)friendlyName andSandbox:(BOOL)sandbox{
+- (id)initWithUsername:(NSString *)username message:(NSString *)message type:(NSString *)type{
     self = [super init];
     if (self){
-        _sid = sid;
-        _friendlyName = friendlyName;
-        _sandbox = sandbox;
-    }
-    return self;
-}
-
-- (id)initWithDictionary:(NSDictionary *)dictionary{
-    self = [super init];
-    if (self){
-        self.sid = [dictionary objectForKey:@"Sid"];
-        self.friendlyName = [dictionary objectForKey:@"FriendlyName"];
-        self.sandbox = [[dictionary objectForKey:@"Sandbox"] boolValue];
+        _username = username;
+        _message = message;
+        _type = type;
+        _time = [[NSDate date] timeIntervalSince1970];
     }
     return self;
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
-        self.sid = [decoder decodeObjectForKey:@"sid"];
-        self.friendlyName = [decoder decodeObjectForKey:@"friendlyName"];
-        self.sandbox = [decoder decodeBoolForKey:@"sandbox"];
+        self.username = [decoder decodeObjectForKey:@"username"];
+        self.message = [decoder decodeObjectForKey:@"message"];
+        self.type = [decoder decodeObjectForKey:@"type"];
+        self.time = [decoder decodeDoubleForKey:@"time"];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.sid forKey:@"sid"];
-    [encoder encodeObject:self.friendlyName forKey:@"friendlyName"];
-    [encoder encodeBool:self.sandbox forKey:@"sandbox"];
+    [encoder encodeObject:self.username forKey:@"username"];
+    [encoder encodeObject:self.message forKey:@"message"];
+    [encoder encodeObject:self.type forKey:@"type"];
+    [encoder encodeDouble:self.time forKey:@"time"];
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat: @"RCApplication: sid=%@ friendlyName=%@ sandbox=%@", self.sid, self.friendlyName, self.sandbox?@"YES":@"NO"];
-}
 
 @end

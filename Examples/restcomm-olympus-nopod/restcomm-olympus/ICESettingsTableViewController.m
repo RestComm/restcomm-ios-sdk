@@ -24,6 +24,7 @@
 #import "MainNavigationController.h"
 #import "ICESettingsNavigationController.h"
 #import "Utils.h"
+#import "AppDelegate.h"
 
 @interface ICESettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *turnUrlText;
@@ -62,7 +63,8 @@
     [self.view addGestureRecognizer:tapGesture];
     [self registerForKeyboardNotifications];
     
-    self.device = ((ICESettingsNavigationController*)self.navigationController).device;
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    self.device = appDelegate.device;
     
     self.navigationItem.title = @"ICE Settings";
 }
@@ -215,13 +217,13 @@
     // For now let's save always
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     [Utils updateTurnEnabled:self.switchOnOff.on];
-    [params setObject:@(self.switchOnOff.on) forKey:@"turn-enabled"];
+    [params setObject:@(self.switchOnOff.on) forKey:RCTurnEnabledKey];
     [Utils updateTurnUrl:self.turnUrlText.text];
-    [params setObject:self.turnUrlText.text forKey:@"turn-url"];
+    [params setObject:self.turnUrlText.text forKey:RCTurnUrlKey];
     [Utils updateTurnUsername:self.turnUsernameText.text];
-    [params setObject:self.turnUsernameText.text forKey:@"turn-username"];
+    [params setObject:self.turnUsernameText.text forKey:RCTurnUsernameKey];
     [Utils updateTurnPassword:self.turnPasswordText.text];
-    [params setObject:self.turnPasswordText.text forKey:@"turn-password"];
+    [params setObject:self.turnPasswordText.text forKey:RCTurnPasswordKey];
     //[Utils updateTurnCandidateTimeout:self.secondsLabel.text];
     //[params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
 

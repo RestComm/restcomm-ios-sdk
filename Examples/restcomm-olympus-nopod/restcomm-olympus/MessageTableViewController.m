@@ -63,7 +63,7 @@
     [self.inputAccessoryProxyView addGestureRecognizer:recognizer];
 
     self.alias = [self.parameters objectForKey:@"alias"];
-    self.username = [self.parameters objectForKey:@"username"];
+    self.username = [self.parameters objectForKey:RCUsername];
     
     if (self.alias) {
         // alias is set only for local messages
@@ -99,7 +99,7 @@
     [self.navigationItem setRightBarButtonItems:@[btnAudioCall, btnVideoCall] animated:YES];
     
     //get sip uri (phone number) and save it as last peer for debug reporting
-    [Utils saveLastPeer:[self.parameters objectForKey:@"username"]];
+    [Utils saveLastPeer:[self.parameters objectForKey:RCUsername]];
 }
 
 - (void)proxyViewPressed {
@@ -117,8 +117,8 @@
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:self.alias forKey:@"alias"];
-    [callViewController.parameters setObject:self.username forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+    [callViewController.parameters setObject:self.username forKey:RCUsername];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:RCVideoEnabled];
     
     [self presentViewController:callViewController animated:YES completion:nil];
 }
@@ -134,8 +134,8 @@
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
     [callViewController.parameters setObject:self.alias forKey:@"alias"];
-    [callViewController.parameters setObject:self.username forKey:@"username"];
-    [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
+    [callViewController.parameters setObject:self.username forKey:RCUsername];
+    [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:RCVideoEnabled];
     
     [self presentViewController:callViewController animated:YES completion:nil];
 }
@@ -210,8 +210,8 @@
 // ---------- UI events
 - (IBAction)sendMessagePressed:(id)sender
 {
-    NSMutableDictionary * parms = [NSMutableDictionary dictionaryWithObjectsAndKeys:self.username, @"username",
-                                   self.sipMessageText.text, @"message", nil];
+    NSMutableDictionary * parms = [NSMutableDictionary dictionaryWithObjectsAndKeys:self.username, RCUsername,
+                                   self.sipMessageText.text, RCMessage, nil];
     
     // SIP custom headers: uncomment this to use SIP custom headers
     //[parms setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Value1", @"Key1", @"Value2", @"Key2", nil]
@@ -292,10 +292,10 @@
 
     //NSLog(@"Adding new message to data store");
     // update the backing store and NSUserDefaults
-    [self.messages addObject:[NSDictionary dictionaryWithObjectsAndKeys:type, @"type", msg, @"text", nil]];
-    [Utils addMessageForSipUri:self.username
-                          text:msg
-                          type:type];
+    LocalMessage *message = [[LocalMessage alloc] initWithUsername:self.username message:msg type:type];
+    [self.messages addObject:message];
+    [Utils addMessage:message];
+    
     [self.tableView beginUpdates];
 
     // trigger the new table row creation
@@ -321,16 +321,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"cellForRowAtIndexPath, row: %d, section: %d", indexPath.row, indexPath.section);
-    NSString *type = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"type"];
-    if ([type isEqualToString:@"local"]) {
+    LocalMessage *messageObj = [self.messages objectAtIndex:indexPath.row];
+    if ([messageObj.type isEqualToString:@"local"]) {
         LocalMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"local-message-reuse-identifier" forIndexPath:indexPath];
-        cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderText.text = messageObj.message;
         cell.senderName.text = @"me";
         return cell;
-    }
-    else {
+    } else {
         RemoteMessageTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"remote-message-reuse-identifier" forIndexPath:indexPath];
-        cell.senderText.text = [[self.messages objectAtIndex:indexPath.row] objectForKey:@"text"];
+        cell.senderText.text =  messageObj.message;
         cell.senderName.text = self.username;
         return cell;
     }

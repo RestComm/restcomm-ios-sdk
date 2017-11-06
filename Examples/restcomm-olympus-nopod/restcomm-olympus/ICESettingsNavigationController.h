@@ -10,5 +10,4 @@
 #import "RestCommClient.h"
 
 @interface ICESettingsNavigationController : UINavigationController
-@property (weak) RCDevice * device;
 @end

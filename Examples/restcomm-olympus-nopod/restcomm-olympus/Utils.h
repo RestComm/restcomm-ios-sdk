@@ -22,8 +22,10 @@
 
 #import <Foundation/Foundation.h>
 #import "LocalContact.h"
+#import "LocalMessage.h"
 
 extern NSString* const RestCommClientSDKLatestGitHash;
+extern NSString* const kFriendlyName;
 
 @interface Utils : NSObject
 + (void) setupUserDefaults;
@@ -59,10 +61,30 @@ extern NSString* const RestCommClientSDKLatestGitHash;
 + (void)updateSignalingSecure:(BOOL)signalingSecure;
 // return messages in the format understood by MessageTableViewController
 + (NSArray*)messagesForSipUri:(NSString*)sipUri;
-+ (void)addMessageForSipUri:(NSString*)sipUri text:(NSString*)text type:(NSString*)type;
++ (void)addMessage:(LocalMessage *)message;
 + (NSString*)convertInterappUri2RestcommUri:(NSURL*)uri;
 
-+ (void)shakeView:(UIView *)view;
 + (void)saveLastPeer:(NSString *)sipUri;
 + (NSString *)getLastPeer;
+
+//push notifications
++ (NSString *)pushAccount;
++ (NSString *)pushPassword;
++ (NSString *)pushDomain;
++ (NSString *)pushToken;
++ (NSString *)httpDomain;
+
++ (BOOL)isServerEnabledForPushNotifications;
++ (BOOL)isSandbox;
++ (void)updatePushAccount:(NSString *)pushAccount;
++ (void)updatePushPassword:(NSString *)pushPassword;
++ (void)updatePushDomain:(NSString *)pushDomain;
++ (void)updatePushToken:(NSString *)pushToken;
++ (void)updateServerEnabledForPush:(BOOL)enabled;
++ (void)updateIsSandboxPush:(BOOL)enabled;
++ (void)updateHttpDomain:(NSString *)httpDomain;
+
+//animations
++ (void)shakeView:(UIView *)view;
++ (void)shakeTableViewCell:(UITableViewCell *)cell;
 @end

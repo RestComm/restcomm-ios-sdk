@@ -145,7 +145,7 @@
         messageViewController.parameters = [[NSMutableDictionary alloc] init];
         
         [messageViewController.parameters setObject:alias forKey:@"alias"];
-        [messageViewController.parameters setObject:username forKey:@"username"];
+        [messageViewController.parameters setObject:username forKey:RCUsername];
     
     } else if ([segue.identifier isEqualToString:@"invoke-update"]){
        

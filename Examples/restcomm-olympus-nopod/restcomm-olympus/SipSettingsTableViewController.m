@@ -24,6 +24,7 @@
 #import "SIPSettingsNavigationController.h"
 #import "RCUtilities.h"
 #import "Utils.h"
+#import "AppDelegate.h"
 
 @interface SipSettingsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *aorText;
@@ -59,7 +60,9 @@
     
     self.navigationItem.title = @"SIP Settings";
     
-    self.device = ((SIPSettingsNavigationController*)self.navigationController).device;
+    AppDelegate *appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
+    self.device = appDelegate.device;
+    
     // main screen (i.e. contacts) should be at index 1 of the stack (index 0 is the signin screen that however only shows up the first time; the rest of the times it just pushes the contacts screen right away and isn't visible at all)
     SIPSettingsNavigationController * settingsNavigationController = (SIPSettingsNavigationController*)self.navigationController;
     // remember that the SettingsNavigationController has as parent another Navigation Controller the root one
@@ -171,18 +174,18 @@
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
 
     // always update registrar to make sure registraless is handled properly
-    [params setObject:@"" forKey:@"registrar"];
+    [params setObject:@"" forKey:RCRegistrarKey];
     [Utils updateSipRegistrar:self.registrarText.text];
 
     if (![self.aorText.text isEqualToString:@""]) {
-        [params setObject:self.aorText.text forKey:@"aor"];
+        [params setObject:self.aorText.text forKey:RCAorKey];
         [Utils updateSipIdentification:self.aorText.text];
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:@"registrar"];
+        [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:RCRegistrarKey];
     }
     if (![self.passwordText.text isEqualToString:@""]) {
-        [params setObject:self.passwordText.text forKey:@"password"];
+        [params setObject:self.passwordText.text forKey: RCPasswordKey];
         [Utils updateSipPassword:self.passwordText.text];
     }
     

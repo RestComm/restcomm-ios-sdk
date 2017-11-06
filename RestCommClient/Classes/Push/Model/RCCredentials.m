@@ -68,4 +68,8 @@
     [encoder encodeObject:self.privateKey forKey:@"privateKey"];
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat: @"RCBinding: sid=%@ applicationSid=%@ credentialType=%@ certificate=%@ privateKey=%@",
+            self.sid, self.applicationSid,self.credentialType, self.certificate, self.privateKey];
+}
 @end

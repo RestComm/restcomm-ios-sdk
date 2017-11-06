@@ -57,7 +57,7 @@
     appDelegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
     
     UIColor *grey = [UIColor colorWithRed:109.0/255.0 green:110.0/255.0 blue:112/255.0 alpha:255.0/255.0];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    //[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = grey;
     
     //set button bar
@@ -341,7 +341,7 @@
             messageViewController.parameters = [[NSMutableDictionary alloc] init];
             
             [messageViewController.parameters setObject:alias forKey:@"alias"];
-            [messageViewController.parameters setObject:username forKey:@"username"];
+            [messageViewController.parameters setObject:username forKey:RCUsername];
         }
     }
   

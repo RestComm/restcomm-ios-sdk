@@ -22,7 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
 		A914661A1F6C169C00E1F728 /* busy_tone_sample.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */; };
 		A91C5CA41FA8C3A500F4F1B8 /* rsa_private_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */; };
 		A91C5CA61FA8C3A500F4F1B8 /* certificate_key_push.pem in Resources */ = {isa = PBXBuildFile; fileRef = A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */; };
@@ -31,8 +30,12 @@
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
+		A964D1D61FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
+		A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
+		A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
+		A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
 		A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */; };
 		A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CA4D821F5F33380005A553 /* Contacts.framework */; };
@@ -207,6 +210,7 @@
 		AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0B0631A0976F8008A6057 /* restcomm-olympusTests.m */; };
 		AEED2F0C1C7F252000006E76 /* SIPSettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */; };
 		AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */; };
+		B3B7097CC0F8D0B1F911EC62 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E020DB356B53A99C61024E46 /* libPods-restcomm-olympus.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,8 +237,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		144F1235C04C413DA81E301F /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
 		A91466191F6C169B00E1F728 /* busy_tone_sample.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy_tone_sample.mp3; sourceTree = "<group>"; };
 		A91C5CA21FA8C3A500F4F1B8 /* rsa_private_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_private_key_push.pem; sourceTree = "<group>"; };
 		A91C5CA31FA8C3A500F4F1B8 /* certificate_key_push.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate_key_push.pem; sourceTree = "<group>"; };
@@ -244,16 +247,19 @@
 		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A964D1D41FA3DEBC005B3234 /* LocalMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LocalMessage.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.h"; sourceTree = "<group>"; };
+		A964D1D51FA3DEBC005B3234 /* LocalMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LocalMessage.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.m"; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		A9C091191FA013CD002A161A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A9C0911A1FA01B4D002A161A /* PushSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushSettingsViewController.h; sourceTree = "<group>"; };
+		A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushSettingsViewController.m; sourceTree = "<group>"; };
 		A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalContact.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.h"; sourceTree = "<group>"; };
 		A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalContact.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalContact.m"; sourceTree = "<group>"; };
 		A9CA4D821F5F33380005A553 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
 		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
@@ -452,6 +458,8 @@
 		AEED2F0B1C7F252000006E76 /* SIPSettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIPSettingsNavigationController.m; sourceTree = "<group>"; };
 		AEFA3BCB1C7F32E600ECD02F /* ICESettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICESettingsNavigationController.h; sourceTree = "<group>"; };
 		AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICESettingsNavigationController.m; sourceTree = "<group>"; };
+		E020DB356B53A99C61024E46 /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5D3F3EAEFA940C0F88466A3 /* Pods-restcomm-olympus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -466,7 +474,7 @@
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
 				AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */,
 				AEA4967F1C2997F6000D9762 /* libTestFairy.a in Frameworks */,
-				25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */,
+				B3B7097CC0F8D0B1F911EC62 /* libPods-restcomm-olympus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,11 +488,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		858653B984B15B3825A93596 /* Pods */ = {
+		65047FA5385F8C110355D76F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */,
-				997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */,
+				E5D3F3EAEFA940C0F88466A3 /* Pods-restcomm-olympus.debug.xcconfig */,
+				144F1235C04C413DA81E301F /* Pods-restcomm-olympus.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -522,6 +530,8 @@
 				AEFA3BCC1C7F32E600ECD02F /* ICESettingsNavigationController.m */,
 				A94A1B7F1F6A7E160034352E /* BugReportViewController.m */,
 				A94A1B801F6A7E160034352E /* BugReportViewController.h */,
+				A9C0911A1FA01B4D002A161A /* PushSettingsViewController.h */,
+				A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -573,6 +583,8 @@
 			children = (
 				A9CA4D7E1F5EDAEF0005A553 /* LocalContact.h */,
 				A9CA4D7F1F5EDAEF0005A553 /* LocalContact.m */,
+				A964D1D41FA3DEBC005B3234 /* LocalMessage.h */,
+				A964D1D51FA3DEBC005B3234 /* LocalMessage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -595,7 +607,7 @@
 				AE79D31719BC8DAD0023306C /* Products */,
 				AEA495651C2997F6000D9762 /* restcomm-olympus */,
 				AED0B05F1A0976F8008A6057 /* restcomm-olympusTests */,
-				858653B984B15B3825A93596 /* Pods */,
+				65047FA5385F8C110355D76F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -621,7 +633,7 @@
 				A9CA4D821F5F33380005A553 /* Contacts.framework */,
 				A9CA4D761F5EAB2E0005A553 /* AddressBook.framework */,
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
-				84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */,
+				E020DB356B53A99C61024E46 /* libPods-restcomm-olympus.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -848,13 +860,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE79D34B19BC8DAE0023306C /* Build configuration list for PBXNativeTarget "restcomm-olympus" */;
 			buildPhases = (
-				1BD38F22C39E4574E681C5E4 /* [CP] Check Pods Manifest.lock */,
+				4DEB0F6AF025E23B86562919 /* [CP] Check Pods Manifest.lock */,
 				AE79D31219BC8DAD0023306C /* Sources */,
 				AE79D31319BC8DAD0023306C /* Frameworks */,
 				AE79D31419BC8DAD0023306C /* Resources */,
 				AE7D36491D9E707F00610033 /* Embed Frameworks */,
-				8B42379321A34FAD9FE1E023 /* [CP] Embed Pods Frameworks */,
-				A9D55F819E09A08233D7485B /* [CP] Copy Pods Resources */,
+				64E706AC12CC57D2BABBEA6E /* [CP] Embed Pods Frameworks */,
+				569EFDCF8CAF9F0B3E54A83C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1098,7 +1110,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1BD38F22C39E4574E681C5E4 /* [CP] Check Pods Manifest.lock */ = {
+		4DEB0F6AF025E23B86562919 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1113,22 +1125,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8B42379321A34FAD9FE1E023 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A9D55F819E09A08233D7485B /* [CP] Copy Pods Resources */ = {
+		569EFDCF8CAF9F0B3E54A83C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1141,6 +1138,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		64E706AC12CC57D2BABBEA6E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AED9718819E98B77000F7A8E /* ShellScript */ = {
@@ -1192,9 +1204,11 @@
 				A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */,
 				AEFA3BCD1C7F32E600ECD02F /* ICESettingsNavigationController.m in Sources */,
 				AEA496661C2997F6000D9762 /* KeypadViewController.m in Sources */,
+				A964D1D61FA3DEBC005B3234 /* LocalMessage.m in Sources */,
 				AEA496691C2997F6000D9762 /* MainNavigationController.m in Sources */,
 				AEA4966C1C2997F6000D9762 /* RemoteMessageTableViewCell.m in Sources */,
 				AEA4966E1C2997F6000D9762 /* SettingsTableViewController.m in Sources */,
+				A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,
 				AEA496671C2997F6000D9762 /* LocalMessageTableViewCell.m in Sources */,
 				AEA496041C2997F6000D9762 /* ARDVideoCallView.m in Sources */,
 				AE47F0EF1C7F456D0054772C /* SipSettingsTableViewController.m in Sources */,
@@ -1208,7 +1222,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
+				A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
+				A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1344,7 +1360,7 @@
 		};
 		AE79D34C19BC8DAE0023306C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB4C19EB908F79A502DCB7E9 /* Pods-restcomm-olympus.debug.xcconfig */;
+			baseConfigurationReference = E5D3F3EAEFA940C0F88466A3 /* Pods-restcomm-olympus.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1386,7 +1402,7 @@
 		};
 		AE79D34D19BC8DAE0023306C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */;
+			baseConfigurationReference = 144F1235C04C413DA81E301F /* Pods-restcomm-olympus.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
