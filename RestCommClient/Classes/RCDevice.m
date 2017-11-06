@@ -73,6 +73,34 @@ NSString* const RCDeviceCapabilityApplicationSIDKey = @"RCDeviceCapabilityApplic
 NSString* const RCDeviceCapabilityApplicationParametersKey = @"RCDeviceCapabilityApplicationParametersKey";
 NSString* const RCDeviceCapabilityClientNameKey = @"RCDeviceCapabilityClientNameKey";
 
+NSString* const RCAorKey = @"aor";
+NSString* const RCPasswordKey = @"password";
+NSString* const RCTurnEnabledKey = @"turn-enabled";
+NSString* const RCTurnUrlKey = @"turn-url";
+NSString* const RCTurnUsernameKey = @"turn-username";
+NSString* const RCTurnPasswordKey = @"turn-password";
+NSString* const RCIceDomainKey = @"ice-domain";
+NSString* const RCSignalingSecureKey = @"signaling-secure";
+NSString* const RCSignalingCertificateDirKey = @"signaling-certificate-dir";
+NSString* const RCIceConfigTypeKey = @"ice-config-type";
+NSString* const RCIceServersKey = @"ice-servers";
+NSString* const RCRegistrarKey = @"registrar";
+
+NSString* const RCUsername = @"username";
+NSString* const RCVideoEnabled = @"video-enabled";
+NSString* const RCSipHeaders = @"sip-headers";
+NSString* const RCMessage =@"message";
+
+NSString* const RCPushFriendlyNameKey = @"friendly-name";
+NSString* const RCRestcommAccountEmailKey = @"restcomm-account-email";
+NSString* const RCRestcommAccountPasswordKey = @"restcomm-account-password";
+NSString* const RCPushDomainKey = @"push-domain";
+NSString* const RCPushTokenKey = @"token";
+NSString* const RCPushCertificatesPathPublicKey = @"push-certificate-public-path";
+NSString* const RCPushCertificatesPathPrivateKey = @"push-certificate-private-path";
+NSString* const RCPushIsSandbox = @"is-sandbox";
+NSString* const RCHttpDomainKey = @"http-domain";
+
 const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 
 - (void) populateCapabilitiesFromToken:(NSString*)capabilityToken
@@ -109,8 +137,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         [[RestCommClient sharedInstance] setLogLevel:RC_LOG_DEBUG];
         // create a new parameters dictionary used for logging, from which we will remove sensitive information
         NSMutableDictionary * logParameters = [parameters mutableCopy];
-        [logParameters removeObjectForKey:@"password"];
-        [logParameters removeObjectForKey:@"turn-password"];
+        [logParameters removeObjectForKey: RCPasswordKey];
+        [logParameters removeObjectForKey: RCTurnPasswordKey];
         
         RCLogNotice("[RCDevice initWithParams: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
         
@@ -127,7 +155,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         self.reachabilityStatus = [_internetReachable currentReachabilityStatus];
         self.connectivityType = [RCDevice networkStatus2ConnectivityType:self.reachabilityStatus];
         
-        self.signalingDomain = [parameters objectForKey:@"registrar"];
+        self.signalingDomain = [parameters objectForKey:RCRegistrarKey];
         self.sipManager = [[SipManager alloc] initWithDelegate:self params:parameters];
         
         if (self.reachabilityStatus != NotReachable) {
@@ -140,7 +168,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
             [self.sipManager eventLoop];
         }
         
-        self.signalingUsername = [parameters objectForKey:@"aor"];
+        self.signalingUsername = [parameters objectForKey:RCAorKey];
     }
     
     return self;
@@ -153,9 +181,9 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     
     [self populateCapabilitiesFromToken:capabilityToken];
 
-    NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", @"aor",
-                             @"sip:23.23.228.238:5080", @"registrar",
-                             @"1234", @"password", nil];
+    NSDictionary * params = [NSDictionary dictionaryWithObjectsAndKeys:@"sip:bob@telestax.com", RCAorKey,
+                             @"sip:23.23.228.238:5080", RCRegistrarKey,
+                             @"1234", RCPasswordKey, nil];
 
     return [self initWithParams:params delegate:delegate];
 }
@@ -179,8 +207,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
             // start signalling eventLoop (i.e. Sofia)
             [self.sipManager eventLoop];
 
-            if (![self.sipManager.params objectForKey:@"registrar"] ||
-                ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+            if (![self.sipManager.params objectForKey:RCRegistrarKey] ||
+                ([self.sipManager.params objectForKey:RCRegistrarKey] && [[self.sipManager.params objectForKey:RCRegistrarKey] length] == 0)) {
                 // registraless; we can transition to ready right away (i.e. without waiting for Restcomm to reply to REGISTER)
                 _state = RCDeviceStateReady;
                 notifyApp = YES;
@@ -217,8 +245,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
         }
     }
     else if (_state == RCDeviceStateReady) {
-        if (![self.sipManager.params objectForKey:@"registrar"] ||
-            ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+        if (![self.sipManager.params objectForKey:RCRegistrarKey] ||
+            ([self.sipManager.params objectForKey:RCRegistrarKey] && [[self.sipManager.params objectForKey:RCRegistrarKey] length] == 0)) {
             // registraless; no registration will occur, hence we need to manually notify the app right away
             [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
         }
@@ -321,7 +349,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 {
     // create a new parameters dictionary used for logging, from which we will remove sensitive information
     NSMutableDictionary * logParameters = [parameters mutableCopy];
-    [logParameters removeObjectForKey:@"password"];
+    [logParameters removeObjectForKey: RCPasswordKey];
 
     RCLogNotice("[RCDevice connect: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
     if (_state != RCDeviceStateReady) {
@@ -343,11 +371,11 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     self.sipManager.connectionDelegate = (RCConnection<SipManagerConnectionDelegate>*)self.currentConnection;
     _state = RCDeviceStateBusy;
     BOOL videoAllowed = NO;
-    if ([parameters objectForKey:@"video-enabled"]) {
-        videoAllowed = [[parameters objectForKey:@"video-enabled"] boolValue];
+    if ([parameters objectForKey:RCVideoEnabled]) {
+        videoAllowed = [[parameters objectForKey:RCVideoEnabled] boolValue];
     };
     // make a call to whoever parameters designate
-    if (![self.sipManager invite:[parameters objectForKey:@"username"] withVideo:videoAllowed customHeaders:[parameters objectForKey:@"sip-headers"]]) {
+    if (![self.sipManager invite:[parameters objectForKey:RCUsername] withVideo:videoAllowed customHeaders:[parameters objectForKey:RCSipHeaders]]) {
         RCLogError("Error connecting: connection already ongoing");
         return nil;
     }
@@ -365,7 +393,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
     }
 
     //NSString* uri = [NSString stringWithFormat:[parameters objectForKey:@"uas-uri-template"], [parameters objectForKey:@"username"]];
-    [self.sipManager message:[parameters objectForKey:@"message"] to:[parameters objectForKey:@"username"] customHeaders:[parameters objectForKey:@"sip-headers"]];
+    [self.sipManager message:[parameters objectForKey:RCMessage] to:[parameters objectForKey:RCUsername] customHeaders:[parameters objectForKey:RCSipHeaders]];
     return YES;
 }
 
@@ -471,8 +499,8 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 {
     RCLogNotice("[RCDevice sipManagerDidInitializedSignalling]");
 
-    if (![self.sipManager.params objectForKey:@"registrar"] ||
-        ([self.sipManager.params objectForKey:@"registrar"] && [[self.sipManager.params objectForKey:@"registrar"] length] == 0)) {
+    if (![self.sipManager.params objectForKey:RCRegistrarKey] ||
+        ([self.sipManager.params objectForKey:RCRegistrarKey] && [[self.sipManager.params objectForKey:RCRegistrarKey] length] == 0)) {
         // when in registrar-less mode, if signaling is initialized we can notify the App that we are ready, right away (no need for registration to succeed)
         [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
     }
@@ -696,19 +724,16 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
 #pragma mark Push 
 - (void)registerPushToken:(NSDictionary*)parameters delegate:(id<RCRegisterPushDelegate>)delegate{
     NSMutableDictionary * logParameters = [parameters mutableCopy];
-    [logParameters removeObjectForKey:@"password"];
-    [logParameters removeObjectForKey:@"private-key"];
+    [logParameters removeObjectForKey: RCPasswordKey];
+    [logParameters removeObjectForKey: RCPushCertificatesPathPrivateKey];
     
     RCLogNotice("[RCDevice registerPushToken: %s]", [[RCUtilities stringifyDictionary:logParameters] UTF8String]);
 
     //extend the parameters with:
     // - signaling username
-    // - signaling domain
    
     NSMutableDictionary *pushHandlerProperties = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    [pushHandlerProperties setValue:self.signalingUsername forKey:@"signaling-username"];
-    NSString *signalingDomain =  self.signalingDomain ? self.signalingDomain: @"cloud.restcomm.com";
-    [pushHandlerProperties setValue:signalingDomain forKey:@"signaling-domain"];
+    [pushHandlerProperties setValue:self.signalingUsername forKey:RCAorKey];
   
     PushHandler *pushHandler = [[PushHandler alloc] initWithParameters:pushHandlerProperties andDelegate:delegate];
     [pushHandler registerDevice];

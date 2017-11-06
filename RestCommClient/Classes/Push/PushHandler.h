@@ -43,7 +43,7 @@
  * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
  * <b>is-sandbox</b>:BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if push certifictes are for development version of the
  * application, if its production it should be set to NO.
- *
+ * <b>http-domain</b>: Restcomm HTTP domain
  * @param The delegate object that will receive events when registering for push (success, error)
  */
 - (id)initWithParameters:(NSDictionary *)parameters andDelegate:(id<RCRegisterPushDelegate>)delegate;

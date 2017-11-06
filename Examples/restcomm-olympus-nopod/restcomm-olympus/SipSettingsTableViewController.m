@@ -174,18 +174,18 @@
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
 
     // always update registrar to make sure registraless is handled properly
-    [params setObject:@"" forKey:@"registrar"];
+    [params setObject:@"" forKey:RCRegistrarKey];
     [Utils updateSipRegistrar:self.registrarText.text];
 
     if (![self.aorText.text isEqualToString:@""]) {
-        [params setObject:self.aorText.text forKey:@"aor"];
+        [params setObject:self.aorText.text forKey:RCAorKey];
         [Utils updateSipIdentification:self.aorText.text];
     }
     if (![self.registrarText.text isEqualToString:@""]) {
-        [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:@"registrar"];
+        [params setObject:[NSString stringWithFormat:@"%@", self.registrarText.text] forKey:RCRegistrarKey];
     }
     if (![self.passwordText.text isEqualToString:@""]) {
-        [params setObject:self.passwordText.text forKey:@"password"];
+        [params setObject:self.passwordText.text forKey: RCPasswordKey];
         [Utils updateSipPassword:self.passwordText.text];
     }
     

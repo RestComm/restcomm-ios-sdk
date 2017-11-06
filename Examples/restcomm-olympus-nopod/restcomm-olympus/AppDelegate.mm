@@ -97,30 +97,32 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         /******************************/
         /* Xirsys v2 */
         /******************************/
-        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-        //                       [Utils sipPassword], @"password",
-        //                       @([Utils turnEnabled]), @"turn-enabled",
-        //                       [Utils turnUrl], @"turn-url",
-        //                       @"cloud.restcomm.com", @"ice-domain",
-        //                       [Utils turnUsername], @"turn-username",
-        //                       [Utils turnPassword], @"turn-password",
-        //                       @([Utils signalingSecure]), @"signaling-secure",
-        //                       [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-        //                       [NSNumber numberWithInt:(int)kXirsysV2] , @"ice-config-type",
+        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        //                       [Utils sipIdentification], RCAorKey,
+        //                       [Utils sipPassword], RCPasswordKey,
+        //                       @([Utils turnEnabled]), RCTurnEnabledKey,
+        //                       [Utils turnUrl], RCTurnUrlKey,
+        //                       @"cloud.restcomm.com", RCIceDomainKey,
+        //                       [Utils turnUsername], RCTurnUsernameKey,
+        //                       [Utils turnPassword], RCTurnPasswordKey,
+        //                       @([Utils signalingSecure]), RCSignalingSecureKey,
+        //                       [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+        //                       [NSNumber numberWithInt:(int)kXirsysV2] , RCIceConfigTypeKey,
         //                       nil];
         /******************************/
         /* Xirsys v3 */
         /******************************/
-        self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-                           [Utils sipPassword], @"password",
-                           @([Utils turnEnabled]), @"turn-enabled",
-                           [Utils turnUrl], @"turn-url",
-                           [Utils turnUsername], @"turn-username",
-                           [Utils turnPassword], @"turn-password",
-                           @"cloud.restcomm.com", @"ice-domain",
-                           @([Utils signalingSecure]), @"signaling-secure",
-                           [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-                           [NSNumber numberWithInt:(int)kXirsysV3] , @"ice-config-type",
+        self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                           [Utils sipIdentification], RCAorKey,
+                           [Utils sipPassword], RCPasswordKey,
+                           @([Utils turnEnabled]), RCTurnEnabledKey,
+                           [Utils turnUrl], RCTurnUrlKey,
+                           [Utils turnUsername], RCTurnUsernameKey,
+                           [Utils turnPassword], RCTurnPasswordKey,
+                           @"cloud.restcomm.com", RCIceDomainKey,
+                           @([Utils signalingSecure]), RCSignalingSecureKey,
+                           [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+                           [NSNumber numberWithInt:(int)kXirsysV3] , RCIceConfigTypeKey,
                            nil];
         /******************************/
         /* Xirsys custom */
@@ -134,22 +136,24 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         //    NSDictionary *dictionaryServer2 = [[NSDictionary alloc] initWithObjectsAndKeys:
         //                                       @"stun:Server",@"url", nil];
         //
-        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[Utils sipIdentification], @"aor",
-        //                    [Utils sipPassword], @"password",
-        //                      @([Utils turnEnabled]), @"turn-enabled",
-        //                      @([Utils signalingSecure]), @"signaling-secure",
-        //                      [cafilePath stringByDeletingLastPathComponent], @"signaling-certificate-dir",
-        //                      [NSNumber numberWithInt:(int)kCustom] , @"ice-config-type",
-        //                      @[dictionaryServer, dictionaryServer2] , @"ice-servers",
+        //    self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        //                      [Utils sipIdentification], RCAorKey,
+        //                      [Utils sipPassword], RCPasswordKey,
+        //                      @([Utils turnEnabled]), RCTurnEnabledKey,
+        //                      @([Utils signalingSecure]), RCSignalingSecureKey,
+        //                      [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
+        //                      [NSNumber numberWithInt:(int)kCustom] , RCIceConfigTypeKey,
+        //                      @[dictionaryServer, dictionaryServer2] , RCIceServersKey,
         //                      nil];
         /******************************/
         
-        [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:@"registrar"];
+        [self.parameters setObject:[NSString stringWithFormat:@"%@", [Utils sipRegistrar]] forKey:RCRegistrarKey];
         
         // initialize RestComm Client by setting up an RCDevice
         self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
-        [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
+        
     }
+    [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
     return self.device;
     
 }
@@ -211,8 +215,8 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
             alias = [NSString stringWithFormat:@"%@ %@", localContact.firstName, localContact.lastName];
         }
         [callViewController.parameters setObject:alias forKey:@"alias"];
-        [callViewController.parameters setObject:pendingInterapUri forKey:@"username"];
-        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:@"video-enabled"];
+        [callViewController.parameters setObject:pendingInterapUri forKey:RCUsername];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:RCVideoEnabled];
         
         [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:callViewController animated:YES completion:nil];
         
@@ -250,6 +254,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         [Utils addMessage:messageObj];
         
         [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    
     } else {
         [self openMessageScreen:message withUser:[params objectForKey:@"from"] isFromLocalNotification:NO];
     }
@@ -283,7 +288,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
     
     callViewController.parameters = [[NSMutableDictionary alloc] init];
     [callViewController.parameters setObject:@"receive-call" forKey:@"invoke-view-type"];
-    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"]  forKey:@"username"];
+    [callViewController.parameters setObject:[connection.parameters objectForKey:@"from"]  forKey:RCUsername];
     // try to 'resolve' the from to the contact name if we do have a contact for that
     LocalContact *localContact = [Utils getContactForSipUri:[connection.parameters objectForKey:@"from"]];
     NSString * alias;
@@ -322,7 +327,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
                 //because message is already added with local notification
                 [messageViewController.parameters setObject:@"receive-message" forKey:@"invoke-view-type"];
             }
-            [messageViewController.parameters setObject:user forKey:@"username"];
+            [messageViewController.parameters setObject:user forKey:RCUsername];
             [messageViewController.parameters setObject:[RCUtilities usernameFromUri:user] forKey:@"alias"];
             
             messageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

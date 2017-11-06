@@ -1651,7 +1651,7 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
-                            <tableViewSection footerTitle="Indicates whether Push Notification Server is set to handle Push Notifications" id="pFU-lJ-2ho">
+                            <tableViewSection footerTitle="Indicates whether Push Notifications are enabled for incoming calls and text messages" id="pFU-lJ-2ho">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="crF-H2-DHo">
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
@@ -1660,7 +1660,7 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server handles push notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="FHf-Di-A0B">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable push" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="FHf-Di-A0B">
                                                     <rect key="frame" x="8" y="13" width="290" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="102" id="OvE-IK-wTw"/>
@@ -1762,7 +1762,7 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Push Notifications Domain" footerTitle="Restcomm Push Notifictions domain, like: 'push.restcomm.com" id="Hkf-3R-AAJ">
+                            <tableViewSection headerTitle="Push Notifications Domain" footerTitle="Restcomm Push Notifictions domain, like: 'push.restcomm.com'" id="Hkf-3R-AAJ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5hw-Bv-g4F">
                                         <rect key="frame" x="0.0" y="409.5" width="375" height="44"/>
@@ -1782,6 +1782,31 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                                                 <constraint firstAttribute="bottomMargin" secondItem="aHc-7h-deJ" secondAttribute="bottom" constant="-2" id="WBv-4K-rLh"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="aHc-7h-deJ" secondAttribute="trailing" id="cYU-Bx-NID"/>
                                                 <constraint firstAttribute="topMargin" secondItem="aHc-7h-deJ" secondAttribute="top" id="lAu-GW-64p"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="HTTP domain" footerTitle="Restcomm HTTP domain, like 'cloud.restcomm.com'" id="fhu-mL-39q" userLabel="Http Domain">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uAt-xZ-6DQ">
+                                        <rect key="frame" x="0.0" y="545" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uAt-xZ-6DQ" id="UdO-1b-gw6">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XHG-Yz-YtW">
+                                                    <rect key="frame" x="8" y="8" width="359" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="XHG-Yz-YtW" secondAttribute="leading" id="CI2-bh-H0g"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XHG-Yz-YtW" secondAttribute="trailing" id="HLP-nj-mcJ"/>
+                                                <constraint firstAttribute="topMargin" secondItem="XHG-Yz-YtW" secondAttribute="top" id="LFX-w3-UPs"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XHG-Yz-YtW" secondAttribute="bottom" constant="-2" id="wYu-cS-rEJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1811,6 +1836,8 @@ This is especially useful if your issue doesn't fall in any of the predefined li
                         <outlet property="accountTVCell" destination="vHW-ux-aKw" id="887-cF-O9N"/>
                         <outlet property="domainTVCell" destination="5hw-Bv-g4F" id="ROd-Fn-rYF"/>
                         <outlet property="enableSwitch" destination="D8h-d3-6BB" id="ZDw-0d-G6e"/>
+                        <outlet property="httpDomainTVCell" destination="uAt-xZ-6DQ" id="xPv-ol-QRA"/>
+                        <outlet property="httpDomainText" destination="XHG-Yz-YtW" id="66o-nU-2R3"/>
                         <outlet property="passwordTVCell" destination="7bo-rp-KXU" id="9CB-9i-cEt"/>
                         <outlet property="pushAccountText" destination="zCw-EX-6j4" id="Vhv-4O-PJk"/>
                         <outlet property="pushDomainText" destination="aHc-7h-deJ" id="3kp-el-fMg"/>
