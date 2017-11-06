@@ -20,16 +20,17 @@ else
   fi
 
   if test x$HAVE_BORINGSSL = x1 ; then
-     AC_DEFINE([HAVE_LIBWEBRTC], 1, [Define to 1 if you have the `webrtc' library (-lwebrtc).])
+     AC_DEFINE([HAVE_LIBCRYPTO], 1, [Define to 1 if you have the `crypto' library (-lcrypto).])
+     AC_DEFINE([HAVE_LIBSSL], 1, [Define to 1 if you have the `ssl' library (-lssl).])
   else
     AC_CHECK_HEADERS([openssl/tls1.h], [
       HAVE_BORINGSSL=1 HAVE_TLS=1
 
-      AC_CHECK_LIB(webrtc, BIO_new,,
+      AC_CHECK_LIB(boringssl, BIO_new,,
       	HAVE_BORINGSSL=0
       	AC_MSG_WARN(BoringSSL library was not found))
 
-      AC_CHECK_LIB(webrtc, TLSv1_method,,
+      AC_CHECK_LIB(boringssl, TLSv1_method,,
       	HAVE_TLS=0
       	AC_MSG_WARN(BoringSSL protocol library was not found))
      ],[AC_MSG_WARN(BoringSSL include files were not found)])
