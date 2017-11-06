@@ -133,5 +133,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>INStartAudioCallIntent</string>
+    </array>
 </dict>
 </plist>

@@ -71,6 +71,11 @@
 - (void)reportConnected;
 
 /**
+ *  @abstract Reports start call to callkit
+ */
+- (void)startCall:(NSString *)handle;
+
+/**
  *  @abstract Reports end call to callkit
  */
 - (void)endCall;

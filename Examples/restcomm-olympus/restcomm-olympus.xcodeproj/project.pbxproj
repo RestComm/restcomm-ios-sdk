@@ -247,6 +247,7 @@
 		A94A1B801F6A7E160034352E /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		A94A1B821F6A7E330034352E /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		A94A1B841F6A7E790034352E /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A95A43711FA9C9DC00AB7C93 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		A964D1D41FA3DEBC005B3234 /* LocalMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LocalMessage.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.h"; sourceTree = "<group>"; };
 		A964D1D51FA3DEBC005B3234 /* LocalMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LocalMessage.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.m"; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
@@ -623,6 +624,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A95A43711FA9C9DC00AB7C93 /* Intents.framework */,
 				A9C091191FA013CD002A161A /* AVFoundation.framework */,
 				A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */,
 				A9FD9E9C1F83D24D0026255E /* UserNotificationsUI.framework */,

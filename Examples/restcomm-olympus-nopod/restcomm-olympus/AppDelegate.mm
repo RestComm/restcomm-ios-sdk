@@ -25,6 +25,7 @@
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
 #import "AVFoundation/AVFoundation.h"
+#import "Intents/Intents.h"
 
 NSString * const kLocalMessagingFromKey = @"local-messaging-from";
 NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
@@ -32,6 +33,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
 @property (nonatomic, strong) RCCallKitProvider *callKitProvider;
+@property (nonatomic, strong) INInteraction *interaction;
 
 @end
 
@@ -220,6 +222,11 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         
         // clear it so that it doesn't pop again
         [Utils updatePendingInterappUri:@""];
+    } else {
+        //check is callkit is waiting to start call
+        if (self.interaction){
+            [self openCallViewForStartingCall];
+        }
     }
 }
 
@@ -433,7 +440,49 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 }
 
 #pragma mark Starting call
-//needs to be implemented
+
+-(BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler{
+    self.interaction = userActivity.interaction;
+    if (!self.device){
+        //no need to wait, register and listen
+        self.device = [self registerRCDevice];
+    } else {
+        [self openCallViewForStartingCall];
+    }
+    
+    return true;
+}
+
+//called when tapped from list in calls in device
+- (void)openCallViewForStartingCall{
+    if (self.interaction){
+        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)self.interaction.intent;
+        INPerson *contact = startAudioCallIntent.contacts[0];
+        INPersonHandle *personHandle = contact.personHandle;
+        NSString *phoneNumber = personHandle.value;
+        
+        //open callview
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
+        CallViewController *callViewController = [storyboard instantiateViewControllerWithIdentifier:@"call-controller"];
+        
+        // setup call view controller
+        callViewController.delegate = self;
+        callViewController.device = self.device;
+        callViewController.rcCallKitProvider = self.callKitProvider;
+        callViewController.parameters = [[NSMutableDictionary alloc] init];
+        [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
+        [callViewController.parameters setObject:phoneNumber forKey:@"alias"];
+        [callViewController.parameters setObject:phoneNumber forKey:@"username"];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
+        
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
+        
+        [self.callKitProvider startCall:phoneNumber];
+    }
+    self.interaction = nil;
+    
+}
+
 
 
 #pragma mark RCCallKitProviderDelegate method

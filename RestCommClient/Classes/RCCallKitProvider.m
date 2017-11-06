@@ -152,6 +152,39 @@
 
 
 #pragma mark Provider methods
+
+- (void)startCall:(NSString *)handle {
+    self.currentUdid = [NSUUID UUID];
+    NSLog(@"CallKit performStartCallActionWithUUID with UUID %@", self.currentUdid);
+    if (!handle) {
+        return;
+    }
+    
+    CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
+    CXStartCallAction *startCallAction = [[CXStartCallAction alloc] initWithCallUUID:self.currentUdid handle:callHandle];
+    CXTransaction *transaction = [[CXTransaction alloc] initWithAction:startCallAction];
+    
+    [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
+        if (error) {
+            NSLog(@"CallKit StartCallAction transaction request failed: %@", [error localizedDescription]);
+            [startCallAction fail];
+        } else {
+            NSLog(@"CallKit StartCallAction transaction request successful");
+            
+            CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
+            callUpdate.remoteHandle = callHandle;
+            callUpdate.supportsDTMF = YES;
+            callUpdate.supportsHolding = NO;
+            callUpdate.supportsGrouping = NO;
+            callUpdate.supportsUngrouping = NO;
+            callUpdate.hasVideo = NO;
+            
+            [startCallAction fulfillWithDateStarted:[NSDate date]];
+        }
+    }];
+}
+
+
 - (void)reportIncomingCallFrom:(NSString *) from {
     NSLog(@"CallKit reportIncomingCallFrom with UUID %@", self.currentUdid);
     CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:from];
