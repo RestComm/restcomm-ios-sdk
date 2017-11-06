@@ -179,7 +179,6 @@
             callUpdate.supportsUngrouping = NO;
             callUpdate.hasVideo = NO;
             
-            //[self.callKitProvider reportCallWithUUID:self.currentUdid updated:callUpdate];
             [startCallAction fulfillWithDateStarted:[NSDate date]];
         }
     }];
