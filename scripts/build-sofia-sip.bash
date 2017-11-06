@@ -4,7 +4,7 @@
 #
 # Function build() is ran once for each architecture and in the end the output .a files are combined and stored in directory 'build'
 #
-# Example: $ ../../../build-sofia-sip.bash -d <0|1> -v <0|1>
+# Example: $ ../../../scripts/build-sofia-sip.bash -d <0|1> -v <0|1>
 # -d: add debug symbols to the build
 # -v: show the full CC commands (like compile and link flags) for troubleshooting
 #
@@ -51,19 +51,24 @@ function build()
 	then
 		# use boringssl instead of openssl
 		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
-		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -F/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -framework WebRTC"
-		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv"
+		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -F../../binaries/frameworks -framework WebRTC.framework"
+		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv -F/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/binaries/frameworks -framework WebRTC"
+		export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/binaries/boringssl/lib -lresolv -lboringssl"
+		#export LDFLAGS=${I386_FLAGS}" -L${SDKROOT}/usr/lib/ -lresolv"
 	else
 		# use boringssl instead of openssl
 		#export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/packages/webrtc -lwebrtc"
-		export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv"
+		#export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -F../../binaries/frameworks -framework WebRTC.framework"
+		#export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv -F/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/binaries/frameworks -framework WebRTC"
+		export LDFLAGS="-L${SDKROOT}/usr/lib/ -L/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies/binaries/boringssl/lib -lresolv -lboringssl"
+		#export LDFLAGS="-L${SDKROOT}/usr/lib/ -lresolv"
 	fi
 
 	export ARCH
 	# for debug but use boringssl instead of openssl
 	#CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -g -O0 -I/Users/antonis/Documents/telestax/code/webrtc-ios/webrtc_checkout/src/third_party/boringssl/src/include" 
 	# TODO: maybe we need to also link with boringssl? I would assume not, as this happens during build of the end executable, but I seem to recall that we had some issues using Sofia SIP with TLS without this setting
-	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I../../boringssl" 
+	CFLAGS=${I386_FLAGS}" -arch ${ARCH} -dynamiclib -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${SDKROOT}/usr/include/ -I../../include/boringssl" 
 
 	if [[ $SDK != "iphonesimulator" ]]
 	then

@@ -111,7 +111,7 @@
 		AE72F9461F505CD400C50C7D /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9451F505CD400C50C7D /* VideoToolbox.framework */; };
 		AE72F9481F505CDF00C50C7D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9471F505CDF00C50C7D /* UIKit.framework */; };
 		AE72F94A1F505CE500C50C7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9491F505CE500C50C7D /* Foundation.framework */; };
-		AE72F9611F5070E900C50C7D /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9601F5070E900C50C7D /* libboringssl.a */; };
+		AE76EEFC1FACDFCE00F6DE5F /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */; };
 		AE8431011F5416AC002F6B8A /* libRestCommClientLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431001F5416AC002F6B8A /* libRestCommClientLib.a */; };
 		AE8431031F5416CF002F6B8A /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431021F5416CF002F6B8A /* libsofia-sip-ua.a */; };
 		AE8431071F541771002F6B8A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431061F541771002F6B8A /* libresolv.tbd */; };
@@ -338,6 +338,7 @@
 		AE72F9471F505CDF00C50C7D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AE72F9491F505CE500C50C7D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE72F9601F5070E900C50C7D /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = "../../dependencies/other/sofia-sip-wrapper-framework/dependencies/libboringssl.a"; sourceTree = "<group>"; };
+		AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = ../../dependencies/binaries/boringssl/lib/libboringssl.a; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* restcomm-olympus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-olympus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33A19BC8DAE0023306C /* restcomm-olympus.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-olympus.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8431001F5416AC002F6B8A /* libRestCommClientLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClientLib.a; path = ../../dependencies/binaries/RestCommClientLib/lib/libRestCommClientLib.a; sourceTree = "<group>"; };
@@ -474,7 +475,7 @@
 			files = (
 				AE8431011F5416AC002F6B8A /* libRestCommClientLib.a in Frameworks */,
 				AE8431031F5416CF002F6B8A /* libsofia-sip-ua.a in Frameworks */,
-				AE72F9611F5070E900C50C7D /* libboringssl.a in Frameworks */,
+				AE76EEFC1FACDFCE00F6DE5F /* libboringssl.a in Frameworks */,
 				AE8431071F541771002F6B8A /* libresolv.tbd in Frameworks */,
 				AE003EB91FA37156005EBF71 /* Contacts.framework in Frameworks */,
 				AE72F94A1F505CE500C50C7D /* Foundation.framework in Frameworks */,
@@ -539,6 +540,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */,
 				AE003EB81FA37141005EBF71 /* Contacts.framework */,
 				AE8431061F541771002F6B8A /* libresolv.tbd */,
 				AE8431041F541761002F6B8A /* libresolv.9.tbd */,
