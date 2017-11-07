@@ -392,7 +392,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = $SOURCE_ROOT/../dependencies/binaries/frameworks;
-				HEADER_SEARCH_PATHS = "$SOURCE_ROOT/../dependencies/include/sofia-sip-1.12.11";
+				HEADER_SEARCH_PATHS = (
+					"$SOURCE_ROOT/../dependencies/include/sofia-sip-1.12.11",
+					"$SOURCE_ROOT/../Examples/restcomm-olympus-nopod/restcomm-olympus/TestFairy",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -404,7 +407,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = H9PG74NSQT;
 				FRAMEWORK_SEARCH_PATHS = $SOURCE_ROOT/../dependencies/binaries/frameworks;
-				HEADER_SEARCH_PATHS = "$SOURCE_ROOT/../dependencies/include/sofia-sip-1.12.11";
+				HEADER_SEARCH_PATHS = (
+					"$SOURCE_ROOT/../dependencies/include/sofia-sip-1.12.11",
+					"$SOURCE_ROOT/../Examples/restcomm-olympus-nopod/restcomm-olympus/TestFairy",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

@@ -610,7 +610,7 @@ const double SIGNALING_SHUTDOWN_TIMEOUT = 5.0;
                 [self performSelector:@selector(asyncDeviceDidStartListeningForIncomingConnections) withObject:nil afterDelay:0.0];
             }
              */
-            [self listen];
+            //[self listen];
         }
     }
     

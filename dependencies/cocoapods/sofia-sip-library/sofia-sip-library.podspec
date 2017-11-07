@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'sofia-sip-library'
-  s.version          = '1.12.11.4'
+  s.version          = '1.12.11.6'
   s.summary          = 'Sofia SIP library.'
 
 # This description is used to generate tags and improve search results.
