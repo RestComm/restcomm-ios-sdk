@@ -111,8 +111,7 @@
 		AE72F9461F505CD400C50C7D /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9451F505CD400C50C7D /* VideoToolbox.framework */; };
 		AE72F9481F505CDF00C50C7D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9471F505CDF00C50C7D /* UIKit.framework */; };
 		AE72F94A1F505CE500C50C7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE72F9491F505CE500C50C7D /* Foundation.framework */; };
-		AE76EEFC1FACDFCE00F6DE5F /* libboringssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */; };
-		AE8431011F5416AC002F6B8A /* libRestCommClientLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431001F5416AC002F6B8A /* libRestCommClientLib.a */; };
+		AE81BC6A1FB0922900FFA492 /* libRestCommClientLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE81BC691FB0921F00FFA492 /* libRestCommClientLib.a */; };
 		AE8431031F5416CF002F6B8A /* libsofia-sip-ua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431021F5416CF002F6B8A /* libsofia-sip-ua.a */; };
 		AE8431071F541771002F6B8A /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8431061F541771002F6B8A /* libresolv.tbd */; };
 		AE87C2B41DAE23BA0064624B /* camera-icon-28x28.png in Resources */ = {isa = PBXBuildFile; fileRef = AE87C2AE1DAE23BA0064624B /* camera-icon-28x28.png */; };
@@ -224,6 +223,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = AE79D31519BC8DAD0023306C;
 			remoteInfo = "restcomm-olympus";
+		};
+		AE81BC681FB0921F00FFA492 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE81BC641FB0921F00FFA492 /* RestCommClientLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AE72F84B1F503A3800C50C7D;
+			remoteInfo = RestCommClientLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -341,6 +347,8 @@
 		AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboringssl.a; path = ../../dependencies/binaries/boringssl/lib/libboringssl.a; sourceTree = "<group>"; };
 		AE79D31619BC8DAD0023306C /* restcomm-olympus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-olympus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE79D33A19BC8DAE0023306C /* restcomm-olympus.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-olympus.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE81BC641FB0921F00FFA492 /* RestCommClientLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestCommClientLib.xcodeproj; path = ../../RestCommClientLib/RestCommClientLib.xcodeproj; sourceTree = "<group>"; };
+		AE81BC6E1FB0CFF800FFA492 /* libboringssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libboringssl.tbd; path = usr/lib/libboringssl.tbd; sourceTree = SDKROOT; };
 		AE8431001F5416AC002F6B8A /* libRestCommClientLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestCommClientLib.a; path = ../../dependencies/binaries/RestCommClientLib/lib/libRestCommClientLib.a; sourceTree = "<group>"; };
 		AE8431021F5416CF002F6B8A /* libsofia-sip-ua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsofia-sip-ua.a"; path = "../../dependencies/binaries/sofia-sip-1.12.11/lib/libsofia-sip-ua.a"; sourceTree = "<group>"; };
 		AE8431041F541761002F6B8A /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
@@ -473,9 +481,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE8431011F5416AC002F6B8A /* libRestCommClientLib.a in Frameworks */,
+				AE81BC6A1FB0922900FFA492 /* libRestCommClientLib.a in Frameworks */,
 				AE8431031F5416CF002F6B8A /* libsofia-sip-ua.a in Frameworks */,
-				AE76EEFC1FACDFCE00F6DE5F /* libboringssl.a in Frameworks */,
 				AE8431071F541771002F6B8A /* libresolv.tbd in Frameworks */,
 				AE003EB91FA37156005EBF71 /* Contacts.framework in Frameworks */,
 				AE72F94A1F505CE500C50C7D /* Foundation.framework in Frameworks */,
@@ -520,6 +527,7 @@
 		AE79D30D19BC8DAD0023306C = {
 			isa = PBXGroup;
 			children = (
+				AE81BC641FB0921F00FFA492 /* RestCommClientLib.xcodeproj */,
 				AE06EE461F558516004C16D1 /* WebRTC.framework */,
 				AE79D31819BC8DAD0023306C /* Frameworks */,
 				AE79D31719BC8DAD0023306C /* Products */,
@@ -540,6 +548,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE81BC6E1FB0CFF800FFA492 /* libboringssl.tbd */,
 				AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */,
 				AE003EB81FA37141005EBF71 /* Contacts.framework */,
 				AE8431061F541771002F6B8A /* libresolv.tbd */,
@@ -567,6 +576,14 @@
 				AE0A08341DD2101100641151 /* CoreMotion.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE81BC651FB0921F00FFA492 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE81BC691FB0921F00FFA492 /* libRestCommClientLib.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		AEA495651C2997F6000D9762 /* restcomm-olympus */ = {
@@ -891,6 +908,12 @@
 			mainGroup = AE79D30D19BC8DAD0023306C;
 			productRefGroup = AE79D31719BC8DAD0023306C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AE81BC651FB0921F00FFA492 /* Products */;
+					ProjectRef = AE81BC641FB0921F00FFA492 /* RestCommClientLib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AE79D31519BC8DAD0023306C /* restcomm-olympus */,
@@ -899,6 +922,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AE81BC691FB0921F00FFA492 /* libRestCommClientLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRestCommClientLib.a;
+			remoteRef = AE81BC681FB0921F00FFA492 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AE79D31419BC8DAD0023306C /* Resources */ = {
@@ -1284,6 +1317,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClientLib/RestCommClientLib,
+					$SOURCE_ROOT/TestFairy,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1333,6 +1367,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					$SOURCE_ROOT/../../RestCommClientLib/RestCommClientLib,
+					$SOURCE_ROOT/TestFairy,
 				);
 				INFOPLIST_FILE = "restcomm-olympus/restcomm-olympus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

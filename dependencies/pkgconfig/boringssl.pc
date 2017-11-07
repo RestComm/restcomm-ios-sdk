@@ -1,0 +1,10 @@
+prefix=/Users/antonis/Documents/telestax/code/restcomm-ios-sdk/dependencies
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${prefix}/binaries/boringssl/lib
+
+Name: boringssl
+Description: SSL library
+Version: 1.0.0
+Cflags: -I${includedir}/boringssl
+Libs: -L${libdir} -lboringssl
