@@ -27,6 +27,8 @@
 		AE06EE471F558516004C16D1 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE06EE461F558516004C16D1 /* WebRTC.framework */; };
 		AE06EE481F558516004C16D1 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE06EE461F558516004C16D1 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE0A08351DD2101100641151 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A08341DD2101100641151 /* CoreMotion.framework */; };
+		AE147D641FB1B27E000CE273 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE147D621FB1B27E000CE273 /* libcrypto.a */; };
+		AE147D651FB1B27E000CE273 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE147D631FB1B27E000CE273 /* libssl.a */; };
 		AE155F541CCF8658002F404E /* ToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE155F531CCF8658002F404E /* ToastController.m */; };
 		AE20DA841CE31EC200695925 /* speaker-on-50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA811CE31EC200695925 /* speaker-on-50x50.png */; };
 		AE20DA851CE31EC200695925 /* speaker-on-50x50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE20DA821CE31EC200695925 /* speaker-on-50x50@2x.png */; };
@@ -253,6 +255,8 @@
 		AE003EBB1FA37177005EBF71 /* LocalContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalContact.h; sourceTree = "<group>"; };
 		AE06EE461F558516004C16D1 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ../../dependencies/binaries/frameworks/WebRTC.framework; sourceTree = "<group>"; };
 		AE0A08341DD2101100641151 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		AE147D621FB1B27E000CE273 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../dependencies/openssl-1.0.1i/lib/libcrypto.a"; sourceTree = "<group>"; };
+		AE147D631FB1B27E000CE273 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../dependencies/openssl-1.0.1i/lib/libssl.a"; sourceTree = "<group>"; };
 		AE155F521CCF8658002F404E /* ToastController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastController.h; sourceTree = "<group>"; };
 		AE155F531CCF8658002F404E /* ToastController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastController.m; sourceTree = "<group>"; };
 		AE20DA811CE31EC200695925 /* speaker-on-50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker-on-50x50.png"; sourceTree = "<group>"; };
@@ -483,6 +487,8 @@
 			files = (
 				AE81BC6A1FB0922900FFA492 /* libRestCommClientLib.a in Frameworks */,
 				AE8431031F5416CF002F6B8A /* libsofia-sip-ua.a in Frameworks */,
+				AE147D651FB1B27E000CE273 /* libssl.a in Frameworks */,
+				AE147D641FB1B27E000CE273 /* libcrypto.a in Frameworks */,
 				AE8431071F541771002F6B8A /* libresolv.tbd in Frameworks */,
 				AE003EB91FA37156005EBF71 /* Contacts.framework in Frameworks */,
 				AE72F94A1F505CE500C50C7D /* Foundation.framework in Frameworks */,
@@ -548,6 +554,8 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE147D621FB1B27E000CE273 /* libcrypto.a */,
+				AE147D631FB1B27E000CE273 /* libssl.a */,
 				AE81BC6E1FB0CFF800FFA492 /* libboringssl.tbd */,
 				AE76EEFB1FACDFCE00F6DE5F /* libboringssl.a */,
 				AE003EB81FA37141005EBF71 /* Contacts.framework */,
@@ -1326,7 +1334,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 					$SOURCE_ROOT/../../dependencies/binaries/RestCommClientLib/lib,
-					$SOURCE_ROOT/../../dependencies/binaries/boringssl/lib,
+					"$SOURCE_ROOT/../../dependencies/binaries/openssl-1.0.1i/lib",
 					"$SOURCE_ROOT/../../dependencies/binaries/sofia-sip-1.12.11/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -1376,7 +1384,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/restcomm-olympus/TestFairy",
 					$SOURCE_ROOT/../../dependencies/binaries/RestCommClientLib/lib,
-					$SOURCE_ROOT/../../dependencies/binaries/boringssl/lib,
+					"$SOURCE_ROOT/../../dependencies/binaries/openssl-1.0.1i/lib",
 					"$SOURCE_ROOT/../../dependencies/binaries/sofia-sip-1.12.11/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;

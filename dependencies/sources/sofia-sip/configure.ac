@@ -110,7 +110,7 @@ if test "x${ax_cv_c_compiler_vendor}"  =  "xsun" ; then
 fi
 
 SAC_SOFIA_SU
-SAC_BORINGSSL
+SAC_OPENSSL
 SAC_TPORT
 
 dnl Check is used for testing
@@ -140,9 +140,9 @@ AC_ARG_ENABLE(stun,
 
 if test x$enable_stun = xno ; then
   AC_MSG_WARN([** STUN support disabled **])
-elif test x${HAVE_BORINGSSL} != x1 ; then
-  dnl compile STUN only if BORINGSSL is available
-  AC_MSG_WARN([** TLS support for STUN disabled as BoringSSL headers and/or libraries were not found **])
+elif test x${HAVE_OPENSSL} != x1 ; then
+  dnl compile STUN only if OPENSSL is available
+  AC_MSG_WARN([** TLS support for STUN disabled as OpenSSL headers and/or libraries were not found **])
   AC_DEFINE([HAVE_SOFIA_STUN], 1, [Define to 1 if we use STUN library])
 else
   AC_DEFINE([HAVE_SOFIA_STUN], 1, [Define to 1 if we use STUN library])

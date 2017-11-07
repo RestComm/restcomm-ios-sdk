@@ -11,7 +11,7 @@ AUTOMAKE_OPTIONS = foreign
 
 # select which optional sofia-sip modules have been enabled
 # in the build
-OPT_LIBADD = $(boringssl_LIBS)
+OPT_LIBADD = $(openssl_LIBS)
 OPT_SUBDIRS_STUN =
 OPT_SUBDIRS_HTTP =
 OPT_SUBDIRS_NTH =
