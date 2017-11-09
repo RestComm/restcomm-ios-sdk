@@ -26,7 +26,7 @@
 @property (nonatomic, strong) CXCallController *callKitCallController;
 @property (nonatomic, assign) id<RCCallKitProviderDelegate> delegate;
 @property (nonatomic, strong) CXProvider *callKitProvider;
-@property (nonatomic, strong) NSUUID *currentUdid;
+@property (nonatomic, strong) NSUUID *currentUUID;
 @end
 
 @implementation RCCallKitProvider
@@ -38,6 +38,7 @@
         CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Restcomm"];
         configuration.maximumCallGroups = 1;
         configuration.maximumCallsPerCallGroup = 1;
+        configuration.supportsVideo = YES;
         configuration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypeGeneric],[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
        
         UIImage *callkitIcon = [UIImage imageNamed:imageName];
@@ -93,14 +94,14 @@
     NSLog(@"CXProvider performAnswerCallAction");
     
     //there is no way to know is the device locked or not.
-    [self.delegate newIncomingCallAnswered:self.connection];
+    [self.delegate newIncomingCallAnswered:self.connection ];
     [action fulfill];
 }
 
 - (void)providerDidReset:(CXProvider *)provider{
     NSLog(@"CXProvider providerDidReset");
     if (self.connection){
-        self.currentUdid = nil;
+        self.currentUUID = nil;
         [self.connection disconnect];
     }
 }
@@ -153,40 +154,37 @@
 
 #pragma mark Provider methods
 
-- (void)startCall:(NSString *)handle {
-    self.currentUdid = [NSUUID UUID];
-    NSLog(@"CallKit performStartCallActionWithUUID with UUID %@", self.currentUdid);
-    if (!handle) {
-        return;
-    }
-    
-    CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
-    CXStartCallAction *startCallAction = [[CXStartCallAction alloc] initWithCallUUID:self.currentUdid handle:callHandle];
-    CXTransaction *transaction = [[CXTransaction alloc] initWithAction:startCallAction];
-    
-    [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
-        if (error) {
-            NSLog(@"CallKit StartCallAction transaction request failed: %@", [error localizedDescription]);
-            [startCallAction fail];
-        } else {
-            NSLog(@"CallKit StartCallAction transaction request successful");
-            
-            CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
-            callUpdate.remoteHandle = callHandle;
-            callUpdate.supportsDTMF = YES;
-            callUpdate.supportsHolding = NO;
-            callUpdate.supportsGrouping = NO;
-            callUpdate.supportsUngrouping = NO;
-            callUpdate.hasVideo = NO;
-            
-            [startCallAction fulfillWithDateStarted:[NSDate date]];
+- (void)startCall:(NSString *)handle isVideo:(BOOL)isVideo{
+    //start call only if we dont have one already
+    //started
+    if (!self.currentUUID){
+        self.currentUUID = [NSUUID UUID];
+        NSLog(@"CallKit performStartCallActionWithUUID with UUID %@", self.currentUUID);
+        if (!handle) {
+            return;
         }
-    }];
+        
+        CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
+        CXStartCallAction *startCallAction = [[CXStartCallAction alloc] initWithCallUUID:self.currentUUID handle:callHandle];
+        startCallAction.video = isVideo;
+        
+        CXTransaction *transaction = [[CXTransaction alloc] initWithAction:startCallAction];
+        
+        [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
+            if (error) {
+                NSLog(@"CallKit StartCallAction transaction request failed: %@", [error localizedDescription]);
+                [startCallAction fail];
+            } else {
+                NSLog(@"CallKit StartCallAction transaction request successful");
+                [startCallAction fulfillWithDateStarted:[NSDate date]];
+            }
+        }];
+    }
 }
 
 
-- (void)reportIncomingCallFrom:(NSString *) from {
-    NSLog(@"CallKit reportIncomingCallFrom with UUID %@", self.currentUdid);
+- (void)reportIncomingCallFrom:(NSString *) from hasVideo:(BOOL)hasVideo {
+    NSLog(@"CallKit reportIncomingCallFrom with UUID %@", self.currentUUID);
     CXHandle *callHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:from];
     
     CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
@@ -195,53 +193,54 @@
     callUpdate.supportsHolding = NO;
     callUpdate.supportsGrouping = NO;
     callUpdate.supportsUngrouping = NO;
-    callUpdate.hasVideo = NO;
+
+    callUpdate.hasVideo = hasVideo;
     
-    [self.callKitProvider reportNewIncomingCallWithUUID:self.currentUdid update:callUpdate completion:^(NSError *error) {
+    [self.callKitProvider reportNewIncomingCallWithUUID:self.currentUUID update:callUpdate completion:^(NSError *error) {
         if (!error) {
-            NSLog(@"CallKit Incoming call successfully reported. UUID: %@", self.currentUdid);
+            NSLog(@"CallKit Incoming call successfully reported. UUID: %@", self.currentUUID);
         } else {
-            NSLog(@"Failed to report incoming call successfully; uuid: %@ error: %@.", self.currentUdid, [error localizedDescription]);
-            self.currentUdid = nil;
+            NSLog(@"Failed to report incoming call successfully; uuid: %@ error: %@.", self.currentUUID, [error localizedDescription]);
+            self.currentUUID = nil;
         }
     }];
 }
 
 - (void)endCall{
-    NSLog(@"CallKit performEndCallAction UDID: %@", self.currentUdid);
+    NSLog(@"CallKit performEndCallAction UDID: %@", self.currentUUID);
     
-    if (self.currentUdid == nil) {
+    if (self.currentUUID == nil) {
         return;
     }
     
-    CXEndCallAction *endCallAction = [[CXEndCallAction alloc] initWithCallUUID:self.currentUdid];
+    CXEndCallAction *endCallAction = [[CXEndCallAction alloc] initWithCallUUID:self.currentUUID];
     CXTransaction *transaction = [[CXTransaction alloc] initWithAction:endCallAction];
     
     [self.callKitCallController requestTransaction:transaction completion:^(NSError *error) {
-        self.currentUdid = nil;
         if (error) {
-            NSLog(@"CallKit EndCallAction transaction request failed for UUID: %@ and error: %@", self.currentUdid, [error localizedDescription]);
+            NSLog(@"CallKit EndCallAction transaction request failed for UUID: %@ and error: %@", self.currentUUID, [error localizedDescription]);
             [endCallAction fail];
         }
         else {
-            NSLog(@"CallKit EndCallAction transaction request successful for UUID: %@", self.currentUdid);
+            NSLog(@"CallKit EndCallAction transaction request successful for UUID: %@", self.currentUUID);
         }
+        self.currentUUID = nil;
     }];
 }
 
 - (void)reportConnecting{
-     [self.callKitProvider reportOutgoingCallWithUUID:self.currentUdid startedConnectingAtDate: [NSDate date]];
+     [self.callKitProvider reportOutgoingCallWithUUID:self.currentUUID startedConnectingAtDate: [NSDate date]];
 }
 
 - (void)reportConnected{
-    [self.callKitProvider reportOutgoingCallWithUUID:self.currentUdid connectedAtDate:[NSDate date]];
+    [self.callKitProvider reportOutgoingCallWithUUID:self.currentUUID connectedAtDate:[NSDate date]];
 }
 
-- (void)presentIncomingCall{
+- (void)presentIncomingCallWithVideo:(BOOL)isVideo{
     self.connection.delegate = self;
-    self.currentUdid = [NSUUID UUID];
-    NSLog(@"CallKit Current udid %@", self.currentUdid);
-    [self reportIncomingCallFrom:[self.connection.parameters objectForKey:@"from"]];
+    self.currentUUID = [NSUUID UUID];
+    NSLog(@"CallKit Current udid %@", self.currentUUID);
+    [self reportIncomingCallFrom:[self.connection.parameters objectForKey:@"from"] hasVideo:isVideo];
 }
 
 

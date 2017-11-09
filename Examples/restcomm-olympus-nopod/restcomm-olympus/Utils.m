@@ -297,6 +297,8 @@ NSString* const kFriendlyName = @"Olympus";
         } else {
             mutable = [[NSMutableArray alloc] init];
         }
+    } else {
+        mutable = [[NSMutableArray alloc] init];
     }
     
 

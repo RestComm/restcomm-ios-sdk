@@ -117,19 +117,17 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    self.isVideoCall = NO;
+    if ([self.parameters objectForKey:RCVideoEnabled]){
+        self.isVideoCall = [[self.parameters objectForKey:RCVideoEnabled] boolValue];
+    }
+    
     if (self.isBeingPresented) {
         if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"make-call"]) {
             // call the other party
             if (self.connection) {
                 NSLog(@"Connection already ongoing");
                 return;
-            }
-            
-            if ([[self.parameters objectForKey:RCVideoEnabled] boolValue] == YES) {
-                self.isVideoCall = YES;
-            }
-            else {
-                self.isVideoCall = NO;
             }
             
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
@@ -153,7 +151,7 @@
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
             //check is it from notification, if it is anser it
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
-          
+           
             if (self.rcCallKitProvider){
                 [self answer:self.isVideoCall];
             } else {
