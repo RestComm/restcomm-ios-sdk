@@ -57,8 +57,9 @@
 
 /**
  *  @abstract It will present the callkit layout for incoming call and report the call to callkit
+ *  @param isVideo YES if its a video call, NO otherwise
  */
-- (void)presentIncomingCall;
+- (void)presentIncomingCallWithVideo:(BOOL)isVideo;
 
 /**
  *  @abstract Reports connecting to the callkit
@@ -72,8 +73,9 @@
 
 /**
  *  @abstract Reports start call to callkit
+ *  @param isVideo YES if its a video call, NO otherwise
  */
-- (void)startCall:(NSString *)handle;
+- (void)startCall:(NSString *)handle isVideo:(BOOL)isVideo;
 
 /**
  *  @abstract Reports end call to callkit

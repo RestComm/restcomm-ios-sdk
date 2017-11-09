@@ -2,93 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
-	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIcons</key>
-	<dict/>
-	<key>CFBundleIcons~ipad</key>
-	<dict/>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.restcomm-sip</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>restcomm-sip</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.restcomm-tel</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>restcomm-tel</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.restcomm-client</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>restcomm-client</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.sip</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>sip</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.tel</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>tel</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.telestax.olympus.client</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>client</string>
-			</array>
-		</dict>
-	</array>
+	<key>CFBundleIcons~ipad</key>
+	<dict/>
+	<key>UIMainStoryboardFile~ipad</key>
+	<string>Main_Universal</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 	<key>CFBundleVersion</key>
 	<string>beta.4.1+BUILD</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+		<string>voip</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>This App uses the camera for video calls</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -96,46 +27,111 @@
 		<key>Kits</key>
 		<array>
 			<dict>
-				<key>KitInfo</key>
-				<dict/>
 				<key>KitName</key>
 				<string>Crashlytics</string>
+				<key>KitInfo</key>
+				<dict/>
 			</dict>
 		</array>
 	</dict>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>This App uses the camera for video calls</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This App requires contacts access</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This App uses the microphone for audio and video calls</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-		<string>voip</string>
-	</array>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_Universal</string>
-	<key>UIMainStoryboardFile~ipad</key>
-	<string>Main_Universal</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-    <key>NSUserActivityTypes</key>
-    <array>
-        <string>INStartAudioCallIntent</string>
-    </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-sip</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-sip</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-tel</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-tel</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.restcomm-client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>restcomm-client</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.sip</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sip</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.tel</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tel</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.telestax.olympus.client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>client</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This App requires contacts access</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleIcons</key>
+	<dict/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>CFBundleDisplayName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 </dict>
 </plist>

@@ -33,7 +33,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 @interface AppDelegate()<RCCallKitProviderDelegate>
 @property (nonatomic, strong) PKPushRegistry * voipRegistry;
 @property (nonatomic, strong) RCCallKitProvider *callKitProvider;
-@property (nonatomic, strong) INInteraction *interaction;
+@property (nonatomic, strong) NSUserActivity *userActivity;
 
 @end
 
@@ -64,7 +64,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(register:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unregister:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
-    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self andImage:@"restcomm-logo-call-139x58.png"];
+    self.callKitProvider = [[RCCallKitProvider alloc] initWithDelegate:self andImage:@"inapp-icon-28x28@3x.png"];
     return YES;
 }
 
@@ -224,8 +224,8 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         [Utils updatePendingInterappUri:@""];
     } else {
         //check is callkit is waiting to start call
-        if (self.interaction){
-            [self openCallViewForStartingCall];
+        if (self.userActivity){
+            [self openCallViewForStartingCall:[self.userActivity.activityType isEqualToString:@"INStartVideoCallIntent"]];
         }
     }
 }
@@ -268,7 +268,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
     if (state == UIApplicationStateBackground || state == UIApplicationStateInactive){
         //Answer with callkit
         self.callKitProvider.connection = connection;
-        [self.callKitProvider presentIncomingCall];
+        [self.callKitProvider presentIncomingCallWithVideo:YES];
    } else {
        [self openCallView:connection isFromCallKit:NO];
    }
@@ -306,9 +306,12 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
     callViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     if (fromCallKit){
+        NSLog(@"AppDelegate ---openCallView from callkit.");
         [self routeAudioToSpeaker];
         callViewController.rcCallKitProvider = self.callKitProvider;
     }
+    //We dont have an option to know the type of the incoming connection (audio/video), so we will set, for know, video always
+    [callViewController.parameters setObject:[NSNumber numberWithBool:YES] forKey:RCVideoEnabled];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
 }
 
@@ -442,24 +445,33 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 #pragma mark Starting call
 
 -(BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler{
-    self.interaction = userActivity.interaction;
+    self.userActivity = userActivity;
     if (!self.device){
         //no need to wait, register and listen
         self.device = [self registerRCDevice];
     } else {
-        [self openCallViewForStartingCall];
+        NSLog(@"CallKit continueUserActivity");
+        [self openCallViewForStartingCall:[userActivity.activityType isEqualToString:@"INStartVideoCallIntent"]];
     }
     
     return true;
 }
 
 //called when tapped from list in calls in device
-- (void)openCallViewForStartingCall{
-    if (self.interaction){
-        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)self.interaction.intent;
-        INPerson *contact = startAudioCallIntent.contacts[0];
+- (void)openCallViewForStartingCall:(BOOL)hasVideo{
+    if (self.userActivity){
+        NSString *phoneNumber = nil;
+        INPerson *contact;
+        if ([self.userActivity.activityType isEqualToString:@"INStartVideoCallIntent"]){
+            INStartVideoCallIntent *startVideoCallIntent = (INStartVideoCallIntent *)self.userActivity.interaction.intent;
+            contact = startVideoCallIntent.contacts[0];
+        } else {
+            INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)self.userActivity.interaction.intent;
+            contact = startAudioCallIntent.contacts[0];
+        }
+        
         INPersonHandle *personHandle = contact.personHandle;
-        NSString *phoneNumber = personHandle.value;
+        phoneNumber = personHandle.value;
         
         //open callview
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:nil];
@@ -473,13 +485,13 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         [callViewController.parameters setObject:@"make-call" forKey:@"invoke-view-type"];
         [callViewController.parameters setObject:phoneNumber forKey:@"alias"];
         [callViewController.parameters setObject:phoneNumber forKey:@"username"];
-        [callViewController.parameters setObject:[NSNumber numberWithBool:NO] forKey:@"video-enabled"];
+        [callViewController.parameters setObject:[NSNumber numberWithBool:hasVideo] forKey:RCVideoEnabled];
         
         [[[[UIApplication sharedApplication] keyWindow] rootViewController]  presentViewController:callViewController animated:YES completion:nil];
         
-        [self.callKitProvider startCall:phoneNumber];
+        [self.callKitProvider startCall:phoneNumber isVideo:hasVideo];
     }
-    self.interaction = nil;
+    self.userActivity = nil;
     
 }
 
