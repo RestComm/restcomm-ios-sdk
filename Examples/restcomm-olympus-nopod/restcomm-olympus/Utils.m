@@ -23,6 +23,7 @@
 
 #import "Utils.h"
 #import "RCUtilities.h"
+#import "RestCommClient.h"
 
 
 //keys
@@ -32,14 +33,16 @@ NSString *const kSipIndentificationKey = @"sip-identification";
 NSString *const kSipPasswordKey = @"sip-password";
 NSString *const kSipRegistrarKey = @"sip-registrar";
 NSString *const kTurnEnabledKey = @"turn-enabled";
-NSString *const kTurnUrlKey = @"turn-url";
-NSString *const kTurnUsernameKey = @"turn-username";
-NSString *const kTurnPasswordKey = @"turn-password";
+NSString *const kICEUrlKey = @"turn-url";
+NSString *const kICEUsernameKey = @"turn-username";
+NSString *const kICEPasswordKey = @"turn-password";
 NSString *const kSignalingSecureKey = @"signaling-secure";
 NSString *const kTurnCanidateTimeoutKey = @"turn-candidate-timeout";
 NSString *const kIsFirstTimeKey = @"is-first-time";
 NSString *const kPendingInterappKey = @"pending-interapp-uri";
 NSString *const kSignalingCertificateKey = @"signaling-certificate-dir";
+NSString *const kICEDiscoveryTypeKey = @"ice-discovery-type";
+
 
 NSString *const kPushAccountKey = @"push-account";
 NSString *const kPushPasswordKey = @"push-password";
@@ -67,9 +70,9 @@ NSString* const kFriendlyName = @"Olympus";
                                     kSipPasswordKey : @"",
                                     kSipRegistrarKey : @"cloud.restcomm.com",
                                     kTurnEnabledKey : @(YES),
-                                    kTurnUrlKey : @"https://es.xirsys.com/_turn", // @"https://service.xirsys.com/ice", // @"https://computeengineondemand.appspot.com/turn",
-                                    kTurnUsernameKey : @"atsakiridis",  // @"iapprtc",
-                                    kTurnPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
+                                    kICEUrlKey : @"https://es.xirsys.com/_turn", // @"https://service.xirsys.com/ice", // @"https://computeengineondemand.appspot.com/turn",
+                                    kICEUsernameKey : @"atsakiridis",  // @"iapprtc",
+                                    kICEPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
                                     kSignalingSecureKey : @(YES),  // by default signaling is secure
                                     kSignalingCertificateKey : @"",
                                     kPushAccountKey: @"",
@@ -77,6 +80,7 @@ NSString* const kFriendlyName = @"Olympus";
                                     kPushTokenKey: @"",
                                     kPushDomainKey: @"push.restcomm.com",
                                     kHttpDomainKey: @"cloud.restcomm.com",
+                                    kICEDiscoveryTypeKey: [NSNumber numberWithInt:(int)kXirsysV3],
                                     kPushServerEnabledKey: @(NO), //by default we assume push is not enabled for account on server
                                     kPushIsSandboxKey: @(NO),
                                     //@"turn-candidate-timeout" : @"5",
@@ -345,22 +349,27 @@ NSString* const kFriendlyName = @"Olympus";
     return [[appDefaults stringForKey:kSignalingSecureKey] boolValue];
 }
 
-+ (NSString*)turnUrl
++ (NSString*)iceUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:kTurnUrlKey];
+    return [appDefaults stringForKey:kICEUrlKey];
 }
 
-+ (NSString*)turnUsername
++ (NSString*)iceUsername
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:kTurnUsernameKey];
+    return [appDefaults stringForKey:kICEUsernameKey];
 }
 
-+ (NSString*)turnPassword
++ (NSString*)icePassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    return [appDefaults stringForKey:kTurnPasswordKey];
+    return [appDefaults stringForKey:kICEPasswordKey];
+}
+
++ (int)iceDiscoveryType{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    return [appDefaults integerForKey:kICEDiscoveryTypeKey];
 }
 
 + (NSString*)turnCandidateTimeout
@@ -405,22 +414,27 @@ NSString* const kFriendlyName = @"Olympus";
     [appDefaults setObject:@(turnEnabled) forKey:kTurnEnabledKey];
 }
 
-+ (void)updateTurnUrl:(NSString*)turnUrl
++ (void)updateICEUrl:(NSString*)iceUrl
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnUrl forKey:kTurnUrlKey];
+    [appDefaults setObject:iceUrl forKey:kICEUrlKey];
 }
 
-+ (void)updateTurnUsername:(NSString*)turnUsername
++ (void)updateICEUsername:(NSString*)iceUsername
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnUsername forKey:kTurnUsernameKey];
+    [appDefaults setObject:iceUsername forKey:kICEUsernameKey];
 }
 
-+ (void)updateTurnPassword:(NSString*)turnPassword
++ (void)updateICEPassword:(NSString*)icePassword
 {
     NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
-    [appDefaults setObject:turnPassword forKey:kTurnPasswordKey];
+    [appDefaults setObject:icePassword forKey:kICEPasswordKey];
+}
+
++ (void)updateICEDiscoveryType:(int)iceDiscoveryType{
+    NSUserDefaults* appDefaults = [NSUserDefaults standardUserDefaults];
+    [appDefaults setInteger:iceDiscoveryType forKey:kICEDiscoveryTypeKey];
 }
 
 + (void)updateTurnCandidateTimeout:(NSString*)turnCandidateTimeout
@@ -642,7 +656,6 @@ NSString* const kFriendlyName = @"Olympus";
     NSPredicate *filterDeleted = [NSPredicate predicateWithFormat:@"deleted == NO"];
     return [contactsArray filteredArrayUsingPredicate:filterDeleted];
 }
-
 
 #pragma mark - View animations
 

@@ -116,13 +116,13 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
                            [Utils sipIdentification], RCAorKey,
                            [Utils sipPassword], RCPasswordKey,
                            @([Utils turnEnabled]), RCTurnEnabledKey,
-                           [Utils turnUrl], RCTurnUrlKey,
-                           [Utils turnUsername], RCTurnUsernameKey,
-                           [Utils turnPassword], RCTurnPasswordKey,
+                           [Utils iceUrl], RCTurnUrlKey,
+                           [Utils iceUsername], RCTurnUsernameKey,
+                           [Utils icePassword], RCTurnPasswordKey,
                            @"cloud.restcomm.com", RCIceDomainKey,
                            @([Utils signalingSecure]), RCSignalingSecureKey,
                            [cafilePath stringByDeletingLastPathComponent], RCSignalingCertificateDirKey,
-                           [NSNumber numberWithInt:(int)kXirsysV3] , RCIceConfigTypeKey,
+                           [NSNumber numberWithInt:[Utils iceDiscoveryType]] , RCIceConfigTypeKey,
                            nil];
         /******************************/
         /* Xirsys custom */
