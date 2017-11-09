@@ -24,7 +24,6 @@
 #import "Utils.h"
 #import "MainNavigationController.h"
 #import "TestFairy/TestFairy.h"
-#import "AVFoundation/AVFoundation.h"
 #import "Intents/Intents.h"
 
 NSString * const kLocalMessagingFromKey = @"local-messaging-from";
@@ -307,7 +306,6 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
     
     if (fromCallKit){
         NSLog(@"AppDelegate ---openCallView from callkit.");
-        [self routeAudioToSpeaker];
         callViewController.rcCallKitProvider = self.callKitProvider;
     }
     //We dont have an option to know the type of the incoming connection (audio/video), so we will set, for know, video always
@@ -500,15 +498,6 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 #pragma mark RCCallKitProviderDelegate method
 - (void)newIncomingCallAnswered:(RCConnection *)connection{
       [self openCallView:connection isFromCallKit:YES];
-}
-
-- (void)routeAudioToSpeaker {
-    NSError *error = nil;
-    if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
-                                                 mode:AVAudioSessionModeVoiceChat
-                                              options:(AVAudioSessionCategoryOptionDefaultToSpeaker) error:&error]) {
-        NSLog(@"Unable to reroute audio: %@", [error localizedDescription]);
-    }
 }
 
 - (void)callEnded{
