@@ -20,13 +20,13 @@
  *
  */
 
-#import "ICEServersTableViewController.h"
+#import "ICEDiscoveryTypeTableViewController.h"
 
-@interface ICEServersTableViewController ()
+@interface ICEDiscoveryTypeTableViewController ()
 @property (nonatomic, strong) NSArray *tableData;
 @end
 
-@implementation ICEServersTableViewController
+@implementation ICEDiscoveryTypeTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

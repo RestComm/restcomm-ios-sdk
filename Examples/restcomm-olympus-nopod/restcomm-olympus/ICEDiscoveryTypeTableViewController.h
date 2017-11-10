@@ -28,7 +28,7 @@
 
 @end
 
-@interface ICEServersTableViewController : UITableViewController
+@interface ICEDiscoveryTypeTableViewController : UITableViewController
 @property (nonatomic, weak) id<ICEServersDelegate> delegate;
 @property (nonatomic, assign) int selectedType;
 @end

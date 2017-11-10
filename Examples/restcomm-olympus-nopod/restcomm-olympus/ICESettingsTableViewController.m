@@ -25,7 +25,7 @@
 #import "ICESettingsNavigationController.h"
 #import "Utils.h"
 #import "AppDelegate.h"
-#import "ICEServersTableViewController.h"
+#import "ICEDiscoveryTypeTableViewController.h"
 
 @interface ICESettingsTableViewController () <ICEServersDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *iceUrlText;
@@ -308,7 +308,7 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"segue-ice-servers"]) {
-        ICEServersTableViewController * iceServersTableViewController = (ICEServersTableViewController *)[segue destinationViewController];
+        ICEDiscoveryTypeTableViewController * iceServersTableViewController = (ICEDiscoveryTypeTableViewController *)[segue destinationViewController];
         iceServersTableViewController.delegate = self;
         iceServersTableViewController.selectedType = [self getIntFromICEServerTypeString:self.lblICEServersDiscoveryType.text];
     }

@@ -34,8 +34,8 @@
 		A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94A1B841F6A7E790034352E /* MessageUI.framework */; };
 		A964D1D61FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
 		A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A964D1D51FA3DEBC005B3234 /* LocalMessage.m */; };
-		A96DBA441FB3DB4A00E58749 /* ICEServersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A96DBA431FB3DB4A00E58749 /* ICEServersTableViewController.m */; };
-		A96DBA451FB3DB4A00E58749 /* ICEServersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A96DBA431FB3DB4A00E58749 /* ICEServersTableViewController.m */; };
+		A96DBA441FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A96DBA431FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m */; };
+		A96DBA451FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A96DBA431FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m */; };
 		A973B99A1F7D135A00F16010 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A973B9991F7D135A00F16010 /* PushKit.framework */; };
 		A9ACE4611F8D13B000BE9A7B /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */; };
 		A9C0911C1FA01B4F002A161A /* PushSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */; };
@@ -255,8 +255,8 @@
 		A95A43711FA9C9DC00AB7C93 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		A964D1D41FA3DEBC005B3234 /* LocalMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LocalMessage.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.h"; sourceTree = "<group>"; };
 		A964D1D51FA3DEBC005B3234 /* LocalMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LocalMessage.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/LocalMessage.m"; sourceTree = "<group>"; };
-		A96DBA421FB3DB4A00E58749 /* ICEServersTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ICEServersTableViewController.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/ICEServersTableViewController.h"; sourceTree = "<group>"; };
-		A96DBA431FB3DB4A00E58749 /* ICEServersTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ICEServersTableViewController.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/ICEServersTableViewController.m"; sourceTree = "<group>"; };
+		A96DBA421FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ICEDiscoveryTypeTableViewController.h; path = "../../restcomm-olympus-nopod/restcomm-olympus/ICEDiscoveryTypeTableViewController.h"; sourceTree = "<group>"; };
+		A96DBA431FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ICEDiscoveryTypeTableViewController.m; path = "../../restcomm-olympus-nopod/restcomm-olympus/ICEDiscoveryTypeTableViewController.m"; sourceTree = "<group>"; };
 		A973B9991F7D135A00F16010 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A9A117F31F7726DC000A83B3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A9ACE4601F8D13AF00BE9A7B /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
@@ -539,8 +539,8 @@
 				A94A1B801F6A7E160034352E /* BugReportViewController.h */,
 				A9C0911A1FA01B4D002A161A /* PushSettingsViewController.h */,
 				A9C0911B1FA01B4E002A161A /* PushSettingsViewController.m */,
-				A96DBA421FB3DB4A00E58749 /* ICEServersTableViewController.h */,
-				A96DBA431FB3DB4A00E58749 /* ICEServersTableViewController.m */,
+				A96DBA421FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.h */,
+				A96DBA431FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1200,7 +1200,7 @@
 			files = (
 				AEA496681C2997F6000D9762 /* main.m in Sources */,
 				AEA496651C2997F6000D9762 /* InputAccessoryProxyView.m in Sources */,
-				A96DBA441FB3DB4A00E58749 /* ICEServersTableViewController.m in Sources */,
+				A96DBA441FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m in Sources */,
 				A9CA4D801F5EDAEF0005A553 /* LocalContact.m in Sources */,
 				AEA496031C2997F6000D9762 /* AppDelegate.mm in Sources */,
 				AEA496021C2997F6000D9762 /* AboutTableViewController.m in Sources */,
@@ -1233,7 +1233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CA4D811F5EDAEF0005A553 /* LocalContact.m in Sources */,
-				A96DBA451FB3DB4A00E58749 /* ICEServersTableViewController.m in Sources */,
+				A96DBA451FB3DB4A00E58749 /* ICEDiscoveryTypeTableViewController.m in Sources */,
 				A964D1D71FA3DEBC005B3234 /* LocalMessage.m in Sources */,
 				AED0B0661A0976F8008A6057 /* restcomm-olympusTests.m in Sources */,
 				A9C0911D1FA01B4F002A161A /* PushSettingsViewController.m in Sources */,

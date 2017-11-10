@@ -1032,12 +1032,14 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     AVAudioSession *session = [AVAudioSession sharedInstance];
     NSError *error = nil;
-    if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-          //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
-                        error:&error]) {
-        // handle error
-        RCLogError("Error setting AVAudioSession category");
-        return NO;
+    if (![session.category isEqualToString:@"AVAudioSessionCategoryPlayAndRecord"]){
+        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+              //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
+                            error:&error]) {
+            // handle error
+            RCLogError("Error setting AVAudioSession category");
+            return NO;
+        }
     }
     
     if (![session setActive:YES error:&error]) {

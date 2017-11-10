@@ -317,10 +317,10 @@
             </objects>
             <point key="canvasLocation" x="1917.5999999999999" y="1356.9715142428786"/>
         </scene>
-        <!--Servers Table View Controller-->
+        <!--Discovery Type Table View Controller-->
         <scene sceneID="f8S-Gq-lCF">
             <objects>
-                <tableViewController id="8lC-MN-75Y" customClass="ICEServersTableViewController" sceneMemberID="viewController">
+                <tableViewController id="8lC-MN-75Y" customClass="ICEDiscoveryTypeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Tr7-GQ-cpO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1969,6 +1969,6 @@ This is especially useful if your issue doesn't fall in any of the predefined li
     <inferredMetricsTieBreakers>
         <segue reference="6Qc-aa-OAY"/>
         <segue reference="Nu7-ep-AQ1"/>
-        <segue reference="5CG-FW-vB3"/>
+        <segue reference="6ad-Z3-ci6"/>
     </inferredMetricsTieBreakers>
 </document>
