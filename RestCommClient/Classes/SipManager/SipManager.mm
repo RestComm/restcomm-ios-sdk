@@ -943,6 +943,9 @@ ssize_t pipeToSofia(const char * msg, int fd)
         if ([params objectForKey:@"turn-candidate-timeout"]) {
             [self.params setObject:[params objectForKey:@"turn-candidate-timeout"] forKey:@"turn-candidate-timeout"];
         }
+        if ([params objectForKey:@"ice-config-type"]) {
+            [self.params setObject:[params objectForKey:@"ice-config-type"] forKey:@"ice-config-type"];
+        }
     }
     else {
         // when no params are passed, we default to registering to restcomm with the stored registrar at self.params
@@ -1029,12 +1032,14 @@ ssize_t pipeToSofia(const char * msg, int fd)
 {
     AVAudioSession *session = [AVAudioSession sharedInstance];
     NSError *error = nil;
-    if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-          //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
-                        error:&error]) {
-        // handle error
-        RCLogError("Error setting AVAudioSession category");
-        return NO;
+    if (![session.category isEqualToString:@"AVAudioSessionCategoryPlayAndRecord"]){
+        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+              //withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker /*AVAudioSessionCategoryOptionMixWithOthers*/
+                            error:&error]) {
+            // handle error
+            RCLogError("Error setting AVAudioSession category");
+            return NO;
+        }
     }
     
     if (![session setActive:YES error:&error]) {

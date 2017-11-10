@@ -178,10 +178,34 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="TURN URL" footerTitle="Leave empty to disable TURN" id="GKS-FI-6Ba">
+                            <tableViewSection headerTitle="ICE Servers Discovery Type" id="UY5-dn-0Oq">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="6Fd-U2-REm">
+                                        <rect key="frame" x="0.0" y="163" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="6Fd-U2-REm" id="ekZ-X9-NAO">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztH-ss-b8F">
+                                                    <rect key="frame" x="16" y="11" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ztH-ss-b8F" firstAttribute="leading" secondItem="ekZ-X9-NAO" secondAttribute="leading" constant="16" id="bEK-bF-a38"/>
+                                                <constraint firstItem="ztH-ss-b8F" firstAttribute="centerY" secondItem="ekZ-X9-NAO" secondAttribute="centerY" id="h4q-Hh-tB4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="ICE URL" footerTitle="Leave empty to disable TURN" id="GKS-FI-6Ba">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Pys-TF-2ko">
-                                        <rect key="frame" x="0.0" y="170.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="270.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pys-TF-2ko" id="FQf-bA-wVJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -209,10 +233,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="TURN Username" id="oPh-5k-taH">
+                            <tableViewSection headerTitle="ICE Username" id="oPh-5k-taH">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GnI-e3-LRe">
-                                        <rect key="frame" x="0.0" y="282.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="382.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GnI-e3-LRe" id="jzQ-Me-n6E">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -234,10 +258,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="TURN Password" id="PV7-85-FSA">
+                            <tableViewSection headerTitle="ICE Password" id="PV7-85-FSA">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="djY-4b-LRh">
-                                        <rect key="frame" x="0.0" y="382.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="482.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="djY-4b-LRh" id="aPR-kh-Baj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -280,15 +304,47 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="ICEServersContentView" destination="ekZ-X9-NAO" id="Pdp-ba-Uqt"/>
+                        <outlet property="icePasswordText" destination="ZNH-h0-x6c" id="1NR-IQ-n4G"/>
+                        <outlet property="iceUrlText" destination="Hdv-sc-LD5" id="alr-Hv-WO3"/>
+                        <outlet property="iceUsernameText" destination="Pct-M7-t22" id="Vuo-sM-hx6"/>
+                        <outlet property="lblICEServersDiscoveryType" destination="ztH-ss-b8F" id="lpX-sy-RHT"/>
                         <outlet property="switchOnOff" destination="5Sh-qO-R6j" id="OsW-2r-ABx"/>
-                        <outlet property="turnPasswordText" destination="ZNH-h0-x6c" id="fys-G4-Gcg"/>
-                        <outlet property="turnUrlText" destination="Hdv-sc-LD5" id="7i2-PP-pA3"/>
-                        <outlet property="turnUsernameText" destination="Pct-M7-t22" id="UAn-JP-EGG"/>
+                        <segue destination="8lC-MN-75Y" kind="show" identifier="segue-ice-servers" id="5CG-FW-vB3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8go-mT-i9M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1917.5999999999999" y="1356.9715142428786"/>
+        </scene>
+        <!--Discovery Type Table View Controller-->
+        <scene sceneID="f8S-Gq-lCF">
+            <objects>
+                <tableViewController id="8lC-MN-75Y" customClass="ICEDiscoveryTypeTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Tr7-GQ-cpO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="taQ-TI-jPy">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="taQ-TI-jPy" id="NWA-oU-Mbl">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8lC-MN-75Y" id="lwG-KE-tFY"/>
+                            <outlet property="delegate" destination="8lC-MN-75Y" id="kID-k7-uRr"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Zhx-kp-Ycd"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gb1-za-qWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3398" y="1357"/>
         </scene>
         <!--About Table View Controller-->
         <scene sceneID="Csj-7X-i1S">
@@ -1866,6 +1922,24 @@ This is especially useful if your issue doesn't fall in any of the predefined li
             </objects>
             <point key="canvasLocation" x="-532" y="965"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9pk-ba-iKH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="etR-yJ-aqe" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Cfv-cQ-ypJ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="8lC-MN-75Y" kind="relationship" relationship="rootViewController" id="6ad-Z3-ci6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="87h-cU-09l" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2676" y="1357"/>
+        </scene>
     </scenes>
     <resources>
         <image name="answer-audio-50x50.png" width="50" height="50"/>
@@ -1895,5 +1969,6 @@ This is especially useful if your issue doesn't fall in any of the predefined li
     <inferredMetricsTieBreakers>
         <segue reference="6Qc-aa-OAY"/>
         <segue reference="Nu7-ep-AQ1"/>
+        <segue reference="6ad-Z3-ci6"/>
     </inferredMetricsTieBreakers>
 </document>
