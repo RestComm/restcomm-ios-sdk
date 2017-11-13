@@ -1,846 +1,574 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>AE7DB43E1DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB4491DCCDBD3007FED6E</string>
-				<string>AE7DB4631DCCDBD3007FED6E</string>
-				<string>AE7DB4481DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB43F1DCCDBD3007FED6E</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0810</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Telestax Inc.</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>AE7DB4461DCCDBD3007FED6E</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>8.1</string>
-						<key>DevelopmentTeam</key>
-						<string>H9PG74NSQT</string>
-						<key>ProvisioningStyle</key>
-						<string>Automatic</string>
-					</dict>
-					<key>AE7DB45F1DCCDBD3007FED6E</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>8.1</string>
-						<key>DevelopmentTeam</key>
-						<string>H9PG74NSQT</string>
-						<key>ProvisioningStyle</key>
-						<string>Automatic</string>
-						<key>TestTargetID</key>
-						<string>AE7DB4461DCCDBD3007FED6E</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>AE7DB4421DCCDBD3007FED6E</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>AE7DB43E1DCCDBD3007FED6E</string>
-			<key>productRefGroup</key>
-			<string>AE7DB4481DCCDBD3007FED6E</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>AE7DB4461DCCDBD3007FED6E</string>
-				<string>AE7DB45F1DCCDBD3007FED6E</string>
-			</array>
-		</dict>
-		<key>AE7DB4421DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AE7DB4671DCCDBD3007FED6E</string>
-				<string>AE7DB4681DCCDBD3007FED6E</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AE7DB4431DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AE7DB4521DCCDBD3007FED6E</string>
-				<string>AE7DB44F1DCCDBD3007FED6E</string>
-				<string>AE7DB44C1DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB4441DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB4451DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AE7DB45A1DCCDBD3007FED6E</string>
-				<string>AE7DB4571DCCDBD3007FED6E</string>
-				<string>AE7DB4551DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB4461DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>AE7DB4691DCCDBD3007FED6E</string>
-			<key>buildPhases</key>
-			<array>
-				<string>AE7DB4431DCCDBD3007FED6E</string>
-				<string>AE7DB4441DCCDBD3007FED6E</string>
-				<string>AE7DB4451DCCDBD3007FED6E</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>restcomm-helloworld</string>
-			<key>productName</key>
-			<string>restcomm-helloworld</string>
-			<key>productReference</key>
-			<string>AE7DB4471DCCDBD3007FED6E</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>AE7DB4471DCCDBD3007FED6E</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>restcomm-helloworld.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>AE7DB4481DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB4471DCCDBD3007FED6E</string>
-				<string>AE7DB4601DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4491DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB44D1DCCDBD3007FED6E</string>
-				<string>AE7DB44E1DCCDBD3007FED6E</string>
-				<string>AE7DB4501DCCDBD3007FED6E</string>
-				<string>AE7DB4511DCCDBD3007FED6E</string>
-				<string>AE7DB4531DCCDBD3007FED6E</string>
-				<string>AE7DB4561DCCDBD3007FED6E</string>
-				<string>AE7DB4581DCCDBD3007FED6E</string>
-				<string>AE7DB45B1DCCDBD3007FED6E</string>
-				<string>AE7DB44A1DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>restcomm-helloworld</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB44A1DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB44B1DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB44B1DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB44C1DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB44B1DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB44D1DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>AppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB44E1DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>AppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB44F1DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB44E1DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB4501DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>ViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4511DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>ViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4521DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB4511DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB4531DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB4541DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>Main.storyboard</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4541DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.storyboard</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/Main.storyboard</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4551DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB4531DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB4561DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Assets.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4571DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB4561DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB4581DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB4591DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>LaunchScreen.storyboard</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4591DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.storyboard</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/LaunchScreen.storyboard</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB45A1DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB4581DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB45B1DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB45C1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AE7DB4651DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB45D1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB45E1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AE7DB45F1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>AE7DB46C1DCCDBD3007FED6E</string>
-			<key>buildPhases</key>
-			<array>
-				<string>AE7DB45C1DCCDBD3007FED6E</string>
-				<string>AE7DB45D1DCCDBD3007FED6E</string>
-				<string>AE7DB45E1DCCDBD3007FED6E</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>AE7DB4621DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>restcomm-helloworldTests</string>
-			<key>productName</key>
-			<string>restcomm-helloworldTests</string>
-			<key>productReference</key>
-			<string>AE7DB4601DCCDBD3007FED6E</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>AE7DB4601DCCDBD3007FED6E</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>restcomm-helloworldTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>AE7DB4611DCCDBD3007FED6E</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>AE7DB43F1DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>AE7DB4461DCCDBD3007FED6E</string>
-			<key>remoteInfo</key>
-			<string>restcomm-helloworld</string>
-		</dict>
-		<key>AE7DB4621DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>AE7DB4461DCCDBD3007FED6E</string>
-			<key>targetProxy</key>
-			<string>AE7DB4611DCCDBD3007FED6E</string>
-		</dict>
-		<key>AE7DB4631DCCDBD3007FED6E</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AE7DB4641DCCDBD3007FED6E</string>
-				<string>AE7DB4661DCCDBD3007FED6E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>restcomm-helloworldTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4641DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>restcomm_helloworldTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4651DCCDBD3007FED6E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AE7DB4641DCCDBD3007FED6E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AE7DB4661DCCDBD3007FED6E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AE7DB4671DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_ANALYZER_NONNULL</key>
-				<string>YES</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_DOCUMENTATION_COMMENTS</key>
-				<string>YES</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INFINITE_RECURSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_SUSPICIOUS_MOVES</key>
-				<string>YES</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>ENABLE_TESTABILITY</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_NO_COMMON_BLOCKS</key>
-				<string>YES</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>10.1</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>YES</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AE7DB4681DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_ANALYZER_NONNULL</key>
-				<string>YES</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_DOCUMENTATION_COMMENTS</key>
-				<string>YES</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INFINITE_RECURSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_SUSPICIOUS_MOVES</key>
-				<string>YES</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf-with-dsym</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_NO_COMMON_BLOCKS</key>
-				<string>YES</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>10.1</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>NO</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AE7DB4691DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AE7DB46A1DCCDBD3007FED6E</string>
-				<string>AE7DB46B1DCCDBD3007FED6E</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AE7DB46A1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>DEVELOPMENT_TEAM</key>
-				<string>H9PG74NSQT</string>
-				<key>ENABLE_BITCODE</key>
-				<string>NO</string>
-				<key>INFOPLIST_FILE</key>
-				<string>restcomm-helloworld/Info.plist</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.0</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.telestax.restcomm-helloworld-demo</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AE7DB46B1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>DEVELOPMENT_TEAM</key>
-				<string>H9PG74NSQT</string>
-				<key>ENABLE_BITCODE</key>
-				<string>NO</string>
-				<key>INFOPLIST_FILE</key>
-				<string>restcomm-helloworld/Info.plist</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.0</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.telestax.restcomm-helloworld-demo</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AE7DB46C1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AE7DB46D1DCCDBD3007FED6E</string>
-				<string>AE7DB46E1DCCDBD3007FED6E</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AE7DB46D1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>DEVELOPMENT_TEAM</key>
-				<string>H9PG74NSQT</string>
-				<key>INFOPLIST_FILE</key>
-				<string>restcomm-helloworldTests/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.telestax.restcomm-helloworldTests</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AE7DB46E1DCCDBD3007FED6E</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>DEVELOPMENT_TEAM</key>
-				<string>H9PG74NSQT</string>
-				<key>INFOPLIST_FILE</key>
-				<string>restcomm-helloworldTests/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.telestax.restcomm-helloworldTests</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>AE7DB43F1DCCDBD3007FED6E</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		550D489A729E71CAFD70F226 /* libPods-restcomm-helloworldTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1745A5B23A5AAE2D8C205FC /* libPods-restcomm-helloworldTests.a */; };
+		AE7DB44C1DCCDBD3007FED6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB44B1DCCDBD3007FED6E /* main.m */; };
+		AE7DB44F1DCCDBD3007FED6E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */; };
+		AE7DB4521DCCDBD3007FED6E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB4511DCCDBD3007FED6E /* ViewController.m */; };
+		AE7DB4551DCCDBD3007FED6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4531DCCDBD3007FED6E /* Main.storyboard */; };
+		AE7DB4571DCCDBD3007FED6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */; };
+		AE7DB45A1DCCDBD3007FED6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */; };
+		AE7DB4651DCCDBD3007FED6E /* restcomm_helloworldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */; };
+		B2F61FCB097D52E3F4395DA0 /* libPods-restcomm-helloworld.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA13FF11E831A3766D82C5E1 /* libPods-restcomm-helloworld.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE7DB4611DCCDBD3007FED6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE7DB43F1DCCDBD3007FED6E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE7DB4461DCCDBD3007FED6E;
+			remoteInfo = "restcomm-helloworld";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0C439C9C800C313C381C3C0D /* Pods-restcomm-helloworldTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-helloworldTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-helloworldTests/Pods-restcomm-helloworldTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1597B935ABE9248CFF668412 /* Pods-restcomm-helloworld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-helloworld.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-helloworld/Pods-restcomm-helloworld.release.xcconfig"; sourceTree = "<group>"; };
+		6850DE66EB58D81611B34797 /* Pods-restcomm-helloworld.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-helloworld.debug.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-helloworld/Pods-restcomm-helloworld.debug.xcconfig"; sourceTree = "<group>"; };
+		AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "restcomm-helloworld.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE7DB44B1DCCDBD3007FED6E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AE7DB44D1DCCDBD3007FED6E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		AE7DB4501DCCDBD3007FED6E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AE7DB4511DCCDBD3007FED6E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		AE7DB4541DCCDBD3007FED6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE7DB4591DCCDBD3007FED6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE7DB45B1DCCDBD3007FED6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "restcomm-helloworldTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = restcomm_helloworldTests.m; sourceTree = "<group>"; };
+		AE7DB4661DCCDBD3007FED6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA13FF11E831A3766D82C5E1 /* libPods-restcomm-helloworld.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-helloworld.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1745A5B23A5AAE2D8C205FC /* libPods-restcomm-helloworldTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-helloworldTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F76C12D4B21178C13FB837FF /* Pods-restcomm-helloworldTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-helloworldTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-helloworldTests/Pods-restcomm-helloworldTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE7DB4441DCCDBD3007FED6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2F61FCB097D52E3F4395DA0 /* libPods-restcomm-helloworld.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45D1DCCDBD3007FED6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550D489A729E71CAFD70F226 /* libPods-restcomm-helloworldTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5A30A2FB21E9D2CBC1FE3278 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6850DE66EB58D81611B34797 /* Pods-restcomm-helloworld.debug.xcconfig */,
+				1597B935ABE9248CFF668412 /* Pods-restcomm-helloworld.release.xcconfig */,
+				0C439C9C800C313C381C3C0D /* Pods-restcomm-helloworldTests.debug.xcconfig */,
+				F76C12D4B21178C13FB837FF /* Pods-restcomm-helloworldTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		AD171B23E667907470C19B69 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BA13FF11E831A3766D82C5E1 /* libPods-restcomm-helloworld.a */,
+				E1745A5B23A5AAE2D8C205FC /* libPods-restcomm-helloworldTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE7DB43E1DCCDBD3007FED6E = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4491DCCDBD3007FED6E /* restcomm-helloworld */,
+				AE7DB4631DCCDBD3007FED6E /* restcomm-helloworldTests */,
+				AE7DB4481DCCDBD3007FED6E /* Products */,
+				5A30A2FB21E9D2CBC1FE3278 /* Pods */,
+				AD171B23E667907470C19B69 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		AE7DB4481DCCDBD3007FED6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */,
+				AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE7DB4491DCCDBD3007FED6E /* restcomm-helloworld */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB44D1DCCDBD3007FED6E /* AppDelegate.h */,
+				AE7DB44E1DCCDBD3007FED6E /* AppDelegate.m */,
+				AE7DB4501DCCDBD3007FED6E /* ViewController.h */,
+				AE7DB4511DCCDBD3007FED6E /* ViewController.m */,
+				AE7DB4531DCCDBD3007FED6E /* Main.storyboard */,
+				AE7DB4561DCCDBD3007FED6E /* Assets.xcassets */,
+				AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */,
+				AE7DB45B1DCCDBD3007FED6E /* Info.plist */,
+				AE7DB44A1DCCDBD3007FED6E /* Supporting Files */,
+			);
+			path = "restcomm-helloworld";
+			sourceTree = "<group>";
+		};
+		AE7DB44A1DCCDBD3007FED6E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB44B1DCCDBD3007FED6E /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AE7DB4631DCCDBD3007FED6E /* restcomm-helloworldTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE7DB4641DCCDBD3007FED6E /* restcomm_helloworldTests.m */,
+				AE7DB4661DCCDBD3007FED6E /* Info.plist */,
+			);
+			path = "restcomm-helloworldTests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE7DB4691DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */;
+			buildPhases = (
+				8FBF0B601DA60CEB10EE6049 /* [CP] Check Pods Manifest.lock */,
+				AE7DB4431DCCDBD3007FED6E /* Sources */,
+				AE7DB4441DCCDBD3007FED6E /* Frameworks */,
+				AE7DB4451DCCDBD3007FED6E /* Resources */,
+				E26CDA0F23DC2DE817400F08 /* [CP] Embed Pods Frameworks */,
+				EF40F58028197D9ADAC0AE5D /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "restcomm-helloworld";
+			productName = "restcomm-helloworld";
+			productReference = AE7DB4471DCCDBD3007FED6E /* restcomm-helloworld.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE7DB45F1DCCDBD3007FED6E /* restcomm-helloworldTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE7DB46C1DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */;
+			buildPhases = (
+				64DA621BA04E9E2A29471FE8 /* [CP] Check Pods Manifest.lock */,
+				AE7DB45C1DCCDBD3007FED6E /* Sources */,
+				AE7DB45D1DCCDBD3007FED6E /* Frameworks */,
+				AE7DB45E1DCCDBD3007FED6E /* Resources */,
+				C915851A9BD7770385394ECF /* [CP] Embed Pods Frameworks */,
+				0685DF9903FA028C023F7E34 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE7DB4621DCCDBD3007FED6E /* PBXTargetDependency */,
+			);
+			name = "restcomm-helloworldTests";
+			productName = "restcomm-helloworldTests";
+			productReference = AE7DB4601DCCDBD3007FED6E /* restcomm-helloworldTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE7DB43F1DCCDBD3007FED6E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Telestax Inc.";
+				TargetAttributes = {
+					AE7DB4461DCCDBD3007FED6E = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = H9PG74NSQT;
+						ProvisioningStyle = Automatic;
+					};
+					AE7DB45F1DCCDBD3007FED6E = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = H9PG74NSQT;
+						ProvisioningStyle = Automatic;
+						TestTargetID = AE7DB4461DCCDBD3007FED6E;
+					};
+				};
+			};
+			buildConfigurationList = AE7DB4421DCCDBD3007FED6E /* Build configuration list for PBXProject "restcomm-helloworld" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE7DB43E1DCCDBD3007FED6E;
+			productRefGroup = AE7DB4481DCCDBD3007FED6E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */,
+				AE7DB45F1DCCDBD3007FED6E /* restcomm-helloworldTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE7DB4451DCCDBD3007FED6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB45A1DCCDBD3007FED6E /* LaunchScreen.storyboard in Resources */,
+				AE7DB4571DCCDBD3007FED6E /* Assets.xcassets in Resources */,
+				AE7DB4551DCCDBD3007FED6E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45E1DCCDBD3007FED6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0685DF9903FA028C023F7E34 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-helloworldTests/Pods-restcomm-helloworldTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		64DA621BA04E9E2A29471FE8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8FBF0B601DA60CEB10EE6049 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C915851A9BD7770385394ECF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-helloworldTests/Pods-restcomm-helloworldTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E26CDA0F23DC2DE817400F08 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-helloworld/Pods-restcomm-helloworld-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF40F58028197D9ADAC0AE5D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-restcomm-helloworld/Pods-restcomm-helloworld-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE7DB4431DCCDBD3007FED6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB4521DCCDBD3007FED6E /* ViewController.m in Sources */,
+				AE7DB44F1DCCDBD3007FED6E /* AppDelegate.m in Sources */,
+				AE7DB44C1DCCDBD3007FED6E /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE7DB45C1DCCDBD3007FED6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE7DB4651DCCDBD3007FED6E /* restcomm_helloworldTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE7DB4621DCCDBD3007FED6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE7DB4461DCCDBD3007FED6E /* restcomm-helloworld */;
+			targetProxy = AE7DB4611DCCDBD3007FED6E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE7DB4531DCCDBD3007FED6E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE7DB4541DCCDBD3007FED6E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AE7DB4581DCCDBD3007FED6E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE7DB4591DCCDBD3007FED6E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE7DB4671DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE7DB4681DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE7DB46A1DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6850DE66EB58D81611B34797 /* Pods-restcomm-helloworld.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "restcomm-helloworld/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworld-demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AE7DB46B1DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1597B935ABE9248CFF668412 /* Pods-restcomm-helloworld.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "restcomm-helloworld/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworld-demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AE7DB46D1DCCDBD3007FED6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C439C9C800C313C381C3C0D /* Pods-restcomm-helloworldTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				INFOPLIST_FILE = "restcomm-helloworldTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworldTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
+			};
+			name = Debug;
+		};
+		AE7DB46E1DCCDBD3007FED6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F76C12D4B21178C13FB837FF /* Pods-restcomm-helloworldTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = H9PG74NSQT;
+				INFOPLIST_FILE = "restcomm-helloworldTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.telestax.restcomm-helloworldTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/restcomm-helloworld.app/restcomm-helloworld";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE7DB4421DCCDBD3007FED6E /* Build configuration list for PBXProject "restcomm-helloworld" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB4671DCCDBD3007FED6E /* Debug */,
+				AE7DB4681DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE7DB4691DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworld" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB46A1DCCDBD3007FED6E /* Debug */,
+				AE7DB46B1DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE7DB46C1DCCDBD3007FED6E /* Build configuration list for PBXNativeTarget "restcomm-helloworldTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE7DB46D1DCCDBD3007FED6E /* Debug */,
+				AE7DB46E1DCCDBD3007FED6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE7DB43F1DCCDBD3007FED6E /* Project object */;
+}

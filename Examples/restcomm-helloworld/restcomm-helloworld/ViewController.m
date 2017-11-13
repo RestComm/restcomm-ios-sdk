@@ -39,12 +39,12 @@
     self.isInitialized = NO;
     
     self.parameters = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                       @"ios-sdk", @"aor",
-                       @"1111", @"password",
+                       @"ios-sdk", RCAorKey,
+                       @"1111", RCPasswordKey,
                        nil];
     
     // CHANGEME: set the IP address of your RestComm instance in the URI below
-    [self.parameters setObject:@"cloud.restcomm.com" forKey:@"registrar"];
+    [self.parameters setObject:@"cloud.restcomm.com" forKey:RCRegistrarKey];
     
     // initialize RestComm Client by setting up an RCDevice
     self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
@@ -65,12 +65,12 @@
     
     // CHANGEME: set the number of the RestComm Application you wish to contact (currently we are using '1235',
     // which is the Hello World RestComm Application). Also set the ip address for your RestComm instance
-    [self.parameters setObject:@"sip:+1235@cloud.restcomm.com" forKey:@"username"];
+    [self.parameters setObject:@"sip:+1235@cloud.restcomm.com" forKey:RCUsername];
     
     // call the other party
     self.connection = [self.device connect:self.parameters delegate:self];
     
-    self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:@"username"]];
+    self.callLabel.text = [NSString stringWithFormat:@"Calling %@", [self.parameters objectForKey:RCUsername]];
     self.statusLabel.text = @"Initiating Call...";
 }
 
