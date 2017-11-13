@@ -21,6 +21,7 @@
  */
 
 #import "RCCallKitProvider.h"
+#import "AVFoundation/AVFoundation.h"
 
 @interface RCCallKitProvider()
 @property (nonatomic, strong) CXCallController *callKitCallController;
@@ -95,6 +96,7 @@
     
     //there is no way to know is the device locked or not.
     [self.delegate newIncomingCallAnswered:self.connection ];
+    [self routeAudioToSpeaker];
     [action fulfill];
 }
 
@@ -242,6 +244,18 @@
     NSLog(@"CallKit Current udid %@", self.currentUUID);
     [self reportIncomingCallFrom:[self.connection.parameters objectForKey:@"from"] hasVideo:isVideo];
 }
+
+- (void)routeAudioToSpeaker {
+    NSError *error = nil;
+    //https://developer.apple.com/documentation/avfoundation/avaudiosessioncategoryplayandrecord
+    //we need to set category
+    if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                                                 mode:AVAudioSessionModeVoiceChat
+                                              options:(AVAudioSessionCategoryOptionDefaultToSpeaker) error:&error]) {
+        NSLog(@"Unable to reroute audio: %@", [error localizedDescription]);
+    }
+}
+
 
 
 

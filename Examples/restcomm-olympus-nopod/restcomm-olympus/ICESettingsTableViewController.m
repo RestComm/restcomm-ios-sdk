@@ -25,18 +25,24 @@
 #import "ICESettingsNavigationController.h"
 #import "Utils.h"
 #import "AppDelegate.h"
+#import "ICEDiscoveryTypeTableViewController.h"
 
-@interface ICESettingsTableViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *turnUrlText;
-@property (weak, nonatomic) IBOutlet UITextField *turnUsernameText;
-@property (weak, nonatomic) IBOutlet UITextField *turnPasswordText;
+@interface ICESettingsTableViewController () <ICEServersDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *iceUrlText;
+@property (weak, nonatomic) IBOutlet UITextField *iceUsernameText;
+@property (weak, nonatomic) IBOutlet UITextField *icePasswordText;
 //@property (unsafe_unretained, nonatomic) IBOutlet UISlider *timeoutSlider;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *secondsLabel;
 @property UITextField * activeField;
 @property (weak, nonatomic) IBOutlet UISwitch *switchOnOff;
+
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *lblICEServersDiscoveryType;
+@property (unsafe_unretained, nonatomic) IBOutlet UIView *ICEServersContentView;
+
 @end
 
-/* Note that the reason we are using a separate Navigation Controller for this controller is that there's an issue with iOS and Bar Button items don't show right when on a modal controller
+/* Note that the reason we are using a separate Navigation Controller for this controller
+ is that there's an issue with iOS and Bar Button items don't show right when on a modal controller
  */
 
 @implementation ICESettingsTableViewController
@@ -44,17 +50,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _activeField = nil;
+    self.activeField = nil;
 
-    _turnUrlText.delegate = self;
-    _turnUsernameText.delegate = self;
-    _turnPasswordText.delegate = self;
+    self.iceUrlText.delegate = self;
+    self.iceUsernameText.delegate = self;
+    self.icePasswordText.delegate = self;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:235.0/255.0 green:91.0/255.0 blue:41.0/255.0 alpha:255.0/255.0];
     
     // turn auto-correct in text fields; doesn't help with SIP uris
-    self.turnUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.turnUsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.iceUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.iceUsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -67,6 +73,15 @@
     self.device = appDelegate.device;
     
     self.navigationItem.title = @"ICE Settings";
+    self.lblICEServersDiscoveryType.text = [self getStringFromICEServerType:[Utils iceDiscoveryType]];
+    
+    UITapGestureRecognizer *singleTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleSingleTap:)];
+    [self.ICEServersContentView addGestureRecognizer:singleTap];
+    
+    self.lblICEServersDiscoveryType.text = [self getStringFromICEServerType:[Utils iceDiscoveryType]];
+    
 }
 
 // Call this method somewhere in your view controller setup code.
@@ -167,9 +182,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.turnUrlText.text = [Utils turnUrl];
-    self.turnUsernameText.text = [Utils turnUsername];
-    self.turnPasswordText.text = [Utils turnPassword];
+    self.iceUrlText.text = [Utils iceUrl];
+    self.iceUsernameText.text = [Utils iceUsername];
+    self.icePasswordText.text = [Utils icePassword];
     //[self.timeoutSlider setValue:[[Utils turnCandidateTimeout] floatValue]];
     self.secondsLabel.text = [Utils turnCandidateTimeout];
     [self.switchOnOff setOn:[Utils turnEnabled] animated:NO];
@@ -218,12 +233,14 @@
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     [Utils updateTurnEnabled:self.switchOnOff.on];
     [params setObject:@(self.switchOnOff.on) forKey:RCTurnEnabledKey];
-    [Utils updateTurnUrl:self.turnUrlText.text];
-    [params setObject:self.turnUrlText.text forKey:RCTurnUrlKey];
-    [Utils updateTurnUsername:self.turnUsernameText.text];
-    [params setObject:self.turnUsernameText.text forKey:RCTurnUsernameKey];
-    [Utils updateTurnPassword:self.turnPasswordText.text];
-    [params setObject:self.turnPasswordText.text forKey:RCTurnPasswordKey];
+    [Utils updateICEUrl:self.iceUrlText.text];
+    [params setObject:self.iceUrlText.text forKey:RCTurnUrlKey];
+    [Utils updateICEUsername:self.iceUsernameText.text];
+    [params setObject:self.iceUsernameText.text forKey:RCTurnUsernameKey];
+    [Utils updateICEPassword:self.icePasswordText.text];
+    [params setObject:self.icePasswordText.text forKey:RCTurnPasswordKey];
+    [Utils updateICEDiscoveryType:[self getIntFromICEServerTypeString:self.lblICEServersDiscoveryType.text]];
+    [params setObject:[NSNumber numberWithInt:[Utils iceDiscoveryType]] forKey:RCIceConfigTypeKey];
     //[Utils updateTurnCandidateTimeout:self.secondsLabel.text];
     //[params setObject:self.secondsLabel.text forKey:@"turn-candidate-timeout"];
 
@@ -260,22 +277,24 @@
 - (void)updateUIBasedOnSwitch
 {
     if (self.switchOnOff.on) {
-        [self.turnUrlText setEnabled:YES];
-        self.turnUrlText.alpha = 1.0;
-        [self.turnUsernameText setEnabled:YES];
-        self.turnUsernameText.alpha = 1.0;
-        [self.turnPasswordText setEnabled:YES];
-        self.turnPasswordText.alpha = 1.0;
+        [self.iceUrlText setEnabled:YES];
+        self.iceUrlText.alpha = 1.0;
+        [self.iceUsernameText setEnabled:YES];
+        self.iceUsernameText.alpha = 1.0;
+        [self.icePasswordText setEnabled:YES];
+        self.icePasswordText.alpha = 1.0;
+        self.lblICEServersDiscoveryType.alpha = 1.0;
     }
     else {
         float disabledAlpha = 0.5;
-        [self.turnUrlText setEnabled:NO];
-        self.turnUrlText.alpha = disabledAlpha;
+        [self.iceUrlText setEnabled:NO];
+        self.iceUrlText.alpha = disabledAlpha;
         //[self.turnUrlText setUserInteractionEnabled:NO];
-        [self.turnUsernameText setEnabled:NO];
-        self.turnUsernameText.alpha = disabledAlpha;
-        [self.turnPasswordText setEnabled:NO];
-        self.turnPasswordText.alpha = disabledAlpha;
+        [self.iceUsernameText setEnabled:NO];
+        self.iceUsernameText.alpha = disabledAlpha;
+        [self.icePasswordText setEnabled:NO];
+        self.icePasswordText.alpha = disabledAlpha;
+        self.lblICEServersDiscoveryType.alpha = disabledAlpha;
     }
 }
 
@@ -286,6 +305,59 @@
 }
  */
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"segue-ice-servers"]) {
+        ICEDiscoveryTypeTableViewController * iceServersTableViewController = (ICEDiscoveryTypeTableViewController *)[segue destinationViewController];
+        iceServersTableViewController.delegate = self;
+        iceServersTableViewController.selectedType = [self getIntFromICEServerTypeString:self.lblICEServersDiscoveryType.text];
+    }
+}
+
+#pragma mark - ICEServersDelegate method
+
+- (void)serverTypeSelected:(int)serverType{
+    self.lblICEServersDiscoveryType.text = [self getStringFromICEServerType:serverType];
+}
+
+#pragma mark - Tap event on Discovery Type
+
+- (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
+{
+    if (self.switchOnOff.on) {
+        [self performSegueWithIdentifier:@"segue-ice-servers" sender:nil];
+    }
+}
+
+#pragma mark - Helper methods
+
+- (NSString *)getStringFromICEServerType:(int)type{
+    switch (type) {
+        case (int)kXirsysV3:
+            return @"Xirsys V3";
+            break;
+        case (int)kXirsysV2:
+            return @"Xirsys V2";
+            break;
+        default:
+            return @"Custom";
+            break;
+    }
+}
+
+- (int)getIntFromICEServerTypeString:(NSString *)type{
+    if ([type isEqualToString:@"Xirsys V3"]){
+        return (int)kXirsysV3;
+    }
+    
+    if ([type isEqualToString:@"Xirsys V2"]){
+        return (int)kXirsysV2;
+    }
+    
+    return (int)kCustom;
+}
+
+
 - (BOOL)shouldAutorotate
 {
     return YES;
@@ -295,5 +367,8 @@
 {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
+
+
+
 
 @end
