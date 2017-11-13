@@ -6,8 +6,8 @@ target 'restcomm-helloworld' do
   #use_frameworks!
 
   # Pods for restcomm-helloworld
-  #pod 'restcomm-ios-sdk', :path => '../../'
-  pod 'restcomm-ios-sdk', '>= 1.0.0-beta.4.2.4'
+  pod 'restcomm-ios-sdk', :path => '../../'
+  #pod 'restcomm-ios-sdk', '>= 1.0.0-beta.4.2.4'
 
   target 'restcomm-helloworldTests' do
     inherit! :search_paths
