@@ -161,25 +161,6 @@
 {
     [super viewDidAppear:animated];
     
-    if (self.device.state == RCDeviceStateOffline) {
-        self.pendingError = YES;
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"RCDevice not Connected"
-                                     message:@"No connectivity"
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action)
-                                   {
-                                       [self alertOKTap];
-                                   }];
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
-    }
-    
     // we need that so that the accessory view shows up right away
     [self.inputAccessoryProxyView becomeFirstResponder];
     

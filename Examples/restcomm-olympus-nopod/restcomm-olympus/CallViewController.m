@@ -99,18 +99,6 @@
             self.videoButton.hidden = NO;
             self.audioButton.hidden = NO;
         }
-        
-        // for the duration of the call don't allow the screen to sleep (we will remove this when backgrounding is implemented)
-        [UIApplication sharedApplication].idleTimerDisabled = YES;
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if (self.isBeingDismissed) {
-        // we are leaving the call, allow the screen to sleep
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
     }
 }
 

@@ -350,6 +350,15 @@ NSString* const RCConnectionIncomingParameterCallSIDKey = @"RCConnectionIncoming
         self.device.state = RCDeviceStateReady;
     }
     [self handleDisconnected];
+    
+    // There's a chance that a call might be active while the App is in the background
+    // (if the user pressed home while on call for example). So we need to check if that is the case
+    // and if so, when the peer sends the BYE also shut down the signaling stack
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state != UIApplicationStateActive) {
+        RCLogNotice("[RCConnection sipManagerDidReceiveBye] Application is not in the foreground, UIApplicationState: %d. Shutting down signaling facilities", state);
+        [self.device unlisten];
+    }
 }
 
 - (void)sipManagerDidReceiveIncomingCancelled:(SipManager*)sipManager;

@@ -170,8 +170,10 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 
 - (void)unregister:(NSNotification *)notification
 {
-    [self.device unlisten];
-    self.device  = nil;
+    if (self.device.state != RCDeviceStateBusy) {
+       [self.device unlisten];
+       self.device  = nil;
+    }
 }
 
 
