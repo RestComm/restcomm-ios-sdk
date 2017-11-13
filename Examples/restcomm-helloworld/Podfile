@@ -1,13 +1,13 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+ platform :ios, ’10.0’
 
 target 'restcomm-helloworld' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   #use_frameworks!
 
   # Pods for restcomm-helloworld
-  pod 'restcomm-ios-sdk', :path => '../../'
-  #pod 'restcomm-ios-sdk', '>= 1.0.0-beta.4.2.4'
+  #pod 'restcomm-ios-sdk', :path => '../../'
+  pod 'restcomm-ios-sdk', '>= 1.0.0-beta.5’
 
   target 'restcomm-helloworldTests' do
     inherit! :search_paths

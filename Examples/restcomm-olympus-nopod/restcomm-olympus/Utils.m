@@ -68,18 +68,18 @@ NSString* const kFriendlyName = @"Olympus";
                                     kPendingInterappKey : @"",  // has another app sent us a URL to call?
                                     kSipIndentificationKey : @"",  //@"sip:ios-sdk@cloud.restcomm.com",
                                     kSipPasswordKey : @"",
-                                    kSipRegistrarKey : @"staging.restcomm.com",
+                                    kSipRegistrarKey : @"cloud.restcomm.com",
                                     kTurnEnabledKey : @(YES),
                                     kICEUrlKey : @"https://es.xirsys.com/_turn", // @"https://service.xirsys.com/ice", // @"https://computeengineondemand.appspot.com/turn",
                                     kICEUsernameKey : @"atsakiridis",  // @"iapprtc",
                                     kICEPasswordKey : @"4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7",  // @"4080218913"
                                     kSignalingSecureKey : @(YES),  // by default signaling is secure
                                     kSignalingCertificateKey : @"",
-                                    kPushAccountKey: @"ognjen@telestax.com",
-                                    kPushPasswordKey: @"ognjen123#",
+                                    kPushAccountKey: @"",
+                                    kPushPasswordKey: @"",
                                     kPushTokenKey: @"",
-                                    kPushDomainKey: @"staging.restcomm.com",
-                                    kHttpDomainKey: @"staging.restcomm.com",
+                                    kPushDomainKey: @"push.restcomm.com",
+                                    kHttpDomainKey: @"cloud.restcomm.com",
                                     kICEDiscoveryTypeKey: [NSNumber numberWithInt:(int)kXirsysV3],
                                     kPushServerEnabledKey: @(NO), //by default we assume push is not enabled for account on server
                                     kPushIsSandboxKey: @(NO),
