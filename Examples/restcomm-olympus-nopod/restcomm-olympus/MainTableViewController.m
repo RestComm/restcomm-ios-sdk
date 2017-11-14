@@ -116,9 +116,14 @@
     [super viewWillAppear:animated];
     [self reloadData];
     // check connectivity
-    [self updateConnectivityState:appDelegate.device.state
+    
+    if (appDelegate.device){
+        [self updateConnectivityState:appDelegate.device.state
               andConnectivityType:appDelegate.device.connectivityType
                          withText:@""];
+    } else {
+        [appDelegate registerRCDevice];
+    }
     
     //notification handled from app delegate
     [[NSNotificationCenter defaultCenter] addObserver:self

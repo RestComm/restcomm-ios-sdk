@@ -152,6 +152,7 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
         self.device = [[RCDevice alloc] initWithParams:self.parameters delegate:self];
         
     }
+   
     [self updateConnectivityState:self.device.state andConnectivityType:self.device.connectivityType withText:@""];
     return self.device;
     
