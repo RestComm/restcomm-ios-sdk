@@ -72,6 +72,9 @@ NSString * const kLocaMessagingMessageKey = @"local-messaging-message";
 {
     
     application.applicationIconBadgeNumber = 0;
+    if (!self.device){
+        [self registerRCDevice];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions

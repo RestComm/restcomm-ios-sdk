@@ -121,8 +121,6 @@
         [self updateConnectivityState:appDelegate.device.state
               andConnectivityType:appDelegate.device.connectivityType
                          withText:@""];
-    } else {
-        [appDelegate registerRCDevice];
     }
     
     //notification handled from app delegate
