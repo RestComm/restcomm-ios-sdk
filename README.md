@@ -6,7 +6,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/restcomm-ios-sdk.svg?style=flat)](http://cocoapods.org/pods/restcomm-ios-sdk)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Frestcomm-ios-sdk.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Frestcomm-ios-sdk?ref=badge_shield)
 
-iOS Mobile SDK to easily integrate communication features (messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
+iOS Mobile SDK to easily integrate communication features (WebRTC, messaging, presence, voice, video, screensharing) based on [RestComm](http://restcomm.com/) into native Mobile Applications.
 
 ## Quick Start guide
 
