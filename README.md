@@ -26,6 +26,10 @@ Appledoc style reference documentation can be found [here](http://restcomm.githu
 
 RestComm Client SDK for iOS has been tested to work on iOS 8.0 and above (has been successfully tested with iphone 4s and above)
 
+## Downloads
+
+The latest iOS SDK binary is available in the [Restcomm site Downloads section](https://www.restcomm.com/downloads/).
+
 ## Latest Olympus .ipa
 
 Interested in taking Restcomm iOS SDK for a spin? You can readily install the iOS Olympus App that utilizes the SDK and provides a simple webrtc voice/video App for the Restcomm Cloud [here](https://tsfr.io/xex2zc)
@@ -53,4 +57,4 @@ RestComm is licensed under dual license policy. The default license is the Free 
 
 ## Acknowledgements
 
-[See who has been contributing to RestComm](http://www.telestax.com/opensource/acknowledgments/)
+[See who has been contributing to RestComm](https://www.restcomm.com/acknowledgments/)
