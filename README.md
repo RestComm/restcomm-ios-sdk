@@ -1,3 +1,7 @@
+
+[Try Restcomm Cloud NOW for FREE!](https://www.restcomm.com/sign-up/) Zero download and install required.
+
+
 # RestComm Mobile - iOS SDK
 
 [![CI Status](http://img.shields.io/travis/RestComm/restcomm-ios-sdk.svg?style=flat)](https://travis-ci.org/RestComm/restcomm-ios-sdk)
