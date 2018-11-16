@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>RCDevice Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1333)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
+			
+			<h1 id="library-title">
+				<a href="../index.html">Restcomm iOS SDK </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">Telestax</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+
+	
+	
+	<optgroup label="Properties">
+		
+		<option value="//api/name/capabilities">capabilities</option>
+		
+		<option value="//api/name/connectivityType">connectivityType</option>
+		
+		<option value="//api/name/delegate">delegate</option>
+		
+		<option value="//api/name/disconnectSoundEnabled">disconnectSoundEnabled</option>
+		
+		<option value="//api/name/incomingSoundEnabled">incomingSoundEnabled</option>
+		
+		<option value="//api/name/outgoingSoundEnabled">outgoingSoundEnabled</option>
+		
+		<option value="//api/name/state">state</option>
+		
+	</optgroup>
+	
+
+	
+
+	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/connect:delegate:">- connect:delegate:</option>
+		
+		<option value="//api/name/disconnectAll">- disconnectAll</option>
+		
+		<option value="//api/name/getParams">- getParams</option>
+		
+		<option value="//api/name/initWithCapabilityToken:delegate:">- initWithCapabilityToken:delegate:</option>
+		
+		<option value="//api/name/initWithParams:delegate:">- initWithParams:delegate:</option>
+		
+		<option value="//api/name/listen">- listen</option>
+		
+		<option value="//api/name/registerPushToken:delegate:">- registerPushToken:delegate:</option>
+		
+		<option value="//api/name/sendMessage:">- sendMessage:</option>
+		
+		<option value="//api/name/unlisten">- unlisten</option>
+		
+		<option value="//api/name/updateCapabilityToken:">- updateCapabilityToken:</option>
+		
+		<option value="//api/name/updateParams:">- updateParams:</option>
+		
+	</optgroup>
+	
+	
+</select>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
+
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">RCDevice Class Reference</h1>
+
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<th>Inherits from</th>
+	<td>NSObject</td>
+</tr><tr>
+	<th>Declared in</th>
+	<td>RCDevice.h<br />RCDevice.m</td>
+</tr>
+						</tbody></table></div>
+					
+
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>RCDevice Represents an abstraction of a communications device able to make and receive calls, send and receive messages etc. Remember that
+in order to be notified of RestComm Client events you need to set a delegate to RCDevice and implement the applicable methods.
+If you want to initiate a media connection towards another party you use <a href="#//api/name/connect:delegate:">[RCDevice connect:delegate:]</a> which returns an RCConnection object representing
+the new outgoing connection. From then on you can act on the new connection by applying RCConnection methods on the handle you got from <a href="#//api/name/connect:delegate:">[RCDevice connect:delegate:]</a>.
+If there’s an incoming connection you will be notified by <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingConnection:">[RCDeviceDelegate device:didReceiveIncomingConnection:]</a> <a href="#//api/name/delegate">delegate</a> method. At that point you can use RCConnection methods to
+accept or reject the connection.</p>
+
+<p>As far as instant messages are concerned you can send a message using <a href="#//api/name/sendMessage:">[RCDevice sendMessage:]</a> and you will be notified of an incoming message
+via <a href="../Protocols/RCDeviceDelegate.html#//api/name/device:didReceiveIncomingMessage:withParams:">[RCDeviceDelegate device:didReceiveIncomingMessage:withParams:]</a> <a href="#//api/name/delegate">delegate</a> method.</p>
+					</div>
+					
+					
+
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						
+
+						
+						
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/state" title="state"></a>
+	<h3 class="method-title"><code><a href="#//api/name/state">&nbsp;&nbsp;state</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Device state</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) RCDeviceState state</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/connectivityType" title="connectivityType"></a>
+	<h3 class="method-title"><code><a href="#//api/name/connectivityType">&nbsp;&nbsp;connectivityType</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Device connectivity type, given that RCDeviceState is Ready or Busy</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) RCDeviceConnectivityType connectivityType</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/capabilities" title="capabilities"></a>
+	<h3 class="method-title"><code><a href="#//api/name/capabilities">&nbsp;&nbsp;capabilities</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Device capabilities (<strong>Not Implemented yet</strong>)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSDictionary *capabilities</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/delegate" title="delegate"></a>
+	<h3 class="method-title"><code><a href="#//api/name/delegate">&nbsp;&nbsp;delegate</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Delegate that will be receiving RCDevice events described at <a href="../Protocols/RCDeviceDelegate.html">RCDeviceDelegate</a> protocol</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) id&lt;RCDeviceDelegate&gt; delegate</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/incomingSoundEnabled" title="incomingSoundEnabled"></a>
+	<h3 class="method-title"><code><a href="#//api/name/incomingSoundEnabled">&nbsp;&nbsp;incomingSoundEnabled</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Is sound for incoming connections enabled</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) BOOL incomingSoundEnabled</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/outgoingSoundEnabled" title="outgoingSoundEnabled"></a>
+	<h3 class="method-title"><code><a href="#//api/name/outgoingSoundEnabled">&nbsp;&nbsp;outgoingSoundEnabled</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Is sound for outgoing connections enabled</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) BOOL outgoingSoundEnabled</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/disconnectSoundEnabled" title="disconnectSoundEnabled"></a>
+	<h3 class="method-title"><code><a href="#//api/name/disconnectSoundEnabled">&nbsp;&nbsp;disconnectSoundEnabled</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Is sound for disconnect enabled (<strong>Not Implemented yet</strong>)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) BOOL disconnectSoundEnabled</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithParams:delegate:" title="initWithParams:delegate:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithParams:delegate:">&ndash;&nbsp;initWithParams:delegate:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<ul>
+<li>Initialize a new RCDevice object with the given parameters
+*</li>
+<li>@param parameters      Parameters for the Device entity. Possible keys: <br></li>
+<li> <b>RCAorKey</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br></li>
+<li> <b>RCPasswordKey</b>: password for the client <br></li>
+<li> <b>RCTurnEnabledKey</b>: should TURN be enabled? <br></li>
+<li> <b>RCTurnUrlKey</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i> <br></li>
+<li> <b>RCTurnUsernameKey</b>: TURN username <br></li>
+<li> <b>RCTurnPasswordKey</b>: TURN password <br></li>
+<li> <b>RCRegistrarKey</b>: Restcomm instance to use, like <i>&lsquo;cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></li>
+<li> <b>RCSignalingSecureKey</b>: Should signaling traffic be encrypted? For traffic to be encrypted the &lsquo;signaling-certificate-dir&rsquo; below should be provided as well <br></li>
+<li> <b>RCSignalingCertificateDirKey</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling.
+  agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs</li>
+<li> <b>RCIceConfigTypeKey<b>:  Should be integer value of the following kXirsysV2 = 0, kXirsysV3 = 1 , kCustom = 2.
+    kXirsysV2 and kXirsysV3 is about utilizing an ICE configuration URL using Xirsys V2 or V3 respectively.
+    kCustom is about discovering the ICE urls (i.e. STUN and TURN) in the App level and providing to the SDK directly
+        without utilizing an ICE configuration URL. This is handy if you host your own ICE servers, or want more control</li>
+<li> <b>RCIceDomainKey</b> If ice-config-type is kXirsysV3, ice-domain must be provided; for example: restcomm</li>
+<li> <b>RCIceServersKey</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is &lsquo;kCustom&rsquo;; Example with 2 servers:
+        parameter to pass (Array):
+        @[
+            @{ @&ldquo;url&rdquo;:@&ldquo;URL&rdquo;, @&ldquo;username&rdquo;:@&ldquo;USERNAME_HERE&rdquo;, @&ldquo;credential&rdquo;:@&ldquo;KEY_HERE&rdquo;},
+            @{ @&ldquo;url&rdquo;:@&ldquo;URL&rdquo; }
+        ]</li>
+</ul>
+
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)initWithParams:(NSDictionary *)<em>parameters</em> delegate:(id&lt;RCDeviceDelegate&gt;)<em>delegate</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<ul>
+<li>Initialize a new RCDevice object with the given parameters
+*</li>
+<li>@param parameters      Parameters for the Device entity. Possible keys: <br></li>
+<li> <b>RCAorKey</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br></li>
+<li> <b>RCPasswordKey</b>: password for the client <br></li>
+<li> <b>RCTurnEnabledKey</b>: should TURN be enabled? <br></li>
+<li> <b>RCTurnUrlKey</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i> <br></li>
+<li> <b>RCTurnUsernameKey</b>: TURN username <br></li>
+<li> <b>RCTurnPasswordKey</b>: TURN password <br></li>
+<li> <b>RCRegistrarKey</b>: Restcomm instance to use, like <i>&lsquo;cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br></li>
+<li> <b>RCSignalingSecureKey</b>: Should signaling traffic be encrypted? For traffic to be encrypted the &lsquo;signaling-certificate-dir&rsquo; below should be provided as well <br></li>
+<li> <b>RCSignalingCertificateDirKey</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling.
+  agent.pem contains the private key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs</li>
+<li> <b>RCIceConfigTypeKey<b>:  Should be integer value of the following kXirsysV2 = 0, kXirsysV3 = 1 , kCustom = 2.
+    kXirsysV2 and kXirsysV3 is about utilizing an ICE configuration URL using Xirsys V2 or V3 respectively.
+    kCustom is about discovering the ICE urls (i.e. STUN and TURN) in the App level and providing to the SDK directly
+        without utilizing an ICE configuration URL. This is handy if you host your own ICE servers, or want more control</li>
+<li> <b>RCIceDomainKey</b> If ice-config-type is kXirsysV3, ice-domain must be provided; for example: restcomm</li>
+<li><p> <b>RCIceServersKey</b> NSArray of NSDictionary data of the STUN and TURN servers; This key is mandatory if ice-config-type is &lsquo;kCustom&rsquo;; Example with 2 servers:
+        parameter to pass (Array):
+        @[
+            @{ @&ldquo;url&rdquo;:@&ldquo;URL&rdquo;, @&ldquo;username&rdquo;:@&ldquo;USERNAME_HERE&rdquo;, @&ldquo;credential&rdquo;:@&ldquo;KEY_HERE&rdquo;},
+            @{ @&ldquo;url&rdquo;:@&ldquo;URL&rdquo; }
+        ]</p></li>
+<li><p>@param <a href="#//api/name/delegate">delegate</a>        Delegate of RCDevice</p></li>
+<li>@return Newly initialized RCDevice object</li>
+</ul>
+
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithCapabilityToken:delegate:" title="initWithCapabilityToken:delegate:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithCapabilityToken:delegate:">&ndash;&nbsp;initWithCapabilityToken:delegate:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Initialize a new RCDevice object with capability token</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)initWithCapabilityToken:(NSString *)<em>capabilityToken</em> delegate:(id&lt;RCDeviceDelegate&gt;)<em>delegate</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>capabilityToken</code></th>
+						<td><p>Capability Token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>delegate</code></th>
+						<td><p>Delegate of RCDevice</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Newly initialized object</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Initialize a new RCDevice object with capability token</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/listen" title="listen"></a>
+	<h3 class="method-title"><code><a href="#//api/name/listen">&ndash;&nbsp;listen</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Start listening for incoming connections (RCDevice is configured to listen once it is instantiated)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)listen</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/unlisten" title="unlisten"></a>
+	<h3 class="method-title"><code><a href="#//api/name/unlisten">&ndash;&nbsp;unlisten</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Stop listening for incoming connections</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)unlisten</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/updateCapabilityToken:" title="updateCapabilityToken:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/updateCapabilityToken:">&ndash;&nbsp;updateCapabilityToken:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Update Capability Token</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)updateCapabilityToken:(NSString *)<em>capabilityToken</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>capabilityToken</code></th>
+						<td><p>New Capability Token (<strong>Not Implemented</strong>)</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/getParams" title="getParams"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getParams">&ndash;&nbsp;getParams</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Retrieve RCDevice parameters</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)getParams</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>RCDevice parameters</p>
+			</div>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/connect:delegate:" title="connect:delegate:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/connect:delegate:">&ndash;&nbsp;connect:delegate:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create an outgoing connection to an endpoint</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (RCConnection *)connect:(NSDictionary *)<em>parameters</em> delegate:(id&lt;RCConnectionDelegate&gt;)<em>delegate</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>parameters</code></th>
+						<td><p>Parameters for the outgoing connection. Possible keys: <br>
+<b>RCUsername</b>: Who is the called number, like <i>&lsquo;+1235&rsquo;</i> or <i>&lsquo;sip:+1235@cloud.restcomm.com&rsquo;</i> <br>
+<b>RCVideoEnabled</b>: Whether we want WebRTC video enabled or not <br>
+<b>RCSipHeaders</b>: An optional NSDictionary of custom SIP headers we want to add to the INVITE <br></p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>delegate</code></th>
+						<td><p>The <a href="#//api/name/delegate">delegate</a> object that will receive events when the connection <a href="#//api/name/state">state</a> changes</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>An <a href="../Classes/RCConnection.html">RCConnection</a> object representing the new connection</p>
+			</div>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sendMessage:" title="sendMessage:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sendMessage:">&ndash;&nbsp;sendMessage:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Send a text message</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)sendMessage:(NSDictionary *)<em>parameters</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>parameters</code></th>
+						<td><p>Message parameters. Possible keys are:  <br>
+<b>RCUsername</b>: Who is the recepient of the text message, like <i>&lsquo;sip:+1235@cloud.restcomm.com&rsquo;</i> <br>
+<b>RCMessage</b>: Content of the message <br>
+<b>RCSipHeaders</b>: An optional NSDictionary of custom SIP headers we want to add to the MESSAGE <br></p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>A boolean whether message was sent or not.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/disconnectAll" title="disconnectAll"></a>
+	<h3 class="method-title"><code><a href="#//api/name/disconnectAll">&ndash;&nbsp;disconnectAll</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Disconnect all connections</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)disconnectAll</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/updateParams:" title="updateParams:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/updateParams:">&ndash;&nbsp;updateParams:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Update RCDevice parameters</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)updateParams:(NSDictionary *)<em>params</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>params</code></th>
+						<td><p>Dictionary of key/value pairs of the parameters that will be updated: <br>
+<b>RCAorKey</b>: identity (or address of record) for the client, like <i>&lsquo;sip:ios-sdk@cloud.restcomm.com&rsquo;</i> <br>
+<b>RCPasswordKey</b>: password for the client <br>
+<b>RCTurnEnabledKey</b>: should TURN be enabled? <br>
+<b>RCTurnUrlKey</b>: TURN url if you want to use TURN for webrtc ICE negotiation, like <i>&lsquo;<a href="https://turn.provider.com/turn" title="">https://turn.provider.com/turn'</a></i> <br>
+<b>RCTurnUsernameKey</b>: TURN username <br>
+<b>RCTurnPasswordKey</b>: TURN password <br>
+<b>RCRegistrarKey</b>: Restcomm instance to use, like <i>'sip:cloud.restcomm.com&rsquo;</i>. Leave empty for registrar-less mode <br>
+<b>RCSignalingSecureKey</b>: Should signaling traffic be encrypted? For traffic to be encrypted the &lsquo;signaling-certificate-dir&rsquo; below should be provided as well <br>
+<b>RCSignalingCertificateDirKey</b>: Directory where files agent.pem and cafile.pem are installed inside the App bundle needed when TLS is to be used for signaling. agent.pem is the client/server cert containing key and certificate to be used by the signaling facilities. cafile.pem is a file containing all trusted certs</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>If update of parameters was successful. Typical reason to fail is connectivity issues.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/registerPushToken:delegate:" title="registerPushToken:delegate:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/registerPushToken:delegate:">&ndash;&nbsp;registerPushToken:delegate:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Register the application for the push notifications
+<b>RCPushFriendlyNameKey</b>: name of the client application
+<b>RCRestcommAccountEmailKey</b> account&rsquo;s email
+<b>RCRestcommAccountPasswordKey</b>: password for an account<br>
+<b>RCPushDomainKey</b> domain for the push notifications; for example: push.restcomm.com
+<b>RCPushTokenKey</b>: push notification token from the APN
+<b>RCPushCertificatesPathPublicKey</b>: Path where exported APN&rsquo;s public certificate file is installed inside the App bundle.
+<b>RCPushCertificatesPathPrivateKey</b>: Path where exported APN&rsquo;s private RSA certificate file is installed inside the App bundle.
+The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+NOTE:
+By default APNS provides to developer &lsquo;.p12&rsquo; SSL certificate. Restcomm Push Notification Server requires a couple of modifications with this file.
+Generate &lsquo;.pem&rsquo; certificate:
+openssl pkcs12 -in /path/to/cert.p12 -nokeys -out /path/to/cert.pem -nodes
+Generate &lsquo;.pem&rsquo; private key:
+openssl pkcs12 -in /path/to/cert.p12 -nocerts -out /path/to/key.pem -nodes
+Format &lsquo;.pem&rsquo; private key to pkcs8:
+openssl pkcs8 -topk8 -inform pem -in /path/to/key(pkcs12).pem -outform pem -nocrypt -out /path/to/key(pkcs8).pem</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)registerPushToken:(NSDictionary *)<em>parameters</em> delegate:(id&lt;RCRegisterPushDelegate&gt;)<em>delegate</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>delegate</code></th>
+						<td><p>The <a href="#//api/name/delegate">delegate</a> object that will receive events when registering for push (success, error)</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Register the application for the push notifications
+<b>RCPushFriendlyNameKey</b>: name of the client application
+<b>RCRestcommAccountEmailKey</b> account&rsquo;s email
+<b>RCRestcommAccountPasswordKey</b>: password for an account<br>
+<b>RCPushDomainKey</b> domain for the push notifications; for example: push.restcomm.com
+<b>RCPushTokenKey</b>: push notification token from the APN
+<b>RCPushCertificatesPathPublicKey</b>: Path where exported APN&rsquo;s public certificate file is installed inside the App bundle.
+<b>RCPushCertificatesPathPrivateKey</b>: Path where exported APN&rsquo;s private RSA certificate file is installed inside the App bundle.
+The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+NOTE:
+By default APNS provides to developer &lsquo;.p12&rsquo; SSL certificate. Restcomm Push Notification Server requires a couple of modifications with this file.
+Generate &lsquo;.pem&rsquo; certificate:
+openssl pkcs12 -in /path/to/cert.p12 -nokeys -out /path/to/cert.pem -nodes
+Generate &lsquo;.pem&rsquo; private key:
+openssl pkcs12 -in /path/to/cert.p12 -nocerts -out /path/to/key.pem -nodes
+Format &lsquo;.pem&rsquo; private key to pkcs8:
+openssl pkcs8 -topk8 -inform pem -in /path/to/key(pkcs12).pem -outform pem -nocrypt -out /path/to/key(pkcs8).pem</p>
+
+<p><b>RCPushIsSandbox</b>: BOOL presented with number ([NSNumber numberWithBool:YES/NO]); It should be true if voip push certifictes are for development version of the
+application, if its production it should be set to NO.
+<b>RCHttpDomainKey</b>: Restcomm HTTP domain, like &lsquo;cloud.restcomm.com&rsquo;</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">RCDevice.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
+					
+					
+
+                    
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2018 Telestax. All rights reserved. Updated: 2018-11-16</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
+</html>
